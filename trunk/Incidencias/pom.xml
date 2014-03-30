@@ -1,27 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.cplsystems.gov.app</groupId>
-  <artifactId>government</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>government Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  
-  	<repositories>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.cplsystems.gov.app</groupId>
+	<artifactId>government</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>government Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+
+	<repositories>
 		<repository>
 			<id>internal-repository</id>
 			<url>http://192.168.14.231:8081/nexus/content/repositories/thirdparty/</url>
 		</repository>
 	</repositories>
-		<properties>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.1.1.RELEASE</spring.version>
 		<zkoss.version>6.0.2</zkoss.version>
 		<zkoss.spring.integ.version>3.0</zkoss.spring.integ.version>
 		<jersey.version>1.13</jersey.version>
 	</properties>
-  <dependencies>
+	<dependencies>
 		<!-- JUnit Dependency -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -106,14 +106,6 @@
 			<version>1.6.1</version>
 		</dependency>
 		<!-- END Hibernate Dependencies -->
-
-		<!-- Mysql Database -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.20</version>
-		</dependency>
-		<!-- END Mysql Database -->
 
 		<!-- Spring -->
 		<dependency>
@@ -229,7 +221,6 @@
 		</dependency>
 		<!-- END Axis -->
 
-		
 		<!-- Javax - servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -239,13 +230,14 @@
 		<!-- END Javax-servlet -->
 
 		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.1-901.jdbc4</version>
+			<groupId>net.sourceforge.jtds</groupId>
+			<artifactId>jtds</artifactId>
+			<version>1.3.1</version>
 		</dependency>
-		
+
+
 	</dependencies>
-  <build>
-    <finalName>incidencias</finalName>
-  </build>
+	<build>
+		<finalName>incidencias</finalName>
+	</build>
 </project>
