@@ -9,30 +9,29 @@
 
 	<session-factory>
 		<!-- Configuration Data -->
-		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/incidencias</property>
-		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-		<property name="connection.username">postgres</property>
-		<property name="connection.password">D58d90c9f5</property>
+		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/incidencias</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+		<property name="connection.username">sa</property>
+		<property name="connection.password">5d8d90c9f5</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
-		<property name="use_sql_comments">true</property>
 		<!-- END Configuration Data -->
 
 		<!-- Mapping of Classes -->
-		<mapping class="com.cplsystems.government.domain.ActaMatrimonio" />
-		<mapping class="com.cplsystems.government.domain.ActaNacimiento" />
-		<mapping class="com.cplsystems.government.domain.BandejaSolicitudes" />
-		<mapping class="com.cplsystems.government.domain.CartaAntecedentesPenales" />
-		<mapping class="com.cplsystems.government.domain.Ciudad" />
-		<mapping class="com.cplsystems.government.domain.Colonia" />
-		<mapping class="com.cplsystems.government.domain.DireccionPersona" />
-		<mapping class="com.cplsystems.government.domain.Estado" />
-		<mapping class="com.cplsystems.government.domain.Libro" />
-		<mapping class="com.cplsystems.government.domain.Municipio" />
-		<mapping class="com.cplsystems.government.domain.Persona" />
-		<mapping class="com.cplsystems.government.domain.TipoIdentificacion" />
-		<mapping class="com.cplsystems.government.domain.TipoPersona" />
-		<mapping class="com.cplsystems.government.domain.TipoSolicitud" />
+		<mapping class="com.cplsystems.incidencias.domain.ActaMatrimonio" />
+		<mapping class="com.cplsystems.incidencias.domain.ActaNacimiento" />
+		<mapping class="com.cplsystems.incidencias.domain.BandejaSolicitudes" />
+		<mapping class="com.cplsystems.incidencias.domain.CartaAntecedentesPenales" />
+		<mapping class="com.cplsystems.incidencias.domain.Ciudad" />
+		<mapping class="com.cplsystems.incidencias.domain.Colonia" />
+		<mapping class="com.cplsystems.incidencias.domain.DireccionPersona" />
+		<mapping class="com.cplsystems.incidencias.domain.Estado" />
+		<mapping class="com.cplsystems.incidencias.domain.Libro" />
+		<mapping class="com.cplsystems.incidencias.domain.Municipio" />
+		<mapping class="com.cplsystems.incidencias.domain.Persona" />
+		<mapping class="com.cplsystems.incidencias.domain.TipoIdentificacion" />
+		<mapping class="com.cplsystems.incidencias.domain.TipoPersona" />
+		<mapping class="com.cplsystems.incidencias.domain.TipoSolicitud" />
 	</session-factory>
 
 </hibernate-configuration>
