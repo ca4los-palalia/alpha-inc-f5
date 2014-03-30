@@ -30,10 +30,10 @@
 						<tab label="Requisición" zclass="accordion" />
 					</tabs>
 					<tabpanels>
-						<tabpanel>
+						<tabpanel zclass="itemsBackground">
 							<vlayout>
-								<a label="Registrar" href=""/>
-								<a label="Inventario" href=""/>
+								<a label="Registrar" href="" sclass="smooth style-glow"/>
+								<a label="Inventario" href="" sclass="smooth style-glow"/>
 							</vlayout>
 						</tabpanel>
 						<tabpanel zclass="sub-menu">
