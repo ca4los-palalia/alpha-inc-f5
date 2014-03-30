@@ -1,0 +1,33 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/styles/stylesUI/styleHeader.css" />
+	<window 
+		apply="org.zkoss.bind.BindComposer">		
+		<hlayout 
+			sclass="hlyContentDateTime">
+			<label 
+				id="timeLabel"
+				zclass="lblFecha"/>
+			<div 
+				zclass="txtBtnBuscar">
+				<textbox 
+					id="idBuscar" 
+					value="" zclass="txtBuscar" />
+				<button 
+					image="/images/UI/icono-buscar.png"
+					zclass="btnBuscar" sclass="btn" 
+					tooltiptext="Buscar" />
+			</div>
+			<button 
+				label="Salir" 
+				zclass="btnSalir" 
+				sclass="btn"
+				tooltiptext="Salir" />
+		</hlayout>
+		<timer 
+			id="timer" 
+			delay="1000" 
+			repeats="true">
+		</timer>
+	</window>
+</zk>

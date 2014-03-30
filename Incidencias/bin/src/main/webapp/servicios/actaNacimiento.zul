@@ -1,0 +1,182 @@
+<?page title="Acta de Nacimiento" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Acta de Nacimiento" border="normal" position="center" mode="overlapped">
+		<vlayout>
+			<hlayout>
+				<label value="Folio" />
+				<textbox />
+			</hlayout>
+			<hlayout>
+				<hlayout>
+					<label value="Estado" />
+					<combobox value="Seleccione un estado" />
+				</hlayout>
+				<hlayout>
+					<label value="Estado" />
+					<combobox value="Seleccione un municipio" />
+				</hlayout>
+			</hlayout>
+			<hlayout>
+				<hlayout>
+					<label value="Número de libro" />
+					<textbox />
+				</hlayout>
+				<hlayout>
+					<label value="Año" />
+					<textbox />
+				</hlayout>
+
+			</hlayout>
+			<hlayout>
+				<hlayout>
+					<label value="Número de acta" />
+					<textbox />
+				</hlayout>
+				<hlayout>
+					<label value="Fecha" />
+					<datebox />
+				</hlayout>
+				<hlayout>
+					<label value="Nombre del Juez" />
+					<combobox />
+				</hlayout>
+			</hlayout>
+			<label value="Acta de Nacimiento" />
+			<hlayout>
+				<hlayout>
+					<label value="Nombre" />
+					<textbox />
+				</hlayout>
+				<hlayout>
+					<label value="Fecha de Nacimiento" />
+					<datebox />
+				</hlayout>
+				<label value="Lugar de Nacimiento" />
+			</hlayout>
+			<hlayout>
+				<label value="Estado:" />
+				<combobox />
+				<label value="Ciudad:" />
+				<combobox />
+			</hlayout>
+			<hlayout>
+				<label value="Municipio:" />
+				<combobox />
+				<label value="Localidad:" />
+				<combobox />
+			</hlayout>
+			<hlayout>
+				<label value="CRIP" />
+				<textbox />
+			</hlayout>
+			<vlayout>
+				<hlayout>
+					<hlayout>
+						<label value="Fué presentado:" />
+						<hlayout>
+							<label value="vivo" />
+							<radio />
+							<label value="muerto" />
+							<radio />
+						</hlayout>
+					</hlayout>
+					<hlayout>
+						<label value="Sexo" />
+						<hlayout>
+							<label value="masculino" />
+							<radio />
+							<label value="femenino" />
+							<radio />
+						</hlayout>
+					</hlayout>
+
+				</hlayout>
+				<hlayout>
+					<hlayout>
+						<label value="Declaró:" />
+						<hlayout>
+							<label value="Padre" />
+							<radio />
+							<label value="Madre" />
+							<radio />
+							<label value="Ambos" />
+							<radio />
+							<label value="Persona Distinta" />
+							<radio />
+						</hlayout>
+					</hlayout>
+				</hlayout>
+			</vlayout>
+			<label value="Padres" />
+			<vlayout>
+				<hlayout>
+					<label value="Nombre" />
+					<textbox />
+					<label value="Nacionalidad" />
+					<textbox />
+				</hlayout>
+				<hlayout>
+					<label value="Nombre" />
+					<textbox />
+					<label value="Nacionalidad" />
+					<textbox />
+				</hlayout>
+			</vlayout>
+			<label value="Abuelos Maternos Y Paternos" />
+			<vlayout>
+				<hlayout>
+					<label value="Nombre" />
+					<textbox />
+					<label value="Nacionalidad" />
+					<textbox />
+				</hlayout>
+				<hlayout>
+					<label value="Nombre" />
+					<textbox />
+					<label value="Nacionalidad" />
+					<textbox />
+				</hlayout>
+				<hlayout>
+					<label value="Nombre" />
+					<textbox />
+					<label value="Nacionalidad" />
+					<textbox />
+				</hlayout>
+				<hlayout>
+					<label value="Nombre" />
+					<textbox />
+					<label value="Nacionalidad" />
+					<textbox />
+				</hlayout>
+			</vlayout>
+			<label value="Testigos del Acto" />
+			<vlayout>
+				<hlayout>
+					<label value="Nombre" />
+					<textbox />
+					<label value="Nacionalidad" />
+					<textbox />
+					<label value="Parentesco" />
+					<combobox />
+				</hlayout>
+				<hlayout>
+					<label value="Nombre" />
+					<textbox />
+					<label value="Nacionalidad" />
+					<textbox />
+					<label value="Parentesco" />
+					<combobox />
+				</hlayout>
+			</vlayout>
+			<label value="Ciudadano Juez del registro del estado civil" />
+			<hlayout>
+				<label value="Nombre" />
+				<combobox />
+			</hlayout>
+		</vlayout>
+		<hlayout>
+			<button label="Guardar"/>
+			<button label="Cancelar"/>
+		</hlayout>
+	</window>
+</zk>
