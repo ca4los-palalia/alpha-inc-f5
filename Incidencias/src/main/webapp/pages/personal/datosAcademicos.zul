@@ -1,0 +1,50 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/styles/stylesUI/styleHeader.css" />
+	<window apply="org.zkoss.bind.BindComposer">
+
+		<vlayout>
+			<vlayout>
+				<hlayout>
+					<label value="Nivel académico:" />
+					<combobox />
+					<label value="Año de inicio:" />
+					<decimalbox />
+					<label value="Año de término:" />
+					<decimalbox />
+				</hlayout>
+				<hlayout>
+					<label value="Especialidad:" />
+					<textbox />
+					<label value="Institución:" />
+					<textbox />
+				</hlayout>
+				<hlayout>
+					<label value="Status:" />
+					<combobox/>
+				</hlayout>
+			</vlayout>
+			<button label="Agregar curso" />
+			<grid height="350px" 
+				emptyMessage="Nothing in Inbox.">
+				<columns>
+					<column label="Fecha Inicio" width="10%" />
+					<column label="Fecha Fin" width="10%" />
+					<column label="Nombre" width="20%" />
+					<column label="Descripción" width="35%" />
+					<column label="Institución" width="25%" />
+				</columns>
+				<template name="model">
+					<row>
+						<datebox/>
+						<datebox/>
+						<textbox/>
+						<textbox/>
+						<textbox/>
+					</row>
+				</template>
+			</grid>
+
+		</vlayout>
+	</window>
+</zk>
