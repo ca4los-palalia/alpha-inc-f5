@@ -45,29 +45,29 @@
 
 										<vlayout>
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Calle:"/>
 												</hlayout>
 												<textbox />
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Número exterior:" />
 												</hlayout>
-												<decimalbox sclass="spacerInputs"/>
+												<decimalbox sclass="spaceDecimalbox"/>
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Número interior:" />
 												</hlayout>
-												<decimalbox sclass="spacerInputs"/>
+												<decimalbox sclass="spaceDecimalbox"/>
 											</hlayout>
 
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Colónia:" />
 												</hlayout>
 												<textbox />
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Ciudad:" />
 												</hlayout>
 												<textbox />
@@ -75,12 +75,12 @@
 
 											<hlayout>
 											
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Municipio:" />
 												</hlayout>
 												<textbox />
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Estado:" />
 												</hlayout>
 												<textbox />
@@ -88,44 +88,44 @@
 
 											<hlayout>
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="País:" />
 												</hlayout>
 												<textbox />
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Código postal:" />
 												</hlayout>
-												<decimalbox sclass="spacerInputs"/>
+												<decimalbox sclass="spaceDecimalbox"/>
 												
 											</hlayout>
 
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Fax:" />
 												</hlayout>
-												<decimalbox sclass="spacerLabel"/>
+												<decimalbox sclass="spaceDecimalbox"/>
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Teléfono:" />
 												</hlayout>
-												<decimalbox sclass="spacerLabel"/>
+												<decimalbox sclass="spaceDecimalbox"/>
 											</hlayout>
 
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="email:" />
 												</hlayout>
 												<textbox />
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Página web:" />
 												</hlayout>
 												<textbox />
 											</hlayout>
 
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="RFC:" />
 												</hlayout>
 												<textbox />
@@ -147,49 +147,49 @@
 											
 											
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Nombre:" />
 												</hlayout>
 												<textbox />
 												
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Cargo:" />
 												</hlayout>
 												<textbox />
 											</hlayout>
 
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="RFC:" />
 												</hlayout>
 												<textbox />
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="CURP:" />
 												</hlayout>
 												<textbox />
 											</hlayout>
 
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Teléfono" />
 												</hlayout>
-												<decimalbox sclass="spacerLabel"/>
+												<decimalbox sclass="spaceDecimalbox"/>
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Ext.:" />
 												</hlayout>
-												<decimalbox sclass="spacerLabel"/>
+												<decimalbox sclass="spaceDecimalbox"/>
 												
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Célular:" />
 												</hlayout>
-												<decimalbox sclass="spacerLabel"/>
+												<decimalbox sclass="spaceDecimalbox"/>
 											</hlayout>
 
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="email:" />
 												</hlayout>
 												<textbox />
@@ -212,7 +212,7 @@
 											
 											
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Cuenta contable:" />
 												</hlayout>
 												<button label="Buscar"/>
@@ -222,7 +222,7 @@
 											</hlayout>
 
 											<hlayout>
-												<hlayout sclass="spacerLabel">
+												<hlayout sclass="spacerLabelTab1">
 													<label value="Cuenta contable:" />
 												</hlayout>
 												
