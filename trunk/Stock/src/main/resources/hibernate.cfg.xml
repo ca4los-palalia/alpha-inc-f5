@@ -12,8 +12,8 @@
 		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
 		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/stock</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
-		<property name="connection.username">carlos</property>
-		<property name="connection.password">carlos</property>
+		<property name="connection.username">yadam</property>
+		<property name="connection.password">1234</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		<!-- END Configuration Data -->
 
@@ -21,6 +21,9 @@
 	
 		<mapping class="com.cplsystems.stock.domain.Contacto" />
 		<mapping class="com.cplsystems.stock.domain.Contrato" />
+		<mapping class="com.cplsystems.stock.domain.Cotizacion" />
+		<mapping class="com.cplsystems.stock.domain.CotizacionProducto" />
+		<mapping class="com.cplsystems.stock.domain.CuentaPago" />
 		<mapping class="com.cplsystems.stock.domain.Destino" />
 		<mapping class="com.cplsystems.stock.domain.Direccion" />
 		<mapping class="com.cplsystems.stock.domain.DireccionEntrega" />
@@ -28,8 +31,9 @@
 		<mapping class="com.cplsystems.stock.domain.Estado" />
 		<mapping class="com.cplsystems.stock.domain.Lugar" />
 		<mapping class="com.cplsystems.stock.domain.Municipio" />
+		<mapping class="com.cplsystems.stock.domain.OrdenCompraProducto" />
 		<mapping class="com.cplsystems.stock.domain.Partida" />
-		<mapping class="com.cplsystems.stock.domain.Personas" />
+		<mapping class="com.cplsystems.stock.domain.Persona" />
 		<mapping class="com.cplsystems.stock.domain.Producto" />
 		<mapping class="com.cplsystems.stock.domain.ProductoTope" />
 		<mapping class="com.cplsystems.stock.domain.Proveedor" />
