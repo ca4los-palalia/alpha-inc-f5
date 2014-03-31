@@ -32,8 +32,10 @@
 					<tabpanels>
 						<tabpanel zclass="itemsBackground">
 							<vlayout>
-								<a label="Registrar" href="" sclass="smooth style-glow"/>
-								<a label="Inventario" href="" sclass="smooth style-glow"/>
+								<a label="Registrar" href=""
+									sclass="smooth style-glow" />
+								<a label="Inventario" href=""
+									sclass="smooth style-glow" />
 							</vlayout>
 						</tabpanel>
 						<tabpanel zclass="sub-menu">
@@ -53,7 +55,6 @@
 
 			<div id="footer"
 				style="background-color:#FFA500;clear:both;text-align:center;width:100%">
-				Footer
 			</div>
 
 		</div>

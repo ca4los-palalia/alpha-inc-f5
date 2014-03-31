@@ -1,0 +1,41 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/styles/stylesUI/styleHeader.css" />
+	<window apply="org.zkoss.bind.BindComposer">
+
+		<vlayout>
+			<hlayout>
+				<label value="Nombre de padre:" />
+				<textbox />
+			</hlayout>
+			<hlayout>
+				<label value="Nombre de la madre:" />
+				<textbox />
+			</hlayout>
+			<hlayout>
+				<label value="Médico:" />
+				<textbox />
+			</hlayout>
+			<hlayout>
+				<label value="Tipo de sangre:" />
+				<textbox />
+			</hlayout>
+			<hlayout>
+				<label value="Padecimientos crónicos:" />
+				<textbox />
+			</hlayout>
+			<hlayout>
+				<label value="Medicamentos que toma actualmente:" />
+				<textbox />
+			</hlayout>
+			<hlayout>
+				<label value="En caso de urgencia llamar a:" />
+				<textbox />
+			</hlayout>
+			<hlayout>
+				<label value="Teléfono:" />
+				<textbox />
+			</hlayout>
+		</vlayout>
+	</window>
+</zk>

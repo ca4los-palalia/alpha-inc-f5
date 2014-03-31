@@ -327,7 +327,7 @@ body {
 }
 
 .smooth:hover {
-	color: #FFFFFF;/*
+	color: #FFFFFF; /*
 	background-color: #fdfdfd;*/
 	text-shadow: none;
 	padding-left: 15px;
@@ -354,9 +354,62 @@ body {
 	border-bottom: 1px solid #c9c9c9;
 	-webkit-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 100px
 		1px 0px 0px rgba(0, 0, 0, .1);
-	-moz-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 100px 1px
-		0px 0px rgba(0, 0, 0, .1);
+	-moz-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 100px
+		1px 0px 0px rgba(0, 0, 0, .1);
 	box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 0px 1px 0px
 		0px rgba(0, 0, 0, .1);
 	background: url(../../images/home/backgroundItems.jpg);
+}
+
+.lbl {
+	font-family: tahoma;
+	top: 2px;
+	border-radius: 3px;
+	padding: .50em;
+	position: relative;
+	-webkit-appearance: none;
+}
+
+.lbl.hover {
+	-webkit-transform: scale(1.025);
+	transform: scale(1.025);
+	cursor: pointer;
+}
+
+.lbl:active {
+	-webkit-transform: scale(.975);
+	transform: scale(.975);
+}
+
+.tBox {
+	color: #323a45;
+	position: absolute;
+	font-family: tahoma;
+	border: 1px solid #999;
+	padding: 1px 3px;
+	position: relative;
+}
+
+.tBox:invalid {
+	top: 3px;
+	opacity: 0;
+}
+
+.tBox:valid {
+	opacity: 5;
+	top: 0;
+}
+
+.tBox:focus {
+	border: 1px solid #f1773b;
+	outline: none;
+	-webkit-appearance: none;
+	-webkit-transition: .333s ease -webkit-transform;
+	transition: .333s ease transform;
+	-webkit-appearance: none;
+}
+
+.tBox:ACTIVE {
+	-webkit-transform: scale(.887);
+	transform: scale(.887);
 }

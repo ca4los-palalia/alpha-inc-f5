@@ -21,8 +21,8 @@ body { /*Colocando la imagen de linea gris superior en la página*/
 	font-family: sans-serif;
 	margin: 0 auto;
 	min-height: 600px;
-	height: auto;
-	width: 990px;
+	height: 100%;
+	width: 100%;
 }
 /*------------------------------*/
 /*Región de cabecera*/
