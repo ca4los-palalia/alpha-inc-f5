@@ -1,0 +1,342 @@
+<?page title="Home" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<zk>
+	<style src="/styles/proveedores/styleProveedor.css" />
+	
+	<window apply="org.zkoss.bind.BindComposer">
+		<radiogroup id="sv1"
+			onCheck="choice1.value = self.selectedItem.label" />
+		<vlayout>
+
+			<hlayout>
+				<radio id="ra1" label="Persona física" radiogroup="sv1" />
+				<radio id="ra2" label="Persona Moral" radiogroup="sv1" />
+			</hlayout>
+
+			<vlayout>
+				<label value="Denominación o razón social" />
+				<hlayout>
+					<combobox />
+					<button label="Buscar" />
+				</hlayout>
+
+				<hlayout>
+					<label value="Colectiva" />
+					<combobox />
+
+					<label value="Identificador externo:" />
+					<textbox />
+				</hlayout>
+
+				<tabbox id="tb">
+					<tabs id="tabs">
+						<tab label="Generales" />
+						<tab id="B" label="Proveedores" />
+					</tabs>
+
+					<tabpanels>
+						<tabpanel>
+
+							<vlayout>
+
+								<panel border="normal">
+									<panelchildren>
+
+										<vlayout>
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="Calle:"/>
+												</hlayout>
+												<textbox />
+												
+												<hlayout sclass="spacerLabel">
+													<label value="Número exterior:" />
+												</hlayout>
+												<decimalbox sclass="spacerInputs"/>
+												
+												<hlayout sclass="spacerLabel">
+													<label value="Número interior:" />
+												</hlayout>
+												<decimalbox sclass="spacerInputs"/>
+											</hlayout>
+
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="Colónia:" />
+												</hlayout>
+												<textbox />
+												
+												<hlayout sclass="spacerLabel">
+													<label value="Ciudad:" />
+												</hlayout>
+												<textbox />
+											</hlayout>
+
+											<hlayout>
+											
+												<hlayout sclass="spacerLabel">
+													<label value="Municipio:" />
+												</hlayout>
+												<textbox />
+												
+												<hlayout sclass="spacerLabel">
+													<label value="Estado:" />
+												</hlayout>
+												<textbox />
+											</hlayout>
+
+											<hlayout>
+												
+												<hlayout sclass="spacerLabel">
+													<label value="País:" />
+												</hlayout>
+												<textbox />
+												
+												<hlayout sclass="spacerLabel">
+													<label value="Código postal:" />
+												</hlayout>
+												<decimalbox sclass="spacerInputs"/>
+												
+											</hlayout>
+
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="Fax:" />
+												</hlayout>
+												<decimalbox sclass="spacerLabel"/>
+												
+												<hlayout sclass="spacerLabel">
+													<label value="Teléfono:" />
+												</hlayout>
+												<decimalbox sclass="spacerLabel"/>
+											</hlayout>
+
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="email:" />
+												</hlayout>
+												<textbox />
+												
+												<hlayout sclass="spacerLabel">
+													<label value="Página web:" />
+												</hlayout>
+												<textbox />
+											</hlayout>
+
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="RFC:" />
+												</hlayout>
+												<textbox />
+											</hlayout>
+
+										</vlayout>
+
+									</panelchildren>
+
+
+								</panel>
+								
+								
+								
+								<panel border="normal" title="Contacto">
+									<panelchildren>
+
+										<vlayout>
+											
+											
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="Nombre:" />
+												</hlayout>
+												<textbox />
+												
+												
+												<hlayout sclass="spacerLabel">
+													<label value="Cargo:" />
+												</hlayout>
+												<textbox />
+											</hlayout>
+
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="RFC:" />
+												</hlayout>
+												<textbox />
+												
+												<hlayout sclass="spacerLabel">
+													<label value="CURP:" />
+												</hlayout>
+												<textbox />
+											</hlayout>
+
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="Teléfono" />
+												</hlayout>
+												<decimalbox sclass="spacerLabel"/>
+												
+												<hlayout sclass="spacerLabel">
+													<label value="Ext.:" />
+												</hlayout>
+												<decimalbox sclass="spacerLabel"/>
+												
+												<hlayout sclass="spacerLabel">
+													<label value="Célular:" />
+												</hlayout>
+												<decimalbox sclass="spacerLabel"/>
+											</hlayout>
+
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="email:" />
+												</hlayout>
+												<textbox />
+											</hlayout>
+
+										</vlayout>
+									</panelchildren>
+								</panel>
+								
+								
+								
+								
+								
+								
+								
+								<panel border="normal" title="Datos contables">
+									<panelchildren>
+
+										<vlayout>
+											
+											
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="Cuenta contable:" />
+												</hlayout>
+												<button label="Buscar"/>
+												<textbox/>
+												<button label="Buscar"/>
+												<textbox />
+											</hlayout>
+
+											<hlayout>
+												<hlayout sclass="spacerLabel">
+													<label value="Cuenta contable:" />
+												</hlayout>
+												
+												<button label="Buscar"/>
+												<textbox/>
+												<button label="Buscar"/>
+												<textbox />
+											</hlayout>
+											
+										</vlayout>
+									</panelchildren>
+								</panel>
+
+							</vlayout>
+
+						</tabpanel>
+
+
+
+
+
+						<tabpanel>
+							<vlayout>
+								<hlayout>
+									<hlayout sclass="spacerLabelTab2">
+										<label value="Limite de Credito" />
+									</hlayout>
+									<textbox />
+								</hlayout>
+
+								<hlayout>
+									<hlayout sclass="spacerLabelTab2">
+										<label value="Descuento por pronto pago (%):" />
+									</hlayout>
+									<textbox />
+								</hlayout>
+
+								<hlayout>
+									<hlayout sclass="spacerLabelTab2">
+										<label
+										value="Días de descuento por pronto pago:" />
+									</hlayout>
+									
+									<textbox />
+								</hlayout>
+
+								<hlayout>
+									<hlayout sclass="spacerLabelTab2">
+										<label
+										value="Días de crédito (neto):" />
+									</hlayout>
+									
+									<textbox />
+								</hlayout>
+
+								<hlayout>
+									<hlayout sclass="spacerLabelTab2">
+										<label value="Días de tolerancia:" />
+									</hlayout>
+									<textbox />
+								</hlayout>
+
+								<hlayout>
+									<hlayout sclass="spacerLabelTab2">
+										<label value="Clave fiscal:" />
+									</hlayout>
+									<combobox />
+								</hlayout>
+
+
+								<hlayout>
+									<hlayout sclass="spacerLabelTab2">
+										<label value="Banco:" />
+									</hlayout>
+									<textbox />
+									
+									<hlayout sclass="spacerLabelTab2">
+										<label value="Cuenta:" />
+									</hlayout>
+									<textbox />
+								</hlayout>
+
+								<hlayout>
+									<hlayout sclass="spacerLabelTab2">
+										<label value="Clave:" />
+									</hlayout>
+									<textbox />
+								</hlayout>
+
+								<hlayout>
+									<hlayout sclass="spacerLabelTab2">
+										<label value="Comentarios:" />
+									</hlayout>
+									<textbox width="370px;"
+										tabindex="11" />
+								</hlayout>
+
+							</vlayout>
+
+						</tabpanel>
+
+					</tabpanels>
+
+				</tabbox>
+
+
+
+			</vlayout>
+
+
+
+		</vlayout>
+
+
+
+	</window>
+</zk>
