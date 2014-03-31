@@ -1,5 +1,9 @@
 package com.cplsystems.stock.domain;
 
+
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,8 +16,8 @@ import javax.persistence.Table;
 public class RequisicionPartida {
 
 	private Long idPartida;
-	private Long idRequisicion;
-	private Long idRequisicionPartida;
+	private Partida partida;
+	private Requisicion requisicion;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,22 +30,27 @@ public class RequisicionPartida {
 		this.idPartida = idPartida;
 	}
 
-	@Column(name = "idRequisicion", nullable = false)
-	public Long getIdRequisicion() {
-		return idRequisicion;
+    
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name = "partida")
+	public Partida getPartida() {
+		return partida;
 	}
 
-	public void setIdRequisicion(Long idRequisicion) {
-		this.idRequisicion = idRequisicion;
+	public void setPartida(Partida partida) {
+		this.partida = partida;
 	}
 
-	@Column(name = "idRequisicionPartida", nullable = false)
-	public Long getIdRequisicionPartida() {
-		return idRequisicionPartida;
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name = "requisicion")
+	public Requisicion getRequisicion() {
+		return requisicion;
 	}
 
-	public void setIdRequisicionPartida(Long idRequisicionPartida) {
-		this.idRequisicionPartida = idRequisicionPartida;
+	public void setRequisicion(Requisicion requisicion) {
+		this.requisicion = requisicion;
 	}
+	
+	
 
 }

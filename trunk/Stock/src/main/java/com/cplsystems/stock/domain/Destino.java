@@ -2,6 +2,8 @@ package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,7 @@ import javax.persistence.Table;
 public class Destino implements Serializable {
 
 	private Long idDestino;
-	private Long idLugar;
+	private Lugar lugar;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +29,14 @@ public class Destino implements Serializable {
 		this.idDestino = idDestino;
 	}
 
-	@Column(name = "idLugar", nullable = false)
-	public Long getIdLugar() {
-		return idLugar;
+	@OneToOne
+	@JoinColumn(name = "Lugar")
+	public Lugar getLugar() {
+		return lugar;
 	}
 
-	public void setIdLugar(Long idLugar) {
-		this.idLugar = idLugar;
+	public void setLugar(Lugar lugar) {
+		this.lugar = lugar;
 	}
+		
 }

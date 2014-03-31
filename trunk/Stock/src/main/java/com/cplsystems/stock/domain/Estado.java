@@ -27,7 +27,7 @@ public class Estado implements Serializable {
 		this.idEstado = idEstado;
 	}
 	
-	@Column
+	@Column(name = "nombre", length = 30)
 	public String getNombre() {
 		return nombre;
 	}

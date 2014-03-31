@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,7 +14,7 @@ import javax.persistence.Table;
 public class DireccionEntrega {
 
 	private Long idDireccionEntrega;
-	private Long idDireccion;
+	private Direccion direccion;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,13 +27,17 @@ public class DireccionEntrega {
 		this.idDireccionEntrega = idDireccionEntrega;
 	}
 
-	@Column(name = "id_direccion", nullable = false)
-	public Long getIdDireccion() {
-		return idDireccion;
+
+	@OneToOne
+	@JoinColumn(name = "direccion")
+	public Direccion getDireccion() {
+		return direccion;
 	}
 
-	public void setIdDireccion(Long idDireccion) {
-		this.idDireccion = idDireccion;
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
 	}
+	
+	
 
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,10 +22,12 @@ public class Requisicion {
 	private Calendar fecha;
 	private Calendar fechaEntrega;
 	private Calendar fechaSolicitudProveedor;
-	private Long idProyecto;
 	private String emailPersonaRevisoRequisicion;
 	private String emailPersonaSolicitante;
 	private String status;
+	private Proyecto proyecto;
+	private Direccion entregaEn;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,14 +94,6 @@ public class Requisicion {
 		this.fechaSolicitudProveedor = fechaSolicitudProveedor;
 	}
 
-	@Column(name = "id_Proyecto", nullable = false)
-	public Long getIdProyecto() {
-		return idProyecto;
-	}
-
-	public void setIdProyecto(Long idProyecto) {
-		this.idProyecto = idProyecto;
-	}
 
 	@Column(name = "email_Personal_Resio_Requisicion", length = 250)
 	public String getEmailPersonaRevisoRequisicion() {
@@ -126,5 +122,26 @@ public class Requisicion {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	@OneToOne
+	@JoinColumn(name = "proyecto")
+	public Proyecto getProyecto() {
+		return proyecto;
+	}
+
+	public void setProyecto(Proyecto proyecto) {
+		this.proyecto = proyecto;
+	}
+	
+	@OneToOne
+	@JoinColumn(name = "entregaEn")
+	public Direccion getEntregaEn() {
+		return entregaEn;
+	}
+
+	public void setEntregaEn(Direccion entregaEn) {
+		this.entregaEn = entregaEn;
+	}
+	
+	
 
 }

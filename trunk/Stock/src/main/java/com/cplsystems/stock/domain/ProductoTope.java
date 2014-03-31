@@ -2,6 +2,7 @@ package com.cplsystems.stock.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,31 +16,14 @@ import org.hibernate.engine.Cascade;
 @Table(name = "producto_tope")
 public class ProductoTope {
 
-	private Long idProducto;
-	private Long idLugar;
+	
 	private Long idProductoTopo;
 	private Producto producto;
+	private Lugar lugar;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idProducto", nullable = false)
-	public Long getIdProducto() {
-		return idProducto;
-	}
-
-	public void setIdProducto(Long idProducto) {
-		this.idProducto = idProducto;
-	}
-
-	@Column(name = "id_lugar", nullable = false)
-	public Long getIdLugar() {
-		return idLugar;
-	}
-
-	public void setIdLugar(Long idLugar) {
-		this.idLugar = idLugar;
-	}
-
 	@Column(name = "id_producto_topo", nullable = false)
 	public Long getIdProductoTopo() {
 		return idProductoTopo;
@@ -48,10 +32,20 @@ public class ProductoTope {
 	public void setIdProductoTopo(Long idProductoTopo) {
 		this.idProductoTopo = idProductoTopo;
 	}
-	@OneToOne
-	@JoinColumn (name = "idProducto")
+	@OneToOne (fetch = FetchType.LAZY)
+	@JoinColumn (name = "producto")
 	public Producto getProducto() {
 		return producto;
+	}
+
+	public Lugar getLugar() {
+		return lugar;
+	}
+
+	@OneToOne (fetch = FetchType.LAZY)
+	@JoinColumn (name = "lugar")	
+	public void setLugar(Lugar lugar) {
+		this.lugar = lugar;
 	}
 
 	public void setProducto(Producto producto) {
