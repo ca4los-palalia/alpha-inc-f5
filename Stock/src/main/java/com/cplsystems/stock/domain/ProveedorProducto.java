@@ -2,44 +2,30 @@ package com.cplsystems.stock.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "proveedorProducto")
 public class ProveedorProducto {
 
-	private Long idProveedor;
-	private Long idProdcuto;
+	
 	private Long idProveedorProdcuto;
 	private String cantidad;
 	private String descuento;
 	private String precio;
 	private String precioFinal;
-
+    private Proveedor proveedor;
+    private Producto producto;
+    
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_proveedor", nullable = false)
-	public Long getIdProveedor() {
-		return idProveedor;
-	}
-
-	public void setIdProveedor(Long idProveedor) {
-		this.idProveedor = idProveedor;
-	}
-
-	@Column
-	public Long getIdProdcuto() {
-		return idProdcuto;
-	}
-
-	public void setIdProdcuto(Long idProdcuto) {
-		this.idProdcuto = idProdcuto;
-	}
-
-	@Column
+	@Column(name = "idProveedorProducto", length = 250)
 	public Long getIdProveedorProdcuto() {
 		return idProveedorProdcuto;
 	}
@@ -48,7 +34,7 @@ public class ProveedorProducto {
 		this.idProveedorProdcuto = idProveedorProdcuto;
 	}
 
-	@Column
+	@Column(name = "cantidad", length = 250)
 	public String getCantidad() {
 		return cantidad;
 	}
@@ -57,7 +43,7 @@ public class ProveedorProducto {
 		this.cantidad = cantidad;
 	}
 
-	@Column
+	@Column(name = "descuento", length = 250)
 	public String getDescuento() {
 		return descuento;
 	}
@@ -66,7 +52,7 @@ public class ProveedorProducto {
 		this.descuento = descuento;
 	}
 
-	@Column
+	@Column(name = "precio", length = 250)
 	public String getPrecio() {
 		return precio;
 	}
@@ -75,7 +61,7 @@ public class ProveedorProducto {
 		this.precio = precio;
 	}
 
-	@Column
+	@Column(name = "precioFinal", length = 250)
 	public String getPrecioFinal() {
 		return precioFinal;
 	}
@@ -83,5 +69,28 @@ public class ProveedorProducto {
 	public void setPrecioFinal(String precioFinal) {
 		this.precioFinal = precioFinal;
 	}
+
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name = "proveedor")
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+    
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name = "producto")
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+	
+	
 
 }

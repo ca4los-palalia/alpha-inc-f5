@@ -4,9 +4,12 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,8 +23,9 @@ public class Direccion implements Serializable {
 	private String cp;
 	private String numExt;
 	private String numInt;
-	private Long idEstado;
-	private Long idMunicipio;
+	private Estado estado;
+	private Municipio municipio;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,26 +37,6 @@ public class Direccion implements Serializable {
 		this.idDireccion = idDireccion;
 	}
 	
-	
-	@Column(name = "idEstado", nullable = false)
-	public Long getIdEstado() {
-		return idEstado;
-	}
-
-	public void setIdEstado(Long idEstado) {
-		this.idEstado = idEstado;
-	}
-
-	@Column(name = "idMunicipio", nullable = false)
-	public Long getIdMunicipio() {
-		return idMunicipio;
-	}
-
-	public void setIdMunicipio(Long idMunicipio) {
-		this.idMunicipio = idMunicipio;
-	}
-
-
 
 	@Column(name = "calle", length = 250)
 	public String getCalle() {
@@ -107,5 +91,27 @@ public class Direccion implements Serializable {
 	public void setNumInt(String numInt) {
 		this.numInt = numInt;
 	}
+	
+	@OneToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name = "estado")
+	public Estado getEstado() {
+		return estado;
+	}
+	
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+	
+	@OneToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name = "municipio")
+	public Municipio getMunicipio() {
+		return municipio;
+	}
+
+	public void setMunicipio(Municipio municipio) {
+		this.municipio = municipio;
+	}
+	
+	
 
 }

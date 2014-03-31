@@ -7,13 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "personas")
-public class Personas {
+@Table(name = "persona")
+public class Persona {
 
 	private Long idPersona;
 	private String apellidoPaterno;
@@ -21,8 +23,8 @@ public class Personas {
 	private Calendar fechaNacimiento;
 	private String nombre;
 	private Long sexo;
-	private Long idDireccion;
-	private Long idContacto;
+	private  Direccion direccion;
+	private  Contacto contacto; 
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,23 +37,7 @@ public class Personas {
 		this.idPersona = idPersona;
 	}
 	
-	@Column(name = "id_direccion", nullable = false)
-	public Long getIdDireccion() {
-		return idDireccion;
-	}
 
-	public void setIdDireccion(Long idDireccion) {
-		this.idDireccion = idDireccion;
-	}
-
-	@Column(name = "id_contacto", nullable = false)
-	public Long getIdContacto() {
-		return idContacto;
-	}
-
-	public void setIdContacto(Long idContacto) {
-		this.idContacto = idContacto;
-	}
 
 	@Column(name = "apellido_paterno", length = 250)
 	public String getApellidoPaterno() {
@@ -99,4 +85,25 @@ public class Personas {
 		this.sexo = sexo;
 	}
 
+	@OneToOne
+	@JoinColumn(name = "direccion")
+	public Direccion getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
+	}
+	
+	@OneToOne
+	@JoinColumn(name = "contacto")
+	public Contacto getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(Contacto contacto) {
+		this.contacto = contacto;
+	}
+
+	
 }
