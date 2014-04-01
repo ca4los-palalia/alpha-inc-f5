@@ -32,6 +32,7 @@
 		<mapping class="com.cplsystems.stock.domain.Lugar" />
 		<mapping class="com.cplsystems.stock.domain.Municipio" />
 		<mapping class="com.cplsystems.stock.domain.OrdenCompraProducto" />
+		<mapping class="com.cplsystems.stock.domain.OrdenCompra" />
 		<mapping class="com.cplsystems.stock.domain.Partida" />
 		<mapping class="com.cplsystems.stock.domain.Persona" />
 		<mapping class="com.cplsystems.stock.domain.Producto" />
