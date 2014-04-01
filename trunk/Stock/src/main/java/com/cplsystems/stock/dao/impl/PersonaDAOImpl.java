@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 import com.cplsystems.stock.dao.PersonaDAO;
 import com.cplsystems.stock.domain.Persona;
 
+/**
+ * @author Carlos Palalía López
+ */
+
 @Repository
 public class PersonaDAOImpl implements PersonaDAO{
 
