@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.engine.Cascade;
 
 @Entity
 @Table(name = "producto_tope")
@@ -32,22 +31,24 @@ public class ProductoTope {
 	public void setIdProductoTopo(Long idProductoTopo) {
 		this.idProductoTopo = idProductoTopo;
 	}
+	
+	@OneToOne (fetch = FetchType.LAZY)
+	@JoinColumn (name = "lugar")	
+	public Lugar getLugar() {
+		return lugar;
+	}
+
+	
+	public void setLugar(Lugar lugar) {
+		this.lugar = lugar;
+	}
+
 	@OneToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "producto")
 	public Producto getProducto() {
 		return producto;
 	}
-
-	public Lugar getLugar() {
-		return lugar;
-	}
-
-	@OneToOne (fetch = FetchType.LAZY)
-	@JoinColumn (name = "lugar")	
-	public void setLugar(Lugar lugar) {
-		this.lugar = lugar;
-	}
-
+	
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}

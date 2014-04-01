@@ -22,7 +22,7 @@ public class Lugar {
 	private Proyecto proyecto;
 	
 	@Id
-	@Column (name = "id_lugar", nullable = false)
+	@Column (name = "idLugar", nullable = false)
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	public Long getIdLugar() {
 		return idLugar;
