@@ -1,0 +1,493 @@
+<?page title="Home" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+	<window title="" border="none">
+		<vlayout>
+			<menubar id="menubar" width="100%">
+				<menu label="Archivo">
+					<menupopup>
+						<menu label="Nuevo"
+							image="/images/toolbar/linedpaper32.png">
+							<menupopup>
+								<menuitem label="Documento"
+									image="/images/toolbar/linedpaperplus32.png" />
+							</menupopup>
+						</menu>
+						<menuitem label="Guardar"
+							image="/images/toolbar/download32.png" />
+						<menuitem label="Exportar"
+							image="/images/toolbar/wand32.png" />
+					</menupopup>
+				</menu>
+				<menu label="Edit">
+					<menupopup>
+						<menuitem label="Imprimir"
+							image="/images/toolbar/printer32.png" />
+					</menupopup>
+				</menu>
+				<menu label="Ayuda">
+					<menupopup>
+						<menuitem label="Issue tracker" target="_zkdemo"
+							href="http://tracker.zkoss.org" />
+						<menu label="About">
+							<menupopup>
+								<menuitem label="About Potix"
+									onClick="alert(self.label)" />
+							</menupopup>
+						</menu>
+					</menupopup>
+				</menu>
+			</menubar>
+
+			<hlayout>
+				<vlayout>
+					<hlayout>
+						<label value="Clave oficina:" sclass="lbl" />
+						<textbox disabled="true" />
+						<textbox disabled="true" cols="80" />
+					</hlayout>
+					<hlayout>
+						<label value="Clave de personal:" sclass="lbl" />
+						<textbox disabled="true" />
+						<button zclass="upload" image="/images/toolbar/upload32.png" />
+						<textbox disabled="true" cols="80" />
+					</hlayout>
+				</vlayout>
+				
+			</hlayout>
+
+			<tabbox style="height:100%">
+				<tabs>
+					<tab label="Datos Generales"
+						image="/images/toolbar/article32.png" />
+					<tab label="Datos Personales"
+						image="/images/toolbar/contactcard32.png" />
+					<tab label="Datos Académicos"
+						image="/images/toolbar/bag32.png" />
+					<tab label="Datos Documentación"
+						image="/images/toolbar/folder32.png" />
+					<tab label="Experiencia Laboral"
+						image="/images/toolbar/contactcard32.png" />
+					<tab label="Datos Organizacionales"
+						image="/images/toolbar/linedpaperpencil32.png" />
+					<tab label="Historial Organizacional"
+						image="/images/toolbar/linedpaperlock32.png" />
+				</tabs>
+				<tabpanels>
+					<tabpanel>
+						<vlayout>
+							<hlayout>
+								<label value="Nombre(s):" sclass="lbl" />
+								<textbox zclass="tBox" />
+								<label value="Apellido Paterno:"
+									sclass="lbl" />
+								<textbox zclass="tBox" />
+								<label value="Apellido Materno:"
+									sclass="lbl" />
+								<textbox zclass="tBox" />
+							</hlayout>
+							<hlayout>
+								<label value="Edo Civil:" sclass="lbl" />
+								<combobox />
+								<label value="Fecha N:" sclass="lbl" />
+								<datebox id="db1" cols="12"
+									format="medium" onCreate="self.value = new Date()" locale="mx" />
+								<label value="Sexo:" sclass="lbl" />
+								<combobox />
+							</hlayout>
+						</vlayout>
+
+						<vlayout>
+							<hlayout>
+								<label value="Calle:" sclass="lbl" />
+								<textbox zclass="tBox" />
+
+								<label value="Num Ext:" sclass="lbl" />
+								<textbox zclass="tBox" />
+
+
+								<label value="Num Int:" sclass="lbl" />
+								<textbox zclass="tBox" />
+							</hlayout>
+							<hlayout>
+								<label value="Estado:" sclass="lbl" />
+								<combobox />
+								<label value="Municipio:" sclass="lbl" />
+								<combobox />
+								<label value="Código Postal:"
+									sclass="lbl" />
+								<intbox zclass="tBox"
+									constraint="/^([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}$/: C.P. Inválido" />
+							</hlayout>
+							<hlayout>
+								<label value="Ciudad:" sclass="lbl" />
+								<textbox zclass="tBox" />
+								<label value="Colonia:" sclass="lbl" />
+								<textbox zclass="tBox" />
+							</hlayout>
+						</vlayout>
+
+						<vlayout>
+							<hlayout>
+								<label value="Teléfono:" sclass="lbl" />
+								<textbox zclass="tBox"
+									constraint="/^[0-9]{2,3}-? ?[0-9]{6,7}$/: el número registrado es incorrecto" />
+
+								<label value="Celular:" sclass="lbl" />
+								<textbox zclass="tBox" />
+
+
+								<label value="Email:" sclass="lbl" />
+								<textbox zclass="tBox"
+									constraint="/.+@.+\.[a-z]+/: por favor ingrese una dirección válida" />
+							</hlayout>
+							<hlayout>
+
+								<label value="RFC:" sclass="lbl" />
+								<textbox zclass="tBox" />
+								<label value="CURP:" sclass="lbl" />
+								<textbox zclass="tBox"
+									constraint="/[A-Z][A,E,I,O,U,X][A-Z]{2}[0-9]{2}[0-1][0-9][0-3][0-9][M,H][A-Z]{2}[B,C,D,F,G,H,J,K,L,M,N,Ñ,P,Q,R,S,T,V,W,X,Y,Z]{3}[0-9,A-Z][0-9]/: CURP Inválida" />
+							</hlayout>
+							<hlayout>
+								<label value="Ciudad:" sclass="lbl" />
+								<textbox zclass="tBox" />
+								<label value="Colonia:" sclass="lbl" />
+								<textbox zclass="tBox" />
+							</hlayout>
+						</vlayout>
+					</tabpanel>
+					<tabpanel>
+						<vlayout>
+							<hlayout>
+								<label value="Nombre de padre:" />
+								<textbox zclass="tBox" />
+							</hlayout>
+							<hlayout>
+								<label value="Nombre de la madre:" />
+								<textbox zclass="tBox" />
+							</hlayout>
+							<hlayout>
+								<label value="Médico:" />
+								<textbox zclass="tBox" />
+							</hlayout>
+							<hlayout>
+								<label value="Tipo de sangre:" />
+								<textbox zclass="tBox" />
+							</hlayout>
+							<hlayout>
+								<label value="Padecimientos crónicos:" />
+								<textbox zclass="tBox" />
+							</hlayout>
+							<hlayout>
+								<label
+									value="Medicamentos que toma actualmente:" />
+								<textbox zclass="tBox" />
+							</hlayout>
+							<hlayout>
+								<label
+									value="En caso de urgencia llamar a:" />
+								<textbox zclass="tBox" />
+							</hlayout>
+							<hlayout>
+								<label value="Teléfono:" />
+								<textbox zclass="tBox" />
+							</hlayout>
+						</vlayout>
+					</tabpanel>
+					<tabpanel>
+						<vlayout>
+							<vlayout>
+								<hlayout>
+									<label value="Nivel académico:" />
+									<combobox />
+									<label value="Año de inicio:" />
+									<decimalbox />
+									<label value="Año de término:" />
+									<decimalbox />
+								</hlayout>
+								<hlayout>
+									<label value="Especialidad:" />
+									<textbox zclass="tBox" />
+									<label value="Institución:" />
+									<textbox zclass="tBox" />
+								</hlayout>
+								<hlayout>
+									<label value="Status:" />
+									<combobox />
+								</hlayout>
+							</vlayout>
+							<button label="Agregar curso" />
+							<grid height="350px"
+								emptyMessage="Nothing in Inbox.">
+								<columns>
+									<column label="Fecha Inicio"
+										width="10%" />
+									<column label="Fecha Fin"
+										width="10%" />
+									<column label="Nombre" width="20%" />
+									<column label="Descripción"
+										width="35%" />
+									<column label="Institución"
+										width="25%" />
+								</columns>
+								<template name="model">
+									<row>
+										<datebox zclass="tBox" />
+										<datebox zclass="tBox" />
+										<textbox zclass="tBox" />
+										<textbox zclass="tBox" />
+										<textbox zclass="tBox" />
+									</row>
+								</template>
+							</grid>
+
+						</vlayout>
+					</tabpanel>
+					<tabpanel>
+						<vlayout>
+							<vlayout>
+								<button label="Agregar Documento" />
+								<grid height="350px"
+									emptyMessage="Nothing in Inbox.">
+									<columns>
+										<column label="Fecha Inicio"
+											width="10%" />
+										<column label="Fecha Fin"
+											width="10%" />
+										<column label="Nombre"
+											width="20%" />
+										<column label="Descripción"
+											width="35%" />
+										<column label="Institución"
+											width="25%" />
+									</columns>
+									<template name="model">
+										<row>
+											<datebox />
+											<datebox />
+											<textbox zclass="tBox" />
+											<textbox zclass="tBox" />
+											<textbox zclass="tBox" />
+										</row>
+									</template>
+								</grid>
+							</vlayout>
+							<vlayout>
+								<button
+									label="Agregar Documento de Calidad" />
+								<grid height="350px"
+									emptyMessage="Nothing in Inbox.">
+									<columns>
+										<column label="Fecha Inicio"
+											width="10%" />
+										<column label="Fecha Fin"
+											width="10%" />
+										<column label="Nombre"
+											width="20%" />
+										<column label="Descripción"
+											width="35%" />
+										<column label="Institución"
+											width="25%" />
+									</columns>
+									<template name="model">
+										<row>
+											<datebox />
+											<datebox />
+											<textbox zclass="tBox" />
+											<textbox zclass="tBox" />
+											<textbox zclass="tBox" />
+										</row>
+									</template>
+								</grid>
+							</vlayout>
+
+						</vlayout>
+					</tabpanel>
+					<tabpanel>Experiencia Laboral</tabpanel>
+					<tabpanel>
+						<vlayout>
+							<hlayout>
+								<label value="Fecha Contratación:" />
+								<datebox cols="12" format="medium"
+									onCreate="self.value = new Date()" locale="mx" />
+								<label value="Tipo Personal:" />
+								<combobox />
+							</hlayout>
+							<hlayout>
+								<label value="Categoría:" />
+								<combobox />
+								<label value="Tipo Nómina:" />
+								<combobox />
+								<label value="Tipo Sueldo:" />
+								<combobox />
+							</hlayout>
+							<hlayout>
+								<label value="Forma de pago:" />
+								<combobox />
+								<label value="Banco:" />
+								<textbox zclass="tBox" />
+								<label value="Cuenta:" />
+								<textbox zclass="tBox" />
+								<label value="CLABE:" />
+								<textbox zclass="tBox" />
+							</hlayout>
+							<hlayout>
+								<vlayout>
+									<hlayout>
+										<label value="Fecha cambios:" />
+										<datebox />
+										<hlayout>
+											<vlayout>
+												<hlayout>
+													<label
+														value="Percepción mensual" />
+													<textbox
+														zclass="tBox" />
+												</hlayout>
+												<hlayout>
+													<label
+														value="Otras percepciones:" />
+													<textbox
+														zclass="tBox" />
+												</hlayout>
+												<hlayout>
+													<label
+														value="Contribuciones %:" />
+													<textbox
+														zclass="tBox" />
+												</hlayout>
+											</vlayout>
+											<vlayout>
+												<hlayout>
+													<label
+														value="Plan utilización %" />
+													<textbox
+														zclass="tBox" />
+												</hlayout>
+												<hlayout>
+													<label
+														value="Por hora:" />
+													<textbox
+														zclass="tBox" />
+												</hlayout>
+											</vlayout>
+										</hlayout>
+									</hlayout>
+									<vlayout>
+										<radiogroup id="sv1" />
+										<radiogroup id="sv2" />
+										<radiogroup id="sv3" />
+										<hlayout>
+											<label
+												value="Núm de afiliacion IMSS:" />
+											<textbox zclass="tBox" />
+										</hlayout>
+										<hlayout>
+											<label value="Evaluación" />
+											<radio label="Si"
+												radiogroup="sv1" />
+											<radio label="No"
+												radiogroup="sv1" />
+										</hlayout>
+										<hlayout>
+											<label
+												value="Reportes de tiempo" />
+											<radio label="Si"
+												radiogroup="sv2" />
+											<radio label="No"
+												radiogroup="sv2" />
+										</hlayout>
+										<hlayout>
+											<label
+												value="Usa tarjeta de tiempo" />
+											<radio label="Si"
+												radiogroup="sv3" />
+											<radio label="No"
+												radiogroup="sv3" />
+										</hlayout>
+										<hlayout>
+											<label value="No Tarjeta" />
+											<textbox zclass="tBox" />
+										</hlayout>
+										<hlayout>
+											<label
+												value="Horario laboral:" />
+											<textbox zclass="tBox" />
+											<label value="Total horas:" />
+											<decimalbox zclass="tBox" />
+										</hlayout>
+									</vlayout>
+
+								</vlayout>
+								<hlayout>
+									<vlayout>
+										<groupbox closable="false"
+											style="padding: 10px;">
+											<tabbox id="tbx2"
+												hflex="1">
+												<toolbar>
+													<toolbarbutton
+														id="plustbbtn" label="+" width="20px" height="28px">
+													</toolbarbutton>
+												</toolbar>
+												<tabs>
+													<tab>Diarias</tab>
+													<tab>Anuales</tab>
+													<tab>Bajas</tab>
+												</tabs>
+												<tabpanels>
+													<tabpanel>
+														Content A
+													</tabpanel>
+													<tabpanel>
+														Content B
+													</tabpanel>
+													<tabpanel>
+														Content C
+													</tabpanel>
+												</tabpanels>
+											</tabbox>
+										</groupbox>
+										<hlayout>
+											<checkbox id="l1"
+												label="Horas de comida" />
+											<checkbox id="l2"
+												label="Trabajo sábados" />
+										</hlayout>
+										<vlayout>
+											<hlayout>
+												<label
+													value="Entrada matutina" />
+												<timebox cols="8"
+													format="hh:mm:ss a" onCreate="self.value = new Date()" />
+												<label
+													value="Entrada vespertina" />
+												<timebox cols="8"
+													format="hh:mm:ss a" onCreate="self.value = new Date()" />
+											</hlayout>
+											<hlayout>
+												<label
+													value="Salida matutina" />
+												<timebox cols="8"
+													format="hh:mm:ss a" onCreate="self.value = new Date()" />
+												<label
+													value="Salida vespertina" />
+												<timebox cols="8"
+													format="hh:mm:ss a" onCreate="self.value = new Date()" />
+											</hlayout>
+										</vlayout>
+									</vlayout>
+								</hlayout>
+							</hlayout>
+						</vlayout>
+					</tabpanel>
+					<tabpanel>Historial Organizacional</tabpanel>
+				</tabpanels>
+			</tabbox>
+		</vlayout>
+	</window>
+</zk>
+
+
+

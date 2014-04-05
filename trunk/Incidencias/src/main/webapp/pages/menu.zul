@@ -1,0 +1,35 @@
+<?page title="Home" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<zk>
+	<script src="/scripts/watermarkPlugin.js" type="text/javascript" />
+	<script src="/scripts/controlsGeneric.js" type="text/javascript" />
+	<style src="/styles/stylesUI/stylesStructure.css" />
+	<style src="/styles/stylesUI/GeneralsStyles.css" />
+	<style src="/styles/stylesUI/stylesConfiguration.css" />
+
+	<window apply="org.zkoss.bind.BindComposer"  >
+		<tabbox id="tb" mold="accordion" zclass="optionsBar">
+			<tabs>
+				<tab label="Incidencias" zclass="accordion" />
+			</tabs>
+			<tabpanels>
+				<tabpanel zclass="itemsBackground">
+					<vlayout>
+						<a label="Personal" href=""
+							sclass="smooth style-glow" />
+						<a label="Inventario" href=""
+							sclass="smooth style-glow" />
+					</vlayout>
+				</tabpanel>
+				<tabpanel zclass="sub-menu">
+					<label value="Prueba 1" />
+					<label value="Prueba 2" />
+					<label value="Prueba 3" />
+				</tabpanel>
+
+			</tabpanels>
+		</tabbox>
+
+	</window>
+</zk>

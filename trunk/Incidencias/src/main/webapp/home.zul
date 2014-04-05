@@ -9,48 +9,23 @@
 	<style src="/styles/stylesUI/stylesConfiguration.css" />
 
 
-	<window zclass="pnlContentBody" sclass="lineaVerticalGris"
-		apply="org.zkoss.bind.BindComposer">
+	<window zclass="pnlContentBody" apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('hvm') @init('com.cplsystems.incidencias.vm.HomeVM')">
 
 		<div id="container">
 
-			<div id="header" zclass="divHeader"
-				sclass="headerStructure">
-				Main Title of Web Page
+			<div id="header" zclass="divHeader"	sclass="headerStructure">
+				<include src="/structure/regionHeader.zul" />
 			</div>
 
-			<div id="navigationPanel" zclass="divWest"
-				style="width:20%, height:100%">
-
-
-				<tabbox id="tb" mold="accordion">
-					<tabs>
-						<tab label="Producto" zclass="accordion" />
-						<tab label="Proveedores" zclass="accordion" />
-						<tab label="Requisición" zclass="accordion" />
-					</tabs>
-					<tabpanels>
-						<tabpanel zclass="itemsBackground">
-							<vlayout>
-								<a label="Registrar" href=""
-									sclass="smooth style-glow" />
-								<a label="Inventario" href=""
-									sclass="smooth style-glow" />
-							</vlayout>
-						</tabpanel>
-						<tabpanel zclass="sub-menu">
-							<label value="Prueba 1" />
-							<label value="Prueba 2" />
-							<label value="Prueba 3" />
-						</tabpanel>
-
-					</tabpanels>
-				</tabbox>
-
+			<div id="navigationPanel" zclass="optionsPanel"
+				sclass="optionsPanel">
+				<include src="/pages/menu.zul" />
 			</div>
 
-			<div id="content"
-				style="background-color:#EEEEEE;height:100%;width:80%;float:left;">
+			<div id="content">
+			<include src="/pages/personal/personal.zul" />
+
 			</div>
 
 			<div id="footer"
