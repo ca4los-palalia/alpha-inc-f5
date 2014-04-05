@@ -4,47 +4,144 @@
 <zk>
 	<style src="/styles/proveedores/styleProveedor.css" />
 	
-	<window apply="org.zkoss.bind.BindComposer">
+	<window apply="org.zkoss.bind.BindComposer" sclass="colorWindow">
+	
+		
+		
+		
+		
+		
+		<panel border="none" >
+	        <panelchildren>
+	            <menubar id="menubar" width="100%">
+	                <menu label="File">
+	                    <menupopup>
+	                        <menu label="New" image="/widgets/menu/drop-down_menu/img/file_new.png">
+	                            <menupopup>
+	                                <menuitem label="Document" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_new_writer.png" />
+	                                <menuitem label="Spreadsheet" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_new_spreadsheet.png" />
+	                                <menuitem label="Presentation" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_new_presentation.png" />
+	                            </menupopup>
+	                        </menu>
+	                        <menuitem label="Open.." onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_open.png" />
+	                        <menuseparator></menuseparator>
+	                        <menuitem label="Save" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_save.png" />
+	                        <menuitem label="Save As..." onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_save-as.png" />
+	                        <menuitem label="Save All" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_save-all.png" />
+	                        <menuitem label="Close" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_close.png" />
+	                        <menuitem label="Close All" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_close-all.png" />
+	                        <menuseparator></menuseparator>
+	                        <menuitem label="Import" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_import.png" />
+	                        <menuitem label="Export" disabled="true" image="/widgets/menu/drop-down_menu/img/file_export.png" />
+	                        <menuseparator></menuseparator>
+	                        <menuitem label="Exit" disabled="true" image="/widgets/menu/drop-down_menu/img/file_exit.png" />
+	                    </menupopup>
+	                </menu>
+	                <menu label="Edit">
+	                    <menupopup>
+	                        <menuitem label="Undo" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/edit_undo.png" />
+	                        <menuitem label="Redo" disabled="true" image="/widgets/menu/drop-down_menu/img/edit_redo.png" />
+	                        <menuseparator></menuseparator>
+	                        <menuitem label="Cut" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/edit_cut.png" />
+	                        <menuitem label="Copy" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/edit_copy.png" />
+	                        <menuitem label="Paste" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/edit_paste.png" />
+	                        <menuseparator></menuseparator>
+	                        <menuitem label="Select All" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/edit_select-all.png" />
+	                    </menupopup>
+	                </menu>
+	                <menu label="Help">
+	                    <menupopup>
+	                        <menuitem label="Issue tracker" target="_zkdemo" href="http://tracker.zkoss.org" image="/widgets/menu/drop-down_menu/img/bug.png" />
+	                        <menu label="About">
+	                            <menupopup>
+	                                <menuitem label="About Potix" target="_zkdemo" href="http://www.zkoss.org/support/about" onClick="alert(self.label)" />
+	                            </menupopup>
+	                        </menu>
+	                    </menupopup>
+	                </menu>
+	                
+	                <menuitem label="Persona moral" image="/images/zk16x16.png" onClick="alert(self.label)" />
+	            </menubar>
+	            
+	        </panelchildren>
+	        
+	    </panel>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
 		<radiogroup id="sv1"
 			onCheck="choice1.value = self.selectedItem.label" />
-		<vlayout>
+		<vlayout sclass="colorFontHead">
 
-			<hlayout>
+			<hlayout sclass="pading">
 				<radio id="ra1" label="Persona física" radiogroup="sv1" />
 				<radio id="ra2" label="Persona Moral" radiogroup="sv1" />
 			</hlayout>
 
 			<vlayout>
 				<label value="Denominación o razón social" />
-				<hlayout>
+				<hlayout sclass="pading">
 					<combobox />
 					<button label="Buscar" />
 				</hlayout>
 
-				<hlayout>
+				<hlayout sclass="pading">
 					<label value="Colectiva" />
 					<combobox />
-
+				</hlayout>
+				
+				
+				
+				<hlayout sclass="pading">
 					<label value="Identificador externo:" />
 					<textbox />
 				</hlayout>
 
-				<tabbox id="tb">
+				<div height="50px">
+		                
+		            </div>
+
+				<tabbox id="tb" sclass="pading">
 					<tabs id="tabs">
 						<tab label="Generales" />
-						<tab id="B" label="Proveedores" />
+						<tab id="B" label="Proveedores"/>
 					</tabs>
 
 					<tabpanels>
 						<tabpanel>
 
 							<vlayout>
-
-								<panel border="normal">
-									<panelchildren>
+								
+								<panel border="normal" title="Información personal">
+									<panelchildren sclass="colorBorderPanels pading">
 
 										<vlayout>
-											<hlayout>
+											<hlayout >
 												<hlayout sclass="spacerLabelTab1">
 													<label value="Calle:"/>
 												</hlayout>
@@ -53,12 +150,9 @@
 												<hlayout sclass="spacerLabelTab1">
 													<label value="Número exterior:" />
 												</hlayout>
-												<decimalbox sclass="spaceDecimalbox"/>
+												<decimalbox cols="20"/>
 												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Número interior:" />
-												</hlayout>
-												<decimalbox sclass="spaceDecimalbox"/>
+												
 											</hlayout>
 
 											<hlayout>
@@ -96,7 +190,7 @@
 												<hlayout sclass="spacerLabelTab1">
 													<label value="Código postal:" />
 												</hlayout>
-												<decimalbox sclass="spaceDecimalbox"/>
+												<decimalbox cols="20"/>
 												
 											</hlayout>
 
@@ -104,12 +198,12 @@
 												<hlayout sclass="spacerLabelTab1">
 													<label value="Fax:" />
 												</hlayout>
-												<decimalbox sclass="spaceDecimalbox"/>
+												<decimalbox cols="20"/>
 												
 												<hlayout sclass="spacerLabelTab1">
 													<label value="Teléfono:" />
 												</hlayout>
-												<decimalbox sclass="spaceDecimalbox"/>
+												<decimalbox cols="20"/>
 											</hlayout>
 
 											<hlayout>
@@ -122,6 +216,8 @@
 													<label value="Página web:" />
 												</hlayout>
 												<textbox />
+												
+												
 											</hlayout>
 
 											<hlayout>
@@ -129,6 +225,11 @@
 													<label value="RFC:" />
 												</hlayout>
 												<textbox />
+												
+												<hlayout sclass="spacerLabelTab1">
+													<label value="Número interior:" />
+												</hlayout>
+												<decimalbox cols="20"/>
 											</hlayout>
 
 										</vlayout>
@@ -141,9 +242,9 @@
 								
 								
 								<panel border="normal" title="Contacto">
-									<panelchildren>
+									<panelchildren sclass="colorBorderPanels">
 
-										<vlayout>
+										<vlayout sclass="pading">
 											
 											
 											<hlayout>
@@ -175,17 +276,14 @@
 												<hlayout sclass="spacerLabelTab1">
 													<label value="Teléfono" />
 												</hlayout>
-												<decimalbox sclass="spaceDecimalbox"/>
+												<decimalbox cols="20"/>
 												
 												<hlayout sclass="spacerLabelTab1">
 													<label value="Ext.:" />
 												</hlayout>
-												<decimalbox sclass="spaceDecimalbox"/>
+												<decimalbox cols="20"/>
 												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Célular:" />
-												</hlayout>
-												<decimalbox sclass="spaceDecimalbox"/>
+												
 											</hlayout>
 
 											<hlayout>
@@ -193,6 +291,15 @@
 													<label value="email:" />
 												</hlayout>
 												<textbox />
+												
+												<hlayout sclass="spacerLabelTab1">
+													<label value="Célular:" />
+												</hlayout>
+												<decimalbox cols="20"/>
+											</hlayout>
+											
+											<hlayout>
+												
 											</hlayout>
 
 										</vlayout>
@@ -204,11 +311,10 @@
 								
 								
 								
-								
 								<panel border="normal" title="Datos contables">
-									<panelchildren>
+									<panelchildren sclass="colorBorderPanels">
 
-										<vlayout>
+										<vlayout sclass="pading">
 											
 											
 											<hlayout>
@@ -245,7 +351,7 @@
 
 
 						<tabpanel>
-							<vlayout>
+							<vlayout sclass="colorBorderPanels">
 								<hlayout>
 									<hlayout sclass="spacerLabelTab2">
 										<label value="Limite de Credito" />
@@ -289,7 +395,7 @@
 									<hlayout sclass="spacerLabelTab2">
 										<label value="Clave fiscal:" />
 									</hlayout>
-									<combobox />
+									<combobox cols="16"/>
 								</hlayout>
 
 
@@ -299,10 +405,6 @@
 									</hlayout>
 									<textbox />
 									
-									<hlayout sclass="spacerLabelTab2">
-										<label value="Cuenta:" />
-									</hlayout>
-									<textbox />
 								</hlayout>
 
 								<hlayout>
@@ -311,16 +413,31 @@
 									</hlayout>
 									<textbox />
 								</hlayout>
-
+								
+								
 								<hlayout>
 									<hlayout sclass="spacerLabelTab2">
-										<label value="Comentarios:" />
+										<label value="Cuenta:" />
 									</hlayout>
-									<textbox width="370px;"
-										tabindex="11" />
+									<textbox />
 								</hlayout>
+								
+								
+								
 
 							</vlayout>
+							
+							<vlayout sclass="colorBorderPanels">
+								<hlayout sclass="spacerLabelTab2">
+										<label value="Comentarios:" />
+									</hlayout>
+									<textbox width="350px;" multiline="true" height="120px"
+										tabindex="11" />
+							</vlayout>
+									
+							
+							
+							
 
 						</tabpanel>
 
