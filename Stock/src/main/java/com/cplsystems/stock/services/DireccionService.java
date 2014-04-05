@@ -1,0 +1,48 @@
+/**
+ * 
+ */
+package com.cplsystems.stock.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cplsystems.stock.dao.DireccionDAO;
+import com.cplsystems.stock.domain.Direccion;
+import com.cplsystems.stock.domain.Estado;
+import com.cplsystems.stock.domain.Municipio;
+
+/**
+ * @author Carlos Palalía López
+ */
+
+@Service
+public class DireccionService {
+
+	@Autowired
+	private DireccionDAO direccionDAO;
+		
+	public void save(Direccion direccion){
+		direccionDAO.save(direccion);
+	}
+    public void update(Direccion direccion){
+    	direccionDAO.update(direccion);
+    }
+    public Direccion getById(Long direccion){
+    	return direccionDAO.getById(direccion);
+    }
+    public List<Direccion> getByCodigoPostalId(String codigoPostal){
+    	return direccionDAO.getByCodigoPostalId(codigoPostal);
+    }
+    public List<Direccion> getByEstado(Estado estado){
+    	return direccionDAO.getByEstado(estado);
+    }
+    public List<Direccion> getByMunicipio(Municipio municipio){
+    	return direccionDAO.getByMunicipio(municipio);
+    }
+    public List<Direccion> getAll(){
+    	return direccionDAO.getAll();
+    }
+	
+}
