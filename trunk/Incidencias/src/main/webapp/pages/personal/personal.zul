@@ -1,5 +1,6 @@
 <?page title="Home" contentType="text/html;charset=UTF-8"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
 <zk>
 	<window title="" border="none">
 		<vlayout>
@@ -39,7 +40,7 @@
 				</menu>
 			</menubar>
 
-			<hlayout>
+			<hlayout sclass="pading">
 				<vlayout>
 					<hlayout>
 						<label value="Clave oficina:" sclass="lbl" />
@@ -56,7 +57,7 @@
 				
 			</hlayout>
 
-			<tabbox style="height:100%">
+			<tabbox style="height:100%" sclass="pading">
 				<tabs>
 					<tab label="Datos Generales"
 						image="/images/toolbar/article32.png" />
@@ -75,111 +76,190 @@
 				</tabs>
 				<tabpanels>
 					<tabpanel>
-						<vlayout>
+						<vlayout >
 							<hlayout>
-								<label value="Nombre(s):" sclass="lbl" />
-								<textbox zclass="tBox" />
-								<label value="Apellido Paterno:"
+								
+								<hlayout width="150px">
+									<label value="Nombre(s):" sclass="lbl" />
+								</hlayout>
+								<textbox zclass="tBox"/>
+								
+								
+								
+								<hlayout width="150px">
+									<label value="Apellido Paterno:"
 									sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox" />
-								<label value="Apellido Materno:"
+								
+								
+								<hlayout width="150px">
+									<label value="Apellido Materno:"
 									sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox" />
+								
 							</hlayout>
+							
+						
+							
+							
+							
+							
+							
+							
+							
 							<hlayout>
-								<label value="Edo Civil:" sclass="lbl" />
+							
+								<hlayout width="150px">
+									<label value="Edo Civil:" sclass="lbl" />
+								</hlayout>
 								<combobox />
-								<label value="Fecha N:" sclass="lbl" />
+								
+								
+								<hlayout width="150px">
+									<label value="Fecha N:" sclass="lbl" />
+								</hlayout>
 								<datebox id="db1" cols="12"
 									format="medium" onCreate="self.value = new Date()" locale="mx" />
-								<label value="Sexo:" sclass="lbl" />
+								
+								<hlayout width="150px">
+									<label value="Sexo:" sclass="lbl" />
+								</hlayout>
 								<combobox />
 							</hlayout>
 						</vlayout>
 
-						<vlayout>
+						<vlayout >
 							<hlayout>
-								<label value="Calle:" sclass="lbl" />
+								
+								<hlayout width="150px">
+									<label value="Calle:" sclass="lbl" />
+								</hlayout>
+								<textbox zclass="tBox" />
+								
+								<hlayout width="150px">
+									<label value="Num Ext:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox" />
 
-								<label value="Num Ext:" sclass="lbl" />
-								<textbox zclass="tBox" />
-
-
-								<label value="Num Int:" sclass="lbl" />
+								
+								<hlayout width="150px">
+									<label value="Num Int:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox" />
 							</hlayout>
 							<hlayout>
-								<label value="Estado:" sclass="lbl" />
+								<hlayout width="150px">
+									<label value="Estado:" sclass="lbl" />
+								</hlayout>
 								<combobox />
-								<label value="Municipio:" sclass="lbl" />
+								
+								<hlayout width="150px">
+									<label value="Municipio:" sclass="lbl" />
+								</hlayout>
 								<combobox />
-								<label value="Código Postal:"
-									sclass="lbl" />
+								
+								<hlayout width="150px">
+									<label value="Código Postal:" sclass="lbl" />
+								</hlayout>	
 								<intbox zclass="tBox"
 									constraint="/^([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}$/: C.P. Inválido" />
 							</hlayout>
 							<hlayout>
-								<label value="Ciudad:" sclass="lbl" />
+								<hlayout width="150px">
+									<label value="Ciudad:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox" />
-								<label value="Colonia:" sclass="lbl" />
+								
+								<hlayout width="150px">
+									<label value="Colonia:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox" />
 							</hlayout>
 						</vlayout>
 
-						<vlayout>
+						<vlayout >
 							<hlayout>
-								<label value="Teléfono:" sclass="lbl" />
+								
+								<hlayout width="150px">
+									<label value="Teléfono:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox"
 									constraint="/^[0-9]{2,3}-? ?[0-9]{6,7}$/: el número registrado es incorrecto" />
 
-								<label value="Celular:" sclass="lbl" />
+								<hlayout width="150px">
+									<label value="Celular:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox" />
 
 
-								<label value="Email:" sclass="lbl" />
+								<hlayout width="150px">
+									<label value="Email:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox"
 									constraint="/.+@.+\.[a-z]+/: por favor ingrese una dirección válida" />
 							</hlayout>
 							<hlayout>
-
-								<label value="RFC:" sclass="lbl" />
+								<hlayout width="150px">
+									<label value="RFC:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox" />
-								<label value="CURP:" sclass="lbl" />
+								
+								<hlayout width="150px">
+									<label value="CURP:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox"
 									constraint="/[A-Z][A,E,I,O,U,X][A-Z]{2}[0-9]{2}[0-1][0-9][0-3][0-9][M,H][A-Z]{2}[B,C,D,F,G,H,J,K,L,M,N,Ñ,P,Q,R,S,T,V,W,X,Y,Z]{3}[0-9,A-Z][0-9]/: CURP Inválida" />
 							</hlayout>
 							<hlayout>
-								<label value="Ciudad:" sclass="lbl" />
+								<hlayout width="150px">
+									<label value="Ciudad:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox" />
-								<label value="Colonia:" sclass="lbl" />
+								
+								<hlayout width="150px">
+									<label value="Colonia:" sclass="lbl" />
+								</hlayout>
 								<textbox zclass="tBox" />
 							</hlayout>
 						</vlayout>
 					</tabpanel>
 					<tabpanel>
 						<vlayout>
-							<hlayout>
-								<label value="Nombre de padre:" />
+							<hlayout>	
+								<hlayout width="150px">
+									<label value="Nombre de padre:" />
+								</hlayout>
 								<textbox zclass="tBox" />
 							</hlayout>
 							<hlayout>
-								<label value="Nombre de la madre:" />
+								<hlayout width="150px">
+									<label value="Nombre de la madre:" />
+								</hlayout>
 								<textbox zclass="tBox" />
 							</hlayout>
 							<hlayout>
-								<label value="Médico:" />
+								<hlayout width="150px">
+									<label value="Médico:" />
+								</hlayout>
 								<textbox zclass="tBox" />
 							</hlayout>
 							<hlayout>
-								<label value="Tipo de sangre:" />
+								<hlayout width="150px">
+									<label value="Tipo de sangre:" />
+								</hlayout>
 								<textbox zclass="tBox" />
 							</hlayout>
 							<hlayout>
-								<label value="Padecimientos crónicos:" />
+								<hlayout width="150px">
+									<label value="Padecimientos crónicos:" />
+								</hlayout>
 								<textbox zclass="tBox" />
 							</hlayout>
 							<hlayout>
+								<hlayout width="150px">
+								</hlayout>
 								<label
 									value="Medicamentos que toma actualmente:" />
 								<textbox zclass="tBox" />

@@ -7,6 +7,8 @@
 	<style src="/styles/stylesUI/stylesStructure.css" />
 	<style src="/styles/stylesUI/GeneralsStyles.css" />
 	<style src="/styles/stylesUI/stylesConfiguration.css" />
+	<style src="/styles/home/styleDashboard.css" />
+	
 
 
 	<window zclass="pnlContentBody" apply="org.zkoss.bind.BindComposer"
