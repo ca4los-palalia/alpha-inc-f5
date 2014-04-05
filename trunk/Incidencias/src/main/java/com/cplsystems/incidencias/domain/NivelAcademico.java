@@ -11,22 +11,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Estado")
-public class Estado {
+@Table(name = "NivelAcademico")
+public class NivelAcademico {
 
-	private Long idEstado;
+	private Long idniveAcademico;
 	private String nombre;
 	private String descripcion;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idEstado", nullable = false)
-	public Long getIdEstado() {
-		return idEstado;
+	@Column(name = "idniveAcademico", nullable = false)
+	public Long getIdniveAcademico() {
+		return idniveAcademico;
 	}
 
-	public void setIdEstado(Long idEstado) {
-		this.idEstado = idEstado;
+	public void setIdniveAcademico(Long idniveAcademico) {
+		this.idniveAcademico = idniveAcademico;
 	}
 
 	@Column(name = "nombre", length = 250)

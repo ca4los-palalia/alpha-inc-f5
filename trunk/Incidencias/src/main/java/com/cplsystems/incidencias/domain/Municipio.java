@@ -3,83 +3,61 @@
  */
 package com.cplsystems.incidencias.domain;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- * 
- * 
- */
 @Entity
-@Table
-public class Municipio implements Serializable {
+@Table(name = "Municipio")
+public class Municipio {
 
-    private static final long serialVersionUID = -804654154747570504L;
-    private Integer idMunicipio;
-    private String nombre;
-    private String abreviatura;
-    private Ciudad ciudad;
-    private List<Colonia> colonias = new ArrayList<Colonia>();
+	private Estado estado;
+	private Long idmunicipio;
+	private String nombre;
+	private String descripcion;
 
-    @Id
-    @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getIdMunicipio() {
-	return idMunicipio;
-    }
+	@ManyToOne
+	@JoinColumn(name = "estado")
+	public Estado getEstado() {
+		return estado;
+	}
 
-    public void setIdMunicipio(Integer idMunicipio) {
-	this.idMunicipio = idMunicipio;
-    }
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
 
-    @Column
-    public String getNombre() {
-	return nombre;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Idmunicipio", nullable = false)
+	public Long getIdmunicipio() {
+		return idmunicipio;
+	}
 
-    public void setNombre(String nombre) {
-	this.nombre = nombre;
-    }
+	public void setIdmunicipio(Long idmunicipio) {
+		this.idmunicipio = idmunicipio;
+	}
 
-    @Column
-    public String getAbreviatura() {
-	return abreviatura;
-    }
+	@Column(name = "nombre", length = 250)
+	public String getNombre() {
+		return nombre;
+	}
 
-    public void setAbreviatura(String abreviatura) {
-	this.abreviatura = abreviatura;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idCiudad")
-    public Ciudad getCiudad() {
-	return ciudad;
-    }
+	@Column(name = "descripcion", length = 250)
+	public String getDescripcion() {
+		return descripcion;
+	}
 
-    public void setCiudad(Ciudad ciudad) {
-	this.ciudad = ciudad;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "municipio")
-    public List<Colonia> getColonias() {
-	return colonias;
-    }
-
-    public void setColonias(List<Colonia> colonias) {
-	this.colonias = colonias;
-    }
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 
 }

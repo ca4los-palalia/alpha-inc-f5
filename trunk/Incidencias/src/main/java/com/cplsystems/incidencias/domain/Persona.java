@@ -3,114 +3,82 @@
  */
 package com.cplsystems.incidencias.domain;
 
-import java.io.Serializable;
-import java.util.Calendar;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-/**
- * 
- * 
- */
 @Entity
-@Table
-public class Persona implements Serializable {
+@Table(name = "Persona")
+public class Persona {
 
-    private static final long serialVersionUID = -7730423686284589445L;
-    private Integer idPersona;
-    private String nombre;
-    private String apellidoPaterno;
-    private String apellidoMaterno;
-    private String nacionalidad;
-    private String parentesco;
-    private Calendar fechaNacimiento;
-    private DireccionPersona direccionPersona;
+	private Long idPersona;
+	private EstadoCivil estadocivil;
+	private Sexo sexo;
+	private Boolean dadoDeBajo;
+	private Boolean asignacionClavePersonal;
+	private String imagen;
 
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getIdPersona() {
-	return idPersona;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "IdPersona", nullable = false)
+	public Long getIdPersona() {
+		return idPersona;
+	}
 
-    public void setIdPersona(Integer idPersona) {
-	this.idPersona = idPersona;
-    }
+	public void setIdPersona(Long idPersona) {
+		this.idPersona = idPersona;
+	}
 
-    @Column
-    public String getNombre() {
-	return nombre;
-    }
+	@OneToOne
+	@JoinColumn(name = "estadocivil")
+	public EstadoCivil getEstadocivil() {
+		return estadocivil;
+	}
 
-    public void setNombre(String nombre) {
-	this.nombre = nombre;
-    }
+	public void setEstadocivil(EstadoCivil estadocivil) {
+		this.estadocivil = estadocivil;
+	}
 
-    @Column
-    public String getApellidoPaterno() {
-	return apellidoPaterno;
-    }
+	@OneToOne
+	@JoinColumn(name = "persona")
+	public Sexo getSexo() {
+		return sexo;
+	}
 
-    public void setApellidoPaterno(String apellidoPaterno) {
-	this.apellidoPaterno = apellidoPaterno;
-    }
+	public void setSexo(Sexo sexo) {
+		this.sexo = sexo;
+	}
 
-    @Column
-    public String getApellidoMaterno() {
-	return apellidoMaterno;
-    }
+	@Column(name = "dadoDeBajo", length = 250)
+	public Boolean getDadoDeBajo() {
+		return dadoDeBajo;
+	}
 
-    public void setApellidoMaterno(String apellidoMaterno) {
-	this.apellidoMaterno = apellidoMaterno;
-    }
+	public void setDadoDeBajo(Boolean dadoDeBajo) {
+		this.dadoDeBajo = dadoDeBajo;
+	}
 
-    @Column
-    public String getNacionalidad() {
-	return nacionalidad;
-    }
+	@Column(name = "asignacionClavePersonal", length = 250)
+	public Boolean getAsignacionClavePersonal() {
+		return asignacionClavePersonal;
+	}
 
-    public void setNacionalidad(String nacionalidad) {
-	this.nacionalidad = nacionalidad;
-    }
+	public void setAsignacionClavePersonal(Boolean asignacionClavePersonal) {
+		this.asignacionClavePersonal = asignacionClavePersonal;
+	}
 
-    @Column
-    public String getParentesco() {
-	return parentesco;
-    }
+	@Column(name = "imagen", length = 250)
+	public String getImagen() {
+		return imagen;
+	}
 
-    public void setParentesco(String parentesco) {
-	this.parentesco = parentesco;
-    }
-
-    @Temporal(TemporalType.DATE)
-    public Calendar getFechaNacimiento() {
-	return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Calendar fechaNacimiento) {
-	this.fechaNacimiento = fechaNacimiento;
-    }
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "idDireccionPersona")
-    public DireccionPersona getDireccionPersona() {
-	return direccionPersona;
-    }
-
-    public void setDireccionPersona(DireccionPersona direccionPersona) {
-	this.direccionPersona = direccionPersona;
-    }
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
 
 }
