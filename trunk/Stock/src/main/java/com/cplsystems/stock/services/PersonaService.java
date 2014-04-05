@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.PersonaDAO;
+import com.cplsystems.stock.domain.Contacto;
+import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Persona;
 
 @Service
@@ -32,10 +34,17 @@ public class PersonaService {
 	public List<Persona> getAll(){
 		return personaDAO.getAll();
 	}
-	/**
-	 * @return Lista de personas de determinado sexo
-	 * **/
 	public List<Persona> getBySexo(Long sexo){
 		return personaDAO.getBySexo(sexo);
 	}
+	
+	public void delete(Persona persona){
+		personaDAO.delete(persona);
+	}
+    public List<Persona> getByDireccion(Direccion direccion){
+    	return personaDAO.getByDireccion(direccion);
+    }
+    public List<Persona> getByContacto(Contacto contacto){
+    	return personaDAO.getByContacto(contacto);
+    }
 }
