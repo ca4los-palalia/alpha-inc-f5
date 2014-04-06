@@ -5,8 +5,10 @@
 package com.cplsystems.incidencias.domain;
 
 import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "DatosOrganizacionales")
@@ -24,7 +28,7 @@ public class DatosOrganizacionales {
 	private Calendar fechaCambios;
 	private Float percepcionMensual;
 	private Float otrasPercepciones;
-	private Float Contribuciones;
+	private Float contribuciones;
 	private Float planUtilizacion;
 	private Float porHora;
 	private String numeroAfiliacionIMSS;
@@ -52,7 +56,8 @@ public class DatosOrganizacionales {
 		this.idDatosOrganizacionales = idDatosOrganizacionales;
 	}
 
-	@Column(name = "fechaContratacion", length = 250)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fechaContratacion")
 	public Calendar getFechaContratacion() {
 		return fechaContratacion;
 	}
@@ -61,6 +66,7 @@ public class DatosOrganizacionales {
 		this.fechaContratacion = fechaContratacion;
 	}
 
+	@Temporal(TemporalType.DATE)
 	@Column(name = "fechaCambios", length = 250)
 	public Calendar getFechaCambios() {
 		return fechaCambios;
@@ -70,7 +76,7 @@ public class DatosOrganizacionales {
 		this.fechaCambios = fechaCambios;
 	}
 
-	@Column(name = "percepcionMensual", length = 250)
+	@Column(name = "percepcionMensual")
 	public Float getPercepcionMensual() {
 		return percepcionMensual;
 	}
@@ -79,7 +85,7 @@ public class DatosOrganizacionales {
 		this.percepcionMensual = percepcionMensual;
 	}
 
-	@Column(name = "otrasPercepciones", length = 250)
+	@Column(name = "otrasPercepciones")
 	public Float getOtrasPercepciones() {
 		return otrasPercepciones;
 	}
@@ -88,16 +94,16 @@ public class DatosOrganizacionales {
 		this.otrasPercepciones = otrasPercepciones;
 	}
 
-	@Column(name = "Contribuciones", length = 250)
+	@Column(name = "contribuciones")
 	public Float getContribuciones() {
-		return Contribuciones;
+		return contribuciones;
 	}
 
 	public void setContribuciones(Float contribuciones) {
-		Contribuciones = contribuciones;
+		this.contribuciones = contribuciones;
 	}
 
-	@Column(name = "PlanUtilizacion", length = 250)
+	@Column(name = "planUtilizacion")
 	public Float getPlanUtilizacion() {
 		return planUtilizacion;
 	}
@@ -106,7 +112,7 @@ public class DatosOrganizacionales {
 		this.planUtilizacion = planUtilizacion;
 	}
 
-	@Column(name = "porHora", length = 250)
+	@Column(name = "porHora")
 	public Float getPorHora() {
 		return porHora;
 	}
@@ -124,7 +130,7 @@ public class DatosOrganizacionales {
 		this.numeroAfiliacionIMSS = numeroAfiliacionIMSS;
 	}
 
-	@Column(name = "evaluacion", length = 250)
+	@Column(name = "evaluacion")
 	public Boolean getEvaluacion() {
 		return evaluacion;
 	}
@@ -133,7 +139,7 @@ public class DatosOrganizacionales {
 		this.evaluacion = evaluacion;
 	}
 
-	@Column(name = "reproteTiempo", length = 250)
+	@Column(name = "reproteTiempo")
 	public Boolean getReporteTiempo() {
 		return reporteTiempo;
 	}
@@ -142,7 +148,7 @@ public class DatosOrganizacionales {
 		this.reporteTiempo = reporteTiempo;
 	}
 
-	@Column(name = "usaTargetaTiempo", length = 250)
+	@Column(name = "usaTargetaTiempo")
 	public Boolean getUsaTargetaTiempo() {
 		return usaTargetaTiempo;
 	}
@@ -178,8 +184,8 @@ public class DatosOrganizacionales {
 		this.numeroTarjeta = numeroTarjeta;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "datosorganizacionales")
+	@OneToOne
+	@JoinColumn(name = "persona")
 	public Persona getPersona() {
 		return persona;
 	}
@@ -188,7 +194,7 @@ public class DatosOrganizacionales {
 		this.persona = persona;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tiposueldo")
 	public TipoSueldo getTiposueldo() {
 		return tiposueldo;
@@ -198,7 +204,7 @@ public class DatosOrganizacionales {
 		this.tiposueldo = tiposueldo;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tiponomina")
 	public TipoNomina getTiponomina() {
 		return tiponomina;
@@ -208,7 +214,7 @@ public class DatosOrganizacionales {
 		this.tiponomina = tiponomina;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "categoria")
 	public Categoria getCategoria() {
 		return categoria;
@@ -218,7 +224,7 @@ public class DatosOrganizacionales {
 		this.categoria = categoria;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "formapago")
 	public FormaPago getFormapago() {
 		return formapago;
@@ -228,7 +234,7 @@ public class DatosOrganizacionales {
 		this.formapago = formapago;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tipopersonal")
 	public TipoPersonal getTipopersonal() {
 		return tipopersonal;

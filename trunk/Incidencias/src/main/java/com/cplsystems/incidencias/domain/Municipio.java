@@ -5,6 +5,7 @@ package com.cplsystems.incidencias.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,16 +22,6 @@ public class Municipio {
 	private String nombre;
 	private String descripcion;
 
-	@ManyToOne
-	@JoinColumn(name = "estado")
-	public Estado getEstado() {
-		return estado;
-	}
-
-	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Idmunicipio", nullable = false)
@@ -40,6 +31,16 @@ public class Municipio {
 
 	public void setIdmunicipio(Long idmunicipio) {
 		this.idmunicipio = idmunicipio;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "estado")
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
 	@Column(name = "nombre", length = 250)
