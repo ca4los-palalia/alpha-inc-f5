@@ -12,7 +12,7 @@
 			</north>
 			<center sclass="centerHome" border="0">
 				<vlayout sclass="contentRegistro">
-					<image src="/images/home/logo-index.png" />
+					<image src="/images/home/mainLogo.png" />
 					<textbox id="emailRegistro" type="text"
 						instant="true" zclass="textbox" tooltiptext="Correo electrónico" />
 					<textbox id="passwordRegistro" type="password"
