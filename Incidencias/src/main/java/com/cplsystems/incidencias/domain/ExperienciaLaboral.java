@@ -3,14 +3,13 @@
  */
 package com.cplsystems.incidencias.domain;
 
-import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -42,7 +41,7 @@ public class ExperienciaLaboral {
 		this.descripcion = descripcion;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tipodocumentocalidad")
 	public Persona getPersona() {
 		return persona;

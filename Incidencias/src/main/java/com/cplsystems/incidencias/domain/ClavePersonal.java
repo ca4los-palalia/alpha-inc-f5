@@ -7,13 +7,15 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "ExperienciaLaboral")
@@ -45,7 +47,8 @@ public class ClavePersonal {
 		this.clave = clave;
 	}
 
-	@Column(name = "fechaCaducidad", length = 250)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fechaCaducidad")
 	public Calendar getFechaCaducidad() {
 		return fechaCaducidad;
 	}
@@ -63,7 +66,7 @@ public class ClavePersonal {
 		this.activo = activo;
 	}
 
-	@OneToMany
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "persona")
 	public Persona getPersona() {
 		return persona;

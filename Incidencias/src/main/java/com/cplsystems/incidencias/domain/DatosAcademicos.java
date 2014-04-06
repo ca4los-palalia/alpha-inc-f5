@@ -5,6 +5,7 @@ package com.cplsystems.incidencias.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -65,7 +66,7 @@ public class DatosAcademicos {
 		this.institucion = institucion;
 	}
 
-	@Column(name = "anioInicio", length = 250)
+	@Column(name = "anioInicio")
 	public Integer getAnioInicio() {
 		return anioInicio;
 	}
@@ -74,7 +75,7 @@ public class DatosAcademicos {
 		this.anioInicio = anioInicio;
 	}
 
-	@Column(name = "anioFin", length = 250)
+	@Column(name = "anioFin")
 	public Integer getAnioFin() {
 		return anioFin;
 	}
@@ -93,7 +94,7 @@ public class DatosAcademicos {
 		this.status = status;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "persona")
 	public Persona getPersona() {
 		return persona;

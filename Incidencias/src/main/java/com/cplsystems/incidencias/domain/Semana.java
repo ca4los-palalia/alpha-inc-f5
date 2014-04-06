@@ -57,8 +57,7 @@ public class Semana {
 		this.descripcion = descripcion;
 	}
 
-	@Temporal(TemporalType.TIME)
-	@Column(name = "horaEntrada", length = 250)
+	@Column(name = "horaEntrada")
 	public Calendar getHoraEntrada() {
 		return horaEntrada;
 	}
@@ -67,8 +66,7 @@ public class Semana {
 		this.horaEntrada = horaEntrada;
 	}
 
-	@Temporal(TemporalType.TIME)
-	@Column(name = "horaSalida", length = 250)
+	@Column(name = "horaSalida")
 	public Calendar getHoraSalida() {
 		return horaSalida;
 	}
