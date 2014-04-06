@@ -18,20 +18,42 @@
 		<!-- END Configuration Data -->
 
 		<!-- Mapping of Classes -->
-		<mapping class="com.cplsystems.incidencias.domain.ActaMatrimonio" />
-		<mapping class="com.cplsystems.incidencias.domain.ActaNacimiento" />
-		<mapping class="com.cplsystems.incidencias.domain.BandejaSolicitudes" />
-		<mapping class="com.cplsystems.incidencias.domain.CartaAntecedentesPenales" />
-		<mapping class="com.cplsystems.incidencias.domain.Ciudad" />
-		<mapping class="com.cplsystems.incidencias.domain.Colonia" />
-		<mapping class="com.cplsystems.incidencias.domain.DireccionPersona" />
+		<mapping class="com.cplsystems.incidencias.domain.Actividad" />
+		<mapping class="com.cplsystems.incidencias.domain.Categoria" />
+		<mapping class="com.cplsystems.incidencias.domain.ClavePersonal" />
+		<mapping class="com.cplsystems.incidencias.domain.DatosAcademicos" />
+		<mapping class="com.cplsystems.incidencias.domain.DatosGenerales" />
+		<mapping class="com.cplsystems.incidencias.domain.DatosOrganizacionales" />
+		<mapping class="com.cplsystems.incidencias.domain.DatosPersonales" />
+		<mapping class="com.cplsystems.incidencias.domain.Dia" />
+		<mapping class="com.cplsystems.incidencias.domain.Documentacion" />
+		<mapping class="com.cplsystems.incidencias.domain.DocumentosCalidad" />
+		<mapping class="com.cplsystems.incidencias.domain.Domicilio" />
 		<mapping class="com.cplsystems.incidencias.domain.Estado" />
-		<mapping class="com.cplsystems.incidencias.domain.Libro" />
+		<mapping class="com.cplsystems.incidencias.domain.EstadoCivil" />
+		<mapping class="com.cplsystems.incidencias.domain.ExperienciaLaboral" />
+		<mapping class="com.cplsystems.incidencias.domain.FormaPago" />
+		<mapping class="com.cplsystems.incidencias.domain.Idiomas" />
+		<mapping class="com.cplsystems.incidencias.domain.IdiomasPersona" />
 		<mapping class="com.cplsystems.incidencias.domain.Municipio" />
+		<mapping class="com.cplsystems.incidencias.domain.NivelAcademico" />
+		<mapping class="com.cplsystems.incidencias.domain.Organizacion" />
+		<mapping class="com.cplsystems.incidencias.domain.OrganizacionDomicilio" />
+		<mapping class="com.cplsystems.incidencias.domain.OrganizacionPersonal" />
 		<mapping class="com.cplsystems.incidencias.domain.Persona" />
-		<mapping class="com.cplsystems.incidencias.domain.TipoIdentificacion" />
-		<mapping class="com.cplsystems.incidencias.domain.TipoPersona" />
-		<mapping class="com.cplsystems.incidencias.domain.TipoSolicitud" />
+		<mapping class="com.cplsystems.incidencias.domain.PersonaDomicilio" />
+		<mapping class="com.cplsystems.incidencias.domain.Semana" />
+		<mapping class="com.cplsystems.incidencias.domain.SemanaLaboral" />
+		<mapping class="com.cplsystems.incidencias.domain.Sexo" />
+		<mapping class="com.cplsystems.incidencias.domain.Status"/>
+		<mapping class="com.cplsystems.incidencias.domain.Sucursal" />
+		<mapping class="com.cplsystems.incidencias.domain.SucursalDomicilio" />
+		<mapping class="com.cplsystems.incidencias.domain.SucursalPesonal" />
+		<mapping class="com.cplsystems.incidencias.domain.TipoActividad" />
+		<mapping class="com.cplsystems.incidencias.domain.TipoDocumentoCalidad" />
+		<mapping class="com.cplsystems.incidencias.domain.TipoNomina" />
+		<mapping class="com.cplsystems.incidencias.domain.TipoPersonal" />
+		<mapping class="com.cplsystems.incidencias.domain.TipoSueldo" />
 	</session-factory>
 
 </hibernate-configuration>
