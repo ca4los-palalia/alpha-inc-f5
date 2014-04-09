@@ -16,6 +16,8 @@ import javax.persistence.Table;
 @Table(name = "direccion")
 public class Direccion implements Serializable {
 
+	private static final long serialVersionUID = -46282038792540869L;
+	
 	private Long idDireccion;
 	private String calle;
 	private String cuidad;

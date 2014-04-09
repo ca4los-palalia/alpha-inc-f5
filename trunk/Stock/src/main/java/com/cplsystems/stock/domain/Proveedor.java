@@ -18,12 +18,14 @@ public class Proveedor {
 
 	private Long idProveedor;
 	private String comentario;
+	private String clave;
 	private String giro;
 	private String nombre;
 	private String password;
 	private String razonSocial;
 	private String rfc;
 	private String status;
+	private Long cuentaCargo;
 	private Contacto contacto;
 	private Contrato contrato;
 	private Direccion direccionDevolucion;
@@ -45,14 +47,15 @@ public class Proveedor {
 		this.idProveedor = idProveedor;
 	}
 
-	@Column(name = "comentario", length = 250)
-	public String getComentario() {
-		return comentario;
+	@Column
+	public String getClave() {
+		return clave;
 	}
 
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
+	public void setClave(String clave) {
+		this.clave = clave;
 	}
+	
 
 	@Column(name = "giro", length = 250)
 	public String getGiro() {
@@ -99,15 +102,10 @@ public class Proveedor {
 		this.rfc = rfc;
 	}
 
-	@Column(name = "status", length = 25)
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
+	
+	
+	
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "contacto")
 	public Contacto getContacto() {
@@ -197,5 +195,35 @@ public class Proveedor {
 	public void setRepresentanteAteCliente(Persona representanteAteCliente) {
 		this.representanteAteCliente = representanteAteCliente;
 	}
+	
+	@Column
+	public Long getCuentaCargo() {
+		return cuentaCargo;
+	}
 
+	public void setCuentaCargo(Long cuentaCargo) {
+		this.cuentaCargo = cuentaCargo;
+	}
+	
+	@Column(name = "status", length = 25)
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+
+	@Column(name = "comentario", length = 250)
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
+	
+	
 }
