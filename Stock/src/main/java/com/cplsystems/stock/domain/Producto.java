@@ -16,6 +16,7 @@ public class Producto {
 	private String descripcion;
 	private String nombre;
 	private String unidad;
+	private Float precio;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,5 +64,15 @@ public class Producto {
 	public void setUnidad(String unidad) {
 		this.unidad = unidad;
 	}
+
+	@Column
+	public Float getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(Float precio) {
+		this.precio = precio;
+	}
+	
 
 }
