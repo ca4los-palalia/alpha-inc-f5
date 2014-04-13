@@ -1,0 +1,153 @@
+<?page title="Home" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<zk>
+	<style src="/styles/proveedores/styleProveedor.css" />
+
+	<window apply="org.zkoss.bind.BindComposer" sclass="colorWindow">
+
+		<panel border="none">
+			<panelchildren>
+				<menubar id="menubar" width="100%">
+					<menu label="Archivo"></menu>
+					<menu label="Edición"></menu>
+					<menu label="Help"></menu>
+				</menubar>
+				<vlayout>
+					<vlayout>
+						<hlayout>
+							<label value="Clave:" />
+							<textbox zclass="tBox"/>
+							<button
+								image="/images/toolbar/search32.png" />
+							<label value="Nombre:" />
+							<textbox cols="80" zclass="tBox"/>
+						</hlayout>
+						<hlayout>
+							<label value="Descripción:" />
+							<textbox cols="117" multiline="true"
+								type="text" zclass="tBox"/>
+						</hlayout>
+						<hlayout>
+							<label value="Marca:" />
+							<textbox cols="25" zclass="tBox"/>
+							<label value="Modelo:" />
+							<textbox cols="30" zclass="tBox"/>
+							<label value="Código de barras:" />
+							<textbox cols="29" zclass="tBox"/>
+						</hlayout>
+					</vlayout>
+					<vlayout>
+						<tabbox id="tb" sclass="pading">
+							<tabs id="tabs">
+								<tab label="Clasificación" />
+								<tab label="Precios" />
+								<tab label="Últimas compras" />
+								<tab label="Estadísticas" />
+							</tabs>
+							<tabpanels>
+								<tabpanel>
+
+								</tabpanel>
+								<tabpanel>
+									<hlayout>
+										<vlayout>
+											<hlayout>
+												<label value="Divisa" />
+												<combobox />
+											</hlayout>
+											<hlayout>
+												<label value="Excento" />
+												<textbox />
+											</hlayout>
+											<hlayout>
+												<label value="%Imp1" />
+												<doublebox />
+											</hlayout>
+											<hlayout>
+												<label value="%Imp2" />
+												<doublebox />
+											</hlayout>
+										</vlayout>
+										<hlayout>
+											<vlayout>
+												<hlayout>
+													<label value="1" />
+													<doublebox />
+												</hlayout>
+												<hlayout>
+													<label value="2" />
+													<doublebox />
+												</hlayout>
+												<hlayout>
+													<label value="3" />
+													<doublebox />
+												</hlayout>
+												<hlayout>
+													<label value="4" />
+													<doublebox />
+												</hlayout>
+												<hlayout>
+													<label value="5" />
+													<doublebox />
+												</hlayout>
+											</vlayout>
+											<vlayout>
+												<doublebox
+													disabled="true" />
+												<doublebox
+													disabled="true" />
+												<doublebox
+													disabled="true" />
+												<doublebox
+													disabled="true" />
+												<doublebox
+													disabled="true" />
+											</vlayout>
+										</hlayout>
+										<vlayout>
+											<hlayout>
+												<label value="Máximo" />
+												<doublebox />
+											</hlayout>
+											<hlayout>
+												<label
+													value="Reposición" />
+												<doublebox />
+											</hlayout>
+											<hlayout>
+												<label value="Sig Capa" />
+												<doublebox
+													disabled="true" />
+											</hlayout>
+											<hlayout>
+												<label value="Último" />
+												<doublebox
+													disabled="true" />
+											</hlayout>
+											<hlayout>
+												<label
+													value="Costo Promedio(MN)" />
+												<doublebox
+													disabled="true" />
+											</hlayout>
+										</vlayout>
+										<vlayout></vlayout>
+									</hlayout>
+								</tabpanel>
+								<tabpanel>
+
+								</tabpanel>
+								<tabpanel>
+
+								</tabpanel>
+							</tabpanels>
+						</tabbox>
+					</vlayout>
+				</vlayout>
+			</panelchildren>
+
+		</panel>
+
+	</window>
+</zk>
