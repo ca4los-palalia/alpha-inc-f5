@@ -9,32 +9,53 @@
 		<panel border="none">
 			<panelchildren>
 				<menubar id="menubar" width="100%">
-					<menu label="Archivo"></menu>
-					<menu label="Edición"></menu>
+					<menu label="Archivo">
+						<menupopup>
+							<menuitem label="Nuevo" onClick=""
+								image="/images/toolbar/paper32.png" />
+							<menuitem label="Eliminar" onClick=""
+								image="/images/toolbar/paperminus32.png" />
+							<menuseparator />
+							<menuitem label="Guardar Cambios"
+								image="/images/toolbar/upload32.png" />
+						</menupopup>
+					</menu>
+					<menu label="Edición">
+						<menupopup>
+							<menuitem label="Editar" onClick=""
+								image="/images/toolbar/pencil32.png" />
+							<menuitem label="Buscar" onClick=""
+								image="/images/toolbar/search32.png" />
+						</menupopup>
+					</menu>
 					<menu label="Help"></menu>
 				</menubar>
 				<vlayout>
 					<vlayout>
 						<hlayout>
 							<label value="Clave:" />
-							<textbox zclass="tBox"/>
-							<button
+							<textbox zclass="tBox" maxlength="24" />
+							<button onClick=""
 								image="/images/toolbar/search32.png" />
 							<label value="Nombre:" />
-							<textbox cols="80" zclass="tBox"/>
+							<textbox cols="80" zclass="tBox"
+								maxlength="74" />
 						</hlayout>
 						<hlayout>
 							<label value="Descripción:" />
 							<textbox cols="117" multiline="true"
-								type="text" zclass="tBox"/>
+								type="text" zclass="tBox" />
 						</hlayout>
 						<hlayout>
 							<label value="Marca:" />
-							<textbox cols="25" zclass="tBox"/>
+							<textbox cols="25" zclass="tBox"
+								maxlength="27" />
 							<label value="Modelo:" />
-							<textbox cols="30" zclass="tBox"/>
+							<textbox cols="30" zclass="tBox"
+								maxlength="35" />
 							<label value="Código de barras:" />
-							<textbox cols="29" zclass="tBox"/>
+							<textbox cols="29" zclass="tBox"
+								maxlength="35" />
 						</hlayout>
 					</vlayout>
 					<vlayout>
