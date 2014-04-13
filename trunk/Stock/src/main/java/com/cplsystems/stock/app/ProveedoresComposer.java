@@ -13,11 +13,16 @@ public class ProveedoresComposer {
 
 	@Autowired
 	private Button resetButton;
-	
+	static String[] dictionary = { "abacus", "abase", "abate", "abbess", "abbey"};
 	
 	@Command
     public void changeSubmitStatus(){
         System.err.println("CLICK desde la vista");
     }
+	
+	
+	public static String[] getDirectory() {
+		return dictionary;
+	}
 
 }
