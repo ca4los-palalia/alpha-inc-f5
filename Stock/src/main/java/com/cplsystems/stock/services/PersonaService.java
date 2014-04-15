@@ -19,32 +19,36 @@ public class PersonaService {
 	@Autowired
 	private PersonaDAO personaDAO;
 
-	public void save(Persona persona){
+	public void save(final Persona persona) {
 		personaDAO.save(persona);
 	}
 
-	public void update(Persona persona){
+	public void update(final Persona persona) {
 		personaDAO.update(persona);
 	}
 
-	public Persona getById(Long persona){
+	public Persona getById(final Long persona) {
 		return personaDAO.getById(persona);
 	}
 
-	public List<Persona> getAll(){
+	public List<Persona> getAll() {
 		return personaDAO.getAll();
 	}
-	public List<Persona> getBySexo(Long sexo){
+
+	public List<Persona> getBySexo(final Long sexo) {
 		return personaDAO.getBySexo(sexo);
 	}
-	
-	public void delete(Persona persona){
+
+	public void delete(final Persona persona) {
 		personaDAO.delete(persona);
 	}
-    public List<Persona> getByDireccion(Direccion direccion){
-    	return personaDAO.getByDireccion(direccion);
-    }
-    public List<Persona> getByContacto(Contacto contacto){
-    	return personaDAO.getByContacto(contacto);
-    }
+
+	public List<Persona> getByDireccion(final Direccion direccion) {
+		return personaDAO.getByDireccion(direccion);
+	}
+
+	public List<Persona> getByContacto(final Contacto contacto) {
+		return personaDAO.getByContacto(contacto);
+	}
+
 }
