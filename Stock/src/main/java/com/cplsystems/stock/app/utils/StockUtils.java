@@ -14,11 +14,19 @@ import org.zkoss.zul.Window;
 @Repository
 public class StockUtils {
 
-	/**Create a window programmatically and use it as a modal dialog.
-	 * eg /widgets/window/modal_dialog/employee_dialog.zul */
+	/**
+	 * Create a window programmatically and use it as a modal dialog. eg
+	 * /widgets/window/modal_dialog/employee_dialog.zul
+	 */
 	public Window createModelDialog(final String locationView) {
-		Window window = (Window) Executions.createComponents(locationView, null, null);
+		Window window = (Window) Executions.createComponents(locationView,
+				null, null);
 		window.doModal();
 		return window;
+	}
+
+	/**Redirect to a new web page eg /login.zul*/
+	public void redirect(final String page) {
+		Executions.getCurrent().sendRedirect(page);
 	}
 }
