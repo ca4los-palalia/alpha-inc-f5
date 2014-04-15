@@ -16,9 +16,8 @@ import com.cplsystems.stock.app.utils.StockUtils;
  * 
  */
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class ProductosVM {
-	@WireVariable
-	private StockUtils stockUtils;
+public class ProductosVM extends BasicStructure {
+
 
 	private Window proveedoresModalView;
 
@@ -26,6 +25,22 @@ public class ProductosVM {
 	public void buscarProveedor() {
 		proveedoresModalView = stockUtils
 				.createModelDialog(StockConstants.MODAL_VIEW_PRODUCTOS);
+	}
+
+	@Command
+	public void newRecord() {
+		System.err.println("generate a new record");
+
+	}
+
+	@Command
+	public void deleteRecord() {
+		System.err.println("delete a record");
+	}
+
+	@Command
+	public void saveChanges() {
+		System.err.println("save changes that were made");
 	}
 
 }
