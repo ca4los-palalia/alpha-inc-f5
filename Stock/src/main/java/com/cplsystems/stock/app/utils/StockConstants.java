@@ -10,4 +10,9 @@ package com.cplsystems.stock.app.utils;
 public class StockConstants {
 
 	public final static String MODAL_VIEW_PRODUCTOS = "/modulos/productos/utils/buscarProducto.zul";
+
+	public final static class GLOBAL_PAGES {
+		public static final String HOME_URL = "/home.zul";
+		public static final String LOGIN_URL = "/login.zul";
+	}
 }
