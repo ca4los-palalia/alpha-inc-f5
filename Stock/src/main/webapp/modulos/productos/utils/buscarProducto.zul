@@ -4,13 +4,13 @@
 		width="460px" position="center,center" closable="false">
 		<vlayout>
 			<hlayout>
-				<label value="Nombre Proveedor:" />
+				<label value="Clave:" />
 				<textbox />
-				<button />
 			</hlayout>
-			<vlayout>
-				<grid></grid>
-			</vlayout>
+			<hlayout>
+				<label value="Nombre:" />
+				<textbox />
+			</hlayout>
 		</vlayout>
 	</window>
 </zk>
