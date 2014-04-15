@@ -1,22 +1,22 @@
 <?page title="Home" contentType="text/html;charset=UTF-8"?>
-<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
-
 <zk>
 	<style src="/styles/proveedores/styleProveedor.css" />
-
-	<window apply="org.zkoss.bind.BindComposer" sclass="colorWindow">
+	<window apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.ProductosVM')">
 
 		<panel border="none">
 			<panelchildren>
 				<menubar id="menubar" width="100%">
 					<menu label="Archivo">
 						<menupopup>
-							<menuitem label="Nuevo" onClick=""
+							<menuitem label="Nuevo" action="@command('newRecord')"
 								image="/images/toolbar/paper32.png" />
-							<menuitem label="Eliminar" onClick=""
+							<menuitem label="Eliminar"
+								onClick="@command('deleteRecord')"
 								image="/images/toolbar/paperminus32.png" />
 							<menuseparator />
 							<menuitem label="Guardar Cambios"
+								onClick="@command('saveChanges')"
 								image="/images/toolbar/upload32.png" />
 						</menupopup>
 					</menu>
