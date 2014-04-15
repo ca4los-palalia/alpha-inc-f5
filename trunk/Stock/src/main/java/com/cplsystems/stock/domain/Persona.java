@@ -23,8 +23,8 @@ public class Persona {
 	private Calendar fechaNacimiento;
 	private String nombre;
 	private Long sexo;
-	private  Direccion direccion;
-	private  Contacto contacto; 
+	private Direccion direccion;
+	private Contacto contacto;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,8 +36,6 @@ public class Persona {
 	public void setIdPersona(Long idPersona) {
 		this.idPersona = idPersona;
 	}
-	
-
 
 	@Column(name = "apellido_paterno", length = 250)
 	public String getApellidoPaterno() {
@@ -94,7 +92,7 @@ public class Persona {
 	public void setDireccion(Direccion direccion) {
 		this.direccion = direccion;
 	}
-	
+
 	@OneToOne
 	@JoinColumn(name = "contacto")
 	public Contacto getContacto() {
@@ -105,5 +103,4 @@ public class Persona {
 		this.contacto = contacto;
 	}
 
-	
 }
