@@ -7,7 +7,9 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.services.EstadoService;
 import com.cplsystems.stock.services.PersonaService;
+import com.cplsystems.stock.services.ProveedorService;
 import com.cplsystems.stock.services.UsuarioService;
 
 /**
@@ -27,5 +29,11 @@ public abstract class ServiceLayer {
 
 	@WireVariable
 	protected UsuarioService usuarioService;
+	
+	@WireVariable
+	protected EstadoService estadoService;
+	
+	@WireVariable
+	protected ProveedorService proveedorService;
 	
 }

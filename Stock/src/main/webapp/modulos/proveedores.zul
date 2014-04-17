@@ -4,8 +4,7 @@
 <zk>
 	<style src="/styles/proveedores/styleProveedor.css" />
 
-	<window apply="org.zkoss.bind.BindComposer" viewModel="@id('pvm') @init('com.cplsystems.stock.app.ProveedoresComposer')"
-	id="@id('lvmsgs')" >		
+	<window apply="org.zkoss.bind.BindComposer" viewModel="@id('pvm') @init('com.cplsystems.stock.app.proveedores.ProveedoresVM')">
 		
 		<panel border="none" >
 	        <panelchildren>
@@ -56,16 +55,14 @@
 	        
 	    </panel>
 		
-		
-		
-		
+
 	
 	
 	<grid>
         <rows>
             <row>
                 Nombre:
-                <textbox/>
+                <textbox type="text" value="@bind(pvm.nombreProveedor)"/>
                 
                 Giro:
                 <textbox/>
@@ -82,16 +79,15 @@
                 <textbox/>
                 
                 Contrato:
-                <textbox/>
+                
+               	<textbox/>
+                
             </row>
             <row>
                 Contacto:
-                <button tooltip="Ver contacto" image="/images/UI/eye.png" />
-                
-                Dirección:
-                <div apply="com.cplsystems.stock.app.ModalUtils">
-                	<button id="dirButton" autodisable="self" tooltiptext="Ver direccion de proveedor" image="/images/UI/eye.png" />
-                </div>
+                <button id="contactoId" tooltip="Ver contacto" 
+                		image="/images/UI/eye.png" onClick="@command('guardarProveedor')" />
+			
                 
             </row>
             
@@ -141,8 +137,178 @@
 
 					<tabpanels>
 						<tabpanel>
-
-							<vlayout>
+							<panel title="Información personal"/>
+							<grid>
+						        <rows>
+						            <row>
+						            	<div align="right">
+						            		Nombre:
+						            	</div>
+						                <textbox type="text" value="@bind(pvm.nombreProveedor)"/>
+						                <div align="right">
+						            		Giro:
+						            	</div>
+						                <textbox type="text" value="@bind(pvm.giro)"/>
+						                <div align="right">
+						                	Razón social:
+						                </div>
+						                <textbox type="text" value="@bind(pvm.razonSocial)"/>
+						            </row>
+						            <row>
+						            	<div align="right">
+						            		Calle:
+						            	</div>
+						                <textbox type="text" value="@bind(pvm.calle)"/>
+						                <div align="right">
+						                	Número exterior:
+					                	</div>
+					                	<intbox cols="20" value="@bind(pvm.numeroExterior)"/>
+						                <div align="right">
+						                	Número interior:
+					                	</div>
+					                	<intbox cols="20" value="@bind(pvm.numeroInterior)"/>
+						            </row>
+						            <row>
+						            	<div align="right">
+						            		Colónia:
+						                </div>
+						                <textbox type="text" value="@bind(pvm.colonia)"/>
+						                <div align="right">
+						                	Ciudad:
+					                	</div>
+						                <textbox type="text" value="@bind(pvm.ciudad)"/>
+						                <div align="right">
+						                	Municipio:
+						                </div>
+						                <textbox type="text" value="@bind(pvm.municipio)"/>
+						            </row>
+						            <row>
+						            	<div align="right">
+						            		Estado:
+						            	</div>
+						               	<textbox type="text" value="@bind(pvm.estado)"/>
+						               	<div align="right">
+						                	País:
+						                </div>
+						                <textbox type="text" value="@bind(pvm.pais)"/>
+						                <div align="right">
+						                	Código postal:
+						                </div>
+						                <intbox cols="20" value="@bind(pvm.codigoPostal)"/>
+						            </row>
+						            <row>
+						            	<div align="right">
+						                	Fax:
+						                </div>
+						                <intbox cols="20" value="@bind(pvm.fax)"/>
+						                <div align="right">
+						                	Telefono:
+						                </div>
+						               	<intbox cols="20" value="@bind(pvm.telefono)"/>
+						               	<div align="right">
+						               		Email:
+						               	</div>
+						                <textbox type="text" value="@bind(pvm.email)"/>
+						            </row>
+						            <row>
+						            	<div align="right" >
+						            		Contrato:
+						            	</div>
+						               	<textbox type="text" value="@bind(pvm.contrato)"/>
+						               	<div align="right">
+						                	Pagina web:
+						                </div>
+						               	<textbox type="text" value="@bind(pvm.paginaWeb)"/>
+						               	<div align="right">
+						               		RFC:
+						               	</div>
+						                <textbox type="text" value="@bind(pvm.rfc)"/>
+						            </row>
+						        </rows>
+						    </grid>
+						    
+						    <separator/>
+							
+							<panel title="Contacto"/>
+							
+							<grid >
+						        <rows>
+						            <row>
+						            	<div align="right">
+						            		Nombre:
+						            	</div>
+						                <textbox type="text" value="@bind(pvm.nombreContacto)"/>
+						                <div align="right">
+						            		Cargo:
+						            	</div>
+						                <textbox type="text" value="@bind(pvm.cargoContacto)"/>
+						                <div align="right">
+						                	RFC:
+						                </div>
+						                <textbox type="text" value="@bind(pvm.rfcContacto)"/>
+						            </row>
+						            <row>
+						            	<div align="right">
+						            		CURP:
+						            	</div>
+						                <textbox type="text" value="@bind(pvm.curpContacto)"/>
+						                <div align="right">
+						                	Telefono:
+					                	</div>
+					                	<intbox cols="20" value="@bind(pvm.telefonoContacto)"/>
+						                <div align="right">
+						                	Extención:
+					                	</div>
+					                	<intbox cols="20" value="@bind(pvm.extencionContacto)"/>
+						            </row>
+						            <row>
+						            	<div align="right">
+						            		Email:
+						                </div>
+						                <textbox type="text" value="@bind(pvm.emailContacto)"/>
+						                <div align="right">
+						                	Célular:
+					                	</div>
+					                	<intbox cols="20" value="@bind(pvm.celularContacto)"/>
+						            </row>
+						        </rows>
+						    </grid>
+							
+							<separator/>
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							<vlayout >
 								
 								<panel border="normal" title="Información personal">
 									<panelchildren sclass="colorBorderPanels pading">
@@ -354,11 +520,8 @@
 						</tabpanel>
 
 
-
-
-
 						<tabpanel>
-							<vlayout sclass="colorBorderPanels">
+							<vlayout sclass="colorBorderPanels" visible="false">
 								<hlayout>
 									<hlayout sclass="spacerLabelTab2">
 										<label value="Limite de Credito" />
@@ -441,10 +604,6 @@
 									<textbox width="350px;" multiline="true" height="120px"
 										tabindex="11" />
 							</vlayout>
-									
-							
-							
-							
 
 						</tabpanel>
 

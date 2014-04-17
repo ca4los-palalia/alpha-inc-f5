@@ -61,3 +61,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2e5f89', end
 .centerPanels{
 	text-align:center;
 }
+
+.rightText{
+	text-align:right;
+}
