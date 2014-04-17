@@ -20,7 +20,7 @@ import com.cplsystems.stock.services.ProveedorService;
  * @author Carlos Palalia López
  *
  */
-public class ModalUtils   extends SelectorComposer<Component> {
+public class ModalUtils extends SelectorComposer<Component> {
 
 	
 	private static final long serialVersionUID = 7430264817059488060L;
