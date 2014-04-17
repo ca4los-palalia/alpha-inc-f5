@@ -5,8 +5,12 @@ package com.cplsystems.stock.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.EstadoDAO;
 import com.cplsystems.stock.domain.Estado;
 
@@ -15,27 +19,38 @@ import com.cplsystems.stock.domain.Estado;
  */
 
 @Repository
-public class EstadoDAOImpl implements EstadoDAO{
-
+public class EstadoDAOImpl extends HibernateDAOSuportUtil implements EstadoDAO{
+	
 	public void save(Estado estado) {
-		
+		getHibernateTemplate().save(estado);
 	}
 
 	public void update(Estado estado) {
+		getHibernateTemplate().update(estado);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Estado getById(Long estado) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Estado.class);
+		criteria.add(Restrictions.eq("idEstado", estado));
+		List<Estado> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 		
 	}
 
-	public Estado getById(Long estado) {
-		return null;
-	}
-
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Estado> getAll() {
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Estado.class);
+		List<Estado> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
 	public void delete(Estado estado) {
-		// TODO Auto-generated method stub
-		
+		getHibernateTemplate().delete(estado);
 	}
 
    

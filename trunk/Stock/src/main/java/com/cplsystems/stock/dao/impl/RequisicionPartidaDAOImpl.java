@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.RequisicionPartidaDAO;
 import com.cplsystems.stock.domain.Partida;
 import com.cplsystems.stock.domain.Requisicion;
@@ -17,7 +18,7 @@ import com.cplsystems.stock.domain.RequisicionPartida;
  */
 
 @Repository
-public class RequisicionPartidaDAOImpl implements RequisicionPartidaDAO{
+public class RequisicionPartidaDAOImpl extends HibernateDAOSuportUtil implements RequisicionPartidaDAO{
 
 	public void save(RequisicionPartida requisicionPartida) {
 		

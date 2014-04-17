@@ -7,9 +7,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.cplsystems.stock.dao.ProyectoDAO;
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.TelefonoDAO;
-import com.cplsystems.stock.domain.Proyecto;
 import com.cplsystems.stock.domain.Telefono;
 
 /**
@@ -17,7 +16,7 @@ import com.cplsystems.stock.domain.Telefono;
  */
 
 @Repository
-public class TelefonoDAOImpl implements TelefonoDAO{
+public class TelefonoDAOImpl extends HibernateDAOSuportUtil implements TelefonoDAO{
 
 	public void save(Telefono telefono) {
 		
