@@ -14,12 +14,13 @@
 				<vlayout sclass="contentRegistro">
 					<image src="/images/home/mainLogo.png" />
 					<textbox id="user" type="text"
-						value="@bind(vm.user)" instant="true" zclass="textbox"
+						value="@bind(vm.user)" zclass="textbox"
 						tooltiptext="Usuario" />
 					<textbox id="password" type="password"
-						zclass="textboxPassword" tooltiptext="Password" />
+						value="@bind(vm.password)" zclass="textboxPassword"
+						tooltiptext="Password" />
 					<button label="Accesar" tooltiptext="Autentificar"
-						zclass="button" />
+						zclass="button" onClick="@command('authenticateUser')" />
 				</vlayout>
 			</center>
 			<south sclass="footHome" height="50px">
