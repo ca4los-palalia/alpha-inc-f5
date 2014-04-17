@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.PartidaDAO;
 import com.cplsystems.stock.domain.Partida;
 
@@ -16,7 +17,7 @@ import com.cplsystems.stock.domain.Partida;
  */
 
 @Repository
-public class PartidaDAOImpl implements PartidaDAO{
+public class PartidaDAOImpl extends HibernateDAOSuportUtil implements PartidaDAO{
 
 	public void save(Partida partida) {
 		// TODO Auto-generated method stub

@@ -7,12 +7,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.cplsystems.stock.dao.RequisicionPartidaDAO;
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.RequisicionProveedorDAO;
-import com.cplsystems.stock.domain.Partida;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
-import com.cplsystems.stock.domain.RequisicionPartida;
 import com.cplsystems.stock.domain.RequisicionProveedor;
 
 /**
@@ -20,7 +18,7 @@ import com.cplsystems.stock.domain.RequisicionProveedor;
  */
 
 @Repository
-public class RequisicionProveedorDAOImpl implements RequisicionProveedorDAO{
+public class RequisicionProveedorDAOImpl extends HibernateDAOSuportUtil implements RequisicionProveedorDAO{
 
 
 	public void save(RequisicionProveedor requisicionProveedor) {

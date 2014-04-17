@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.RequisicionProductoDAO;
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Lugar;
@@ -19,7 +20,7 @@ import com.cplsystems.stock.domain.RequisicionProducto;
  */
 
 @Repository
-public class RequisicionProductoDAOImpl implements RequisicionProductoDAO{
+public class RequisicionProductoDAOImpl extends HibernateDAOSuportUtil implements RequisicionProductoDAO{
 
 	public void save(RequisicionProducto requisicionProducto) {
 		// TODO Auto-generated method stub

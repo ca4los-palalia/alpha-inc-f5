@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.DireccionDAO;
 import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Estado;
@@ -17,7 +18,7 @@ import com.cplsystems.stock.domain.Municipio;
  */
 
 @Repository
-public class DireccionDAOImpl implements DireccionDAO{
+public class DireccionDAOImpl extends HibernateDAOSuportUtil implements DireccionDAO{
 
 	public void save(Direccion direccion) {
 		// TODO Auto-generated method stub

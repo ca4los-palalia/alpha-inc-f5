@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.ProyectoDAO;
 import com.cplsystems.stock.domain.Proyecto;
 
@@ -15,7 +16,7 @@ import com.cplsystems.stock.domain.Proyecto;
  */
 
 @Repository
-public class ProyectoDAOImpl implements ProyectoDAO{
+public class ProyectoDAOImpl extends HibernateDAOSuportUtil implements ProyectoDAO{
 
 	public void save(Proyecto proyecto) {
 		

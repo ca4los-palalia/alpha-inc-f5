@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.LugarDAO;
 import com.cplsystems.stock.domain.Lugar;
 import com.cplsystems.stock.domain.Proyecto;
@@ -16,7 +17,7 @@ import com.cplsystems.stock.domain.Proyecto;
  */
 
 @Repository
-public class LugarDAOImpl implements LugarDAO{
+public class LugarDAOImpl extends HibernateDAOSuportUtil implements LugarDAO{
 
 	public void save(Lugar lugar) {
 		// TODO Auto-generated method stub

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.ProveedorDAO;
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Contrato;
@@ -19,7 +20,7 @@ import com.cplsystems.stock.domain.Proveedor;
  */
 
 @Repository
-public class ProveedorDAOImpl implements ProveedorDAO{
+public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements ProveedorDAO{
 
 	public void save(Proveedor proveedor) {
 		// TODO Auto-generated method stub
