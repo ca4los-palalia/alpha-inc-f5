@@ -1,0 +1,20 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/styles/home/styleHome.css" />
+	<window apply="org.zkoss.bind.BindComposer">
+		<vlayout sclass="menubar">
+			<button label="Productos"
+				image="/images/toolbar/box32.png" zclass="menuItem" />
+			<button label="Proveedores"
+				image="/images/toolbar/users32.png" zclass="menuItem" />
+			<button label="Requisiciones"
+				image="/images/toolbar/linedpapercheck32.png" zclass="menuItem" />
+			<button label="Órdenes de compra"
+				image="/images/toolbar/shoppingcart32.png" zclass="menuItem" />
+			<button label="Reportes"
+				image="/images/toolbar/risegraph32.png" zclass="menuItem" />
+			<button label="Panel de control"
+				image="/images/toolbar/gear32.png" zclass="menuItem" />
+		</vlayout>
+	</window>
+</zk>
