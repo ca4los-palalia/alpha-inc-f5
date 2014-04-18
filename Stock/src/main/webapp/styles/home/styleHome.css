@@ -4,50 +4,6 @@ body {
 	font-family: sans-serif;
 }
 
-/*---------------------------------------------------------------*/
-.z-borderlayout {
-	
-}
-
-.z-east,.z-west,.z-south,.z-north {
-	
-}
-
-.contentPageLogin .headerHome,.contentPageLogin .centerHome,.contentPageLogin .footHome
-	{
-	border-style: none;
-	background-color: transparent;
-	width: 980px !important;
-}
-/*---------------------------------------------------------------*/
-.contentPageLogin {
-	background-color: #f0f1f3;
-	background-position: bottom;
-	background-repeat: repeat-x;
-	margin: 0 auto;
-	height: 100%;
-	min-height: 600px;
-	max-height: 800px;
-}
-
-.headerHome {
-	background-color: #517398 !important;
-}
-
-.contentPageLogin .centerHome {
-	background-color: #f0f1f3;
-	background-position: bottom;
-	background-repeat: repeat-x;
-}
-
-.centerHome>div {
-	background-color: #517398 background-position: bottom;
-	background-repeat: repeat-x;
-	float: left;
-	clear: none;
-	height: 400px;
-}
-
 .regionLeft,.regionRigth {
 	float: left;
 	min-height: 500px;
@@ -57,12 +13,6 @@ body {
 	margin-left: 10px;
 	position: relative;
 	width: 520px;
-}
-
-.imgLogo {
-	position: absolute;
-	top: 170px;
-	right: 60px;
 }
 
 .regionRigth {
@@ -88,177 +38,6 @@ body {
 	height: 2px;
 	margin: 0 auto;
 	width: 95%;
-}
-
-#acdnmenu {
-	/* Note about height: 
-    Set "height:auto;" if flexible height is required. 
-    A fixed height is prefered as content below the menu won't be pulled down/up when the menu is expanding/collapsing. */
-	height: 300px;
-	width: 240px;
-}
-
-#acdnmenu ul.top {
-	padding-left: 0;
-	background: #FFF;
-	border: 1px solid #222;
-}
-
-#acdnmenu div.heading,#acdnmenu a.link {
-	padding: 8px;
-	padding-left: 24px;
-	text-align: left;
-	font: normal 12px Verdana;
-	color: #DDD;
-	background: #D00 url(bg.gif) repeat-x 0 0;
-	text-decoration: none;
-	outline: none;
-}
-
-#acdnmenu div.current,#acdnmenu div:hover,#acdnmenu a.link:hover,#acdnmenu div.current a.link
-	{
-	color: #FFF;
-	font-weight: normal;
-	text-decoration: none;
-	background-position: 0 -64px;
-}
-
-/*Top level link without children*/
-#acdnmenu a.current,#acdnmenu a.current:hover {
-	color: #FFF;
-	text-decoration: underline;
-}
-
-/* arrow image for the top headings */
-#acdnmenu div.arrowImage {
-	width: 12px;
-	height: 12px;
-	top: 9px;
-	right: 8px;
-	/* Changing it to "left:4px;" will position the arrow image to the left */
-	background-image: url(arrows.gif);
-	background-position: 0 0;
-}
-
-#acdnmenu div.current div.arrowImage {
-	background-position: 0 -12px;
-}
-
-#acdnmenu li.separator {
-	border-top: 1px solid #000;
-	border-bottom: none;
-}
-
-/* ##### Sub level items #####*/
-#acdnmenu ul.sub {
-	padding-left: 14px; /*This determines the hierarchical offset*/
-}
-
-#acdnmenu ul.sub div.heading {
-	text-align: left;
-	font: normal 12px Arial;
-	padding: 5px;
-	padding-left: 20px;
-	color: #000;
-	background: none;
-}
-
-#acdnmenu ul.sub div.heading a {
-	color: #000;
-}
-
-#acdnmenu ul.sub div.current {
-	color: #000;
-	background: none;
-}
-
-#acdnmenu ul.sub a.link {
-	font: normal 11px Arial;
-	color: #000;
-	padding: 5px;
-	padding-left: 20px;
-	text-decoration: none;
-	background: none;
-}
-
-#acdnmenu ul.sub a.link:hover,#acdnmenu ul.sub a.current,#acdnmenu ul.sub div.heading a:hover,#acdnmenu ul.sub div.heading a.current
-	{
-	color: #000;
-	text-decoration: underline;
-	background: none;
-}
-
-#acdnmenu ul.sub div.arrowImage {
-	width: 12px;
-	height: 12px;
-	top: 6px;
-	left: 4px;
-	background-image: url(arrows.gif);
-	background-position: 0 -24px;
-}
-
-#acdnmenu ul.sub div.current div.arrowImage {
-	background-position: 0 -36px;
-}
-
-/* ##### Followings usually don't need modification ###### */
-/*Hack the font-size:0 bug for IE6 */
-#acdnmenu,#acdnmenu ul {
-	display: block;
-	font-size: 0px;
-	line-height: 0px;
-}
-
-#acdnmenu li {
-	font-size: 12px;
-	line-height: 16px;
-}
-
-#acdnmenu:after {
-	content: '.';
-	height: 0;
-	clear: both;
-	display: block;
-	visibility: hidden;
-}
-
-/*Hack for IE6-7*/
-#acdnmenu ul,#acdnmenu li,#acdnmenu div.heading,#acdnmenu a.smLink,#acdnmenu div.description
-	{
-	*zoom: 1;
-}
-
-#acdnmenu li {
-	*float: left;
-	*width: 100%;
-}
-
-#acdnmenu ul {
-	position: relative; /*!*/
-	overflow: hidden;
-	padding: 0;
-	margin: 0;
-	list-style-type: none;
-	padding-left: 10px;
-}
-
-#acdnmenu>ul {
-	visibility: hidden;
-}
-
-#acdnmenu li {
-	padding: 0;
-	margin: 0;
-}
-
-#acdnmenu div.heading,#acdnmenu div.current {
-	position: relative;
-	cursor: pointer;
-}
-
-#acdnmenu div.arrowImage {
-	position: absolute;
-	overflow: hidden;
 }
 
 /**CSS Accordion*/
@@ -366,11 +145,9 @@ body {
 	float: left;
 	background: url(../img/active.png);
 	height: 600% !important;
-	width:180px;
-	height:600px;
+	width: 180px;
+	height: 600px;
 }
-
-
 
 .lbl {
 	font-family: tahoma;
@@ -425,7 +202,6 @@ body {
 	transform: scale(.887);
 }
 
-
 .upload {
 	height: 20px;
 	border: 1px solid #bac8d5;
@@ -434,7 +210,6 @@ body {
 	border-radius: 1px;
 	font-size: 10px;
 	font-family: arial, helvetica, sans-serif;
-
 	text-decoration: none;
 	display: inline-block;
 	text-shadow: -1px -1px 0 #bac8d5;
@@ -471,4 +246,73 @@ body {
 
 .upload:focus {
 	background: #bac8d5;
+}
+
+.homeContainer {
+	position: absolute;
+	top: 0%;
+	left: 15%;
+	right: 15%;
+	width: 100%;
+	height: 100%;
+}
+
+div {
+	width: 80%;
+}
+
+.homeHeader {
+	height: 40px;
+	width: 73%;
+	moz-border-radius-bottomright: 10px;
+	border-bottom-right-radius: 10px;
+	background-color: #597BA0;
+}
+
+.homeMenu {
+	height: 90%;
+	width: 15%;
+	padding-left: 10px;
+	border-color: black;
+	float: left;
+	border-color: black;
+}
+
+.homeContent {
+	padding: 4px 5px 5px 28px;
+	height: 90%;
+	width: 50%;
+	border-left-style: inset;
+	border-left-color: #D9E0E7;
+	border-left-width: 1px;
+	float: left;
+}
+
+.homeFooter {
+	text-align: center;
+	clear: both;
+	float: left;
+	width: 73%;
+	border-top-style: inset;
+	border-top-color: #D9E0E7;
+	border-top-width: 1px;
+}
+
+/**ESTILO PARA EL MENU*/
+.menubar {
+	padding-left:10px;
+	padding-top: 10px;
+	background-color: white;
+	font-family: arial;
+	border-bottom-style: none;
+}
+
+.menuItem {
+	color: #597BA0;
+	font-family: tahoma;
+	font-size: 12px;
+	border: none;
+	background: white;
+	width: 300px;
+	text-align: left
 }
