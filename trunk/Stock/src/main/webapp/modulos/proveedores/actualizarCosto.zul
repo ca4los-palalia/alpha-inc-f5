@@ -1,0 +1,12 @@
+<?page title="Home" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<zk>
+	<combobox id="combo" autodrop="true" buttonVisible="false"/>
+	            
+	            <zscript><![CDATA[
+			        /*Dictionary.getDictionary() returns a String[] containing the dictionary words*/
+			        ListModel dictModel= new SimpleListModel(com.cplsystems.stock.app.ProveedoresComposer.getDirectory());
+			        combo.setModel(dictModel);
+			    ]]></zscript>
+</zk>
