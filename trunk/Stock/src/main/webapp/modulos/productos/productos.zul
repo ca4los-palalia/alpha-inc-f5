@@ -16,7 +16,7 @@
 					onClick="@command(performSearch)" />
 			</hlayout>
 			<hlayout>
-				<vlayout>
+				<vlayout id="productoDetails">
 					<hlayout>
 						<label value="Clave:" />
 						<hlayout>
