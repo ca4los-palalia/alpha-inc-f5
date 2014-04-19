@@ -17,6 +17,9 @@ public class Producto {
 	private String nombre;
 	private String unidad;
 	private Float precio;
+	private String marca;
+	private String modelo;
+	private String codigoBarras;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,6 +76,32 @@ public class Producto {
 	public void setPrecio(Float precio) {
 		this.precio = precio;
 	}
-	
+
+	@Column
+	public String getMarca() {
+		return marca;
+	}
+
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+	@Column
+	public String getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(String modelo) {
+		this.modelo = modelo;
+	}
+
+	@Column
+	public String getCodigoBarras() {
+		return codigoBarras;
+	}
+
+	public void setCodigoBarras(String codigoBarras) {
+		this.codigoBarras = codigoBarras;
+	}
 
 }
