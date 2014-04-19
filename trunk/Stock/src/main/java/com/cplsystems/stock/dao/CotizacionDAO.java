@@ -17,13 +17,21 @@ import com.cplsystems.stock.domain.Requisicion;
 public interface CotizacionDAO {
 
 	public void save(Cotizacion cotizacion);
-	public void update(Cotizacion cotizacion);
+
 	public void delete(Cotizacion cotizacion);
+
 	public Cotizacion getById(Long idCotizacion);
+
 	public List<Cotizacion> getAll();
-	public List<Cotizacion> getByFechaEnvioCotizacion(Calendar fechaEnvioSolucion);
+
+	public List<Cotizacion> getByFechaEnvioCotizacion(
+			Calendar fechaEnvioSolucion);
+
 	public List<Cotizacion> getByFechaResolicion(Calendar fechaResolucion);
+
 	public List<Cotizacion> getByStatus(Integer status);
+
 	public List<Cotizacion> getByProveedor(Proveedor proveedor);
+
 	public List<Cotizacion> getByRequisicion(Requisicion requisicion);
 }

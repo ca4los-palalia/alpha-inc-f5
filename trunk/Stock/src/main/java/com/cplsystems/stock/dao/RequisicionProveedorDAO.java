@@ -14,11 +14,14 @@ import com.cplsystems.stock.domain.RequisicionProveedor;
  */
 public interface RequisicionProveedorDAO {
 	public void save(RequisicionProveedor requisicionProveedor);
-	public void update(RequisicionProveedor requisicionProveedor);
+
 	public void delete(RequisicionProveedor requisicionProveedor);
+
 	public RequisicionProveedor getById(Long idRequisicionProveedor);
-	
+
 	public List<RequisicionProveedor> getByRequisicion(Requisicion requisicion);
+
 	public List<RequisicionProveedor> getByProveedor(Proveedor Proveedor);
+
 	public List<RequisicionProveedor> getAll();
 }
