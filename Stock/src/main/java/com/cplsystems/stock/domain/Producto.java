@@ -41,7 +41,7 @@ public class Producto {
 		this.clave = clave;
 	}
 
-	@Column(name = "descripcion", length = 250)
+	@Column(name = "descripcion", columnDefinition = "TEXT")
 	public String getDescripcion() {
 		return descripcion;
 	}
