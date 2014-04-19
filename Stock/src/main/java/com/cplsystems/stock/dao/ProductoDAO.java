@@ -14,9 +14,11 @@ import com.cplsystems.stock.domain.Producto;
 public interface ProductoDAO {
 
 	public void save(Producto producto);
-	public void update(Producto producto);
+
 	public void delete(Producto producto);
+
 	public Producto getById(Long idProducto);
+
 	public List<Producto> getAll();
-	
+
 }

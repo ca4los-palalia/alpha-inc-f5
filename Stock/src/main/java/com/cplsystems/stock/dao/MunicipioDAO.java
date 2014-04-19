@@ -13,8 +13,10 @@ import com.cplsystems.stock.domain.Municipio;
 public interface MunicipioDAO {
 
 	public void save(Municipio estado);
-	public void update(Municipio estado);
+
 	public void delete(Municipio estado);
+
 	public Municipio getById(Long idMunicipio);
+
 	public List<Municipio> getAll();
 }

@@ -12,11 +12,14 @@ import com.cplsystems.stock.domain.Proyecto;
  */
 public interface ProyectoDAO {
 
-    public void save(Proyecto proyecto);
-    public void update(Proyecto proyecto);
-    public void delete(Proyecto proyecto);
-    public Proyecto getById(Long idProyecto);
-    public List<Proyecto> getAll();
-    public Proyecto getById(String nombre);
+	public void save(Proyecto proyecto);
+
+	public void delete(Proyecto proyecto);
+
+	public Proyecto getById(Long idProyecto);
+
+	public List<Proyecto> getAll();
+
+	public Proyecto getById(String nombre);
 
 }

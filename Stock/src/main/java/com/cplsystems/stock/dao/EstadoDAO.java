@@ -12,8 +12,10 @@ import com.cplsystems.stock.domain.Estado;
  */
 public interface EstadoDAO {
 	public void save(Estado estado);
-	public void update(Estado estado);
+
 	public void delete(Estado estado);
+
 	public Estado getById(Long idEstado);
+
 	public List<Estado> getAll();
 }

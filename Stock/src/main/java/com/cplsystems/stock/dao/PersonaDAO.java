@@ -17,8 +17,6 @@ public interface PersonaDAO {
 
 	public void save(Persona persona);
 
-	public void update(Persona persona);
-
 	public void delete(Persona persona);
 
 	public List<Persona> getByDireccion(Direccion direccion);

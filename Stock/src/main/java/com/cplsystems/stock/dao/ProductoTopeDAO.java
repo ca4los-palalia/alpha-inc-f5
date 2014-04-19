@@ -16,11 +16,15 @@ import com.cplsystems.stock.domain.ProductoTope;
 public interface ProductoTopeDAO {
 
 	public void save(ProductoTope productoTope);
-	public void update(ProductoTope productoTope);
+
 	public void delete(ProductoTope productoTope);
+
 	public ProductoTope getById(Long idProductoTope);
+
 	public List<ProductoTope> getAll();
+
 	public List<ProductoTope> getByProducto(Producto producto);
+
 	public List<ProductoTope> getByLugar(Lugar lugar);
-	
+
 }

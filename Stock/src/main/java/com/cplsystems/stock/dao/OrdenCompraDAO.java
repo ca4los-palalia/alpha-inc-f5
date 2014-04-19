@@ -13,11 +13,14 @@ import com.cplsystems.stock.domain.OrdenCompra;
  */
 public interface OrdenCompraDAO {
 
-    public void save(OrdenCompra ordenCompra);
-    public void update(OrdenCompra ordenCompra);
-    public void delete(OrdenCompra ordenCompra);
-    public OrdenCompra getById(Long idOrdenCompra);
-    public List<OrdenCompra> getAll();
-    public List<OrdenCompra> getByCotizacion(Cotizacion cotizacion);
+	public void save(OrdenCompra ordenCompra);
+
+	public void delete(OrdenCompra ordenCompra);
+
+	public OrdenCompra getById(Long idOrdenCompra);
+
+	public List<OrdenCompra> getAll();
+
+	public List<OrdenCompra> getByCotizacion(Cotizacion cotizacion);
 
 }
