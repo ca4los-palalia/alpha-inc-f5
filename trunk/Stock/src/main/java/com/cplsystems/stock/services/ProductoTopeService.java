@@ -6,6 +6,7 @@ package com.cplsystems.stock.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.ProductoTopeDAO;
@@ -23,26 +24,30 @@ public class ProductoTopeService {
 	@Autowired
 	private ProductoTopeDAO productoTopeDAO;
 
-	public void save(ProductoTope productoTope){
+	public void save(ProductoTope productoTope) throws DataAccessException {
 		productoTopeDAO.save(productoTope);
 	}
-	public void update(ProductoTope productoTope){
-		productoTopeDAO.update(productoTope);
-	}
-	public void delete(ProductoTope productoTope){
+
+	public void delete(ProductoTope productoTope) throws DataAccessException {
 		productoTopeDAO.delete(productoTope);
 	}
-	public ProductoTope getById(Long idProductoTope){
+
+	public ProductoTope getById(Long idProductoTope) throws DataAccessException {
 		return productoTopeDAO.getById(idProductoTope);
 	}
-	public List<ProductoTope> getAll(){
+
+	public List<ProductoTope> getAll() throws DataAccessException {
 		return productoTopeDAO.getAll();
 	}
-	public List<ProductoTope> getByProducto(Producto producto){
+
+	public List<ProductoTope> getByProducto(Producto producto)
+			throws DataAccessException {
 		return productoTopeDAO.getByProducto(producto);
 	}
-	public List<ProductoTope> getByLugar(Lugar lugar){
+
+	public List<ProductoTope> getByLugar(Lugar lugar)
+			throws DataAccessException {
 		return productoTopeDAO.getByLugar(lugar);
 	}
-	
+
 }

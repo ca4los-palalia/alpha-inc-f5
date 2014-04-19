@@ -6,6 +6,7 @@ package com.cplsystems.stock.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.OrdenCompraProductoDAO;
@@ -23,26 +24,33 @@ public class OrdenCompraProductoService {
 	@Autowired
 	private OrdenCompraProductoDAO ordenCompraProductoDAO;
 
-	public void save(OrdenCompraProducto ordenCompraProducto){
+	public void save(OrdenCompraProducto ordenCompraProducto)
+			throws DataAccessException {
 		ordenCompraProductoDAO.save(ordenCompraProducto);
 	}
-    public void update(OrdenCompraProducto ordenCompraProducto){
-    	ordenCompraProductoDAO.update(ordenCompraProducto);
-    }
-    public void delete(OrdenCompraProducto ordenCompraProducto){
-    	ordenCompraProductoDAO.delete(ordenCompraProducto);
-    }
-    public OrdenCompraProducto getById(Long idOrdenCompraProducto){
-    	return ordenCompraProductoDAO.getById(idOrdenCompraProducto);
-    }
-    public List<OrdenCompraProducto> getAll(){
-    	return ordenCompraProductoDAO.getAll();
-    }
-    public List<OrdenCompraProducto> getByOrdenCopra(OrdenCompra ordenCompra){
-    	return ordenCompraProductoDAO.getByOrdenCopra(ordenCompra);
-    }
-    public List<OrdenCompraProducto> getByProducto(Producto producto){
-    	return ordenCompraProductoDAO.getByProducto(producto);
-    }
-	
+
+	public void delete(OrdenCompraProducto ordenCompraProducto)
+			throws DataAccessException {
+		ordenCompraProductoDAO.delete(ordenCompraProducto);
+	}
+
+	public OrdenCompraProducto getById(Long idOrdenCompraProducto)
+			throws DataAccessException {
+		return ordenCompraProductoDAO.getById(idOrdenCompraProducto);
+	}
+
+	public List<OrdenCompraProducto> getAll() throws DataAccessException {
+		return ordenCompraProductoDAO.getAll();
+	}
+
+	public List<OrdenCompraProducto> getByOrdenCopra(OrdenCompra ordenCompra)
+			throws DataAccessException {
+		return ordenCompraProductoDAO.getByOrdenCopra(ordenCompra);
+	}
+
+	public List<OrdenCompraProducto> getByProducto(Producto producto)
+			throws DataAccessException {
+		return ordenCompraProductoDAO.getByProducto(producto);
+	}
+
 }

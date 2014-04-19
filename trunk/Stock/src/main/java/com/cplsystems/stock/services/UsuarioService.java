@@ -4,6 +4,7 @@
 package com.cplsystems.stock.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.UsuarioDAO;
@@ -20,7 +21,7 @@ public class UsuarioService {
 	private UsuarioDAO usuarioDAO;
 
 	public Usuario getUsuarioByCredentials(final String usuario,
-			final String password) {
+			final String password) throws DataAccessException {
 		return usuarioDAO.getUsuarioByCredentials(usuario, password);
 	}
 }

@@ -6,6 +6,7 @@ package com.cplsystems.stock.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.ProveedorProductoDAO;
@@ -22,26 +23,33 @@ public class ProveedorProductoService {
 
 	@Autowired
 	private ProveedorProductoDAO proveedorProductoDAO;
-	
-	public void save(ProveedorProducto proveedorProducto){
+
+	public void save(ProveedorProducto proveedorProducto)
+			throws DataAccessException {
 		proveedorProductoDAO.save(proveedorProducto);
 	}
-	public void update(ProveedorProducto proveedorProducto){
-		proveedorProductoDAO.update(proveedorProducto);
-	}
-	public void delete(ProveedorProducto proveedorProducto){
+
+	public void delete(ProveedorProducto proveedorProducto)
+			throws DataAccessException {
 		proveedorProductoDAO.delete(proveedorProducto);
 	}
-	public ProveedorProducto getById(Long idProveedorProducto){
+
+	public ProveedorProducto getById(Long idProveedorProducto)
+			throws DataAccessException {
 		return proveedorProductoDAO.getById(idProveedorProducto);
 	}
-	public List<ProveedorProducto> getByProveedor(Proveedor Proveedor){
+
+	public List<ProveedorProducto> getByProveedor(Proveedor Proveedor)
+			throws DataAccessException {
 		return proveedorProductoDAO.getByProveedor(Proveedor);
 	}
-	public List<ProveedorProducto> getByProducto(Producto Producto){
+
+	public List<ProveedorProducto> getByProducto(Producto Producto)
+			throws DataAccessException {
 		return proveedorProductoDAO.getByProducto(Producto);
 	}
-	public List<ProveedorProducto> getAll(){
+
+	public List<ProveedorProducto> getAll() throws DataAccessException {
 		return proveedorProductoDAO.getAll();
 	}
 }
