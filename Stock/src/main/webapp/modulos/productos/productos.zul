@@ -1,141 +1,152 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
+	<style src="/styles/home/styleHome.css" />
 	<window apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.ProductosVM')">
-		<panel border="none">
-			<panelchildren>
-				<hlayout>
-					<vlayout>
-						<hlayout>
-							<label value="Clave:" />
-							<hlayout>
-								<textbox zclass="tBox" maxlength="24" />
-								<button onClick=""
-									image="/images/toolbar/search32.png" />
-								<label value="Nombre:" />
-								<textbox cols="53" zclass="tBox"
-									maxlength="50" />
-							</hlayout>
-						</hlayout>
-						<hlayout>
-							<label value="Marca:" />
-							<hlayout>
-								<textbox cols="20" zclass="tBox"
-									maxlength="27" />
-								<label value="Modelo:" />
-								<textbox cols="20" zclass="tBox"
-									maxlength="35" />
-								<label value="Código de barras:" />
-								<textbox cols="17" zclass="tBox"
-									maxlength="35" />
-							</hlayout>
-						</hlayout>
-						<hlayout>
-							<label value="Descripción:" />
-							<textbox cols="90" multiline="true"
-								droppable="false" type="text" zclass="tBox" height="90px" />
-						</hlayout>
-					</vlayout>
-				</hlayout>
-				<vlayout zclass="tabBox">
-					<tabbox id="tb" >
-						<tabs id="tabs">
-							<tab label="Clasificación" />
-							<tab label="Precios" />
-							<tab label="Últimas compras" />
-							<tab label="Estadísticas" />
-						</tabs>
-						<tabpanels>
-							<tabpanel>
+		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.producto.ProductosVM')">
+		<vlayout zclass="panelContainer">
 
-							</tabpanel>
-							<tabpanel>
+			<hlayout style="text-align:right">
+				<button image="/images/toolbar/download32.png"
+					onClick="@command('saveChanges')" />
+				<button image="/images/toolbar/paper32.png"
+					onClick="@command('newRecord')" />
+				<button image="/images/toolbar/minus32.png"
+					onClick="@command('deleteRecord')" />
+				<button image="/images/toolbar/search32.png"
+					onClick="@command(performSearch)" />
+			</hlayout>
+			<hlayout>
+				<vlayout>
+					<hlayout>
+						<label value="Clave:" />
+						<hlayout>
+							<textbox zclass="tBox" maxlength="24" 
+							value="@bind(pvm.producto.clave)"/>
+							<button onClick=""
+								image="/images/toolbar/search32.png" />
+							<label value="Nombre:" />
+							<textbox cols="53" zclass="tBox"
+								value="@bind(pvm.producto.nombre)" maxlength="60" />
+						</hlayout>
+					</hlayout>
+					<hlayout>
+						<label value="Marca:" />
+						<hlayout>
+							<textbox cols="20" zclass="tBox"
+								maxlength="22" value="@bind(pvm.producto.marca)" />
+							<label value="Modelo:" />
+							<textbox cols="20" zclass="tBox"
+								maxlength="24" value="@bind(pvm.producto.modelo)"/>
+							<label value="Código de barras:" />
+							<textbox cols="17" value="@bind(pvm.producto.codigoBarras)"
+							 zclass="tBox" maxlength="20" />
+						</hlayout>
+					</hlayout>
+					<hlayout>
+						<label value="Descripción:" />
+						<textbox cols="90" multiline="true" value="@bind(pvm.producto.descripcion)"
+							droppable="false" type="text" zclass="tBox" height="90px" />
+					</hlayout>
+				</vlayout>
+			</hlayout>
+			<vlayout zclass="tabBox">
+				<tabbox id="tb">
+					<tabs id="tabs">
+						<tab label="Clasificación" />
+						<tab label="Precios" />
+						<tab label="Últimas compras" />
+						<tab label="Estadísticas" />
+					</tabs>
+					<tabpanels>
+						<tabpanel>
+
+						</tabpanel>
+						<tabpanel>
+							<hlayout>
+								<vlayout>
+									<hlayout>
+										<label value="Divisa" />
+										<combobox />
+									</hlayout>
+									<hlayout>
+										<label value="Excento" />
+										<textbox />
+									</hlayout>
+									<hlayout>
+										<label value="%Imp1" />
+										<doublebox />
+									</hlayout>
+									<hlayout>
+										<label value="%Imp2" />
+										<doublebox />
+									</hlayout>
+								</vlayout>
 								<hlayout>
 									<vlayout>
 										<hlayout>
-											<label value="Divisa" />
-											<combobox />
-										</hlayout>
-										<hlayout>
-											<label value="Excento" />
-											<textbox />
-										</hlayout>
-										<hlayout>
-											<label value="%Imp1" />
+											<label value="1" />
 											<doublebox />
 										</hlayout>
 										<hlayout>
-											<label value="%Imp2" />
+											<label value="2" />
+											<doublebox />
+										</hlayout>
+										<hlayout>
+											<label value="3" />
+											<doublebox />
+										</hlayout>
+										<hlayout>
+											<label value="4" />
+											<doublebox />
+										</hlayout>
+										<hlayout>
+											<label value="5" />
 											<doublebox />
 										</hlayout>
 									</vlayout>
-									<hlayout>
-										<vlayout>
-											<hlayout>
-												<label value="1" />
-												<doublebox />
-											</hlayout>
-											<hlayout>
-												<label value="2" />
-												<doublebox />
-											</hlayout>
-											<hlayout>
-												<label value="3" />
-												<doublebox />
-											</hlayout>
-											<hlayout>
-												<label value="4" />
-												<doublebox />
-											</hlayout>
-											<hlayout>
-												<label value="5" />
-												<doublebox />
-											</hlayout>
-										</vlayout>
-										<vlayout>
-											<doublebox disabled="true" />
-											<doublebox disabled="true" />
-											<doublebox disabled="true" />
-											<doublebox disabled="true" />
-											<doublebox disabled="true" />
-										</vlayout>
-									</hlayout>
 									<vlayout>
-										<hlayout>
-											<label value="Máximo" />
-											<doublebox />
-										</hlayout>
-										<hlayout>
-											<label value="Reposición" />
-											<doublebox />
-										</hlayout>
-										<hlayout>
-											<label value="Sig Capa" />
-											<doublebox disabled="true" />
-										</hlayout>
-										<hlayout>
-											<label value="Último" />
-											<doublebox disabled="true" />
-										</hlayout>
-										<hlayout>
-											<label
-												value="Costo Promedio(MN)" />
-											<doublebox disabled="true" />
-										</hlayout>
+										<doublebox disabled="true" />
+										<doublebox disabled="true" />
+										<doublebox disabled="true" />
+										<doublebox disabled="true" />
+										<doublebox disabled="true" />
 									</vlayout>
-									<vlayout></vlayout>
 								</hlayout>
-							</tabpanel>
-							<tabpanel>
+								<vlayout>
+									<hlayout>
+										<label value="Máximo" />
+										<doublebox />
+									</hlayout>
+									<hlayout>
+										<label value="Reposición" />
+										<doublebox />
+									</hlayout>
+									<hlayout>
+										<label value="Sig Capa" />
+										<doublebox disabled="true" />
+									</hlayout>
+									<hlayout>
+										<label value="Último" />
+										<doublebox disabled="true" />
+									</hlayout>
+									<hlayout>
+										<label
+											value="Costo Promedio(MN)" />
+										<doublebox disabled="true" />
+									</hlayout>
+								</vlayout>
+								<vlayout></vlayout>
+							</hlayout>
+						</tabpanel>
+						<tabpanel>
 
-							</tabpanel>
-							<tabpanel>
+						</tabpanel>
+						<tabpanel>
 
-							</tabpanel>
-						</tabpanels>
-					</tabbox>
-				</vlayout>
-			</panelchildren>
-		</panel>
+						</tabpanel>
+					</tabpanels>
+				</tabbox>
+			</vlayout>
+		</vlayout>
 	</window>
 </zk>
