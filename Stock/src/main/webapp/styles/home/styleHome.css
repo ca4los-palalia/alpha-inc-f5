@@ -18,25 +18,93 @@
 color
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 :
+
+
+
+
+
+
 
  
 
+
+
+
+
+
+
 white
+
+
+
+
+
+
+
+
+
+
+
+
 ;
-
-
 width
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 :
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 440
 px
+
+
+
+
+
+
+
+
+
+
+
+
 ;
-
-
 }
 .footHome {
 	background-color: #517398 !important;
@@ -44,7 +112,7 @@ px
 }
 
 * /
-	/*NOTA: contenedor de elementos del pie*/  
+	/*NOTA: contenedor de elementos del pie*/        
 .footHome .z-south-body {
 	height: 100%;
 	background-color: #517398;
@@ -82,30 +150,6 @@ px
 	text-shadow: 0 0 15px #000000;
 	transform: scale(1.15);
 	font-size: 14px;
-}
-
-.itemsBackground {
-	padding: 3px 5px 5px 20px;
-	color: #797979;
-	text-shadow: 1px 1px 0px rgba(255, 255, 255, .2);
-	background: #e5e5e5;
-	border-bottom: 1px solid #c9c9c9;
-	-webkit-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 100px
-		1px 0px 0px rgba(0, 0, 0, .1);
-	-moz-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 100px
-		1px 0px 0px rgba(0, 0, 0, .1);
-	box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 0px 1px 0px
-		0px rgba(0, 0, 0, .1);
-	background: url(../../images/home/backgroundItems.jpg);
-}
-
-.optionsPanel {
-	padding: 5px 5px 5px 1px;
-	float: left;
-	background: url(../img/active.png);
-	height: 600% !important;
-	width: 180px;
-	height: 600px;
 }
 
 .lbl {
@@ -278,8 +322,17 @@ div {
 	text-align: left
 }
 
-.tabBox {
-	padding-top: 10px;
-	width: 640px;
-	border-color: black;
+.toolBar {
+	border: none;
+	text-align: right;
+	padding-right: 35px;
+	background-color: #597BA0;
+	border-bottom-style: ridge;
+	padding-right: 35px;
+}
+
+.panelContainer {
+	width: 645px;
+	border-style: none;
+	border-top-style: none;
 }
