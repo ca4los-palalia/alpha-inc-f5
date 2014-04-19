@@ -1,14 +1,12 @@
 @CHARSET "ISO-8859-1";
 
-body {
-	font-family: sans-serif;
-}
-
+/
+*
 .regionLeft,.regionRigth {
 	float: left;
 	min-height: 500px;
 }
-
+/*
 .regionLeft {
 	margin-left: 10px;
 	position: relative;
@@ -17,15 +15,36 @@ body {
 
 .regionRigth {
 	/*background-color: yellow;*/
-	color: white;
-	width: 440px;
-}
+color
 
+
+:
+
+ 
+
+white
+;
+
+
+width
+
+
+:
+
+
+440
+px
+;
+
+
+}
 .footHome {
 	background-color: #517398 !important;
 	background-position: bottom;
 }
-/*NOTA: contenedor de elementos del pie*/
+
+* /
+	/*NOTA: contenedor de elementos del pie*/  
 .footHome .z-south-body {
 	height: 100%;
 	background-color: #517398;
@@ -38,66 +57,6 @@ body {
 	height: 2px;
 	margin: 0 auto;
 	width: 95%;
-}
-
-/**CSS Accordion*/
-.accordion {
-	margin: 0;
-	padding: 0;
-	border: none;
-	outline: none;
-	display: block;
-	position: relative;
-	min-width: 24px;
-	padding: 8px 10px 10px 40px;
-	color: #fdfdfd;
-	font: bold 13px arial, sans-serif;
-	text-decoration: none;
-	text-shadow: 0px 1px 0px rgba(0, 0, 0, .35);
-	background: #6c6e74;
-	background: -moz-linear-gradient(top, #6c6e74 0%, #4b4d51 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #6c6e74),
-		color-stop(100%, #4b4d51));
-	background: -webkit-linear-gradient(top, #6c6e74 0%, #4b4d51 100%);
-	background: -o-linear-gradient(top, #6c6e74 0%, #4b4d51 100%);
-	background: -ms-linear-gradient(top, #6c6e74 0%, #4b4d51 100%);
-	background: linear-gradient(top, #6c6e74 0%, #4b4d51 100%);
-	-webkit-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 0px
-		1px 0px 0px rgba(0, 0, 0, .1);
-	-moz-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 0px 1px
-		0px 0px rgba(0, 0, 0, .1);
-	box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 0px 1px 0px
-		0px rgba(0, 0, 0, .1);
-}
-
-.acordion:FOCUS {
-	color: #FFFFFF;
-	box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 0px 1px 0px
-		0px rgba(0, 0, 0, .1);
-}
-
-.sub-menu {
-	padding: 3px 5px 5px 20px;
-	color: #797979;
-	text-shadow: 1px 1px 0px rgba(255, 255, 255, .2);
-	background: #e5e5e5;
-	border-bottom: 1px solid #c9c9c9;
-	-webkit-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 0px
-		1px 0px 0px rgba(0, 0, 0, .1);
-	-moz-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 0px 1px
-		0px 0px rgba(0, 0, 0, .1);
-	box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, .1), 0px 1px 0px
-		0px rgba(0, 0, 0, .1);
-}
-
-.sub-menu:hover {
-	color: #000000;
-	text-shadow: 1px 1px 1px rgba(255, 255, 255, .2);
-	/*background: url(../img/active.png) repeat-x;*/
-	background: #FFA500;
-	background: -moz-linear-gradient(top, #a5cd4e 0%, #FFA500 100%);
-	background: -webkit-linear-gradient(top, #ffffff 0%, #bac8d5 100%);
-	background: -o-linear-gradient(top, #FFFFFF 0%, #FFFFFF 100%);
 }
 
 .smooth {
@@ -256,11 +215,10 @@ body {
 	width: 100%;
 	height: 100%;
 }
-
+/*
 div {
 	width: 80%;
-}
-
+}*/
 .homeHeader {
 	height: 40px;
 	width: 73%;
@@ -279,13 +237,16 @@ div {
 }
 
 .homeContent {
-	padding: 4px 5px 5px 28px;
+	padding-top: 10px;
 	height: 90%;
 	width: 50%;
 	border-left-style: inset;
 	border-left-color: #D9E0E7;
 	border-left-width: 1px;
 	float: left;
+	padding-left: 10px;
+	border-right-style: dotted;
+	border-right-color: black;
 }
 
 .homeFooter {
@@ -300,7 +261,7 @@ div {
 
 /**ESTILO PARA EL MENU*/
 .menubar {
-	padding-left:10px;
+	padding-left: 10px;
 	padding-top: 10px;
 	background-color: white;
 	font-family: arial;
@@ -315,4 +276,10 @@ div {
 	background: white;
 	width: 300px;
 	text-align: left
+}
+
+.tabBox {
+	padding-top: 10px;
+	width: 640px;
+	border-color: black;
 }
