@@ -6,6 +6,7 @@ package com.cplsystems.stock.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.ProductoDAO;
@@ -21,20 +22,20 @@ public class ProductoService {
 	@Autowired
 	private ProductoDAO productoDAO;
 
-	public void save(Producto producto){
+	public void save(Producto producto) throws DataAccessException {
 		productoDAO.save(producto);
 	}
-	public void update(Producto producto){
-		productoDAO.update(producto);
-	}
-	public void delete(Producto producto){
+
+	public void delete(Producto producto) throws DataAccessException {
 		productoDAO.delete(producto);
 	}
-	public Producto getById(Long idProducto){
+
+	public Producto getById(Long idProducto) throws DataAccessException {
 		return productoDAO.getById(idProducto);
 	}
-	public List<Producto> getAll(){
+
+	public List<Producto> getAll() throws DataAccessException {
 		return productoDAO.getAll();
 	}
-	
+
 }
