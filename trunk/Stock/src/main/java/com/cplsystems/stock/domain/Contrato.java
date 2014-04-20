@@ -18,6 +18,7 @@ public class Contrato {
 	private Calendar fecha;
 	private Calendar fechaVigenciaFin;
 	private Calendar fechaVigenciaInicio;
+	private String descripcion;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,5 +66,12 @@ public class Contrato {
 	public void setFechaVigenciaInicio(Calendar fechaVigenciaInicio) {
 		this.fechaVigenciaInicio = fechaVigenciaInicio;
 	}
-
+	@Column
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	
 }
