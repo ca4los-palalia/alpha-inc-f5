@@ -14,6 +14,7 @@ import com.cplsystems.stock.domain.Producto;
 public class DataLayer implements Serializable {
 
 	private static final long serialVersionUID = -828756372536148348L;
+
 	protected Producto producto;
 
 	public Producto getProducto() {
