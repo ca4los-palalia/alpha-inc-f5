@@ -2,18 +2,18 @@ package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "RequsicionProveedor")
+@Table(name = "contacto")
 public class Contacto implements Serializable {
 
 	private Long idContacto;
@@ -21,7 +21,7 @@ public class Contacto implements Serializable {
 	private Email email;
 
 	@Id
-	@Column(name = "idContactor", nullable = false)
+	@Column(name = "idContacto", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdContacto() {
 		return idContacto;
