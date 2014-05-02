@@ -12,26 +12,10 @@ import com.cplsystems.stock.domain.Producto;
  */
 public abstract class BasicStructure extends ServiceLayer {
 
-	private static final long serialVersionUID = 3686010678115196973L;
+	private static final long serialVersionUID = 717655190907875708L;
 
 	public void init() {
 		producto = new Producto();
-	}
-	
-	public void newRecord() {
-
-	}
-
-	public void deleteRecord() {
-
-	}
-
-	public void saveChanges() {
-
-	}
-
-	public void performSerch() {
-
 	}
 
 }
