@@ -3,8 +3,13 @@
  */
 package com.cplsystems.stock.app.vm.producto;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.zkoss.bind.BindUtils;
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.event.Event;
@@ -14,7 +19,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.cplsystems.stock.app.utils.StockConstants;
-import com.cplsystems.stock.app.vm.BasicStructure;
+import com.cplsystems.stock.app.vm.producto.utils.ProductoVariables;
 import com.cplsystems.stock.domain.Producto;
 
 /**
@@ -22,76 +27,94 @@ import com.cplsystems.stock.domain.Producto;
  * 
  */
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class ProductosVM extends BasicStructure {
+public class ProductosVM extends ProductoVariables {
 
-	private static final long serialVersionUID = 2584088569805199520L;
-	private Window proveedoresModalView;
+	private static final long serialVersionUID = 313977001812349337L;
 
 	@Init
 	public void init() {
 		super.init();
 	}
 
-	@Override
+	@Command
 	public void newRecord() {
-		producto = new Producto();
-		super.newRecord();
-	}
-
-	@Command
-	@NotifyChange("*")
-	@Override
-	public void deleteRecord() {
-		Messagebox
-				.show("¿Está seguro de remover este producto?, esta acción es irreversible",
-						"Question", Messagebox.OK | Messagebox.CANCEL,
-						Messagebox.QUESTION, new EventListener<Event>() {
-							public void onEvent(Event event) throws Exception {
-								if (((Integer) event.getData()).intValue() == Messagebox.OK) {/*
-																							 * BindUtils
-																							 * .
-																							 * postGlobalCommand
-																							 * (
-																							 * null
-																							 * ,
-																							 * null
-																							 * ,
-																							 * "performCustomerExportation"
-																							 * ,
-																							 * null
-																							 * )
-																							 * ;
-																							 */
-									deleteProduct();
-									return;
-								}
+		if (producto != null && producto.getIdProducto() != null) {
+			Messagebox.show(
+					"Se han detectado cambios que no han sido confirmados, "
+							+ "¿Está seguro de crear un nuevo registro?",
+					"Question", Messagebox.OK | Messagebox.CANCEL,
+					Messagebox.QUESTION, new EventListener<Event>() {
+						public void onEvent(Event event) throws Exception {
+							if (((Integer) event.getData()).intValue() == Messagebox.OK) {
+								Map<String, Object> args = new HashMap<String, Object>();
+								args.put("productoSeleccionado", new Producto());
+								BindUtils.postGlobalCommand(null, null,
+										"updateFromSelectedItem", args);
+								return;
 							}
-						});
-
+						}
+					});
+		}
+		if (producto == null) {
+			producto = new Producto();
+		}
 	}
 
 	@Command
-	@NotifyChange("*")
-	@Override
-	public void saveChanges() {
-		productoService.save(producto);
-		Messagebox.show("Se ha agregado correctamente el producto "
-				+ producto.getNombre() + " a la base de datos");
-		producto = new Producto();
-	}
-
-	@Override
-	public void performSerch() {
-		proveedoresModalView = stockUtils
-				.createModelDialog(StockConstants.MODAL_VIEW_PRODUCTOS);
-	}
-
-	public void deleteProduct() {
+	public void deleteRecord() {
 		if (producto.getIdProducto() == null) {
 			Messagebox.show("El producto no puede ser eliminado "
-					+ "ya que aún no ha sido registrado");
+					+ "ya que se han detectado cambios sin confirmar");
 			return;
 		}
-		productoService.delete(producto);
+		Messagebox.show("¿Está seguro de remover este producto?, "
+				+ "esta acción es irreversible", "Question", Messagebox.OK
+				| Messagebox.CANCEL, Messagebox.QUESTION,
+				new EventListener<Event>() {
+					public void onEvent(Event event) throws Exception {
+						if (((Integer) event.getData()).intValue() == Messagebox.OK) {
+							Map<String, Object> args = new HashMap<String, Object>();
+							args.put("producto", producto);
+							BindUtils.postGlobalCommand(null, null,
+									"deleteProduct", args);
+						}
+					}
+				});
+
 	}
+
+	@Command
+	@NotifyChange("producto")
+	public void saveChanges() {
+		productoService.save(producto);
+		Messagebox.show("La información del producto " + producto.getNombre()
+				+ " se ha actualizado correctamente");
+		producto = new Producto();
+	}
+
+	@Command
+	public void search() {
+		Window productoModalView = stockUtils
+				.createModelDialog(StockConstants.MODAL_VIEW_PRODUCTOS);
+		productoModalView.doModal();
+	}
+
+	@GlobalCommand
+	@NotifyChange("producto")
+	public void deleteProduct(@BindingParam("producto") Producto producto) {
+		if (producto != null) {
+			productoService.delete(producto);
+			newRecord();
+		}
+	}
+
+	@GlobalCommand
+	@NotifyChange("producto")
+	public void updateFromSelectedItem(
+			@BindingParam("productoSeleccionado") Producto productoSeleccionado) {
+		if (productoSeleccionado != null) {
+			producto = productoSeleccionado;
+		}
+	}
+
 }
