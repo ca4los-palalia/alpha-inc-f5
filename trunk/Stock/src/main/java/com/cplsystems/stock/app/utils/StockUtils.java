@@ -5,6 +5,7 @@ package com.cplsystems.stock.app.utils;
 
 import org.springframework.stereotype.Repository;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Window;
 
 /**
@@ -27,5 +28,14 @@ public class StockUtils {
 	/**Redirect to a new web page eg /login.zul*/
 	public void redirect(final String page) {
 		Executions.getCurrent().sendRedirect(page);
+	}
+	
+	/**
+	 * Notificador de mensajes en vista
+	 * @param Mensaje
+	 * @param Clients.NOTIFICATION_TYPE_INFO*/
+	public static void showSuccessmessage(String mensaje, String tipo, Integer duracionEnVista) {
+	    Clients.showNotification(mensaje,
+	    		tipo, null, null, duracionEnVista);
 	}
 }
