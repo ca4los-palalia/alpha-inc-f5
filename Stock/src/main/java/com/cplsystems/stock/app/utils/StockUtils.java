@@ -21,7 +21,6 @@ public class StockUtils {
 	public Window createModelDialog(final String locationView) {
 		Window window = (Window) Executions.createComponents(locationView,
 				null, null);
-		window.doModal();
 		return window;
 	}
 
