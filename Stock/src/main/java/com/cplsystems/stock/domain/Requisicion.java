@@ -28,6 +28,13 @@ public class Requisicion {
 	private Proyecto proyecto;
 	private Direccion entregaEn;
 	
+	private String areaSolicitante;
+	private Persona solicitante;
+	private String puesto;
+	private String adscripcion;
+	private String justificacion;
+	
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
