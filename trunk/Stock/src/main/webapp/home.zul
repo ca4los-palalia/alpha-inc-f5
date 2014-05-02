@@ -10,15 +10,14 @@
 	<window apply="org.zkoss.bind.BindComposer">
 		<div id="container" zclass="homeContainer">
 
-			<div id="header" zclass="homeHeader">
-			</div>
+			<div id="header" zclass="homeHeader"></div>
 
 			<div id="menu" zclass="homeMenu">
-				<include src="/menu.zul"/>
+				<include src="/menu.zul" />
 			</div>
 
-			<div id="content" zclass="homeContent">
-				Content goes here
+			<div id="content" sclass="homeContent" hflex="min">
+				<include src="/modulos/productos/productos.zul" />
 			</div>
 
 			<div id="footer" zclass="homeFooter">

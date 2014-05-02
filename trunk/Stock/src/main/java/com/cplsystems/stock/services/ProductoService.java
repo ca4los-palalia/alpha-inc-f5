@@ -38,4 +38,9 @@ public class ProductoService {
 		return productoDAO.getAll();
 	}
 
+	public List<Producto> getItemByKeyOrName(String claveProducto,
+			String nombreProducto) {
+		return productoDAO.getItemByKeyOrName(claveProducto, nombreProducto);
+	}
+
 }

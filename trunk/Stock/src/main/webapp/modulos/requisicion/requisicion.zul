@@ -1,0 +1,93 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/styles/home/styleHome.css" />
+	<window apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('rvm') @init('com.cplsystems.stock.app.vm.requisicion.RequisicionVM')">
+		<vlayout zclass="panelContainer">
+
+			<hlayout style="text-align:right">
+				<button image="/images/toolbar/download32.png"
+					onClick="@command('saveChanges')" />
+				<button image="/images/toolbar/paper32.png"
+					onClick="@command('newRecord')" />
+				<button image="/images/toolbar/minus32.png"
+					onClick="@command('deleteRecord')" />
+				<button image="/images/toolbar/search32.png"
+					onClick="@command('search')" />
+			</hlayout>
+			<hlayout style="text-align:center">
+				<label value="Requisición de Compra"
+					sclass="invoiceLabel" />
+			</hlayout>
+			<hlayout style="width:100%; text-align:right">
+				<label value="Folio:" sclass="invoiceLabel" />
+				<label value="F00001" sclass="invoiceFolio" />
+			</hlayout>
+			<vlayout>
+				<vlayout>
+					<hlayout>
+						<label value="Área Solicitante (UR):"
+							sclass="invoiceLabel" />
+						<combobox readonly="true"
+							sclass="invoiceCatalogos" style="width:525px" />
+					</hlayout>
+					<hlayout>
+						<label value="Solicitante:"
+							sclass="invoiceLabel" />
+						<textbox cols="40" sclass="invoiceTextBox tBox"
+							maxlength="40" />
+						<label value="Puesto:" sclass="invoiceLabel" />
+						<combobox style="width:305px"
+							sclass="invoiceTextBox" readonly="true" />
+					</hlayout>
+					<hlayout>
+						<label value="Adscripción:"
+							sclass="invoiceLabel" />
+						<textbox cols="109" maxlength="120"
+							sclass="invoiceTextBox tBox" />
+					</hlayout>
+					<hlayout>
+						<label value="Justificación"
+							sclass="invoiceLabel" />
+						<textbox multiline="true" cols="109"
+							style="height:40px" sclass="tBox" />
+					</hlayout>
+				</vlayout>
+				<grid height="350px" model="@load(vm.mailData.mails)"
+					emptyMessage="Nothing in Inbox." sclass="invoiceTable">
+					<columns>
+						<column label="Clave" width="70px"
+							sclass="invoiceLabel" />
+						<column label="Cantidad" width="70px"
+							sclass="invoiceLabel" />
+						<column label="Descripción"
+							sclass="invoiceLabel" />
+						<column label="Importe" width="80px"
+							sclass="invoiceLabel" />
+					</columns>
+					<template name="model">
+						<row>
+							<image
+								src="/img/Centigrade-Widget-Icons/EnvelopeOpen-16x16.png" />
+							<label value="@load(each.subject)" />
+							<label value="@load(each.date)" />
+							<label value="@load(each.size)" />
+							<button label="Delete"
+								onClick="@command('removeMail', mail=each)" />
+						</row>
+					</template>
+				</grid>
+				<vlayout>
+					<hlayout>
+						<label value="Contrato" />
+						<combobox />
+						<label value="Fecha:" />
+						<label value="Contrato" />
+						<label value="Proveedor" />
+						<combobox />
+					</hlayout>
+				</vlayout>
+			</vlayout>
+		</vlayout>
+	</window>
+</zk>

@@ -1,10 +1,12 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
 	<style src="/styles/home/styleHome.css" />
-	<window apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.producto.ProductosVM')">
+	<div apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.producto.ProductosVM')"
+		form="@id('fx') @save(pvm.producto, before='saveChanges')
+              @validator('com.cplsystems.stock.app.vm.producto.utils.ProductoValidator')"
+		validationMessages="@id('vmsgs')">
 		<vlayout zclass="panelContainer">
-
 			<hlayout style="text-align:right">
 				<button image="/images/toolbar/download32.png"
 					onClick="@command('saveChanges')" />
@@ -13,39 +15,51 @@
 				<button image="/images/toolbar/minus32.png"
 					onClick="@command('deleteRecord')" />
 				<button image="/images/toolbar/search32.png"
-					onClick="@command(performSearch)" />
+					onClick="@command('search')" />
 			</hlayout>
 			<hlayout>
-				<vlayout id="productoDetails">
+				<vlayout>
+					<hlayout style="padding-left: 3px;">
+						<label value="* Clave:" />
+						<textbox id="clave" zclass="tBox" maxlength="24"
+							value="@bind(pvm.producto.clave)" />
+						<label value="* Nombre:" />
+						<textbox cols="57" zclass="tBox"
+							value="@bind(pvm.producto.nombre)" maxlength="60" />
+					</hlayout>
+					<label value="@load(vmsgs['clave'])"
+						sclass="lblErrorValidation" />
 					<hlayout>
-						<label value="Clave:" />
 						<hlayout>
-							<textbox zclass="tBox" maxlength="24" 
-							value="@bind(pvm.producto.clave)"/>
-							<button onClick=""
-								image="/images/toolbar/search32.png" />
-							<label value="Nombre:" />
-							<textbox cols="53" zclass="tBox"
-								value="@bind(pvm.producto.nombre)" maxlength="60" />
+							<label value="* Precio:" />
+							<doublebox cols="20" zclass="tBox"
+								constraint="no empty" format="###,###,###.00" maxlength="20"
+								value="@bind(pvm.producto.precio)" />
+							<label value="* Unidad :" />
+							<textbox cols="20" zclass="tBox"
+								maxlength="22" value="@bind(pvm.producto.unidad)" />
+							<label value="Modelo :" />
+							<textbox cols="22" zclass="tBox"
+								maxlength="24" value="@bind(pvm.producto.modelo)" />
 						</hlayout>
 					</hlayout>
+
 					<hlayout>
-						<label value="Marca:" />
-						<hlayout>
+						<hlayout style="padding-left: 10px;">
+							<label value="Marca:" />
 							<textbox cols="20" zclass="tBox"
 								maxlength="22" value="@bind(pvm.producto.marca)" />
-							<label value="Modelo:" />
-							<textbox cols="20" zclass="tBox"
-								maxlength="24" value="@bind(pvm.producto.modelo)"/>
-							<label value="Código de barras:" />
-							<textbox cols="17" value="@bind(pvm.producto.codigoBarras)"
-							 zclass="tBox" maxlength="20" />
+							<label value="C. Barras:" />
+							<textbox cols="20"
+								value="@bind(pvm.producto.codigoBarras)" zclass="tBox"
+								maxlength="20" />
 						</hlayout>
 					</hlayout>
 					<hlayout>
 						<label value="Descripción:" />
-						<textbox cols="90" multiline="true" value="@bind(pvm.producto.descripcion)"
-							droppable="false" type="text" zclass="tBox" height="90px" />
+						<textbox cols="90" multiline="true"
+							value="@bind(pvm.producto.descripcion)" droppable="false"
+							type="text" zclass="tBox" height="90px" />
 					</hlayout>
 				</vlayout>
 			</hlayout>
@@ -148,5 +162,5 @@
 				</tabbox>
 			</vlayout>
 		</vlayout>
-	</window>
+	</div>
 </zk>
