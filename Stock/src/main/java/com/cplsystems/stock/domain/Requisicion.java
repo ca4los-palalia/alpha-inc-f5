@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "Requsicion")
@@ -27,14 +28,12 @@ public class Requisicion {
 	private String status;
 	private Proyecto proyecto;
 	private Direccion entregaEn;
-	
+
 	private String areaSolicitante;
 	private Persona solicitante;
 	private String puesto;
 	private String adscripcion;
 	private String justificacion;
-	
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -101,7 +100,6 @@ public class Requisicion {
 		this.fechaSolicitudProveedor = fechaSolicitudProveedor;
 	}
 
-
 	@Column(name = "email_Personal_Resio_Requisicion", length = 250)
 	public String getEmailPersonaRevisoRequisicion() {
 		return emailPersonaRevisoRequisicion;
@@ -129,6 +127,7 @@ public class Requisicion {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	@OneToOne
 	@JoinColumn(name = "proyecto")
 	public Proyecto getProyecto() {
@@ -138,7 +137,7 @@ public class Requisicion {
 	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
 	}
-	
+
 	@OneToOne
 	@JoinColumn(name = "entregaEn")
 	public Direccion getEntregaEn() {
@@ -148,7 +147,5 @@ public class Requisicion {
 	public void setEntregaEn(Direccion entregaEn) {
 		this.entregaEn = entregaEn;
 	}
-	
-	
 
 }
