@@ -43,4 +43,8 @@ public class ProductoService {
 		return productoDAO.getItemByKeyOrName(claveProducto, nombreProducto);
 	}
 
+	public List<String> getAllKeys() {
+		return productoDAO.getAllKeys();
+	}
+
 }
