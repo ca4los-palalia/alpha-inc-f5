@@ -17,6 +17,7 @@ import com.cplsystems.stock.services.PaisService;
 import com.cplsystems.stock.services.PersonaService;
 import com.cplsystems.stock.services.ProveedorService;
 import com.cplsystems.stock.services.ProductoService;
+import com.cplsystems.stock.services.RequisicionService;
 import com.cplsystems.stock.services.TelefonoService;
 import com.cplsystems.stock.services.UsuarioService;
 
@@ -42,10 +43,10 @@ public abstract class ServiceLayer extends DataLayer {
 	
 	@WireVariable
 	protected ProductoService productoService;
-	
+
 	@WireVariable
 	protected EstadoService estadoService;
-	
+
 	@WireVariable
 	protected ProveedorService proveedorService;
 	
@@ -69,6 +70,8 @@ public abstract class ServiceLayer extends DataLayer {
 	
 	@WireVariable
 	protected TelefonoService telefonoService;
-		
-	
+
+	@WireVariable
+	protected RequisicionService requisicionService;
+
 }
