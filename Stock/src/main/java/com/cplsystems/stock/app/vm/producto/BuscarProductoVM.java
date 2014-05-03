@@ -12,16 +12,18 @@ import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
+import org.zkoss.bind.annotation.ExecutionArgParam;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zul.Messagebox;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Window;
 
 import com.cplsystems.stock.app.vm.BasicStructure;
+import com.cplsystems.stock.app.vm.requisicion.RequisicionVM;
 import com.cplsystems.stock.domain.Producto;
 
 /**
@@ -31,15 +33,22 @@ import com.cplsystems.stock.domain.Producto;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class BuscarProductoVM extends BasicStructure {
 
+	private static final long serialVersionUID = 3098239433101641553L;
 	@Wire("#productosModalDialog")
 	private Window productosModalDialog;
 	private String claveProducto;
 	private String nombreProducto;
 	private Producto productoSeleccionado;
 	private List<Producto> productos;
+	private String globalCommandName;
 
 	@Init
-	public void init() {
+	public void init(
+			@ContextParam(ContextType.VIEW) Component view,
+			@ExecutionArgParam(RequisicionVM.REQUISICION_GLOBALCOMMAND_NAME_FOR_UPDATE) 
+			String updateCommandFromItemFinder) {
+		Selectors.wireComponents(view, this, false);
+		this.globalCommandName = updateCommandFromItemFinder;
 	}
 
 	@AfterCompose
@@ -47,14 +56,16 @@ public class BuscarProductoVM extends BasicStructure {
 		Selectors.wireComponents(view, this, false);
 	}
 
+	@SuppressWarnings("static-access")
 	@NotifyChange("productos")
 	@Command
 	public void searchItemByKeyOrName() {
 		productos = productoService.getItemByKeyOrName(claveProducto,
 				nombreProducto);
 		if (productos == null) {
-			Messagebox.show("Los parametros especificados "
-					+ "no generaron ningún resultado");
+			stockUtils.showSuccessmessage("Los parametros especificados "
+					+ "no generaron ningún resultado",
+					Clients.NOTIFICATION_TYPE_WARNING, 2000);
 		} else {
 
 		}
@@ -66,8 +77,12 @@ public class BuscarProductoVM extends BasicStructure {
 			productosModalDialog.detach();
 			Map<String, Object> args = new HashMap<String, Object>();
 			args.put("productoSeleccionado", productoSeleccionado);
-			BindUtils.postGlobalCommand(null, null, "updateFromSelectedItem",
-					args);
+			if (globalCommandName != null || !globalCommandName.isEmpty()) {
+				BindUtils.postGlobalCommand(null, null, globalCommandName, args);
+			} else {
+				BindUtils.postGlobalCommand(null, null,
+						"updateFromSelectedItem", args);
+			}
 		}
 	}
 
