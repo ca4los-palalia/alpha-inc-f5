@@ -9,9 +9,9 @@ import java.util.List;
 import com.cplsystems.stock.domain.Contrato;
 import com.cplsystems.stock.domain.Estado;
 import com.cplsystems.stock.domain.Municipio;
-import com.cplsystems.stock.domain.Pais;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
+import com.cplsystems.stock.domain.Requisicion;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -21,12 +21,12 @@ public class DataLayer implements Serializable {
 
 	private static final long serialVersionUID = -828756372536148348L;
 	protected Producto producto;
+	protected Requisicion requisicion;
 	protected Municipio municipio;
 	protected Estado estado;
 	protected Pais pais;
 	protected Contrato contrato;
-	protected Proveedor proveedorSelected;
-	
+	protected Proveedor proveedorSelected;	
 	protected List<Proveedor> proveedoresLista;
 
 	public Producto getProducto() {
@@ -71,4 +71,12 @@ public class DataLayer implements Serializable {
 	public void setProveedorSelected(Proveedor proveedorSelected) {
 		this.proveedorSelected = proveedorSelected;
 	}
+	public Requisicion getRequisicion() {
+		return requisicion;
+	}
+
+	public void setRequisicion(Requisicion requisicion) {
+		this.requisicion = requisicion;
+	}
+
 }
