@@ -53,30 +53,73 @@
 							style="height:40px" sclass="tBox" />
 					</hlayout>
 				</vlayout>
-				<grid height="350px" model="@load(vm.mailData.mails)"
-					emptyMessage="Nothing in Inbox." sclass="invoiceTable">
-					<columns>
-						<column label="Clave" width="70px"
+
+				<listbox sclass="invoiceTable" height="250px"
+					model="@load(rvm.requisicionProductos)"
+					selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
+					emptyMessage="No hay elementos en la requisición">
+					<listhead>
+						<listheader label="Clave" width="100px"
 							sclass="invoiceLabel" />
-						<column label="Cantidad" width="70px"
+						<listheader label="Cantidad" width="75px"
 							sclass="invoiceLabel" />
-						<column label="Descripción"
+						<listheader label="Descripción"
 							sclass="invoiceLabel" />
-						<column label="Importe" width="80px"
+						<listheader label="Importe" width="100px"
 							sclass="invoiceLabel" />
-					</columns>
-					<template name="model">
-						<row>
-							<image
-								src="/img/Centigrade-Widget-Icons/EnvelopeOpen-16x16.png" />
-							<label value="@load(each.subject)" />
-							<label value="@load(each.date)" />
-							<label value="@load(each.size)" />
-							<button label="Delete"
-								onClick="@command('removeMail', mail=each)" />
-						</row>
+					</listhead>
+					<template name="model" var="requisicionProducto">
+						<listitem>
+							<listcell>
+								<hlayout>
+									<button style="width:25px"
+										image="/images/toolbar/wand32.png"
+										onClick="@global-command('search', index=1)" />
+									<textbox zclass="tBox"
+										value="@bind(requisicionProducto.producto.clave)" />
+								</hlayout>
+							</listcell>
+							<listcell>
+								<doublebox zclass="tBox" cols="5"
+									value="@bind(requisicionProducto.cantidad)" />
+							</listcell>
+							<listcell>
+								<textbox zclass="tBox" cols="50"
+									maxlength="60" value="@bind(requisicionProducto.descripcion)" />
+							</listcell>
+							<listcell>
+								<doublebox zclass="tBox" cols="8"
+									onChange="@command('updateTotal')" format="###,###,###.00"
+									value="@bind(requisicionProducto.importe)" />
+							</listcell>
+						</listitem>
 					</template>
-				</grid>
+					<listfoot style="height:40px">
+						<listfooter style="text-align:right">
+							<hlayout>
+								<button
+									image="/images/toolbar/plus32.png"
+									onClick="@command('addNewItemToBill')" />
+								<button
+									image="/images/toolbar/minus32.png"
+									onClick="@command('removeElementFromBill')" />
+							</hlayout>
+						</listfooter>
+
+						<listfooter span="2" style="text-align:right">
+							<hlayout>
+								<label value="Productos: " />
+								<label value="@load(rvm.itemsOnList)" />
+							</hlayout>
+						</listfooter>
+						<listfooter style="text-align:center">
+							<hlayout>
+								<label value="@load(rvm.importeTotal)" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+				</listbox>
+
 				<vlayout>
 					<hlayout>
 						<label value="Contrato" />
