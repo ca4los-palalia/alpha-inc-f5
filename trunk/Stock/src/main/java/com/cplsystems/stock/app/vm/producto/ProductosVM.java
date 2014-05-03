@@ -15,6 +15,7 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
@@ -83,12 +84,13 @@ public class ProductosVM extends ProductoVariables {
 
 	}
 
+	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("producto")
 	public void saveChanges() {
 		productoService.save(producto);
-		Messagebox.show("La información del producto " + producto.getNombre()
-				+ " se ha actualizado correctamente");
+		stockUtils.showSuccessmessage("La información del producto " + producto.getNombre()
+				+ " se ha actualizado correctamente", Clients.NOTIFICATION_TYPE_INFO, 3000);
 		producto = new Producto();
 	}
 
