@@ -2,6 +2,7 @@ package com.cplsystems.stock.dao;
 
 import java.util.List;
 
+import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Email;
 
 /**
@@ -17,4 +18,6 @@ public interface EmailDAO {
 	public Email getById(Long idEmail);
 
 	public List<Email> getAll();
+	
+	public Email getUltimoRegistroEmail();
 }

@@ -18,4 +18,6 @@ public interface TelefonoDAO {
 	public Telefono getById(Long idTelefono);
 
 	public List<Telefono> getAll();
+	
+	public Telefono getUltimoregistroEmail();
 }

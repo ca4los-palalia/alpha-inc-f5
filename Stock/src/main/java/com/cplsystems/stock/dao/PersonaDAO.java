@@ -29,4 +29,5 @@ public interface PersonaDAO {
 
 	public List<Persona> getBySexo(Long sexo);
 
+	public Persona getUltimoRegistroPersona();
 }
