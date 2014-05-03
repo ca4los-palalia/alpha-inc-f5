@@ -2,7 +2,7 @@
 <zk>
 	<style src="/styles/home/styleHome.css" />
 	<window apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.ProductosVM')">
+		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.producto.ProductosVM')">
 
 		<div zclass="container">
 			<div zclass="div">
