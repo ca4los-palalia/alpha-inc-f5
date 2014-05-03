@@ -41,8 +41,10 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		return producto.size() > 0 ? producto.get(0) : null;
 	}
 
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Producto> getAll() {
-		return null;
+		return getHibernateTemplate().find("FROM Producto as p");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -60,6 +62,12 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		}
 		List<Producto> productos = criteria.list();
 		return productos.size() > 0 ? productos : null;
+	}
+
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public List<String> getAllKeys() {
+		return getHibernateTemplate().find("SELECT clave FROM Producto as p ");
 	}
 
 }
