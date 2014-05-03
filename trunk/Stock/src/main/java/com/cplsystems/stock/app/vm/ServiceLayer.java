@@ -7,10 +7,17 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.services.ContactoService;
+import com.cplsystems.stock.services.ContratoService;
+import com.cplsystems.stock.services.DireccionService;
+import com.cplsystems.stock.services.EmailService;
 import com.cplsystems.stock.services.EstadoService;
+import com.cplsystems.stock.services.MunicipioService;
+import com.cplsystems.stock.services.PaisService;
 import com.cplsystems.stock.services.PersonaService;
 import com.cplsystems.stock.services.ProveedorService;
 import com.cplsystems.stock.services.ProductoService;
+import com.cplsystems.stock.services.TelefonoService;
 import com.cplsystems.stock.services.UsuarioService;
 
 /**
@@ -41,6 +48,27 @@ public abstract class ServiceLayer extends DataLayer {
 	
 	@WireVariable
 	protected ProveedorService proveedorService;
+	
+	@WireVariable
+	protected ContratoService contratoService;
+	
+	@WireVariable
+	protected PaisService paisService;
+	
+	@WireVariable
+	protected DireccionService direccionService;
+	
+	@WireVariable
+	protected MunicipioService municipioService;
+	
+	@WireVariable
+	protected EmailService emailService;
+	
+	@WireVariable
+	protected ContactoService contactoService;
+	
+	@WireVariable
+	protected TelefonoService telefonoService;
 		
 	
 }
