@@ -27,8 +27,7 @@
 						<textbox cols="57" zclass="tBox"
 							value="@bind(pvm.producto.nombre)" maxlength="60" />
 					</hlayout>
-					<label value="@load(vmsgs['clave'])"
-						sclass="lblErrorValidation" />
+
 					<hlayout>
 						<hlayout>
 							<label value="* Precio:" />
