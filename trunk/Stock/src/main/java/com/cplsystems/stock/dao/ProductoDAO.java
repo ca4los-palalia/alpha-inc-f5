@@ -24,4 +24,6 @@ public interface ProductoDAO {
 	public List<Producto> getItemByKeyOrName(String claveProducto,
 			String nombreProducto);
 
+	public List<String> getAllKeys();
+
 }
