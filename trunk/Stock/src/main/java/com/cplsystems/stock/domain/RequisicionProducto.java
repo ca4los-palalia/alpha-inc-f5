@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "RequsicionProducto")
@@ -19,12 +20,16 @@ public class RequisicionProducto {
 	private Long idRequisionProducto;
 	private Float cantidad;
 	private Long idLugar;
+	private String descripcion;
 	private Lugar lugar;
 	private Proveedor proveedor;
 	private Requisicion requisicion;
 	private Producto producto;
+	private Float importe;
 
-	
+	public RequisicionProducto() {
+		producto = new Producto();
+	}
 
 	@Id
 	@Column(name = "idRequisicionProducto", nullable = false)
@@ -55,7 +60,7 @@ public class RequisicionProducto {
 		this.idLugar = idLugar;
 	}
 
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "lugar")
 	public Lugar getLugar() {
 		return lugar;
@@ -64,8 +69,8 @@ public class RequisicionProducto {
 	public void setLugar(Lugar lugar) {
 		this.lugar = lugar;
 	}
- 
-	@ManyToOne (fetch = FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proveedor")
 	public Proveedor getProveedor() {
 		return proveedor;
@@ -75,7 +80,7 @@ public class RequisicionProducto {
 		this.proveedor = proveedor;
 	}
 
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "requisicion")
 	public Requisicion getRequisicion() {
 		return requisicion;
@@ -85,7 +90,7 @@ public class RequisicionProducto {
 		this.requisicion = requisicion;
 	}
 
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
 		return producto;
@@ -93,6 +98,24 @@ public class RequisicionProducto {
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
+	}
+
+	@Column
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	@Column
+	public Float getImporte() {
+		return importe;
+	}
+
+	public void setImporte(Float importe) {
+		this.importe = importe;
 	}
 
 }
