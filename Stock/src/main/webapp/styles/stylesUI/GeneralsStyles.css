@@ -1372,4 +1372,6 @@ body
 	font-size: 10pt !important;	
 }
 
-
+.spacerLabel{
+	width: 100px;
+}
