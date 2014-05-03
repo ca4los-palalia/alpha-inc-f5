@@ -5,7 +5,11 @@ package com.cplsystems.stock.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.DireccionDAO;
@@ -20,39 +24,74 @@ import com.cplsystems.stock.domain.Municipio;
 @Repository
 public class DireccionDAOImpl extends HibernateDAOSuportUtil implements DireccionDAO{
 
+	@Transactional
 	public void save(Direccion direccion) {
-		// TODO Auto-generated method stub
+		getHibernateTemplate().save(direccion);
 		
 	}
-
+	@Transactional
 	public void update(Direccion direccion) {
-		// TODO Auto-generated method stub
-		
+		getHibernateTemplate().update(direccion);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public Direccion getById(Long direccion) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Direccion.class);
+		criteria.add(Restrictions.eq("idDireccion", direccion));
+		List<Direccion> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<Direccion> getByCodigoPostalId(String codigoPostal) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Direccion.class);
+		criteria.add(Restrictions.eq("cp", codigoPostal));
+		List<Direccion> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<Direccion> getByEstado(Estado estado) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Direccion.class);
+		criteria.add(Restrictions.eq("estado", estado));
+		List<Direccion> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<Direccion> getByMunicipio(Municipio municipio) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Direccion.class);
+		criteria.add(Restrictions.eq("municipio", municipio));
+		List<Direccion> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<Direccion> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Direccion.class);
+		List<Direccion> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Direccion getUltimoRegistroDireccion() {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Direccion.class);
+		criteria.addOrder(Order.desc("idDireccion"));
+		criteria.setMaxResults(1);
+		List<Direccion> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
    

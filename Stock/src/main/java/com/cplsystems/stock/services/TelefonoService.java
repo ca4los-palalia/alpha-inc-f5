@@ -39,5 +39,9 @@ public class TelefonoService {
 	public List<Telefono> getAll() throws DataAccessException {
 		return telefonoDAO.getAll();
 	}
+	
+	public Telefono getUltimoregistroEmail() throws DataAccessException {
+		return telefonoDAO.getUltimoregistroEmail();
+	}
 
 }

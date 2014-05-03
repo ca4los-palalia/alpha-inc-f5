@@ -27,7 +27,7 @@ public class Telefono {
 		this.idTelefono = idTelefono;
 	}
 
-	@Column(name = "extension", length = 250)
+	@Column
 	public String getExtension() {
 		return extension;
 	}
@@ -36,7 +36,7 @@ public class Telefono {
 		this.extension = extension;
 	}
 
-	@Column(name = "numero", length = 250)
+	@Column
 	public String getNumero() {
 		return numero;
 	}
@@ -45,7 +45,7 @@ public class Telefono {
 		this.numero = numero;
 	}
 
-	@Column(name = "tipo", length = 250)
+	@Column
 	public String getTipo() {
 		return tipo;
 	}

@@ -49,5 +49,9 @@ public class PersonaService {
 			throws DataAccessException {
 		return personaDAO.getByContacto(contacto);
 	}
+	
+	public Persona getUltimoRegistroPersona() throws DataAccessException {
+		return personaDAO.getUltimoRegistroPersona();
+	}
 
 }

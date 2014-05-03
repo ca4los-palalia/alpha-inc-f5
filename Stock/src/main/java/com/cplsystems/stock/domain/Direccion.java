@@ -20,17 +20,19 @@ public class Direccion implements Serializable {
 	
 	private Long idDireccion;
 	private String calle;
-	private String cuidad;
 	private String colonia;
 	private String cp;
+	private String cuidad;
 	private String numExt;
 	private String numInt;
 	private Estado estado;
 	private Municipio municipio;
+	private Pais pais;
 	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
 	public Long getIdDireccion() {
 		return idDireccion;
 	}
@@ -40,7 +42,7 @@ public class Direccion implements Serializable {
 	}
 	
 
-	@Column(name = "calle", length = 250)
+	@Column
 	public String getCalle() {
 		return calle;
 	}
@@ -49,7 +51,7 @@ public class Direccion implements Serializable {
 		this.calle = calle;
 	}
 
-	@Column(name = "cuidad", length = 30)
+	@Column
 	public String getCuidad() {
 		return cuidad;
 	}
@@ -58,7 +60,7 @@ public class Direccion implements Serializable {
 		this.cuidad = cuidad;
 	}
 
-	@Column(name = "colonia", length = 250)
+	@Column
 	public String getColonia() {
 		return colonia;
 	}
@@ -67,7 +69,7 @@ public class Direccion implements Serializable {
 		this.colonia = colonia;
 	}
 
-	@Column(name = "cp", length = 250)
+	@Column
 	public String getCp() {
 		return cp;
 	}
@@ -76,7 +78,7 @@ public class Direccion implements Serializable {
 		this.cp = cp;
 	}
 
-	@Column(name = "numExt", length = 250)
+	@Column
 	public String getNumExt() {
 		return numExt;
 	}
@@ -85,7 +87,7 @@ public class Direccion implements Serializable {
 		this.numExt = numExt;
 	}
 
-	@Column(name = "numInt", length = 250)
+	@Column
 	public String getNumInt() {
 		return numInt;
 	}
@@ -112,6 +114,16 @@ public class Direccion implements Serializable {
 
 	public void setMunicipio(Municipio municipio) {
 		this.municipio = municipio;
+	}
+
+	@OneToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name = "pais")
+	public Pais getPais() {
+		return pais;
+	}
+	
+	public void setPais(Pais pais) {
+		this.pais = pais;
 	}
 	
 	

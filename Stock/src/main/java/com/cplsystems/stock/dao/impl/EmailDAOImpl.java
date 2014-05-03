@@ -5,11 +5,17 @@ package com.cplsystems.stock.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.EmailDAO;
+import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Email;
+import com.cplsystems.stock.domain.Proveedor;
 
 /**
  * @author Carlos Palalía López
@@ -18,24 +24,49 @@ import com.cplsystems.stock.domain.Email;
 @Repository
 public class EmailDAOImpl extends HibernateDAOSuportUtil implements EmailDAO{
 
+	@Transactional
 	public void save(Email email) {
-		
+		getHibernateTemplate().saveOrUpdate(email);
 	}
 
+	@Transactional
 	public void update(Email email) {
-		
+		getHibernateTemplate().saveOrUpdate(email);
 	}
 
+	@Transactional
 	public void delete(Email email) {
-		
+		getHibernateTemplate().delete(email);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public Email getById(Long idEmail) {
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Email.class);
+		criteria.add(Restrictions.eq("idEmail", idEmail));
+		List<Email> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<Email> getAll() {
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Email.class);
+		List<Email> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Email getUltimoRegistroEmail() {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Email.class);
+		criteria.addOrder(Order.desc("idEmails"));
+		criteria.setMaxResults(1);
+		List<Email> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
    

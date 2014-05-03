@@ -37,5 +37,9 @@ public class EmailService {
 	public List<Email> getAll() throws DataAccessException {
 		return emailDAO.getAll();
 	}
+	
+	public Email getUltimoRegistroEmail() throws DataAccessException {
+		return emailDAO.getUltimoRegistroEmail();
+	}
 
 }

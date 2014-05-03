@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "contrato")
@@ -22,7 +24,7 @@ public class Contrato {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idContrato", nullable = false)
+	@Column
 	public Long getIdContrato() {
 		return idContrato;
 	}
@@ -31,7 +33,7 @@ public class Contrato {
 		this.idContrato = idContrato;
 	}
 
-	@Column(name = "diaspago", length = 250)
+	@Column(name = "diaspago")
 	public Long getDiasPago() {
 		return diasPago;
 	}
@@ -40,7 +42,8 @@ public class Contrato {
 		this.diasPago = diasPago;
 	}
 
-	@Column(name = "fecha", length = 250)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha")
 	public Calendar getFecha() {
 		return fecha;
 	}
@@ -49,7 +52,8 @@ public class Contrato {
 		this.fecha = fecha;
 	}
 
-	@Column(name = "fechaVigenciaFin", length = 250)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fechaVigenciaFin")
 	public Calendar getFechaVigenciaFin() {
 		return fechaVigenciaFin;
 	}
@@ -58,7 +62,8 @@ public class Contrato {
 		this.fechaVigenciaFin = fechaVigenciaFin;
 	}
 
-	@Column(name = "fechaVigenciaInicio", length = 250)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fechaVigenciaInicio")
 	public Calendar getFechaVigenciaInicio() {
 		return fechaVigenciaInicio;
 	}
@@ -66,12 +71,14 @@ public class Contrato {
 	public void setFechaVigenciaInicio(Calendar fechaVigenciaInicio) {
 		this.fechaVigenciaInicio = fechaVigenciaInicio;
 	}
+
 	@Column
 	public String getDescripcion() {
 		return descripcion;
 	}
+
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	
+
 }

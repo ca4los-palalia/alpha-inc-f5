@@ -57,7 +57,7 @@ public class Proveedor {
 	}
 	
 
-	@Column(name = "giro", length = 250)
+	@Column
 	public String getGiro() {
 		return giro;
 	}
@@ -66,7 +66,7 @@ public class Proveedor {
 		this.giro = giro;
 	}
 
-	@Column(name = "nombre", length = 40)
+	@Column
 	public String getNombre() {
 		return nombre;
 	}
@@ -75,7 +75,7 @@ public class Proveedor {
 		this.nombre = nombre;
 	}
 
-	@Column(name = "password", length = 30)
+	@Column
 	public String getPassword() {
 		return password;
 	}
@@ -84,7 +84,7 @@ public class Proveedor {
 		this.password = password;
 	}
 
-	@Column(name = "razonSocial", length = 250)
+	@Column
 	public String getRazonSocial() {
 		return razonSocial;
 	}
@@ -93,7 +93,7 @@ public class Proveedor {
 		this.razonSocial = razonSocial;
 	}
 
-	@Column(name = "rfc", length = 25)
+	@Column
 	public String getRfc() {
 		return rfc;
 	}
@@ -205,7 +205,7 @@ public class Proveedor {
 		this.cuentaCargo = cuentaCargo;
 	}
 	
-	@Column(name = "status", length = 25)
+	@Column
 	public String getStatus() {
 		return status;
 	}
@@ -215,7 +215,7 @@ public class Proveedor {
 	}
 	
 
-	@Column(name = "comentario", length = 250)
+	@Column
 	public String getComentario() {
 		return comentario;
 	}
