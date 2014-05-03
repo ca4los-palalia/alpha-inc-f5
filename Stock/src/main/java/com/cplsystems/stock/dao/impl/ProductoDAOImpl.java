@@ -65,7 +65,6 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 	}
 
 	@Transactional(readOnly = true)
-	@SuppressWarnings("unchecked")
 	public List<String> getAllKeys() {
 		return getHibernateTemplate().find("SELECT clave FROM Producto as p ");
 	}
