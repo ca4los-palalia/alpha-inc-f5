@@ -32,6 +32,10 @@ public class DireccionService {
 		return direccionDAO.getById(direccion);
 	}
 
+	public Direccion getUltimoRegistroDireccion(){
+		return direccionDAO.getUltimoRegistroDireccion();
+	}
+	
 	public List<Direccion> getByCodigoPostalId(String codigoPostal)
 			throws DataAccessException {
 		return direccionDAO.getByCodigoPostalId(codigoPostal);

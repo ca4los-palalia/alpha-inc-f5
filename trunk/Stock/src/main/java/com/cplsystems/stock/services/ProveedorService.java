@@ -82,4 +82,7 @@ public class ProveedorService {
 		return proveedorDAO.getAll();
 	}
 
+	public List<Proveedor> getBysClaveNombreRfc(String buscarTexto){
+		return proveedorDAO.getBysClaveNombreRfc(buscarTexto);
+	}
 }

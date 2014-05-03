@@ -47,5 +47,9 @@ public class ContactoService {
 	public List<Contacto> getAll() throws DataAccessException {
 		return contactoDAO.getAll();
 	}
+	
+	public Contacto getUltimoRegistroContacto(){
+		return contactoDAO.getUltimoRegistroContacto();
+	}
 
 }

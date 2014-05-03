@@ -32,7 +32,7 @@ public class Email implements Serializable{
 		this.idEmails = idEmails;
 	}
 	
-	@Column (name = "contacto", length =250)
+	@Column
 	public String getContacto() {
 		return contacto;
 	}
@@ -41,12 +41,21 @@ public class Email implements Serializable{
 	}
 	
 	
-	@Column (name = "tipo", length =250)
+	@Column
 	public String getTipo() {
 		return tipo;
 	}
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+	@Column
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	
 }

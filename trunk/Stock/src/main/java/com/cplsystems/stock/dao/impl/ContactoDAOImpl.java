@@ -5,8 +5,13 @@ package com.cplsystems.stock.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.ContactoDAO;
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Email;
@@ -17,41 +22,71 @@ import com.cplsystems.stock.domain.Telefono;
  */
 
 @Repository
-public class ContactoDAOImpl implements ContactoDAO{
+public class ContactoDAOImpl extends HibernateDAOSuportUtil  implements ContactoDAO{
 
+	@Transactional
 	public void save(Contacto contacto) {
-		// TODO Auto-generated method stub
-		
+		getHibernateTemplate().save(contacto);
 	}
 
+	@Transactional
 	public void update(Contacto contacto) {
-		// TODO Auto-generated method stub
-		
+		getHibernateTemplate().update(contacto);
 	}
 
+	@Transactional
 	public void delete(Contacto contacto) {
-		// TODO Auto-generated method stub
-		
+		getHibernateTemplate().delete(contacto);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public Contacto getById(Long idContacto) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Contacto.class);
+		criteria.add(Restrictions.eq("", idContacto));
+		List<Contacto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public Contacto getByTelefono(Telefono telefono) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Contacto.class);
+		criteria.add(Restrictions.eq("telefono", telefono));
+		List<Contacto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public Contacto getByIdEmail(Email email) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Contacto.class);
+		criteria.add(Restrictions.eq("email", email));
+		List<Contacto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<Contacto> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Contacto.class);
+		List<Contacto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Contacto getUltimoRegistroContacto() {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Contacto.class);
+		criteria.addOrder(Order.desc("idContacto"));
+		criteria.setMaxResults(1);
+		List<Contacto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
    
 }

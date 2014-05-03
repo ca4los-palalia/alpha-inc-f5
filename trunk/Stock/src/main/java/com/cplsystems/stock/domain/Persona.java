@@ -37,7 +37,7 @@ public class Persona {
 		this.idPersona = idPersona;
 	}
 
-	@Column(name = "apellido_paterno", length = 250)
+	@Column
 	public String getApellidoPaterno() {
 		return apellidoPaterno;
 	}
@@ -46,7 +46,7 @@ public class Persona {
 		this.apellidoPaterno = apellidoPaterno;
 	}
 
-	@Column(name = "apellido_materno", length = 250)
+	@Column
 	public String getApellidoMaterno() {
 		return apellidoMaterno;
 	}
@@ -56,7 +56,7 @@ public class Persona {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_nacimiento")
+	@Column
 	public Calendar getFechaNacimiento() {
 		return fechaNacimiento;
 	}
@@ -65,7 +65,7 @@ public class Persona {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	@Column(name = "nombre", length = 250)
+	@Column
 	public String getNombre() {
 		return nombre;
 	}
@@ -74,7 +74,7 @@ public class Persona {
 		this.nombre = nombre;
 	}
 
-	@Column(name = "sexo")
+	@Column
 	public Long getSexo() {
 		return sexo;
 	}
