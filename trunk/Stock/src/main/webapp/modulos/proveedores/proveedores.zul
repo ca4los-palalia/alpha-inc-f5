@@ -3,623 +3,328 @@
 
 <zk>
 	<style src="/styles/proveedores/styleProveedor.css" />
+	<style src="/styles/home/styleHome.css" />
 
-	<window apply="org.zkoss.bind.BindComposer" viewModel="@id('pvm') @init('com.cplsystems.stock.app.proveedores.ProveedoresVM')">
-		
-		<panel border="none" >
-	        <panelchildren>
-	            <menubar id="menubar" width="100%">
-	                <menu label="Archivo">
-	                    <menupopup>
-	                        <menu label="New" image="/widgets/menu/drop-down_menu/img/file_new.png">
-	                            <menupopup>
-	                                <menuitem label="Document" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_new_writer.png" />
-	                                <menuitem label="Spreadsheet" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_new_spreadsheet.png" />
-	                                <menuitem label="Presentation" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_new_presentation.png" />
-	                            </menupopup>
-	                        </menu>
-	                        <menuitem label="NUevo proveedor" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_open.png" />
-	                        <menuseparator></menuseparator>
-	                        <menuitem label="Guardar proveedor" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/file_save.png" />
-	                        <menuseparator></menuseparator>	                        
-	                        <menuitem label="Salir" disabled="true" image="/widgets/menu/drop-down_menu/img/file_exit.png" />
-	                    </menupopup>
-	                </menu>
-	                <menu label="Editar">
-	                    <menupopup>
-	                        <menuitem label="Undo" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/edit_undo.png" />
-	                        <menuitem label="Redo" disabled="true" image="/widgets/menu/drop-down_menu/img/edit_redo.png" />
-	                        <menuseparator></menuseparator>
-	                        <menuitem label="Cut" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/edit_cut.png" />
-	                        <menuitem label="Copy" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/edit_copy.png" />
-	                        <menuitem label="Paste" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/edit_paste.png" />
-	                        <menuseparator></menuseparator>
-	                        <menuitem label="Select All" onClick="alert(self.label)" image="/widgets/menu/drop-down_menu/img/edit_select-all.png" />
-	                    </menupopup>
-	                </menu>
-	                <menu label="Help">
-	                    <menupopup>
-	                        <menuitem label="Issue tracker" target="_zkdemo" href="http://tracker.zkoss.org" image="/widgets/menu/drop-down_menu/img/bug.png" />
-	                        <menu label="About">
-	                            <menupopup>
-	                                <menuitem label="About Potix" target="_zkdemo" href="http://www.zkoss.org/support/about" onClick="alert(self.label)" />
-	                            </menupopup>
-	                        </menu>
-	                    </menupopup>
-	                </menu>
-	                
-	                <menuitem label="Persona moral" image="/images/zk16x16.png" onClick="alert(self.label)" />
-	            </menubar>
-	            
-	        </panelchildren>
-	        
-	    </panel>
+	<window apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.proveedor.ProveedoresVM')">
+
+
+
 		
 
-	
-	
-	<grid>
-        <rows>
-            <row>
-                Nombre:
-                <textbox type="text" value="@bind(pvm.nombreProveedor)"/>
-                
-                Giro:
-                <textbox/>
-            </row>
-            <row>
-            	Razón social:
-                <textbox/>
-                
-                RFC:
-                <textbox/>
-            </row>
-            <row>
-                Estatus:
-                <textbox/>
-                
-                Contrato:
-                
-               	<textbox/>
-                
-            </row>
-            <row>
-                Contacto:
-                <button id="contactoId" tooltip="Ver contacto" 
-                		image="/images/UI/eye.png" onClick="@command('guardarProveedor')" />
+		<hlayout style="text-align:right">
+			<button image="/images/toolbar/download32.png"
+				onClick="@command('saveChanges')" />
+			<button image="/images/toolbar/paper32.png"
+				onClick="@command('newRecord')" />
+			<button image="/images/toolbar/minus32.png"
+				onClick="@command('deleteRecord')" />
+			<button image="/images/toolbar/search32.png"
+				onClick="@command('performSearch')" tooltip="Buscar proveedores"/>
+		</hlayout>
+		
+		<separator />
+		<separator bar="true" height="2px"/>
+		<separator />
 			
-                
-            </row>
-            
-        </rows>
-    </grid>
-	
-	
-		
-	
-		<radiogroup id="sv1"
-			onCheck="choice1.value = self.selectedItem.label" />
-		<vlayout sclass="colorFontHead">
-
-			<hlayout sclass="pading">
-				<radio id="ra1" label="Persona física" radiogroup="sv1" />
-				<radio id="ra2" label="Persona Moral" radiogroup="sv1" />
-			</hlayout>
-
-			<vlayout>
-				<label value="Denominación o razón social" />
-				<hlayout sclass="pading">
-					<combobox />
-					<button label="Buscar" />
-				</hlayout>
-
-				<hlayout sclass="pading">
-					<label value="Colectiva" />
-					<combobox />
-				</hlayout>
-				
-				
-				
-				<hlayout sclass="pading">
-					<label value="Identificador externo:" />
-					<textbox />
-				</hlayout>
-
-				<div height="50px">
-		                
-		            </div>
-
-				<tabbox id="tb" sclass="pading">
-					<tabs id="tabs">
-						<tab label="Generales" />
-						<tab id="B" label="Proveedores"/>
-					</tabs>
-
-					<tabpanels>
-						<tabpanel>
-							<panel title="Información personal"/>
-							<grid>
-						        <rows>
-						            <row>
-						            	<div align="right">
-						            		Nombre:
-						            	</div>
-						                <textbox type="text" value="@bind(pvm.nombreProveedor)"/>
-						                <div align="right">
-						            		Giro:
-						            	</div>
-						                <textbox type="text" value="@bind(pvm.giro)"/>
-						                <div align="right">
-						                	Razón social:
-						                </div>
-						                <textbox type="text" value="@bind(pvm.razonSocial)"/>
-						            </row>
-						            <row>
-						            	<div align="right">
-						            		Calle:
-						            	</div>
-						                <textbox type="text" value="@bind(pvm.calle)"/>
-						                <div align="right">
-						                	Número exterior:
-					                	</div>
-					                	<intbox cols="20" value="@bind(pvm.numeroExterior)"/>
-						                <div align="right">
-						                	Número interior:
-					                	</div>
-					                	<intbox cols="20" value="@bind(pvm.numeroInterior)"/>
-						            </row>
-						            <row>
-						            	<div align="right">
-						            		Colónia:
-						                </div>
-						                <textbox type="text" value="@bind(pvm.colonia)"/>
-						                <div align="right">
-						                	Ciudad:
-					                	</div>
-						                <textbox type="text" value="@bind(pvm.ciudad)"/>
-						                <div align="right">
-						                	Municipio:
-						                </div>
-						                <textbox type="text" value="@bind(pvm.municipio)"/>
-						            </row>
-						            <row>
-						            	<div align="right">
-						            		Estado:
-						            	</div>
-						               	<textbox type="text" value="@bind(pvm.estado)"/>
-						               	<div align="right">
-						                	País:
-						                </div>
-						                <textbox type="text" value="@bind(pvm.pais)"/>
-						                <div align="right">
-						                	Código postal:
-						                </div>
-						                <intbox cols="20" value="@bind(pvm.codigoPostal)"/>
-						            </row>
-						            <row>
-						            	<div align="right">
-						                	Fax:
-						                </div>
-						                <intbox cols="20" value="@bind(pvm.fax)"/>
-						                <div align="right">
-						                	Telefono:
-						                </div>
-						               	<intbox cols="20" value="@bind(pvm.telefono)"/>
-						               	<div align="right">
-						               		Email:
-						               	</div>
-						                <textbox type="text" value="@bind(pvm.email)"/>
-						            </row>
-						            <row>
-						            	<div align="right" >
-						            		Contrato:
-						            	</div>
-						               	<textbox type="text" value="@bind(pvm.contrato)"/>
-						               	<div align="right">
-						                	Pagina web:
-						                </div>
-						               	<textbox type="text" value="@bind(pvm.paginaWeb)"/>
-						               	<div align="right">
-						               		RFC:
-						               	</div>
-						                <textbox type="text" value="@bind(pvm.rfc)"/>
-						            </row>
-						        </rows>
-						    </grid>
-						    
-						    <separator/>
+		<tabbox id="tb">
+		    <tabs id="tabs">
+		        <tab id="tab1" label="Nuevo Proveedor" />
+		        <tab id="tab2" label="Buscar | Actualizar | Eliminar: proveedor" />
+		    </tabs>
+		    <tabpanels>
+		        <tabpanel>
+		        	
+		        	<vlayout >
+						
+						<groupbox >
+			                <caption sclass="folder" label="INFORMACIÓN" />
+						
+							<hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">*Nombre:</div>
+									<textbox value="@bind(pvm.nombreProveedor)" cols="30"/>
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Giro:</div>
+									<textbox value="@bind(pvm.giro)" cols="30"/>
+								</hlayout>
+							</hlayout>
 							
-							<panel title="Contacto"/>
-							
-							<grid >
-						        <rows>
-						            <row>
-						            	<div align="right">
-						            		Nombre:
-						            	</div>
-						                <textbox type="text" value="@bind(pvm.nombreContacto)"/>
-						                <div align="right">
-						            		Cargo:
-						            	</div>
-						                <textbox type="text" value="@bind(pvm.cargoContacto)"/>
-						                <div align="right">
-						                	RFC:
-						                </div>
-						                <textbox type="text" value="@bind(pvm.rfcContacto)"/>
-						            </row>
-						            <row>
-						            	<div align="right">
-						            		CURP:
-						            	</div>
-						                <textbox type="text" value="@bind(pvm.curpContacto)"/>
-						                <div align="right">
-						                	Telefono:
-					                	</div>
-					                	<intbox cols="20" value="@bind(pvm.telefonoContacto)"/>
-						                <div align="right">
-						                	Extención:
-					                	</div>
-					                	<intbox cols="20" value="@bind(pvm.extencionContacto)"/>
-						            </row>
-						            <row>
-						            	<div align="right">
-						            		Email:
-						                </div>
-						                <textbox type="text" value="@bind(pvm.emailContacto)"/>
-						                <div align="right">
-						                	Célular:
-					                	</div>
-					                	<intbox cols="20" value="@bind(pvm.celularContacto)"/>
-						            </row>
-						        </rows>
-						    </grid>
+							<hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Razón social:</div>
+									<textbox type="text" value="@bind(pvm.razonSocial)" cols="30"/>
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">*RFC:</div>
+									<textbox type="text" value="@bind(pvm.rfc)" cols="30"/>
+								</hlayout>
+							</hlayout>
 							
 							<separator/>
+							<separator bar="true" />
 							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							<vlayout >
-								
-								<panel border="normal" title="Información personal">
-									<panelchildren sclass="colorBorderPanels pading">
-
-										<vlayout>
-											<hlayout >
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Calle:"/>
-												</hlayout>
-												<textbox />
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Número exterior:" />
-												</hlayout>
-												<decimalbox cols="20"/>
-												
-												
-											</hlayout>
-
-											<hlayout>
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Colónia:" />
-												</hlayout>
-												<textbox />
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Ciudad:" />
-												</hlayout>
-												<textbox />
-											</hlayout>
-
-											<hlayout>
-											
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Municipio:" />
-												</hlayout>
-												<textbox />
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Estado:" />
-												</hlayout>
-												<textbox />
-											</hlayout>
-
-											<hlayout>
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="País:" />
-												</hlayout>
-												<textbox />
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Código postal:" />
-												</hlayout>
-												<decimalbox cols="20"/>
-												
-											</hlayout>
-
-											<hlayout>
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Fax:" />
-												</hlayout>
-												<decimalbox cols="20"/>
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Teléfono:" />
-												</hlayout>
-												<decimalbox cols="20"/>
-											</hlayout>
-
-											<hlayout>
-												<hlayout sclass="spacerLabelTab1">
-													<label value="email:" />
-												</hlayout>
-												<textbox />
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Página web:" />
-												</hlayout>
-												<textbox />
-												
-												
-											</hlayout>
-
-											<hlayout>
-												<hlayout sclass="spacerLabelTab1">
-													<label value="RFC:" />
-												</hlayout>
-												<textbox />
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Número interior:" />
-												</hlayout>
-												<decimalbox cols="20"/>
-											</hlayout>
-
-										</vlayout>
-
-									</panelchildren>
-
-
-								</panel>
-								
-								
-								
-								<panel border="normal" title="Contacto">
-									<panelchildren sclass="colorBorderPanels">
-
-										<vlayout sclass="pading">
-											
-											
-											<hlayout>
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Nombre:" />
-												</hlayout>
-												<textbox />
-												
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Cargo:" />
-												</hlayout>
-												<textbox />
-											</hlayout>
-
-											<hlayout>
-												<hlayout sclass="spacerLabelTab1">
-													<label value="RFC:" />
-												</hlayout>
-												<textbox />
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="CURP:" />
-												</hlayout>
-												<textbox />
-											</hlayout>
-
-											<hlayout>
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Teléfono" />
-												</hlayout>
-												<decimalbox cols="20"/>
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Ext.:" />
-												</hlayout>
-												<decimalbox cols="20"/>
-												
-												
-											</hlayout>
-
-											<hlayout>
-												<hlayout sclass="spacerLabelTab1">
-													<label value="email:" />
-												</hlayout>
-												<textbox />
-												
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Célular:" />
-												</hlayout>
-												<decimalbox cols="20"/>
-											</hlayout>
-											
-											<hlayout>
-												
-											</hlayout>
-
-										</vlayout>
-									</panelchildren>
-								</panel>
-								
-								
-								
-								
-								
-								
-								<panel border="normal" title="Datos contables">
-									<panelchildren sclass="colorBorderPanels">
-
-										<vlayout sclass="pading">
-											
-											
-											<hlayout>
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Cuenta contable:" />
-												</hlayout>
-												<button label="Buscar"/>
-												<textbox/>
-												<button label="Buscar"/>
-												<textbox />
-											</hlayout>
-
-											<hlayout>
-												<hlayout sclass="spacerLabelTab1">
-													<label value="Cuenta contable:" />
-												</hlayout>
-												
-												<button label="Buscar"/>
-												<textbox/>
-												<button label="Buscar"/>
-												<textbox />
-											</hlayout>
-											
-										</vlayout>
-									</panelchildren>
-								</panel>
-
-							</vlayout>
-
-						</tabpanel>
-
-
-						<tabpanel>
-							<vlayout sclass="colorBorderPanels" visible="false">
+							<hlayout>
 								<hlayout>
-									<hlayout sclass="spacerLabelTab2">
-										<label value="Limite de Credito" />
-									</hlayout>
-									<textbox />
+									<div zclass="spacerLabel">País:</div>
+									<combobox model="@load(pvm.paises)" width="120px" selectedItem="@bind(pvm.pais)" readonly="true" >
+					                    <template name="model">
+					                        <comboitem label="@load(each.nombre)"/>
+					                    </template>
+					                </combobox>
 								</hlayout>
-
 								<hlayout>
-									<hlayout sclass="spacerLabelTab2">
-										<label value="Descuento por pronto pago (%):" />
-									</hlayout>
-									<textbox />
+									<div zclass="spacerLabel">*Estado:</div>
+									<combobox model="@load(pvm.estados)" width="120px" selectedItem="@bind(pvm.estado)" readonly="true">
+					                    <template name="model">
+					                        <comboitem label="@load(each.nombre)"/>
+					                    </template>
+					                </combobox>
 								</hlayout>
-
+							</hlayout>
+							
+							<hlayout>
 								<hlayout>
-									<hlayout sclass="spacerLabelTab2">
-										<label
-										value="Días de descuento por pronto pago:" />
-									</hlayout>
-									
-									<textbox />
-								</hlayout>
-
-								<hlayout>
-									<hlayout sclass="spacerLabelTab2">
-										<label
-										value="Días de crédito (neto):" />
-									</hlayout>
-									
-									<textbox />
-								</hlayout>
-
-								<hlayout>
-									<hlayout sclass="spacerLabelTab2">
-										<label value="Días de tolerancia:" />
-									</hlayout>
-									<textbox />
-								</hlayout>
-
-								<hlayout>
-									<hlayout sclass="spacerLabelTab2">
-										<label value="Clave fiscal:" />
-									</hlayout>
-									<combobox cols="16"/>
-								</hlayout>
-
-
-								<hlayout>
-									<hlayout sclass="spacerLabelTab2">
-										<label value="Banco:" />
-									</hlayout>
-									<textbox />
+									<div zclass="spacerLabel">Ciudad:</div>
+									<textbox cols="30" type="text" value="@bind(pvm.ciudad)" />
 									
 								</hlayout>
-
 								<hlayout>
-									<hlayout sclass="spacerLabelTab2">
-										<label value="Clave:" />
-									</hlayout>
-									<textbox />
+									<div zclass="spacerLabel">*Municipio:</div>
+									<combobox model="@load(pvm.municipios)" width="120px" selectedItem="@bind(pvm.municipio)" readonly="true">
+					                    <template name="model">
+					                        <comboitem label="@load(each.nombre)"/>
+					                    </template>
+					                </combobox>
 								</hlayout>
-								
-								
-								<hlayout>
-									<hlayout sclass="spacerLabelTab2">
-										<label value="Cuenta:" />
-									</hlayout>
-									<textbox />
-								</hlayout>
-								
-								
-								
-
-							</vlayout>
+							</hlayout>
 							
-							<vlayout sclass="colorBorderPanels">
-								<hlayout sclass="spacerLabelTab2">
-										<label value="Comentarios:" />
-									</hlayout>
-									<textbox width="350px;" multiline="true" height="120px"
-										tabindex="11" />
-							</vlayout>
-
-						</tabpanel>
-
-					</tabpanels>
-
-				</tabbox>
-
-
-
-			</vlayout>
-
-
-
-		</vlayout>
-		<button onClick="@command('changeSubmitStatus')" label="Reset" />
-
-
+							<hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">*Colónia:</div>
+									<textbox cols="30" type="text" value="@bind(pvm.colonia)" />
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">*Calle:</div>
+									<textbox type="text" value="@bind(pvm.calle)" cols="30"/>
+								</hlayout>
+							</hlayout>
+							
+							<hlayout>
+								<hlayout>
+								
+									<div zclass="spacerLabel">*Número exterior:</div>
+									<intbox cols="30" value="@bind(pvm.numeroExterior)"/>
+					                
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Número interior:</div>
+									<intbox cols="30" value="@bind(pvm.numeroInterior)"/>
+									
+								</hlayout>
+							</hlayout>
+							
+							<separator/>
+							<separator bar="true" />
+									
+							<hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Código postal:</div>
+									<intbox cols="30" value="@bind(pvm.codigoPostal)" />
+									
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">*Telefono:</div>
+									<intbox cols="30" value="@bind(pvm.telefono)" />
+								</hlayout>
+							</hlayout>
+							
+							<hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Email:</div>
+									<textbox type="text" value="@bind(pvm.email)" cols="30"/>
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Contrato:</div>
+									<combobox model="@load(pvm.contratos)" width="120px" selectedItem="@bind(pvm.contrato)" readonly="true" >
+					                    <template name="model">
+					                        <comboitem label="@load(each.descripcion)"/>
+					                    </template>
+					                </combobox>
+								</hlayout>
+							</hlayout>
+							
+							<hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Pagina web:</div>
+									<textbox type="text" value="@bind(pvm.paginaWeb)" cols="30"/>
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Fax:</div>
+									<intbox cols="30" value="@bind(pvm.fax)" />
+								</hlayout>
+							</hlayout>
+	            	    </groupbox>
+					</vlayout>
+			
+					<separator/>
+			
+					<vlayout>
+						
+						
+						<groupbox >
+			                <caption sclass="folder" label="CONTACTO" />
+						
+							<hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Nombre:</div>
+									<textbox value="@bind(pvm.nombreContacto)" cols="30"/>
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Cargo:</div>
+									<textbox value="@bind(pvm.cargoContacto)" cols="30"/>
+								</hlayout>
+							</hlayout>
+							
+							<hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">RFC:</div>
+									<textbox type="text" value="@bind(pvm.rfcContacto)" cols="30"/>
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">CURP:</div>
+									<textbox type="text" value="@bind(pvm.curpContacto)" cols="30"/>
+								</hlayout>
+							</hlayout>
+							
+							<hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Telefono:</div>
+									<intbox cols="30" value="@bind(pvm.telefonoContacto)"/>
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Extención:</div>
+									<intbox cols="30" value="@bind(pvm.extencionContacto)"/>
+								</hlayout>
+							</hlayout>
+							<hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Email:</div>
+									<textbox cols="30" type="text" value="@bind(pvm.emailContacto)" />
+								</hlayout>
+								<hlayout>
+									<div zclass="spacerLabel">Celular:</div>
+									<intbox cols="30" value="@bind(pvm.celularContacto)" />
+								</hlayout>
+							</hlayout>
+						</groupbox>
+						
+					</vlayout>
+			
+					<separator />
+					
+					<groupbox >
+		                <caption sclass="folder" label="COMENTARIOS" />
+						<textbox multiline="true" zclass="widthComent" value="@bind(pvm.comentario)"/>
+						<separator />
+						<button onClick="@command('guardarProveedor')" label="Guardar" image="/images/toolbar/download32.png" tooltip="Guardar proveedor"/>
+					</groupbox>
+					
+					
+		        </tabpanel>
+		        <tabpanel id="tabPanel2">
+		        	<vlayout>
+						
+						<label value="Buscar clave, nombre o RFC"/>
+						<textbox value="@bind(pvm.buscarTexto)" cols="30"/>
+						
+						<separator bar="true" height="2px"/>
+							
+						<listbox emptyMessage="No se encontro resultado" rows="5" 
+				            model="@load(pvm.proveedores)" selectedItem="@bind(pvm.proveedorSelected)" >
+				            <auxhead>
+				                <auxheader colspan="3" class="topic" >
+				                	<label value="@bind(pvm.numeroRegistros)"></label>
+				                </auxheader>
+				            </auxhead>
+				            
+				            <listhead>
+				                <listheader label="Clave" align="center" width="50px"/>
+				                <listheader label="Cuenta cargo" align="center" width="100px"/>
+				                <listheader label="Nombre" align="center" />
+				                <listheader label="RFC" align="center" width="150px"/>
+				                <listheader label="Direccion" align="center" />
+				            </listhead>
+				            <template name="model" var="proveedor">
+				                <listitem>
+				                	
+				                    <listcell>
+				                    	<textbox value="@bind(proveedor.clave)" inplace="true" width="100%"/>
+				                    </listcell>
+				                    
+				                    <listcell>
+				                    	<textbox value="@bind(proveedor.cuentaCargo)" inplace="true"/>
+				                    </listcell>
+				                    <listcell>
+				                    	<textbox value="@bind(proveedor.nombre)" inplace="true" width="100%"/>
+				                    </listcell>
+				                    <listcell>
+				                    	<textbox value="@bind(proveedor.rfc)" inplace="true" width="100%"/>
+				                    </listcell>
+				                    <listcell>
+				                    	<textbox value="@bind(proveedor.direccionFiscal.calle)" inplace="true" width="100%"/>
+				                    </listcell>
+				                </listitem>
+				            </template>
+				 
+					        
+				        </listbox>
+		        
+				        <separator />
+				        
+				        <grid>
+					        <auxhead>
+					            <auxheader colspan="5">Dirección</auxheader>
+					        </auxhead>
+					        <columns>
+					            <column label="Calle" align="center" />
+					            <column label="N. Ext" align="center" />
+					            <column label="N. Int" align="center" />
+					            <column label="Municipio" align="center" />
+					            <column label="Ciudad" align="center" />
+					            <column label="Estado" align="center" />
+					            <column label="Pais" align="center" />
+					        </columns>
+					        <rows>
+					            <row>
+					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.calle)" />
+					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.numExt)"/>
+					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.numInt)"/>
+					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.municipio.nombre)"/>
+					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.cuidad)" />
+					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.estado.nombre)" />
+					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.pais.nombre)" />
+					            </row>
+					            <row >
+					                <label value="@bind(pvm.proveedorSelected.comentario)" />
+					                <label value="@bind(pvm.proveedorSelected.giro)"/>
+					                <label value="@bind(pvm.proveedorSelected.contacto)"/>
+					                <label value="@bind(pvm.proveedorSelected.contrato.descripcion)"/>
+					                
+					                <label value="@bind(pvm.proveedorSelected.giro)"/>
+					                <label value="@bind(pvm.proveedorSelected.contacto)"/>
+					                <label value="@bind(pvm.proveedorSelected.contrato.descripcion)"/>
+					            </row>
+					        </rows>
+					    </grid>
+				    
+					</vlayout>
+		        </tabpanel>
+		    </tabpanels>
+		</tabbox>			
+			
+		
+		
 	</window>
 </zk>
