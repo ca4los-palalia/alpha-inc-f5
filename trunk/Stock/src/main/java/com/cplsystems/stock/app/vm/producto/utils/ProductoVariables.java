@@ -23,7 +23,7 @@ public abstract class ProductoVariables extends BasicStructure {
 	protected List<Producto> productoDB;
 	protected Producto productoSeleccionado;
 
-	protected Validator productoValidator = new ProductoValidator();
+	protected Validator productoValidator;
 
 	public String getClaveProducto() {
 		return claveProducto;

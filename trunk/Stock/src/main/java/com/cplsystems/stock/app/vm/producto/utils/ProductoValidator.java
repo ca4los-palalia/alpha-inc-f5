@@ -4,12 +4,16 @@
 package com.cplsystems.stock.app.vm.producto.utils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.zkoss.bind.Property;
 import org.zkoss.bind.ValidationContext;
 import org.zkoss.bind.validator.AbstractValidator;
+import org.zkoss.zk.ui.util.Clients;
 
+import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.domain.Producto;
 
 /**
@@ -22,6 +26,10 @@ public class ProductoValidator extends AbstractValidator implements
 	private static final long serialVersionUID = 175310348606245201L;
 	private Map<String, Property> beanProps;
 
+	public ProductoValidator() {
+
+	}
+
 	public void validate(ValidationContext ctx) {
 		beanProps = ctx.getProperties(ctx.getProperty().getBase());
 		Producto producto = (Producto) beanProps.get(".").getBase();
@@ -32,22 +40,40 @@ public class ProductoValidator extends AbstractValidator implements
 
 	private void validateProductRequiredFields(ValidationContext ctx,
 			Producto producto) {
+		StringBuilder errores = new StringBuilder();
+		errores.append("Antes de continuar verifique que los siguientes campos contengan la información requerida: ");
+		List<String> fields = new ArrayList<String>();
 		if (producto.getClave() == null || producto.getClave().isEmpty()) {
-			this.addInvalidMessage(ctx, "clave",
-					"La clave es un valor requerido");
+			fields.add("Clave");
 		}
 		if (producto.getNombre() == null || producto.getNombre().isEmpty()) {
-			this.addInvalidMessage(ctx, "nombre",
-					"El nombre del producto es un valor requerido");
+			if (!fields.isEmpty()) {
+				fields.add(", nombre");
+			} else if (fields.isEmpty()) {
+				fields.add("Nombre");
+			}
 		}
 		if (producto.getPrecio() == null || producto.getPrecio() <= 0) {
-			this.addInvalidMessage(ctx, "precio",
-					"El precio es un valor requerido");
+			if (!fields.isEmpty()) {
+				fields.add(", precio");
+			} else if (fields.isEmpty()) {
+				fields.add("Precio");
+			}
 		}
 		if (producto.getUnidad() == null) {
-			this.addInvalidMessage(ctx, "unidad",
-					"La unidad es un valo requerido");
+			if (!fields.isEmpty()) {
+				fields.add(" y unidad");
+			} else if (fields.isEmpty()) {
+				fields.add("Unidad");
+			}
+		}
+		if (fields.size() > 0) {
+			this.addInvalidMessage(ctx, "");
+			for (String string : fields) {
+				errores.append(string);
+			}
+			StockUtils.showSuccessmessage(errores.toString(),
+					Clients.NOTIFICATION_TYPE_WARNING, 0);
 		}
 	}
-
 }
