@@ -18,6 +18,8 @@ public interface DireccionDAO {
 	public void save(Direccion direccion);
 
 	public Direccion getById(Long direccion);
+	
+	public Direccion getUltimoRegistroDireccion();
 
 	public List<Direccion> getByCodigoPostalId(String codigoPostal);
 

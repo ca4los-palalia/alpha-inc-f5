@@ -40,4 +40,6 @@ public interface ProveedorDAO {
 	public List<Proveedor> getByRepresentanteClientes(Persona persona);
 
 	public List<Proveedor> getAll();
+	
+	public List<Proveedor> getBysClaveNombreRfc(String buscarTexto);
 }
