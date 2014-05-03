@@ -10,7 +10,7 @@
 	<session-factory>
 		<!-- Configuration Data -->
 		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
-		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://192.168.1.91:1433/stock</property>
+		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/stock</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
 		<property name="connection.username">carlos</property>
 		<property name="connection.password">carlos</property>
@@ -33,6 +33,7 @@
 		<mapping class="com.cplsystems.stock.domain.Municipio" />
 		<mapping class="com.cplsystems.stock.domain.OrdenCompraProducto" />
 		<mapping class="com.cplsystems.stock.domain.OrdenCompra" />
+		<mapping class="com.cplsystems.stock.domain.Pais" />
 		<mapping class="com.cplsystems.stock.domain.Partida" />
 		<mapping class="com.cplsystems.stock.domain.Persona" />
 		<mapping class="com.cplsystems.stock.domain.Producto" />
