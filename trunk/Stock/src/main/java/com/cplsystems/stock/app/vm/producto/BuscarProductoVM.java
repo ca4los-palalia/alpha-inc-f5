@@ -77,7 +77,7 @@ public class BuscarProductoVM extends BasicStructure {
 			productosModalDialog.detach();
 			Map<String, Object> args = new HashMap<String, Object>();
 			args.put("productoSeleccionado", productoSeleccionado);
-			if (globalCommandName != null || !globalCommandName.isEmpty()) {
+			if (globalCommandName != null && !globalCommandName.isEmpty()) {
 				BindUtils.postGlobalCommand(null, null, globalCommandName, args);
 			} else {
 				BindUtils.postGlobalCommand(null, null,
