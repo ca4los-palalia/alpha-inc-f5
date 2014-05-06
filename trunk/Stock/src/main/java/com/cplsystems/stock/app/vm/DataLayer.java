@@ -9,6 +9,7 @@ import java.util.List;
 import com.cplsystems.stock.domain.Contrato;
 import com.cplsystems.stock.domain.Estado;
 import com.cplsystems.stock.domain.Municipio;
+import com.cplsystems.stock.domain.Pais;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
