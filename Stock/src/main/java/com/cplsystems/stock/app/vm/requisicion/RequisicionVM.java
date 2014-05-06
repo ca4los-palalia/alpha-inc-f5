@@ -17,6 +17,7 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.SimpleListModel;
 import org.zkoss.zul.Window;
 
@@ -40,6 +41,16 @@ public class RequisicionVM extends RequisicionVariables {
 		super.init();
 		initDefaultValues();
 		loadItemsKeys();
+	}
+
+	@Command
+	public void saveChanges() {
+		if (validateBill()) {
+			requisicionService.save(requisicion);
+			for (RequisicionProducto requisicionProducto : requisicionProductos) {
+				requisicionProductoService.save(requisicionProducto);
+			}
+		}
 	}
 
 	private void initDefaultValues() {
@@ -95,26 +106,64 @@ public class RequisicionVM extends RequisicionVariables {
 		}
 	}
 
-	@GlobalCommand
-	public void search(@BindingParam("index)") Integer index) {
+	@Command
+	public void search(@BindingParam("index") Integer index) {
 		if (index != null) {
-			System.err.println(index);
+			Map<String, Object> inputParams = new HashMap<String, Object>();
+			inputParams.put(REQUISICION_GLOBALCOMMAND_NAME_FOR_UPDATE,
+					"updateRecordFromRequisitionWithSelectedItem");
+			Window productoModalView = stockUtils.createModelDialogWithParams(
+					StockConstants.MODAL_VIEW_PRODUCTOS, inputParams);
+			productoModalView.doModal();
+			requisicionProductoSeleccionado = requisicionProductos.get(index
+					.intValue());
 		}
-		Map<String, Object> inputParams = new HashMap<String, Object>();
-		inputParams.put(REQUISICION_GLOBALCOMMAND_NAME_FOR_UPDATE,
-				"updateRecordFromRequisitionWithSelectedItem");
-		Window productoModalView = stockUtils.createModelDialogWithParams(
-				StockConstants.MODAL_VIEW_PRODUCTOS, inputParams);
-		productoModalView.doModal();
+
 	}
 
+	@SuppressWarnings("static-access")
 	@GlobalCommand
 	@NotifyChange("*")
 	public void updateRecordFromRequisitionWithSelectedItem(
 			@BindingParam("productoSeleccionado") Producto productoSeleccionado) {
 		if (productoSeleccionado != null) {
-			System.err.println("actualizar valor de la requisición");
+			if (!verifyItemsInRequisition(productoSeleccionado)) {
+				requisicionProductoSeleccionado
+						.setProducto(productoSeleccionado);
+			} else {
+				stockUtils.showSuccessmessage(
+						"Ya existe un producto registrado con esta clave",
+						Clients.NOTIFICATION_TYPE_WARNING, 4000);
+			}
 		}
+	}
+
+	private boolean verifyItemsInRequisition(Producto productoSeleccionado) {
+		for (RequisicionProducto requisicionProducto : requisicionProductos) {
+			if (requisicionProducto.getProducto().getIdProducto() != null
+					&& requisicionProducto.getProducto().getClave() != null
+					&& requisicionProducto.getProducto().getClave()
+							.equalsIgnoreCase(productoSeleccionado.getClave())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@SuppressWarnings("static-access")
+	private boolean validateBill() {
+		boolean continuar = true;
+		for (RequisicionProducto requisicionProducto : requisicionProductos) {
+			if (!verifyItemsInRequisition(requisicionProducto.getProducto())) {
+				stockUtils.showSuccessmessage(
+						"Ya existe un producto registrado con esta clave "
+								+ requisicionProducto.getProducto().getClave(),
+						Clients.NOTIFICATION_TYPE_WARNING, 4000);
+				continuar = true;
+				break;
+			}
+		}
+		return continuar;
 	}
 
 }
