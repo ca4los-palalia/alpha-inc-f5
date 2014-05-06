@@ -1,19 +1,20 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
 	<style src="/styles/home/styleHome.css" />
-	<window apply="org.zkoss.bind.BindComposer">
+	<window apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('vm') @init('com.cplsystems.stock.app.vm.menu.MenuVM')">
 		<vlayout sclass="menubar">
-			<button label="Productos"
+			<button label="Productos" onClick="@command('showProducts')"
 				image="/images/toolbar/box32.png" zclass="menuItem" />
-			<button label="Proveedores"
+			<button label="Proveedores" onClick="@command('showProviders')"
 				image="/images/toolbar/users32.png" zclass="menuItem" />
-			<button label="Requisiciones"
+			<button label="Requisiciones" onClick="@command('showRequisitions')"
 				image="/images/toolbar/linedpapercheck32.png" zclass="menuItem" />
-			<button label="Órdenes de compra"
+			<button label="Órdenes de compra" onClick="@command('showOrders')"
 				image="/images/toolbar/shoppingcart32.png" zclass="menuItem" />
-			<button label="Reportes"
+			<button label="Reportes" onClick="@command('showReports')"
 				image="/images/toolbar/risegraph32.png" zclass="menuItem" />
-			<button label="Panel de control"
+			<button label="Panel de control" onClick="@command('showControlPanel')"
 				image="/images/toolbar/gear32.png" zclass="menuItem" />
 		</vlayout>
 	</window>

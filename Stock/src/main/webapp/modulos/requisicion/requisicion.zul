@@ -74,21 +74,25 @@
 								<hlayout>
 									<button style="width:25px"
 										image="/images/toolbar/wand32.png"
-										onClick="@global-command('search', index=1)" />
+										onClick="@command('search', index=requisicionProductoStatus.index)" />
 									<textbox zclass="tBox"
+										constraint="no empty: La clave del producto es un campo requerido"
 										value="@bind(requisicionProducto.producto.clave)" />
 								</hlayout>
 							</listcell>
 							<listcell>
 								<doublebox zclass="tBox" cols="5"
+									constraint="no empty: Debe especificar la cantidad del producto"
 									value="@bind(requisicionProducto.cantidad)" />
 							</listcell>
 							<listcell>
 								<textbox zclass="tBox" cols="50"
+									constraint="no empty: Especifique la descripción del producto solicitado"
 									maxlength="60" value="@bind(requisicionProducto.descripcion)" />
 							</listcell>
 							<listcell>
 								<doublebox zclass="tBox" cols="8"
+									constraint="no empty: El importe del producto es un valor requerido"
 									onChange="@command('updateTotal')" format="###,###,###.00"
 									value="@bind(requisicionProducto.importe)" />
 							</listcell>
