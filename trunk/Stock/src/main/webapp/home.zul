@@ -13,12 +13,13 @@
 
 			<div id="header" zclass="homeHeader"></div>
 
-			<div id="menu" zclass="homeMenu">
+			<div id="menu" zclass="homeMenu" >
 				<include src="/menu.zul" />
 			</div>
 
-			<div id="content" sclass="homeContent" hflex="min">
+			<div id="content" zclass="homeContent" hflex="min">
 				<include src="/modulos/requisicion/requisicion.zul" />
+				
 			</div>
 
 			<div id="footer" zclass="homeFooter">

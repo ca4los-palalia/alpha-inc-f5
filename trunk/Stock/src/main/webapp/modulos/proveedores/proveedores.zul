@@ -1,260 +1,352 @@
-<?page title="Home" contentType="text/html;charset=UTF-8"?>
+<?page title="Proveedores" contentType="text/html;charset=UTF-8"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 
 <zk>
 	<style src="/styles/proveedores/styleProveedor.css" />
+	<style src="/styles/home/styleGlobal.css"/>
 	<style src="/styles/home/styleHome.css" />
-
+	<script src="/scripts/watermarks.js" type="text/javascript" />
+	
 	<window apply="org.zkoss.bind.BindComposer" 
 		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.proveedor.ProveedoresVM')">
-
-
-
 		
-
-		<hlayout style="text-align:right">
-			<button image="/images/toolbar/download32.png"
-				onClick="@command('saveChanges')" />
-			<button image="/images/toolbar/paper32.png"
-				onClick="@command('newRecord')" />
-			<button image="/images/toolbar/minus32.png"
-				onClick="@command('deleteRecord')" />
-			<button image="/images/toolbar/search32.png"
-				onClick="@command('performSearch')" tooltip="Buscar proveedores"/>
-		</hlayout>
+		<grid>
+	       <columns>
+	           <column width="22%" />
+	           <column/>
+	           <column width="35%" zclass="shadowMenuActions"/>
+	       </columns>
+	       <rows>
+				<row zclass="shadowMenuActions">
+					<div style="margin:5px">
+						<label zclass="panelInfoItemMenuTitle" 
+							width="100%" 
+							value="PROVEEDORES:"/>
+					</div>
+					<div style="margin:5px">
+						<label zclass="panelInfoItemMenuContent" 
+							width="100%" 
+							value="Altas, bajas, actualización y busqueda de proveedores"/>
+					</div>	
+					<hlayout style="text-align:right">
+						<button image="/images/toolbar/clear.png" sclass="web_button" visible="@bind(pvm.botonMuenu1.visible)"
+							onClick="@command('nuevoProveedor')" tooltiptext="limpia formulario para nueva captura"/>
+							
+						<button image="/images/toolbar/saveOff.png" sclass="web_button" visible="@bind(pvm.botonMuenu2.visible)"
+							onClick="@command('newRecord')" tooltiptext="Guardar proveedor"/>
+							
+						<button image="/images/toolbar/delete.png" sclass="web_button" visible="@bind(pvm.botonMuenu3.visible)"
+							onClick="@command('deleteRecord')" tooltiptext="Eliminar proveedor"/>
+							
+						<button image="/images/toolbar/update.png" sclass="web_button" visible="@bind(pvm.botonMuenu4.visible)"
+							onClick="@command('saveChanges')" tooltiptext="Actualizar proveedor"/>
+							
+						<button image="/images/toolbar/find.png" sclass="web_button" visible="@bind(pvm.botonMuenu5.visible)"
+							onClick="@command('performSearch')" tooltiptext="Buscar proveedores"/>
+		        		
+		        		<button image="/images/toolbar/add.png" sclass="web_button" visible="@bind(pvm.botonMuenu6.visible)"
+							onClick="@command('asignarProductosAProveedor')" tooltiptext="Agregar productos seleccionados a proveedor"/>
+							
+		        		<button image="/images/toolbar/remove.png" sclass="web_button" visible="@bind(pvm.botonMuenu7.visible)"
+							onClick="@command('quitarProductosDeProveedor')" tooltiptext="Quitar productos seleccionados del proveedor"/>
+							
+					</hlayout>
+				</row>
+			</rows>
+		</grid>
 		
-		<separator />
-		<separator bar="true" height="2px"/>
-		<separator />
-			
+		<separator/>
+		<separator/>
+		
 		<tabbox id="tb">
-		    <tabs id="tabs">
-		        <tab id="tab1" label="Nuevo Proveedor" />
-		        <tab id="tab2" label="Buscar | Actualizar | Eliminar: proveedor" />
+		    <tabs>
+		        <tab onSelect="@command('selectTab1')" id="tab1" label="Nuevo Proveedor" image="/images/toolbar/nuevoDocumento.png" tooltiptext="Dar de alta a un nuevo proveedors"/>
+		        <tab onSelect="@command('selectTab2')" id="tab2" label="Buscar" image="/images/toolbar/process.png" tooltiptext="Buscar, actualizar y eliminar proveedores"/>
+		        <tab onSelect="@command('selectTab3')" label="productos -- proveedor" image="/images/toolbar/arrow.png" tooltiptext="Asociar productos con el proveedor"/>
 		    </tabs>
 		    <tabpanels>
-		        <tabpanel>
-		        	
-		        	<vlayout >
-						
-						<groupbox >
-			                <caption sclass="folder" label="INFORMACIÓN" />
-						
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">*Nombre:</div>
-									<textbox value="@bind(pvm.nombreProveedor)" cols="30"/>
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Giro:</div>
-									<textbox value="@bind(pvm.giro)" cols="30"/>
-								</hlayout>
-							</hlayout>
-							
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Razón social:</div>
-									<textbox type="text" value="@bind(pvm.razonSocial)" cols="30"/>
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">*RFC:</div>
-									<textbox type="text" value="@bind(pvm.rfc)" cols="30"/>
-								</hlayout>
-							</hlayout>
-							
-							<separator/>
-							<separator bar="true" />
-							
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">País:</div>
-									<combobox model="@load(pvm.paises)" width="120px" selectedItem="@bind(pvm.pais)" readonly="true" >
+		    	
+		    	<tabpanel>
+		    		
+		    		<groupbox >
+		                <caption sclass="folder formatTitleGroup" label="Información general" />
+		    		
+			    		<grid style="border: 0;">
+					        <columns>
+					            <column width="20%"/>
+					            <column/>
+					            <column width="20%"/>
+					            <column/>
+					        </columns>
+					        <rows>
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="*Nombre" style="text-align:right;"/>
+					                <textbox value="@bind(pvm.nuevoProveedor.nombre)" maxlength="25" width="100%"/>
+									<label value="Giro" />
+					                <textbox value="@bind(pvm.nuevoProveedor.giro)" maxlength="25" width="100%"/>
+					            </row>
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="Razon social:" />
+					                <textbox type="text" value="@bind(pvm.nuevoProveedor.razonSocial)" maxlength="20" width="100%"/>
+					                <label value="RFC:"/> 
+					                <textbox type="text" value="@bind(pvm.nuevoProveedor.rfc)" maxlength="13" zclass="upperCase" width="100%"/>
+					            </row>
+					            
+					            <row style="background-color:transparent; border: 0;">
+					            </row>
+					            
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="*País:" />
+					                <combobox model="@load(pvm.paises)" selectedItem="@bind(pvm.paisProveedor)" readonly="true" width="100%">
 					                    <template name="model">
 					                        <comboitem label="@load(each.nombre)"/>
 					                    </template>
 					                </combobox>
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">*Estado:</div>
-									<combobox model="@load(pvm.estados)" width="120px" selectedItem="@bind(pvm.estado)" readonly="true">
+					                <label value="*Estado:" />
+					                <combobox model="@load(pvm.estados)" selectedItem="@bind(pvm.estadoProveedor)" readonly="true" width="100%">
 					                    <template name="model">
 					                        <comboitem label="@load(each.nombre)"/>
 					                    </template>
 					                </combobox>
-								</hlayout>
-							</hlayout>
-							
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Ciudad:</div>
-									<textbox cols="30" type="text" value="@bind(pvm.ciudad)" />
-									
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">*Municipio:</div>
-									<combobox model="@load(pvm.municipios)" width="120px" selectedItem="@bind(pvm.municipio)" readonly="true">
+					            </row>
+					            <row style="background-color:transparent; border: 0;">
+					            	<label value="Ciudad:" />
+					                <textbox type="text" value="@bind(pvm.direccionProveedor.cuidad)" maxlength="20" width="100%"/>
+					                <label value="*Municipio:" />
+					                <combobox model="@load(pvm.municipios)" selectedItem="@bind(pvm.municipioProveedor)" readonly="true" width="100%" >
 					                    <template name="model">
 					                        <comboitem label="@load(each.nombre)"/>
 					                    </template>
 					                </combobox>
-								</hlayout>
-							</hlayout>
-							
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">*Colónia:</div>
-									<textbox cols="30" type="text" value="@bind(pvm.colonia)" />
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">*Calle:</div>
-									<textbox type="text" value="@bind(pvm.calle)" cols="30"/>
-								</hlayout>
-							</hlayout>
-							
-							<hlayout>
-								<hlayout>
-								
-									<div zclass="spacerLabel">*Número exterior:</div>
-									<intbox cols="30" value="@bind(pvm.numeroExterior)"/>
+					            </row>
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="*Colonia:" />
+					                <textbox type="text" value="@bind(pvm.direccionProveedor.colonia)" maxlength="20" width="100%"/>
+					                <label value="*Calle:" />
+									<textbox type="text" value="@bind(pvm.direccionProveedor.calle)" maxlength="20" width="100%"/>
+					            </row>
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="*Número exterior:" />
+					                <textbox value="@bind(pvm.direccionProveedor.numExt)" maxlength="4" width="100%"/>
+					                <label value="Número interior:" />
+					                <textbox value="@bind(pvm.direccionProveedor.numInt)" maxlength="4" width="100%"/>
+					            </row>
+					            
+					            <row style="background-color:transparent; border: 0;">
+					            </row>
+					            
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="Código postal:" />
+					                <textbox value="@bind(pvm.direccionProveedor.cp)" maxlength="5" width="100%"/>
+					            </row>
+					            
+					            <row style="background-color:transparent; border: 0;">
+					            	<label value="*Telefono:" />
+					                <textbox value="@bind(pvm.telefonoProveedor.numero)" maxlength="10" width="100%" tooltiptext="telefono del proveedor"/>
+					                <label value="Fax:" />
+					                <textbox value="@bind(pvm.telefonoProveedor.fax)" maxlength="10" width="100%"/>
+					            </row>
+					            
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="*Email:" />
+					                <textbox type="text" value="@bind(pvm.emailProveedor.email)" maxlength="27" width="100%"
+									constraint="/.+@.+\.[a-z]+/: por favor ingrése una direccion de correo" tooltiptext="email del proveedor"/>
+					                <label value="Pagina web:" />
+					                <textbox type="text" value="@bind(pvm.nuevoProveedor.paginaWeb)" cols="30" maxlength="20" width="100%"/>
+					            </row>
+					        </rows>
+					    </grid>
+				    </groupbox>
+				    
+				    <groupbox >
+		                <caption sclass="folder formatTitleGroup" label="Contacto" />
+		    		
+			    		<grid style="border: 0;">
+					        <columns>
+					            <column width="20%"/>
+					            <column/>
+					            <column width="20%"/>
+					            <column/>
+					        </columns>
+					        <rows>
+					            <row style="background-color:transparent; border: 0;" 
+					            tooltiptext="Apellidos">
+									<label value="*Apellido paterno" />
+					                <textbox value="@bind(pvm.personaContacto.apellidoPaterno)" maxlength="17" width="100%" tooltiptext="Ap paterno de la persona contacto"/>
+					                <label value="*Apellido materno" />
+					                <textbox value="@bind(pvm.personaContacto.apellidoMaterno)" maxlength="17" width="100%" tooltiptext="Ap materno de la persona contacto"/>
+					            </row>
+					        </rows>
+					    </grid>
+					    
+					    <grid style="border: 0;">
+					    	
+					        <columns >
+					            <column width="20%"/>
+					            <column/>
+					        </columns>
+					        <rows>
+					            <row style="background-color:transparent; border: 0;" spans="1" tooltiptext="Nombre completo del contacto">
+					            	<label value="*Nombre" />
+					                <textbox value="@bind(pvm.personaContacto.nombre)"  maxlength="17" width="100%" tooltiptext="Nombre de la persona contacto"/>
+					            </row>
+					        </rows>
+					    </grid>
+					    
+					    
+					    <grid style="border: 0;">
+					        <columns>
+					            <column width="20%"/>
+					            <column/>
+					            <column width="20%"/>
+					            <column/>
+					        </columns>
+					        <rows>
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="RFC" />
+					                <textbox type="text" value="@bind(pvm.personaContacto.rfc)" maxlength="13" zclass="upperCase" width="100%"/>
+									<label value="CURP:" />
+					                <textbox type="text" value="@bind(pvm.personaContacto.curp)" maxlength="18" zclass="upperCase" width="100%"/>
+					            </row>
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="*Teléfono" />
+					                <textbox value="@bind(pvm.telefonoContacto.numero)" maxlength="10" width="100%"/>
+									<label value="Extensión:" />
+					                <textbox value="@bind(pvm.telefonoContacto.extension)" maxlength="5" width="100%"/>
+					            </row>
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="*Email:" />
+					                <textbox type="text" value="@bind(pvm.emailContacto.email)" maxlength="27" width="100%"
+										constraint="/.+@.+\.[a-z]+/: por favor ingrése una direccion de correo" />
+										
+									<label value="Celular:" />
+					                <textbox value="@bind(pvm.telefonoContacto.celular)" maxlength="10" width="100%"/>
+					            </row>
+					        </rows>
+					    </grid>
+				    </groupbox>
+				    
+				    <groupbox >
+		                <caption sclass="folder formatTitleGroup" label="Contrato" />
+		    		
+			    		<grid style="border: 0;">
+					        <columns>
+					            <column width="20%"/>
+					            <column/>
+					            <column width="20%"/>
+					            <column/>
+					        </columns>
+					        <rows>
+					            <row style="background-color:transparent; border: 0;" visible="false">
+					                <label value="*Dias pagos normales:" />
+					                <longbox maxlength="2" width="100%" value="@bind(pvm.contrato.diasPago)"/>
+									<label value="Fecha" />
+					                <datebox readonly="true" format="yyyy/MM/dd" width="100%" />
+					            </row>
+					            
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="*Fecha vigencia inicio:" />
+					                <datebox readonly="true" format="yyyy/MM/dd" width="100%" />
+									<label value="*Fecha vigencia fin:" />
+					                <datebox readonly="true" format="yyyy/MM/dd" width="100%" />
+					            </row>
+					            
+					        </rows>
+					    </grid>
+				    </groupbox>
+				    
+				    <groupbox >
+		                <caption sclass="folder formatTitleGroup" label="Cuenta pago" />
+		                
+				    	<grid style="border: 0;">
+					        <columns>
+					            <column width="20%"/>
+					            <column/>
+					            <column width="20%"/>
+					            <column/>
+					        </columns>
+					        <rows>
+					            <row style="background-color:transparent; border: 0;">
+					                <label value="*Moneda" />
+					                <combobox model="@load(pvm.monedasDB)" selectedItem="@bind(pvm.monedaSeleccionada)" readonly="true" width="100%">
+					                    <template name="model">
+					                        <comboitem label="@load(each.nombre)"/>
+					                    </template>
+					                </combobox>
 					                
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Número interior:</div>
-									<intbox cols="30" value="@bind(pvm.numeroInterior)"/>
-									
-								</hlayout>
-							</hlayout>
-							
-							<separator/>
-							<separator bar="true" />
-									
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Código postal:</div>
-									<intbox cols="30" value="@bind(pvm.codigoPostal)" />
-									
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">*Telefono:</div>
-									<intbox cols="30" value="@bind(pvm.telefono)" />
-								</hlayout>
-							</hlayout>
-							
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Email:</div>
-									<textbox type="text" value="@bind(pvm.email)" cols="30"/>
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Contrato:</div>
-									<combobox model="@load(pvm.contratos)" width="120px" selectedItem="@bind(pvm.contrato)" readonly="true" >
+					                <label value="*Banco" />
+					                <combobox model="@load(pvm.bancosDB)" selectedItem="@bind(pvm.bancoSeleccionado)" readonly="true" width="100%">
 					                    <template name="model">
-					                        <comboitem label="@load(each.descripcion)"/>
+					                        <comboitem label="@load(each.nombre)"/>
 					                    </template>
 					                </combobox>
-								</hlayout>
-							</hlayout>
-							
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Pagina web:</div>
-									<textbox type="text" value="@bind(pvm.paginaWeb)" cols="30"/>
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Fax:</div>
-									<intbox cols="30" value="@bind(pvm.fax)" />
-								</hlayout>
-							</hlayout>
-	            	    </groupbox>
-					</vlayout>
-			
-					<separator/>
-			
-					<vlayout>
-						
-						
-						<groupbox >
-			                <caption sclass="folder" label="CONTACTO" />
-						
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Nombre:</div>
-									<textbox value="@bind(pvm.nombreContacto)" cols="30"/>
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Cargo:</div>
-									<textbox value="@bind(pvm.cargoContacto)" cols="30"/>
-								</hlayout>
-							</hlayout>
-							
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">RFC:</div>
-									<textbox type="text" value="@bind(pvm.rfcContacto)" cols="30"/>
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">CURP:</div>
-									<textbox type="text" value="@bind(pvm.curpContacto)" cols="30"/>
-								</hlayout>
-							</hlayout>
-							
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Telefono:</div>
-									<intbox cols="30" value="@bind(pvm.telefonoContacto)"/>
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Extención:</div>
-									<intbox cols="30" value="@bind(pvm.extencionContacto)"/>
-								</hlayout>
-							</hlayout>
-							<hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Email:</div>
-									<textbox cols="30" type="text" value="@bind(pvm.emailContacto)" />
-								</hlayout>
-								<hlayout>
-									<div zclass="spacerLabel">Celular:</div>
-									<intbox cols="30" value="@bind(pvm.celularContacto)" />
-								</hlayout>
-							</hlayout>
-						</groupbox>
-						
-					</vlayout>
-			
-					<separator />
-					
-					<groupbox >
-		                <caption sclass="folder" label="COMENTARIOS" />
-						<textbox multiline="true" zclass="widthComent" value="@bind(pvm.comentario)"/>
-						<separator />
-						<button onClick="@command('guardarProveedor')" label="Guardar" image="/images/toolbar/download32.png" tooltip="Guardar proveedor"/>
+					            </row>
+					        </rows>
+					    </grid>
+					    <grid style="border: 0;">
+					    	
+					        <columns >
+					            <column width="20%"/>
+					            <column ></column>
+					        </columns>
+					        <rows>
+					            <row style="background-color:transparent; border: 0;" spans="1" >
+					            	<label value="*Cuenta bancaria:"/>
+					            	<textbox width="100%" value="@bind(pvm.cuentaPago.cuentaBancaria)" maxlength="20"/>
+					            </row>
+					        </rows>
+					    </grid>
+					    
+					    
+					    
+					    
+					    
+					    
+					    
+					    
+					    
+					    
+					    
+				    </groupbox>
+				    <groupbox >
+		                <caption sclass="folder formatTitleGroup" label="Comentarios" />
+						<textbox multiline="true" zclass="widthComent" value="@bind(pvm.nuevoProveedor.comentario)"/>
 					</groupbox>
 					
-					
-		        </tabpanel>
+		    	</tabpanel>
+		    	
 		        <tabpanel id="tabPanel2">
+		        	
 		        	<vlayout>
 						
-						<label value="Buscar clave, nombre o RFC"/>
-						<textbox value="@bind(pvm.buscarTexto)" cols="30"/>
+						<grid style="border: 0;">
+					        <columns>
+					            <column/>
+					        </columns>
+					        <rows>
+					            <row style="background-color:transparent; border: 0;">
+					            	<textbox id="buscador" value="@bind(pvm.buscarProveedor.nombre)" width="100%"/>
+					            </row>
+					        </rows>
+					    </grid>
+						
+						
 						
 						<separator bar="true" height="2px"/>
 							
-						<listbox emptyMessage="No se encontro resultado" rows="5" 
-				            model="@load(pvm.proveedores)" selectedItem="@bind(pvm.proveedorSelected)" >
+						<listbox emptyMessage="No se encontro resultado" rows="5"
+				            model="@load(pvm.proveedoresLista)" selectedItem="@bind(pvm.proveedorSelected)">
 				            <auxhead>
 				                <auxheader colspan="3" class="topic" >
-				                	<label value="@bind(pvm.numeroRegistros)"></label>
+				                	<label value="@bind(pvm.buscarProveedor.comentario)"/>
 				                </auxheader>
 				            </auxhead>
 				            
 				            <listhead>
 				                <listheader label="Clave" align="center" width="50px"/>
-				                <listheader label="Cuenta cargo" align="center" width="100px"/>
-				                <listheader label="Nombre" align="center" />
+				                <listheader label="Cuenta" align="center" width="100px"/>
+				                <listheader label="Nombre" align="center" sort="auto"/>
 				                <listheader label="RFC" align="center" width="150px"/>
-				                <listheader label="Direccion" align="center" />
 				            </listhead>
 				            <template name="model" var="proveedor">
 				                <listitem>
@@ -272,55 +364,226 @@
 				                    <listcell>
 				                    	<textbox value="@bind(proveedor.rfc)" inplace="true" width="100%"/>
 				                    </listcell>
-				                    <listcell>
-				                    	<textbox value="@bind(proveedor.direccionFiscal.calle)" inplace="true" width="100%"/>
-				                    </listcell>
+				                    
 				                </listitem>
 				            </template>
-				 
-					        
 				        </listbox>
 		        
 				        <separator />
+				        <separator />
 				        
-				        <grid>
-					        <auxhead>
-					            <auxheader colspan="5">Dirección</auxheader>
-					        </auxhead>
-					        <columns>
-					            <column label="Calle" align="center" />
-					            <column label="N. Ext" align="center" />
-					            <column label="N. Int" align="center" />
-					            <column label="Municipio" align="center" />
-					            <column label="Ciudad" align="center" />
-					            <column label="Estado" align="center" />
-					            <column label="Pais" align="center" />
-					        </columns>
-					        <rows>
-					            <row>
-					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.calle)" />
-					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.numExt)"/>
-					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.numInt)"/>
-					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.municipio.nombre)"/>
-					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.cuidad)" />
-					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.estado.nombre)" />
-					                <label value="@bind(pvm.proveedorSelected.direccionFiscal.pais.nombre)" />
-					            </row>
-					            <row >
-					                <label value="@bind(pvm.proveedorSelected.comentario)" />
-					                <label value="@bind(pvm.proveedorSelected.giro)"/>
-					                <label value="@bind(pvm.proveedorSelected.contacto)"/>
-					                <label value="@bind(pvm.proveedorSelected.contrato.descripcion)"/>
-					                
-					                <label value="@bind(pvm.proveedorSelected.giro)"/>
-					                <label value="@bind(pvm.proveedorSelected.contacto)"/>
-					                <label value="@bind(pvm.proveedorSelected.contrato.descripcion)"/>
-					            </row>
-					        </rows>
-					    </grid>
+				        <groupbox >
+		                	<caption sclass="folder formatTitleGroup" label="Dirección" />
+		                	
+		                	<grid style="border:0;">
+						        <columns>
+						            <column label="Calle" align="center"/>
+						            <column label="N. Ext" align="center"/>
+						            <column label="N. Int" align="center"/>
+						            <column label="Municipio" align="center"/>
+						            <column label="Ciudad" align="center"/>
+						            <column label="Estado" align="center"/>
+						            <column label="Pais" align="center"/>
+						        </columns>
+						        <rows>
+						            <row>
+						                <label value="@bind(pvm.proveedorSelected.direccionFiscal.calle)" zclass="fontSizeRfcCurp"/>
+						                <label value="@bind(pvm.proveedorSelected.direccionFiscal.numExt)" zclass="fontSizeRfcCurp"/>
+						                <label value="@bind(pvm.proveedorSelected.direccionFiscal.numInt)" zclass="fontSizeRfcCurp"/>
+						                <label value="@bind(pvm.proveedorSelected.direccionFiscal.municipio.nombre)" zclass="fontSizeRfcCurp"/>
+						                <label value="@bind(pvm.proveedorSelected.direccionFiscal.cuidad)" zclass="fontSizeRfcCurp"/>
+						                <label value="@bind(pvm.proveedorSelected.direccionFiscal.estado.nombre)" zclass="fontSizeRfcCurp"/>
+						                <label value="@bind(pvm.proveedorSelected.direccionFiscal.pais.nombre)" zclass="fontSizeRfcCurp"/>
+						            </row>
+						        </rows>
+						    </grid>
+		                	
+		                </groupbox>
+				        
+					    
+					    <separator />
+				        <separator />
+				        
+				        
+				        <groupbox >
+		                	<caption sclass="folder formatTitleGroup" label="Tipo de productos que maneja" />    
+					        <listbox emptyMessage="No cuenta con ningun tipo de producto" style="border:0;"
+					            model="@load(pvm.proveedorSelected.tipoProductos)">
+					            <listhead>
+					                <listheader label=""/>
+					            </listhead>
+					            <template name="model" var="tipo">
+					                <listitem>
+					                    <listcell>
+					                    	<label value="@bind(tipo.nombre)" width="100%" zclass="fontSizeRfcCurp"/>
+					                    </listcell>
+					                </listitem>
+					            </template>
+					        </listbox>
+				        </groupbox>
 				    
 					</vlayout>
 		        </tabpanel>
+		    
+		    	<tabpanel id="tabPanel3">
+					<grid style="border: 0;">
+				        <columns>
+				            <column/>
+				            <column/>
+				        </columns>
+				        <rows>
+				            <row style="background-color:transparent; border: 0;">
+				            	<vlayout>
+				            		<hlayout>
+				            			<label value="Proveedores "/>
+				            			<label value="@bind(pvm.buscarProveedorAsociar.comentario)"/>
+				            		</hlayout>
+					            	<listbox emptyMessage="No se encontro ningun proveedor" rows="9" sclass="heightGrid"
+							            model="@load(pvm.proveedoresAsociacion)" selectedItem="@bind(pvm.proveedoresAsociacionSelected)" >
+	
+							            <auxhead>
+							                <auxheader colspan="3" class="topic" >
+							                	<grid style="border: 0;">
+											        <columns>
+											            <column width="15%"/>
+											            <column/>
+											            <column width="18%"/>
+											        </columns>
+											        <rows>
+											            <row style="background-color:transparent; border: 0;">
+											            	<label value="Buscar" sclass="fontSizeContentGrid" />
+											            	<textbox id="buscadorAsociacion" value="@bind(pvm.buscarProveedorAsociar.nombre)" width="100%" sclass="fontSizeContentGrid" />
+											            	<button image="/images/toolbar/find16x16.png" zclass="find_button"
+																onClick="@command('performSearchProveedorAsociacion')" tooltiptext="Buscar proveedor"/>
+											            </row>
+											        </rows>
+												</grid>
+							                </auxheader>
+							            </auxhead>
+							            <listhead>
+							                <listheader label="Clave" width="60px"/>
+							                <listheader label="Nombre"/>
+							            </listhead>
+							            <template name="model" var="proveedor">
+							                <listitem>
+							                	
+							                    <listcell>
+							                    	<label value="@bind(proveedor.clave)" width="100%" sclass="fontSizeContentGrid"/>
+							                    </listcell>
+							                    <listcell>
+							                    	<label value="@bind(proveedor.nombre)" width="100%" sclass="fontSizeContentGrid"/>
+							                    </listcell>
+							                    
+							                </listitem>
+							            </template>
+							        </listbox>
+						        </vlayout>						            	
+				            	<vlayout>
+				            		<hlayout>
+				            			<label value="Productos "/>
+				            			<label value="@bind(pvm.buscarProducto.descripcion)"/>
+				            		</hlayout>
+				            		
+					            	<listbox emptyMessage="No se encontro ningun producto" rows="8" sclass="heightGrid"
+							            model="@load(pvm.productosDB)" selectedItem="@bind(pvm.producto)" >
+							            <auxhead>
+							                <auxheader colspan="3" class="topic" >
+							                	<grid style="border: 0;">
+											        <columns>
+											            <column width="15%"/>
+											            <column/>
+											            <column width="18%"/>
+											        </columns>
+											        <rows>
+											            <row style="background-color:transparent; border: 0;">
+											            	<label value="Buscar" sclass="fontSizeContentGrid" tooltiptext="nombre o clave"/>
+											            	<textbox id="buscadorProducto" value="@bind(pvm.buscarProducto.nombre)" width="100%" sclass="fontSizeContentGrid" />
+											            	<button image="/images/toolbar/find16x16.png" zclass="find_button"
+																onClick="@command('performSearchProductoAsociacion')" tooltiptext="Buscar Productos"/>
+											            </row>
+											        </rows>
+												</grid>
+							                </auxheader>
+							            </auxhead>
+							            <listhead>
+							            	<listheader label="" align="center" width="30px"/>
+							                <listheader label="Nombre"/>
+							            </listhead>
+							            <template name="model" var="productoVar">
+							                <listitem>
+								                <listcell>
+								                	<checkbox tooltiptext="Seleccionar" checked="@bind(productoVar.seleccionar)" />
+							                    </listcell>
+							                    <listcell>
+							                    	<label value="@bind(productoVar.nombre)" width="100%" sclass="heightGrid"/>
+							                    </listcell>
+							                </listitem>
+							            </template>
+							        </listbox>										        
+						        </vlayout>				            	
+				            </row>
+				            
+				        </rows>
+				    </grid>
+				    
+				    <separator/>
+		        	<separator/>
+		        	<separator/>
+		        	
+				    <groupbox >
+				    
+					    <grid style="border: 0;">
+					        <columns>
+					            <column width="22%"/>
+					            <column/>
+					        </columns>
+					        <rows>
+					            <row style="background-color:transparent; border: 0;">
+					            	<label value="Productos del proveedor " sclass="fontSizeContentGrid" />
+					            	<label value="@bind(pvm.proveedoresAsociacionSelected.nombre)" sclass="fontSizeContentGrid" />
+					            </row>
+					        </rows>
+						</grid>
+				    
+				    	
+	                	<listbox emptyMessage="No se encontro ningun producto" rows="5" id="pro"
+				            model="@bind(pvm.proveedoresAsociacionSelected.proveedorProducto)">
+				            
+				            <listhead>
+				            	<listheader label="" align="center" width="8%"/>
+				                <listheader label="Clave" align="center" width="15%"/>
+				                <listheader label="Nombre"/>
+				                <listheader label="Precio" align="center" width="15%"/>
+				            </listhead>
+				            <template name="model" var="prodProv">
+				                <listitem>	
+				                	<listcell>
+					                	<checkbox tooltiptext="Seleccionar para eliminar producto de proveedor"
+						                    checked="@bind(prodProv.producto.seleccionar)" />
+				                    </listcell>
+				                    
+				                    <listcell>
+				                    	<label value="@bind(prodProv.producto.clave)" width="100%" sclass="fontSizeContentGrid"/>
+				                    </listcell>
+				                    <listcell>
+				                    	<label value="@bind(prodProv.producto.nombre)" width="100%" sclass="fontSizeContentGrid"/>
+				                    </listcell>
+				                    <listcell>
+				                    	<doublebox value="@bind(prodProv.producto.precio)" width="100%" sclass="fontSizeContentGrid" format="###,###,###.00" readonly="true"/>
+				                    </listcell>
+				                </listitem>
+				            </template>
+				        </listbox>
+	                	
+	                </groupbox>
+	                
+							    
+					        		
+					        		
+					        		
+					   
+		    	</tabpanel>
+		    
 		    </tabpanels>
 		</tabbox>			
 			

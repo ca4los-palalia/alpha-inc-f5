@@ -210,6 +210,7 @@ div {
 	padding-left: 10px;
 	border-right-style: dotted;
 	border-right-color: black;
+	overflow: auto;
 }
 
 .homeFooter {
@@ -239,6 +240,10 @@ div {
 	background: white;
 	width: 300px;
 	text-align: left
+}
+
+.menuItem:hover{
+	cursor:pointer;
 }
 
 .toolBar {
