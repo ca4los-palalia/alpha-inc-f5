@@ -39,14 +39,14 @@ public class ProveedorProductoService {
 		return proveedorProductoDAO.getById(idProveedorProducto);
 	}
 
-	public List<ProveedorProducto> getByProveedor(Proveedor Proveedor)
+	public List<ProveedorProducto> getByProveedor(Proveedor proveedor)
 			throws DataAccessException {
-		return proveedorProductoDAO.getByProveedor(Proveedor);
+		return proveedorProductoDAO.getByProveedor(proveedor);
 	}
 
-	public List<ProveedorProducto> getByProducto(Producto Producto)
+	public List<ProveedorProducto> getByProducto(Producto producto)
 			throws DataAccessException {
-		return proveedorProductoDAO.getByProducto(Producto);
+		return proveedorProductoDAO.getByProducto(producto);
 	}
 
 	public List<ProveedorProducto> getAll() throws DataAccessException {

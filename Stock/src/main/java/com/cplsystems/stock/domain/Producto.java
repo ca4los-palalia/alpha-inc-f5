@@ -2,10 +2,14 @@ package com.cplsystems.stock.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table
@@ -15,11 +19,13 @@ public class Producto {
 	private String clave;
 	private String descripcion;
 	private String nombre;
-	private String unidad;
 	private Float precio;
+	private String unidad;
 	private String marca;
 	private String modelo;
 	private String codigoBarras;
+	private ProductoTipo productoTipo;
+	private boolean seleccionar;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -104,4 +110,23 @@ public class Producto {
 		this.codigoBarras = codigoBarras;
 	}
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "productoTipo")
+	public ProductoTipo getProductoTipo() {
+		return productoTipo;
+	}
+
+	public void setProductoTipo(ProductoTipo productoTipo) {
+		this.productoTipo = productoTipo;
+	}
+
+	@Transient
+	public boolean isSeleccionar() {
+		return seleccionar;
+	}
+
+	public void setSeleccionar(boolean seleccionar) {
+		this.seleccionar = seleccionar;
+	}
+	
 }

@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.dao.ProveedorDAO;
 import com.cplsystems.stock.domain.Contacto;
@@ -30,11 +32,15 @@ public class ProveedorService {
 		proveedorDAO.save(proveedor);
 	}
 
+	public void update(Proveedor proveedor) throws DataAccessException{
+		proveedorDAO.update(proveedor);
+	}
+	
 	public void delete(Proveedor proveedor) throws DataAccessException {
 		proveedorDAO.delete(proveedor);
 	}
 
-	public Proveedor getById(Long idProveedor) throws DataAccessException {
+	public Proveedor getById(Long idProveedor){
 		return proveedorDAO.getById(idProveedor);
 	}
 
@@ -84,5 +90,9 @@ public class ProveedorService {
 
 	public List<Proveedor> getBysClaveNombreRfc(String buscarTexto){
 		return proveedorDAO.getBysClaveNombreRfc(buscarTexto);
+	}
+	
+	public List<Proveedor> getByNombre(String nombre){
+		return proveedorDAO.getByNombre(nombre);
 	}
 }

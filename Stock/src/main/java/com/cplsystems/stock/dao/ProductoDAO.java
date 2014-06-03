@@ -6,6 +6,8 @@ package com.cplsystems.stock.dao;
 import java.util.List;
 
 import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.ProductoTipo;
+import com.cplsystems.stock.domain.Proveedor;
 
 /**
  * @author Carlos Palalía López
@@ -25,5 +27,8 @@ public interface ProductoDAO {
 			String nombreProducto);
 
 	public List<String> getAllKeys();
-
+	
+	public List<Producto> getByClaveNombre(String buscarTexto);
+	
+	public List<Producto> getByTipo(ProductoTipo productoTipo);
 }

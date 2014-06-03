@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,12 +20,14 @@ public class CuentaPago {
 
 	
 	private Long idCuentaPago;
-	private String moneda;
+	//private String moneda;
 	private String cuentaBancaria;
-	private String banco;
+	//private String banco;
 	private String sucursal;
 	private String aNombreDe;
 	private Proveedor proveedor;
+	private Banco banco;
+	private Moneda moneda;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +39,7 @@ public class CuentaPago {
 	public void setIdCuentaPago(Long idCuentaPago) {
 		this.idCuentaPago = idCuentaPago;
 	}
-
+/*
 	@Column(name = "moneda", length = 250)
 	public String getMoneda() {
 		return moneda;
@@ -44,7 +47,7 @@ public class CuentaPago {
 
 	public void setMoneda(String moneda) {
 		this.moneda = moneda;
-	}
+	}*/
 
 	@Column(name = "cuentaBancaria", length = 250)
 	public String getCuentaBancaria() {
@@ -54,7 +57,7 @@ public class CuentaPago {
 	public void setCuentaBancaria(String cuentaBancaria) {
 		this.cuentaBancaria = cuentaBancaria;
 	}
-
+/*
 	@Column(name = "banco", length = 250)
 	public String getBanco() {
 		return banco;
@@ -62,7 +65,7 @@ public class CuentaPago {
 
 	public void setBanco(String banco) {
 		this.banco = banco;
-	}
+	}*/
 
 	@Column(name = "sucursal", length = 250)
 	public String getSucursal() {
@@ -92,4 +95,23 @@ public class CuentaPago {
 		this.proveedor = proveedor;
 	}
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "banco")
+	public Banco getBanco() {
+		return banco;
+	}
+
+	public void setBanco(Banco banco) {
+		this.banco = banco;
+	}
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "moneda")
+	public Moneda getMoneda() {
+		return moneda;
+	}
+
+	public void setMoneda(Moneda moneda) {
+		this.moneda = moneda;
+	}
+	
 }

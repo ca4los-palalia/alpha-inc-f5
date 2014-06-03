@@ -34,4 +34,6 @@ public interface CotizacionDAO {
 	public List<Cotizacion> getByProveedor(Proveedor proveedor);
 
 	public List<Cotizacion> getByRequisicion(Requisicion requisicion);
+	
+	public List<Cotizacion> getTopCompras();
 }

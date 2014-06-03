@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.ProductoDAO;
 import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.ProductoTipo;
 
 /**
  * @author Carlos Palalía López
@@ -46,5 +47,12 @@ public class ProductoService {
 	public List<String> getAllKeys() {
 		return productoDAO.getAllKeys();
 	}
-
+	
+	public List<Producto> getByClaveNombre(String buscarTexto){
+		return productoDAO.getByClaveNombre(buscarTexto);
+	}
+	
+	public List<Producto> getByTipo(ProductoTipo productoTipo){
+		return productoDAO.getByTipo(productoTipo);
+	}
 }

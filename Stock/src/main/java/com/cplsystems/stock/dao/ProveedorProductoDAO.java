@@ -21,9 +21,9 @@ public interface ProveedorProductoDAO {
 
 	public ProveedorProducto getById(Long idProveedorProducto);
 
-	public List<ProveedorProducto> getByProveedor(Proveedor Proveedor);
+	public List<ProveedorProducto> getByProveedor(Proveedor producto);
 
-	public List<ProveedorProducto> getByProducto(Producto Producto);
+	public List<ProveedorProducto> getByProducto(Producto producto);
 
 	public List<ProveedorProducto> getAll();
 }

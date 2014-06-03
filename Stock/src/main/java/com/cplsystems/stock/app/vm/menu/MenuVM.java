@@ -28,7 +28,7 @@ public class MenuVM extends BasicStructure {
 	public void init() {
 		args = new HashMap<String, Object>();
 	}
-
+	
 	@Command
 	public void showProducts() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS);

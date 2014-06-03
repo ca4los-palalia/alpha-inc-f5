@@ -1,15 +1,24 @@
 package com.cplsystems.stock.domain;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -25,6 +34,7 @@ public class Proveedor {
 	private String razonSocial;
 	private String rfc;
 	private String status;
+	private boolean proveedorActivo;
 	private Long cuentaCargo;
 	private Contacto contacto;
 	private Contrato contrato;
@@ -35,7 +45,16 @@ public class Proveedor {
 	private Persona gerenteVentas;
 	private Persona representanteLegal;
 	private Persona representanteAteCliente;
-
+	private Calendar fechaActualizacion;
+	private String paginaWeb;
+	private List<ProveedorProducto> proveedorProducto;
+	public List<ProductoTipo> tipoProductos;
+	
+	public Proveedor() {
+		proveedorProducto = new ArrayList<ProveedorProducto>();
+		tipoProductos = new ArrayList<ProductoTipo>();
+	}
+	
 	@Id
 	@Column(name = "idProveedor", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -136,7 +155,7 @@ public class Proveedor {
 		this.direccionDevolucion = direccionDevolucion;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "direccionFiscal")
 	public Direccion getDireccionFiscal() {
 		return direccionFiscal;
@@ -176,7 +195,7 @@ public class Proveedor {
 		this.gerenteVentas = gerenteVentas;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "representanteLegal")
 	public Persona getRepresentanteLegal() {
 		return representanteLegal;
@@ -186,7 +205,7 @@ public class Proveedor {
 		this.representanteLegal = representanteLegal;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "representanteAteCliente")
 	public Persona getRepresentanteAteCliente() {
 		return representanteAteCliente;
@@ -223,7 +242,49 @@ public class Proveedor {
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
+	
+	@Column
+	public boolean isProveedorActivo() {
+		return proveedorActivo;
+	}
 
+	public void setProveedorActivo(boolean proveedorActivo) {
+		this.proveedorActivo = proveedorActivo;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column
+	public Calendar getFechaActualizacion() {
+		return fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Calendar fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	@Column
+	public String getPaginaWeb() {
+		return paginaWeb;
+	}
+	public void setPaginaWeb(String paginaWeb) {
+		this.paginaWeb = paginaWeb;
+	}
+	@OneToMany(mappedBy="proveedor")
+	public List<ProveedorProducto> getProveedorProducto() {
+		return proveedorProducto;
+	}
+
+	public void setProveedorProducto(List<ProveedorProducto> proveedorProducto) {
+		this.proveedorProducto = proveedorProducto;
+	}
+	@Transient
+	public List<ProductoTipo> getTipoProductos() {
+		return tipoProductos;
+	}
+
+	public void setTipoProductos(List<ProductoTipo> tipoProductos) {
+		this.tipoProductos = tipoProductos;
+	}
 	
 	
 }

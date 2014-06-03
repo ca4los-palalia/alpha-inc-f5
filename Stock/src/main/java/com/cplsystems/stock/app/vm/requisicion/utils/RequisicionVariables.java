@@ -4,6 +4,8 @@
 package com.cplsystems.stock.app.vm.requisicion.utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.zkoss.zul.ListModel;
@@ -25,7 +27,9 @@ public class RequisicionVariables extends BasicStructure {
 	protected String productoClaveSelectedItem;
 	protected String importeTotal = "0.0";
 	protected Integer itemsOnList = 0;
-
+	protected Date fecha;
+	protected Calendar fechaCalendar;
+	
 	public RequisicionVariables() {
 		requisicionProductos = new ArrayList<RequisicionProducto>();
 	}
@@ -80,4 +84,16 @@ public class RequisicionVariables extends BasicStructure {
 		this.itemsOnList = itemsOnList;
 	}
 
+	public Date getFecha() {
+		Calendar cal=Calendar.getInstance();
+		return fecha = cal.getTime();
+	}
+
+	public void setFecha(Date fecha) {
+		if(fecha != null){
+			fechaCalendar = Calendar.getInstance();
+			fechaCalendar.setTime(fecha);
+		}
+		this.fecha = fecha;
+	}
 }

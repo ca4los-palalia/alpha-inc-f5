@@ -21,7 +21,7 @@ public class Contacto implements Serializable {
 	private Email email;
 
 	@Id
-	@Column(name = "idContacto", nullable = false)
+	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdContacto() {
 		return idContacto;
