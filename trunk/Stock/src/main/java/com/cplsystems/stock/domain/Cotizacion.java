@@ -26,6 +26,7 @@ public class Cotizacion {
 	private Float impuestos;
 	private Float retencion;
 	private Integer status;
+	private Integer statusPago;
 	private Float subTotal;
 	private Float total;
 	private Float extras;
@@ -143,5 +144,13 @@ public class Cotizacion {
 	public void setRequisicion(Requisicion requisicion) {
 		this.requisicion = requisicion;
 	}
+	@Column
+	public Integer getStatusPago() {
+		return statusPago;
+	}
 
+	public void setStatusPago(Integer statusPago) {
+		this.statusPago = statusPago;
+	}
+	
 }

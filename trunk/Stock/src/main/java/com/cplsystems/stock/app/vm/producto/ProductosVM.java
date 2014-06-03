@@ -3,7 +3,9 @@
  */
 package com.cplsystems.stock.app.vm.producto;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.zkoss.bind.BindUtils;
@@ -21,20 +23,27 @@ import org.zkoss.zul.Window;
 
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.producto.utils.ProductoVariables;
+import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.ProductoTipo;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
+
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class ProductosVM extends ProductoVariables {
 
 	private static final long serialVersionUID = 313977001812349337L;
+	private int counter = 1;
 
 	@Init
 	public void init() {
 		super.init();
+		productoTipoDB = productoTipoService.getAll();
+		productoTipoSelected = new ProductoTipo();
+		cotizacionDB = new ArrayList<Cotizacion>();
+
+		// ------------------
+		tabListClasificacionProductos = new ArrayList<TabInfo>();
+		construirTabsClasificacionProductos(productoTipoDB);
 	}
 
 	@Command
@@ -89,8 +98,10 @@ public class ProductosVM extends ProductoVariables {
 	@NotifyChange("producto")
 	public void saveChanges() {
 		productoService.save(producto);
-		stockUtils.showSuccessmessage("La información del producto " + producto.getNombre()
-				+ " se ha actualizado correctamente", Clients.NOTIFICATION_TYPE_INFO, 3000);
+		stockUtils.showSuccessmessage(
+				"La información del producto " + producto.getNombre()
+						+ " se ha actualizado correctamente",
+				Clients.NOTIFICATION_TYPE_INFO, 3000);
 		producto = new Producto();
 	}
 
@@ -119,4 +130,47 @@ public class ProductosVM extends ProductoVariables {
 		}
 	}
 
+	private void construirTabsClasificacionProductos(
+			List<ProductoTipo> clasificacion) {
+		if (clasificacion != null) {
+			ProductoTipo tipo = null;
+			TabInfo tabInfo = null;
+			int i = 0;
+
+			for (ProductoTipo productoTipo : clasificacion) {
+				if (i == 0)
+					tipo = productoTipo;
+				String icono = "lock32.png";
+				if (productoTipo.getIcono() != null
+						&& !productoTipo.getIcono().equals(""))
+					icono = productoTipo.getIcono();
+				
+				tabInfo = new TabInfo();
+				tabInfo.setProductoTipo(productoTipo);
+				tabInfo.setIndex(i);
+				tabInfo.setPath("modulos/productos/utils/detallesProducto.zul");
+				tabInfo.setIcono("images/toolbar/" + icono);
+				
+				tabListClasificacionProductos.add(tabInfo);
+				i++;
+			}
+		}
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void selectDynamic(@BindingParam("tabs") TabInfo tabs) {
+		if (tabs != null) {
+			productoDB = productoService.getByTipo(tabs.getProductoTipo());
+		}
+		
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void selectTabCompras() {
+		cotizacionDB = cotizacionService.getTopCompras();
+	}
+	
+	
 }

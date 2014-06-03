@@ -66,4 +66,7 @@ public class CotizacionService {
 		return cotizacionDAO.getByRequisicion(requisicion);
 	}
 
+	public List<Cotizacion> getTopCompras(){
+		return cotizacionDAO.getTopCompras();	
+	}
 }

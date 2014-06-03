@@ -18,6 +18,8 @@ import com.cplsystems.stock.domain.Proveedor;
 public interface ProveedorDAO {
 
 	public void save(Proveedor proveedor);
+	
+	public void update(Proveedor proveedor);
 
 	public void delete(Proveedor proveedor);
 
@@ -42,4 +44,6 @@ public interface ProveedorDAO {
 	public List<Proveedor> getAll();
 	
 	public List<Proveedor> getBysClaveNombreRfc(String buscarTexto);
+	
+	public List<Proveedor> getByNombre(String nombre);
 }

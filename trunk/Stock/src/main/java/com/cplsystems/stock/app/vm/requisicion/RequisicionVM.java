@@ -3,6 +3,7 @@
  */
 package com.cplsystems.stock.app.vm.requisicion;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ import org.zkoss.zul.Window;
 
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
+import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
@@ -41,10 +43,28 @@ public class RequisicionVM extends RequisicionVariables {
 		super.init();
 		initDefaultValues();
 		loadItemsKeys();
+		areas = areaService.getAll();
+		requisicion.setPersona(new Persona());
+		requisicion.setFecha(Calendar.getInstance());
+		posiciones = posicionService.getAll();
 	}
 
 	@Command
 	public void saveChanges() {
+		System.err.println();
+		
+		/*requisicion.getProg()
+		requisicion.getPy()
+		requisicion.getPartidaGenerica()
+		requisicion.getFuenteFinanciamiento()
+		requisicion.getPersona().getNombre()
+		requisicion.getPosicion()
+		requisicion.getAdscripcion()
+		requisicion.getJustificacion()
+		requisicion.getNumeroInventario()*/
+		//-------------------
+		requisicion.setFecha(Calendar.getInstance());
+		
 		if (validateBill()) {
 			requisicionService.save(requisicion);
 			for (RequisicionProducto requisicionProducto : requisicionProductos) {
@@ -138,17 +158,7 @@ public class RequisicionVM extends RequisicionVariables {
 		}
 	}
 
-	private boolean verifyItemsInRequisition(Producto productoSeleccionado) {
-		for (RequisicionProducto requisicionProducto : requisicionProductos) {
-			if (requisicionProducto.getProducto().getIdProducto() != null
-					&& requisicionProducto.getProducto().getClave() != null
-					&& requisicionProducto.getProducto().getClave()
-							.equalsIgnoreCase(productoSeleccionado.getClave())) {
-				return true;
-			}
-		}
-		return false;
-	}
+	
 
 	@SuppressWarnings("static-access")
 	private boolean validateBill() {
@@ -164,6 +174,18 @@ public class RequisicionVM extends RequisicionVariables {
 			}
 		}
 		return continuar;
+	}
+	
+	private boolean verifyItemsInRequisition(Producto productoSeleccionado) {
+		for (RequisicionProducto requisicionProducto : requisicionProductos) {
+			if (requisicionProducto.getProducto().getIdProducto() != null
+					&& requisicionProducto.getProducto().getClave() != null
+					&& requisicionProducto.getProducto().getClave()
+							.equalsIgnoreCase(productoSeleccionado.getClave())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

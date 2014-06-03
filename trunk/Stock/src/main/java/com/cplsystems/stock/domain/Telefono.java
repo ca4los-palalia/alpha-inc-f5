@@ -7,6 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author César Palalía López (csr.plz@aisa-automation.com)
+ *
+ */
 @Entity
 @Table(name = "Telefono")
 public class Telefono {
@@ -15,6 +19,8 @@ public class Telefono {
 	private String extension;
 	private String numero;
 	private String tipo;
+	private String fax;
+	private String celular;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,5 +59,21 @@ public class Telefono {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+	@Column
+	public String getFax() {
+		return fax;
+	}
 
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	@Column
+	public String getCelular() {
+		return celular;
+	}
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+	
 }

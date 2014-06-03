@@ -25,6 +25,8 @@ public class Persona {
 	private Long sexo;
 	private Direccion direccion;
 	private Contacto contacto;
+	private String rfc;
+	private String curp;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -103,4 +105,20 @@ public class Persona {
 		this.contacto = contacto;
 	}
 
+	@Column
+	public String getRfc() {
+		return rfc;
+	}
+	public void setRfc(String rfc) {
+		this.rfc = rfc;
+	}
+
+	@Column
+	public String getCurp() {
+		return curp;
+	}
+	public void setCurp(String curp) {
+		this.curp = curp;
+	}
+	
 }

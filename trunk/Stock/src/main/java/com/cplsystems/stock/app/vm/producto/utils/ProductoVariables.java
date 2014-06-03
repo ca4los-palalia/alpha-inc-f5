@@ -6,9 +6,13 @@ package com.cplsystems.stock.app.vm.producto.utils;
 import java.util.List;
 
 import org.zkoss.bind.Validator;
+import org.zkoss.bind.annotation.NotifyChange;
 
 import com.cplsystems.stock.app.vm.BasicStructure;
+import com.cplsystems.stock.app.vm.producto.TabInfo;
+import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.ProductoTipo;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -21,10 +25,13 @@ public abstract class ProductoVariables extends BasicStructure {
 	protected String claveProducto;
 	protected String nombreProducto;
 	protected List<Producto> productoDB;
+	protected List<Cotizacion> cotizacionDB;
 	protected Producto productoSeleccionado;
-
+	protected List<ProductoTipo> productoTipoDB;
+	protected List<TabInfo> tabListClasificacionProductos;
+	protected TabInfo tabSelected;
 	protected Validator productoValidator;
-
+	
 	public String getClaveProducto() {
 		return claveProducto;
 	}
@@ -60,5 +67,42 @@ public abstract class ProductoVariables extends BasicStructure {
 	public Validator getProductoValidator() {
 		return productoValidator;
 	}
+	
+	public List<ProductoTipo> getProductoTipoDB() {
+		return productoTipoDB;
+	}
+	
+	public void setProductoTipoDB(List<ProductoTipo> productoTipoDB) {
+		this.productoTipoDB = productoTipoDB;
+	}
 
+	public List<TabInfo> getTabListClasificacionProductos() {
+		return tabListClasificacionProductos;
+	}
+
+	public void setTabListClasificacionProductos(
+			List<TabInfo> tabListClasificacionProductos) {
+		this.tabListClasificacionProductos = tabListClasificacionProductos;
+	}	
+	public void setTabSelected(TabInfo tabSelected) {
+		this.tabSelected = tabSelected;
+	}
+	
+	@NotifyChange("*")
+	public TabInfo getTabSelected() {
+		if(tabSelected != null)
+			productoDB = productoService.getByTipo(tabSelected.getProductoTipo());
+		return tabSelected;
+	}
+
+	public List<Cotizacion> getCotizacionDB() {
+		return cotizacionDB;
+	}
+
+	public void setCotizacionDB(List<Cotizacion> cotizacionDB) {
+		this.cotizacionDB = cotizacionDB;
+	}
+	
+	
+	
 }
