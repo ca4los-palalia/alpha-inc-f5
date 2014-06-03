@@ -1,0 +1,10 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/styles/home/styleHome.css" />
+	<window apply="org.zkoss.bind.BindComposer">
+		
+		<button style="text-align: center;"
+			image="/images/workInProgress.png"/>
+			
+	</window>
+</zk>

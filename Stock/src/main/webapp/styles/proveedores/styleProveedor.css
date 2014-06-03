@@ -74,3 +74,38 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2e5f89', end
 .spacerLabel{
 	width: 100px;
 }
+
+.upperCase{
+	text-transform: uppercase;
+}
+
+.fontSizeRfcCurp{
+	font-size: x-small;
+}
+
+.borderTop{
+	border-top: 3px solid #4D5BB5;
+}
+
+.formatTitleGroup{
+	font-weight: bold
+}
+
+.backgroudRow{
+	background-color:transparent;
+}
+#row2{
+	background-color:transparent;
+}
+
+.heightGrid{
+	height:300px;
+	font-size: xx-small;
+}
+
+.fontSizeContentGrid{
+	font-size: xx-small;
+}
+
+
+

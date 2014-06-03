@@ -1,0 +1,181 @@
+<?page title="Proveedores" contentType="text/html;charset=UTF-8"?>
+
+<zk>
+	<style src="/styles/home/styleHome.css" />
+	<style src="/styles/home/styleGlobal.css"/>
+	<script src="/scripts/watermarks.js" type="text/javascript" />
+	<window apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('cvm') @init('com.cplsystems.stock.app.vm.controlpanel.ControlPanelVM')">
+		
+		
+		<grid>
+	       <columns>
+	           <column width="22%" />
+	           <column/>
+	           <column width="35%" zclass="shadowMenuActions"/>
+	       </columns>
+	       <rows>
+				<row zclass="shadowMenuActions">
+					<div style="margin:5px">
+						<label zclass="panelInfoItemMenuTitle" 
+							width="100%"
+							value="PANEL DE CONTROL:"/>
+					</div>
+					<div style="margin:5px">
+						<label zclass="panelInfoItemMenuContent" 
+							width="100%" 
+							value="Altas, bajas y actualización"/>
+					</div>	
+					<hlayout style="text-align:right">
+						
+						<button image="/images/toolbar/update.png" sclass="web_button" onClick="@command('save')" tooltiptext="@bind(cvm.selectTab.toolTipSave)"/>
+						<button image="/images/toolbar/delete.png" sclass="web_button" onClick="@command('delete')" tooltiptext="@bind(cvm.selectTab.toolTipDelete)"/>
+						
+					</hlayout>
+				</row>
+			</rows>
+		</grid>
+		
+		<separator/>
+		<separator/>
+		
+		<tabbox id="tb">
+			<tabs id="tabs">
+				
+				<tab label="Áreas" image="/images/toolbar/area.png" onSelect="@command('selectTabArea')"/>
+				<tab label="Puestos" image="/images/toolbar/area.png" onSelect="@command('selectTabPuesto')"/>
+				<tab label="Bancos" image="/images/toolbar/bank.png" onSelect="@command('selectTabBanco')"/>
+				<tab label="Monedas" image="/images/toolbar/coins.png" onSelect="@command('selectTabMoneda')"/>
+				<tab label="Tipo de productos" image="/images/toolbar/products.png" onSelect="@command('selectTabProducto')"/>
+				<tab label="Contratos" image="/images/toolbar/linedpaperpencil32.png" onSelect="@command('selectTabContratos')"/>
+				
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<listbox emptyMessage="Por el momento no se encuentran Áreas registradas" rows="10" autopaging="true"
+			            model="@load(cvm.areas)" selectedItem="@bind(cvm.area)">
+			            <listhead>
+			                <listheader label="Nombre" />
+			                <listheader label="Seleccionar" width="15%" style="text-align:center" />
+			            </listhead>
+			            <template name="model" var="areav">
+			                <listitem>
+			                    <listcell>
+			                    	<textbox value="@bind(areav.nombre)" inplace="true" width="70%"/>
+			                    </listcell>
+			                    <listcell>
+			                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
+			                    </listcell>
+			                </listitem>
+			            </template>
+			        </listbox>
+				</tabpanel>
+				
+				<tabpanel>
+					<listbox emptyMessage="Por el momento no se encuentran puestos registrados" rows="10" autopaging="true"
+			            model="@load(cvm.posiciones)" selectedItem="@bind(cvm.posicion)">
+			            
+			            <listhead>
+			                <listheader label="Nombre" />
+			                <listheader label="Seleccionar" width="15%" style="text-align:center" />
+			            </listhead>
+			            <template name="model" var="puestoV">
+			                <listitem>
+			                    <listcell>
+			                    	<textbox value="@bind(puestoV.nombre)" inplace="true" width="70%"/>
+			                    </listcell>
+			                    <listcell>
+			                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
+			                    </listcell>
+			                </listitem>
+			            </template>
+			        </listbox>
+				</tabpanel>
+				
+				
+				<tabpanel>
+					<listbox emptyMessage="Por el momento no se encuentran bancos registrados" rows="10" autopaging="true"
+			            model="@load(cvm.bancosDB)" selectedItem="@bind(cvm.bancoSeleccionado)">
+			            
+			            <listhead>
+			                <listheader label="Nombre" />
+			                <listheader label="Seleccionar" width="15%" style="text-align:center" />
+			            </listhead>
+			            <template name="model" var="monedaVar">
+			                <listitem>
+			                    <listcell>
+			                    	<textbox value="@bind(monedaVar.nombre)" inplace="true" width="70%"/>
+			                    </listcell>
+			                    <listcell>
+			                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
+			                    </listcell>
+			                </listitem>
+			            </template>
+			        </listbox>
+				</tabpanel>
+				
+				<tabpanel>
+					<listbox emptyMessage="Por el momento no existe un tipo de moneda en el catalogo" rows="10" autopaging="true"
+			            model="@load(cvm.monedasDB)" selectedItem="@bind(cvm.monedaSeleccionada)">
+			            
+			            <listhead>
+			                <listheader label="Nombre" />
+			                <listheader label="Simbolo" width="20%" />
+			                <listheader label="Seleccionar" width="15%" style="text-align:center" />
+			            </listhead>
+			            <template name="model" var="monedaVar">
+			                <listitem>
+			                    <listcell>
+			                    	<textbox value="@bind(monedaVar.nombre)" inplace="true" width="100%"/>
+			                    </listcell>
+			                    <listcell>
+			                    	<textbox value="@bind(monedaVar.simbolo)" inplace="true" width="100%"/>
+			                    </listcell>
+			                    <listcell>
+			                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
+			                    </listcell>
+			                </listitem>
+			            </template>
+			        </listbox>
+				</tabpanel>
+				
+				
+				
+				
+				
+				
+				
+				
+				<tabpanel>
+					<listbox emptyMessage="Por el momento no se encuentran Tipos de productos registrados" rows="10" autopaging="true"
+			            model="@load(cvm.productoTipoDB)" selectedItem="@bind(cvm.productoTipoSelected)">
+			            
+			            <listhead>
+			                <listheader label="Nombre" width="25%"/>
+			                <listheader label="Descripción" />
+			                <listheader label="Seleccionar" width="15%" style="text-align:center" />
+			            </listhead>
+			            <template name="model" var="productoTipoVar">
+			                <listitem>
+			                    <listcell>
+			                    	<textbox value="@bind(productoTipoVar.nombre)" inplace="true" width="100%"/>
+			                    </listcell>
+			                    <listcell>
+			                    	<textbox value="@bind(productoTipoVar.descripcion)" inplace="true" width="100%"/>
+			                    </listcell>
+			                    <listcell>
+			                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
+			                    </listcell>
+			                </listitem>
+			            </template>
+			        </listbox>
+				</tabpanel>
+				
+			</tabpanels>
+		</tabbox>
+		
+		
+		
+			
+	</window>
+</zk>

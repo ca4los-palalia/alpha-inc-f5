@@ -1,158 +1,261 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
+	<style src="/styles/home/styleGlobal.css"/>
 	<style src="/styles/home/styleHome.css" />
 	<div apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.producto.ProductosVM')"
 		form="@id('fx') @save(pvm.producto, before='saveChanges')
               @validator('com.cplsystems.stock.app.vm.producto.utils.ProductoValidator')"
 		validationMessages="@id('vmsgs')">
-		<vlayout zclass="panelContainer">
-			<hlayout style="text-align:right">
-				<button image="/images/toolbar/download32.png"
-					onClick="@command('saveChanges')" />
-				<button image="/images/toolbar/paper32.png"
-					onClick="@command('newRecord')" />
-				<button image="/images/toolbar/minus32.png"
-					onClick="@command('deleteRecord')" />
-				<button image="/images/toolbar/search32.png"
-					onClick="@command('search')" />
-			</hlayout>
-			<hlayout>
-				<vlayout>
-					<hlayout style="padding-left: 3px;">
-						<label value="* Clave:" />
-						<textbox id="clave" zclass="tBox" maxlength="24"
-							value="@bind(pvm.producto.clave)" />
-						<label value="* Nombre:" />
-						<textbox cols="57" zclass="tBox"
-							value="@bind(pvm.producto.nombre)" maxlength="60" />
-					</hlayout>
-
-					<hlayout>
-						<hlayout>
-							<label value="* Precio:" />
-							<doublebox cols="20" zclass="tBox"
+		
+			<vlayout>
+				<grid>
+			       <columns>
+			           <column width="22%" />
+			           <column/>
+			           <column width="35%" zclass="shadowMenuActions"/>
+			       </columns>
+			       <rows>
+						<row zclass="shadowMenuActions">
+							<div style="margin:5px">
+								<label zclass="panelInfoItemMenuTitle" 
+									width="100%" 
+									value="PRODUCTOS"/>
+							</div>
+							<div style="margin:5px">
+								<label zclass="panelInfoItemMenuContent" 
+									width="100%" 
+									value="Altas, bajas, actualización y busqueda de productos"/>
+							</div>	
+							<hlayout style="text-align:right">
+								<button image="/images/toolbar/update.png" sclass="web_button" onClick="@command('saveChanges')" />
+								<button image="/images/toolbar/saveOff.png" sclass="web_button" onClick="@command('newRecord')" />
+								<button image="/images/toolbar/delete.png" sclass="web_button"  onClick="@command('deleteRecord')" />
+								<button image="/images/toolbar/find.png" sclass="web_button" onClick="@command('search')" />
+							</hlayout>
+						</row>
+					</rows>
+				</grid>
+			   
+			
+				<grid style="border: 0;">
+			        <columns >
+			            <column width="13%"/>
+			            <column width="25%"/>
+			            <column width="13%"/>
+			            <column />
+			        </columns>
+			        <rows>
+			            <row style="background-color:transparent; border: 0;">
+			            	<label value="* Clave:" />
+							<textbox id="clave" zclass="tBox" maxlength="24" width="100%"
+								value="@bind(pvm.producto.clave)" />
+							<label value="* Nombre:" />
+							<textbox zclass="tBox" width="100%"
+								value="@bind(pvm.producto.nombre)" maxlength="60" />
+			            </row>
+			        </rows>
+			    </grid>
+			    
+			    <grid style="border: 0;">
+			    	
+			        <columns >
+			            <column width="13%"/>
+			            <column width="25%"/>
+			            <column />
+			        </columns>
+			        <rows>
+			            <row style="background-color:transparent; border: 0;">
+			            	<label value="* Precio:" />
+							<doublebox zclass="tBox" width="100%"
 								constraint="no empty" format="###,###,###.00" maxlength="20"
 								value="@bind(pvm.producto.precio)" />
-							<label value="* Unidad :" />
-							<textbox cols="20" zclass="tBox"
-								maxlength="22" value="@bind(pvm.producto.unidad)" />
-							<label value="Modelo :" />
-							<textbox cols="22" zclass="tBox"
-								maxlength="24" value="@bind(pvm.producto.modelo)" />
-						</hlayout>
-					</hlayout>
-
-					<hlayout>
-						<hlayout style="padding-left: 10px;">
-							<label value="Marca:" />
-							<textbox cols="20" zclass="tBox"
+								
+							<grid style="border: 0;">
+						    	
+						        <columns >
+						            <column width="20%"/>
+						            <column/>
+						            <column width="17%"/>
+						            <column/>
+						        </columns>
+						        <rows>
+						            <row style="background-color:transparent; border: 0;">
+						            	<label value="* Unidad :" />
+										<textbox zclass="tBox" width="100%"
+											maxlength="22" value="@bind(pvm.producto.unidad)" />
+										<label value="Modelo :" />
+										<textbox zclass="tBox" width="100%"
+											maxlength="24" value="@bind(pvm.producto.modelo)" />
+						            </row>
+						        </rows>
+						    </grid>
+			            </row>
+			        </rows>
+			    </grid>
+				
+				<grid style="border: 0;">
+			    	
+			        <columns >
+			            <column width="13%"/>
+			            <column width="25%"/>
+			            <column width="13%"/>
+			            <column />
+			        </columns>
+			        <rows>
+			            <row style="background-color:transparent; border: 0;">
+			            	<label value="Marca:" />
+							<textbox zclass="tBox"  width="100%"
 								maxlength="22" value="@bind(pvm.producto.marca)" />
 							<label value="C. Barras:" />
-							<textbox cols="20"
+							<textbox width="100%"
 								value="@bind(pvm.producto.codigoBarras)" zclass="tBox"
 								maxlength="20" />
-						</hlayout>
-					</hlayout>
-					<hlayout>
-						<label value="Descripción:" />
-						<textbox cols="90" multiline="true"
-							value="@bind(pvm.producto.descripcion)" droppable="false"
-							type="text" zclass="tBox" height="90px" />
-					</hlayout>
-				</vlayout>
-			</hlayout>
+			            </row>
+			        </rows>
+			    </grid>
+			    
+			    <grid style="border: 0;">
+			    	
+			        <columns >
+			            <column width="13%"/>
+			            <column />
+			        </columns>
+			        <rows>
+			            <row style="background-color:transparent; border: 0;">
+			            	<label value="Descripción:" />
+							<textbox multiline="true" width="100%"
+								value="@bind(pvm.producto.descripcion)" droppable="false"
+								type="text" zclass="tBox" height="90px" />
+			            </row>
+			        </rows>
+			    </grid>
+			
+			</vlayout>
+
+			<separator/>
+			<separator/>
+			
 			<vlayout zclass="tabBox">
 				<tabbox id="tb">
 					<tabs id="tabs">
-						<tab label="Clasificación" />
-						<tab label="Precios" />
-						<tab label="Últimas compras" />
-						<tab label="Estadísticas" />
+						<tab label="Clasificación" image="/images/toolbar/sorting.png"/>
+						<tab label="Precios" image="/images/toolbar/priceMarked.png"/>
+						<tab label="Últimas compras" image="/images/toolbar/shoppingCart16.png" onClick="@command('selectTabCompras')"/>
+						<tab label="Estadísticas" image="/images/toolbar/Graphique16.png"/>
 					</tabs>
 					<tabpanels>
 						<tabpanel>
-
+						
+							<hlayout>
+								<label value="Tipo de producto:"/>
+								<combobox model="@load(pvm.tabListClasificacionProductos)" selectedItem="@bind(pvm.tabSelected)" readonly="true" width="100%">
+				                    <template name="model">
+				                        <comboitem label="@load(each.productoTipo.nombre)"/>
+				                    </template>
+				                </combobox>
+							</hlayout>	
+						
+							<listbox id="listaProductos" emptyMessage="No se encontraron productos" rows="5" width="100%"
+					            model="@load(pvm.productoDB)">
+					            
+					            <listhead>
+					                <listheader label="Nombre"/>
+					            </listhead>
+					            <template name="model" var="proveedor">
+					                <listitem>
+					                    <listcell>
+					                    	<label value="@bind(proveedor.nombre)" width="100%"/>
+					                    </listcell>
+					                </listitem>
+					            </template>
+					        </listbox>
+							
 						</tabpanel>
 						<tabpanel>
-							<hlayout>
-								<vlayout>
-									<hlayout>
-										<label value="Divisa" />
-										<combobox />
-									</hlayout>
-									<hlayout>
-										<label value="Excento" />
-										<textbox />
-									</hlayout>
-									<hlayout>
-										<label value="%Imp1" />
-										<doublebox />
-									</hlayout>
-									<hlayout>
-										<label value="%Imp2" />
-										<doublebox />
-									</hlayout>
-								</vlayout>
-								<hlayout>
-									<vlayout>
-										<hlayout>
-											<label value="1" />
-											<doublebox />
-										</hlayout>
-										<hlayout>
-											<label value="2" />
-											<doublebox />
-										</hlayout>
-										<hlayout>
-											<label value="3" />
-											<doublebox />
-										</hlayout>
-										<hlayout>
-											<label value="4" />
-											<doublebox />
-										</hlayout>
-										<hlayout>
-											<label value="5" />
-											<doublebox />
-										</hlayout>
-									</vlayout>
-									<vlayout>
-										<doublebox disabled="true" />
-										<doublebox disabled="true" />
-										<doublebox disabled="true" />
-										<doublebox disabled="true" />
-										<doublebox disabled="true" />
-									</vlayout>
-								</hlayout>
-								<vlayout>
-									<hlayout>
+						
+							<grid style="border: 0;">
+						        <columns >
+						            <column width="10%"/>
+						            <column />
+						            <column width="5%"/>
+						            <column />
+						            <column />
+						            <column width="15%"/>
+						            <column />
+						        </columns>
+						        <rows>
+						            <row style="background-color:transparent; border: 0;">
+						            	<label value="Divisa" />
+										<combobox width="100%"/>
+										<label value="1" style="text-align:center"/>
+										<doublebox width="100%"/>
+										<doublebox disabled="true" width="100%"/>
 										<label value="Máximo" />
-										<doublebox />
-									</hlayout>
-									<hlayout>
+										<doublebox width="100%"/>
+						            </row>
+						            <row style="background-color:transparent; border: 0;">
+										<label value="Excento" />
+										<textbox width="100%"/>
+										<label value="2" style="text-align:center"/>
+										<doublebox width="100%"/>
+										<doublebox disabled="true" width="100%"/>
 										<label value="Reposición" />
-										<doublebox />
-									</hlayout>
-									<hlayout>
+										<doublebox width="100%"/>
+						            </row>
+						            <row style="background-color:transparent; border: 0;">
+										<label value="%Imp1" />
+										<doublebox width="100%"/>
+										<label value="3" style="text-align:center"/>
+										<doublebox width="100%"/>
+										<doublebox disabled="true" width="100%"/>
 										<label value="Sig Capa" />
-										<doublebox disabled="true" />
-									</hlayout>
-									<hlayout>
+										<doublebox disabled="true" width="100%"/>
+						            </row>
+						            <row style="background-color:transparent; border: 0;">
+										<label value="%Imp2" />
+										<doublebox width="100%"/>
+										<label value="4" style="text-align:center"/>
+										<doublebox width="100%"/>
+										<doublebox disabled="true" width="100%"/>
 										<label value="Último" />
-										<doublebox disabled="true" />
-									</hlayout>
-									<hlayout>
+										<doublebox disabled="true" width="100%"/>
+						            </row>
+						            
+						            <row style="background-color:transparent; border: 0;">
+						            	<label value="" />
+										<label value="" />
+										<label value="5" style="text-align:center"/>
+										<doublebox width="100%"/>
+										<doublebox disabled="true" width="100%"/>
 										<label
 											value="Costo Promedio(MN)" />
-										<doublebox disabled="true" />
-									</hlayout>
-								</vlayout>
-								<vlayout></vlayout>
-							</hlayout>
+										<doublebox disabled="true" width="100%" />
+									</row>
+						            
+						        </rows>
+						    </grid>
+						
+						
+							
 						</tabpanel>
 						<tabpanel>
-
+							
+							<listbox emptyMessage="Aun no existen productos vendidos" rows="5" width="100%"
+					            model="@load(pvm.cotizacionDB)">
+					            
+					            <listhead>
+					                <listheader label="Nombre"/>
+					            </listhead>
+					            <template name="model" var="proveedor">
+					                <listitem>
+					                    <listcell>
+					                    	<label value="@bind(proveedor.nombre)" width="100%"/>
+					                    </listcell>
+					                </listitem>
+					            </template>
+					        </listbox>
+					        
 						</tabpanel>
 						<tabpanel>
 
@@ -160,6 +263,6 @@
 					</tabpanels>
 				</tabbox>
 			</vlayout>
-		</vlayout>
+		
 	</div>
 </zk>
