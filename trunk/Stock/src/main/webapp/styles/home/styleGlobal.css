@@ -1,4 +1,5 @@
 @CHARSET "ISO-8859-1";
+@import url(http://fonts.googleapis.com/css?family=Titillium+Web:700);
 
 .web_button{
 	height: 40px; 
@@ -124,11 +125,11 @@
 
 .panelInfoItemMenuTitle{
 	height: 35px;
-	text-shadow: 2px 2px 5px #800000;
-	font-weight: bolder;
-	font-size: 10px;
-	line-height: 14px;
+	font-size: 12px;
+	font-family: 'Titillium Web', sans-serif;
 	text-align: justify;
+	background-color: transparent;
+	border: 0;
 }
 
 .panelInfoItemMenuContent{
@@ -137,4 +138,41 @@
 	font-size: 12px;
 	line-height: 14px;
 	text-align: justify;
+}
+
+.sizeFontInfoTables{
+	font-size:100%;	
+}
+
+
+
+#menu5 {
+	width: 200px;
+	margin: 10px;
+}
+	
+#menu5 li a {
+	height: 32px;
+  	voice-family: "\"}\""; 
+  	voice-family: inherit;
+  	height: 24px;
+	text-decoration: none;
+}	
+	
+#menu5 li a:link, #menu5 li a:visited {
+	color: #FFF;
+	display: block;
+	background:  #85b2d3; /**url de imagen*/
+	padding: 8px 0 0 10px;
+}
+	
+#menu5 li a:hover {
+	color: #FFF;
+	background:  #a7c7dc /**/
+	padding: 8px 0 0 10px;
+}
+#menu5 ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }

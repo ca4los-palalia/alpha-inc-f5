@@ -368,7 +368,13 @@
 				                </listitem>
 				            </template>
 				        </listbox>
-		        
+		        		
+		        		<hlayout style="text-align:right">
+		        			<button image="/images/toolbar/pdf.png" sclass="web_button"
+								onClick="@command('reporteProveedores')"  tooltiptext="Exportar a un archivo PDF"/>
+		        		</hlayout>
+		        		
+							
 				        <separator />
 				        <separator />
 				        
@@ -438,7 +444,7 @@
 				            			<label value="Proveedores "/>
 				            			<label value="@bind(pvm.buscarProveedorAsociar.comentario)"/>
 				            		</hlayout>
-					            	<listbox emptyMessage="No se encontro ningun proveedor" rows="9" sclass="heightGrid"
+					            	<listbox emptyMessage="No se encontro ningun proveedor" rows="7" sclass="heightGrid"
 							            model="@load(pvm.proveedoresAsociacion)" selectedItem="@bind(pvm.proveedoresAsociacionSelected)" >
 	
 							            <auxhead>
