@@ -8,7 +8,7 @@ zk.afterMount(function() {
 
 
 zk.afterMount(function() {
-    jq("$buscadorProducto").Watermark("nombre o clave","gray");
+    jq("$buscadorProducto").Watermark("Ingresar nombre o clave del producto","gray");
 });
 
 zk.afterMount(function() {

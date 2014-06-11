@@ -55,7 +55,7 @@
 		        <rows>
 		            <row style="background-color:transparent; border: 0; text-align:right">
 		            	<label value="Folio:"/>
-		            	<label value="F00001" style="color: red; font-weight: bold;"/>
+		            	<label value="@bind(rvm.requisicion.folio)" style="color: red; font-weight: bold;"/>
 		            </row>
 		        </rows>
 		    </grid>

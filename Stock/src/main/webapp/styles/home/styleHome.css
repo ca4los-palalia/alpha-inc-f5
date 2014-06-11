@@ -23,7 +23,7 @@
 }
 
 * /
-	/*NOTA: contenedor de elementos del pie*/  
+	/*NOTA: contenedor de elementos del pie*/      
 	                              
 .footHome .z-south-body {
 	height: 100%;
@@ -202,7 +202,8 @@ div {
 .homeContent {
 	padding-top: 10px;
 	height: 90%;
-	width: 50%;
+	/*width: 50%;*/
+	width: 56%;
 	border-left-style: inset;
 	border-left-color: #D9E0E7;
 	border-left-width: 1px;
@@ -242,8 +243,8 @@ div {
 	text-align: left
 }
 
-.menuItem:hover{
-	cursor:pointer;
+.menuItem:hover {
+	cursor: pointer;
 }
 
 .toolBar {
@@ -303,4 +304,8 @@ div {
 	font-size: 12px;
 	height: 50px;
 	width: 240px;
+}
+
+.current_page_item {
+	background-color: yellow;
 }
