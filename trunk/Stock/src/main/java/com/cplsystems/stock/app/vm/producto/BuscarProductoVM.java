@@ -65,7 +65,7 @@ public class BuscarProductoVM extends BasicStructure {
 		if (productos == null) {
 			stockUtils.showSuccessmessage("Los parametros especificados "
 					+ "no generaron ningún resultado",
-					Clients.NOTIFICATION_TYPE_WARNING, 2000);
+					Clients.NOTIFICATION_TYPE_WARNING, 2000, null);
 		} else {
 
 		}

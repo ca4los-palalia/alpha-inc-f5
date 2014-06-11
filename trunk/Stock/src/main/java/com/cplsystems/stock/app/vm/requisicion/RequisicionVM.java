@@ -41,40 +41,17 @@ public class RequisicionVM extends RequisicionVariables {
 	@Init
 	public void init() {
 		super.init();
-		initDefaultValues();
-		loadItemsKeys();
+		
 		areas = areaService.getAll();
 		requisicion.setPersona(new Persona());
 		requisicion.setFecha(Calendar.getInstance());
 		posiciones = posicionService.getAll();
-	}
-
-	@Command
-	public void saveChanges() {
-		System.err.println();
 		
-		/*requisicion.getProg()
-		requisicion.getPy()
-		requisicion.getPartidaGenerica()
-		requisicion.getFuenteFinanciamiento()
-		requisicion.getPersona().getNombre()
-		requisicion.getPosicion()
-		requisicion.getAdscripcion()
-		requisicion.getJustificacion()
-		requisicion.getNumeroInventario()*/
-		//-------------------
-		requisicion.setFecha(Calendar.getInstance());
+		loadItemsKeys();
+		initDefaultValues();
 		
-		if (validateBill()) {
-			requisicionService.save(requisicion);
-			for (RequisicionProducto requisicionProducto : requisicionProductos) {
-				requisicionProductoService.save(requisicionProducto);
-			}
-		}
-	}
-
-	private void initDefaultValues() {
-		addNewItemToBill();
+		
+		
 	}
 
 	private void loadItemsKeys() {
@@ -82,6 +59,34 @@ public class RequisicionVM extends RequisicionVariables {
 		if (productosTemporalModel != null) {
 			productosModel = new SimpleListModel<String>(productosTemporalModel);
 		}
+	}
+	
+	@SuppressWarnings("static-access")
+	@Command
+	public void saveChanges() {
+		
+		personaService.save(requisicion.getPersona());
+		requisicion.setFecha(Calendar.getInstance());
+		requisicion.setStatus("En espera");
+		
+		if (validateBill()) {
+			requisicionService.save(requisicion);
+			for (RequisicionProducto requisicionProducto : requisicionProductos) {
+				requisicionProducto.setRequisicion(requisicion);
+				requisicionProductoService.save(requisicionProducto);
+			}
+		}
+		
+		stockUtils.showSuccessmessage(
+				"Una nueva requisicion ha sido creada"
+						+ requisicion.getFolio(),
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+	}
+
+	private void initDefaultValues() {
+		addNewItemToBill();
+		String folio = "F" + requisicionService.getUltimoFolio();
+		requisicion.setFolio(folio);
 	}
 
 	@AfterCompose
@@ -153,7 +158,7 @@ public class RequisicionVM extends RequisicionVariables {
 			} else {
 				stockUtils.showSuccessmessage(
 						"Ya existe un producto registrado con esta clave",
-						Clients.NOTIFICATION_TYPE_WARNING, 4000);
+						Clients.NOTIFICATION_TYPE_WARNING, 4000, null);
 			}
 		}
 	}
@@ -168,7 +173,7 @@ public class RequisicionVM extends RequisicionVariables {
 				stockUtils.showSuccessmessage(
 						"Ya existe un producto registrado con esta clave "
 								+ requisicionProducto.getProducto().getClave(),
-						Clients.NOTIFICATION_TYPE_WARNING, 4000);
+						Clients.NOTIFICATION_TYPE_WARNING, 4000, null);
 				continuar = true;
 				break;
 			}

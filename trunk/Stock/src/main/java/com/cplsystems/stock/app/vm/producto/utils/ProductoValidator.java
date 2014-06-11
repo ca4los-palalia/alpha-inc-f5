@@ -73,7 +73,7 @@ public class ProductoValidator extends AbstractValidator implements
 				errores.append(string);
 			}
 			StockUtils.showSuccessmessage(errores.toString(),
-					Clients.NOTIFICATION_TYPE_WARNING, 0);
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 }

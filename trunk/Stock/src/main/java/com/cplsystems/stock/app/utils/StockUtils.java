@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Window;
@@ -57,8 +58,8 @@ public class StockUtils {
 	 *            .NOTIFICATION_TYPE_INFO
 	 */
 	public static void showSuccessmessage(String mensaje, String tipo,
-			Integer duracionEnVista) {
-		Clients.showNotification(mensaje, tipo, null, null, duracionEnVista);
+			Integer duracionEnVista, Component componente) {
+		Clients.showNotification(mensaje, tipo, componente, null, duracionEnVista);
 	}
 
 	public String formatCurrency(Double quantity) {

@@ -3,6 +3,12 @@
  */
 package com.cplsystems.stock.app.vm.proveedor;
 
+import java.util.HashMap;
+import java.util.List;
+
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
+
 import com.cplsystems.stock.app.vm.BasicStructure;
 
 /**
@@ -26,5 +32,10 @@ public abstract class ProveedorVariables extends BasicStructure {
 	protected boolean guardadoPersonaContacto;
 	protected boolean guardadoNuevoProveedor;
 	protected boolean guardadoCuentaPago;
+	
+	
+	
+	
+	
 
 }

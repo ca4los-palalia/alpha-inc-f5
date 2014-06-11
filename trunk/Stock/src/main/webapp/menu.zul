@@ -1,21 +1,295 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
+	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
-	<window apply="org.zkoss.bind.BindComposer" 
+
+	<style>
+		.tab-red .z-tab-accordion-hm { color: white; height: 10px;
+		padding: 8px; text-align: left; color: #FFFFFF; font-family:
+		'Arial'; font-size: 18px; background: #a7c7dc; /* Old browsers
+		*/ /* IE9 SVG, needs conditional override of 'filter' to 'none'
+		*/ background:
+		url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2E3YzdkYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4NWIyZDMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+		background: -moz-linear-gradient(top, #a7c7dc 0%, #85b2d3 100%);
+		/* FF3.6+ */ background: -webkit-gradient(linear, left top, left
+		bottom, color-stop(0%,#a7c7dc), color-stop(100%,#85b2d3)); /*
+		Chrome,Safari4+ */ background: -webkit-linear-gradient(top,
+		#a7c7dc 0%,#85b2d3 100%); /* Chrome10+,Safari5.1+ */ background:
+		-o-linear-gradient(top, #a7c7dc 0%,#85b2d3 100%); /* Opera
+		11.10+ */ background: -ms-linear-gradient(top, #a7c7dc
+		0%,#85b2d3 100%); /* IE10+ */ background: linear-gradient(to
+		bottom, #a7c7dc 0%,#85b2d3 100%); /* W3C */ filter:
+		progid:DXImageTransform.Microsoft.gradient(
+		startColorstr='#a7c7dc', endColorstr='#85b2d3',GradientType=0 );
+		/* IE6-8 */
+
+
+		} .menutabs.z-tab .z-tab-text { color: red; cursor: pointer;
+		font-family: arial,sans-serif; font-size: 12px;
+		font-size-adjust: none; font-weight : bold; padding: 4px 14px;
+		white-space: nowrap; }
+
+	</style>
+	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('com.cplsystems.stock.app.vm.menu.MenuVM')">
-		<vlayout sclass="menubar">
+
+
+
+		<borderlayout height="550px">
+
+
+			<west maxsize="600" size="30%" flex="true" border="0"
+				autoscroll="true" splittable="true" collapsible="true"
+				width="98%">
+
+				<vlayout>
+
+
+					<tabbox mold="accordion">
+						<tabs>
+							<tab label="Productos"
+								image="/images/toolbar/box32.png"  sclass="tab-red menutabs" />
+							<tab label="Proveedores"
+								image="/images/toolbar/users32.png" sclass="tab-red menutabs" />
+							<tab label="Requisiciones"
+								image="/images/toolbar/linedpapercheck32.png" sclass="tab-red menutabs" />
+							<tab label="Ordenes de compra"
+								image="/images/toolbar/shoppingcart32.png" sclass="tab-red menutabs" />
+							<tab label="Reportes"
+								image="/images/toolbar/risegraph32.png" sclass="tab-red menutabs" />
+							<tab label="Panel de control"
+								image="/images/toolbar/gear32.png" sclass="tab-red menutabs" />
+						</tabs>
+						<tabpanels>
+							<tabpanel sclass="tab-red">
+
+								<grid style="border: 0; background: #B8D335;"
+									sclass="tab-red menutabs">
+									<columns>
+										<column width="15%" />
+										<column />
+									</columns>
+									<rows>
+										<row
+											style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/catalogs.png" />
+											<toolbarbutton
+												onClick="@command('showProducts')"
+												label="Catalogo de artículos y servicios" width="100%" />
+										</row>
+										<row
+											style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/report.png" />
+											<toolbarbutton onClick="@command('showProductsReportesArticulos')"
+												label="Reportes de artículos" width="100%" />
+										</row>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/catalogs.png" />
+											<toolbarbutton onClick="@command('showProductsReportesClasificacion')"
+												label="Clasificaciones" width="100%" />
+										</row>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/barcode.png" />
+											<toolbarbutton onClick="@command('showProductsReportesCodigos')"
+												label="Múltiples códigos" width="100%" />
+										</row>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/priceMarked.png" />
+											<toolbarbutton onClick="@command('showProductsReportesPrecioCosto')"
+												label="Actualizar precios y costos" width="100%" />
+										</row>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/update16.png" />
+											<toolbarbutton onClick="@command('showProductsReportesActualizacionRapida')"
+												label="Actualización rápida" width="100%" />
+										</row>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/setting.png" />
+											<toolbarbutton onClick="@command('showProductsReportesAjusteExistencia')"
+												label="Ajuste de existencia" width="100%" />
+										</row>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/products.png" />
+											<toolbarbutton onClick="@command('showProductsReportesArticuloSustituto')"
+												label="Artículos sustitutos" width="100%" />
+										</row>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/move.png" />
+											<toolbarbutton onClick="@command('showProductsReportesTipoMovimiento')"
+												label="Tipos de movimientos" width="100%" />
+										</row>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/record.png" />
+											<toolbarbutton onClick="@command('showProductsReportesRregistroMovimiento')"
+												label="Registrar movimientos" width="100%" />
+										</row>
+										<row style="background-color:#E6D92C; border: 0;" visible="false">
+											<image
+												src="/images/toolbar/report.png" />
+											<toolbarbutton onClick="@command('showProductsReportesKardex')"
+												label="Kardex de artículos" width="100%" />
+										</row>
+									</rows>
+								</grid>
+							</tabpanel>
+
+							<tabpanel sclass="tab-red">
+								<grid style="border: 0;"
+									sclass="tab-red menutabs">
+									<columns>
+										<column width="15%" />
+										<column />
+									</columns>
+									<rows>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/users32.png" />
+											<toolbarbutton
+												onClick="@command('showProviders')" label="Proveedores"
+												width="100%" />
+										</row>
+									</rows>
+								</grid>
+							</tabpanel>
+
+							<tabpanel sclass="tab-red">
+								<grid style="border: 0;"
+									sclass="tab-red menutabs">
+									<columns>
+										<column width="15%" />
+										<column />
+									</columns>
+									<rows>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/linedpapercheck32.png" />
+											<toolbarbutton
+												onClick="@command('showRequisitions')" label="Requisiciones"
+												width="100%" />
+										</row>
+									</rows>
+								</grid>
+							</tabpanel>
+
+							<tabpanel sclass="tab-red">
+								<grid style="border: 0;"
+									sclass="tab-red menutabs">
+									<columns>
+										<column width="15%" />
+										<column />
+									</columns>
+									<rows>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/shoppingcart32.png" />
+											<toolbarbutton
+												onClick="@command('showOrders')" label="Órdenes de compra"
+												width="100%" />
+										</row>
+									</rows>
+								</grid>
+							</tabpanel>
+
+							<tabpanel sclass="tab-red">
+								<grid style="border: 0;"
+									sclass="tab-red menutabs">
+									<columns>
+										<column width="15%" />
+										<column />
+									</columns>
+									<rows>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/risegraph32.png" />
+											<toolbarbutton
+												onClick="@command('showReports')" label="Reportes"
+												width="100%" />
+										</row>
+									</rows>
+								</grid>
+							</tabpanel>
+
+							<tabpanel sclass="tab-red">
+								<grid style="border: 0;"
+									sclass="tab-red menutabs">
+									<columns>
+										<column width="15%" />
+										<column />
+									</columns>
+									<rows>
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/gear32.png" />
+											<toolbarbutton
+												onClick="@command('showControlPanel')"
+												label="Panel de control" width="100%" />
+										</row>
+										
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/gear32.png" />
+											<toolbarbutton label="Catalogos" width="100%" />
+										</row>
+										
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/gear32.png" />
+											<toolbarbutton
+												label="Configuración del sistema" width="100%" />
+										</row>
+										
+										<row style="background-color:#E6D92C; border: 0;">
+											<image
+												src="/images/toolbar/gear32.png" />
+											<toolbarbutton
+												label="Configuración del usuario" width="100%" />
+										</row>
+									</rows>
+								</grid>
+							</tabpanel>
+						</tabpanels>
+					</tabbox>
+				</vlayout>
+
+			</west>
+		</borderlayout>
+
+
+
+
+
+		<vlayout sclass="menubar" visible="false">
+
 			<button label="Productos" onClick="@command('showProducts')"
 				image="/images/toolbar/box32.png" zclass="menuItem" />
-			<button label="Proveedores" onClick="@command('showProviders')"
+			<button label="Proveedores"
+				onClick="@command('showProviders')"
 				image="/images/toolbar/users32.png" zclass="menuItem" />
-			<button label="Requisiciones" onClick="@command('showRequisitions')"
+			<button label="Requisiciones"
+				onClick="@command('showRequisitions')"
 				image="/images/toolbar/linedpapercheck32.png" zclass="menuItem" />
-			<button label="Órdenes de compra" onClick="@command('showOrders')"
+			<button label="Órdenes de compra"
+				onClick="@command('showOrders')"
 				image="/images/toolbar/shoppingcart32.png" zclass="menuItem" />
 			<button label="Reportes" onClick="@command('showReports')"
 				image="/images/toolbar/risegraph32.png" zclass="menuItem" />
-			<button label="Panel de control" onClick="@command('showControlPanel')"
+			<button label="Panel de control"
+				onClick="@command('showControlPanel')"
 				image="/images/toolbar/gear32.png" zclass="menuItem" />
+
 		</vlayout>
+
+
+
 	</window>
 </zk>

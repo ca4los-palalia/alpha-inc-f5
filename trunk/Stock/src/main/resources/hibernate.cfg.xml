@@ -48,7 +48,9 @@
 		<mapping class="com.cplsystems.stock.domain.Proyecto"/>
 		<mapping class="com.cplsystems.stock.domain.Requisicion"/>
 		<mapping class="com.cplsystems.stock.domain.RequisicionPartida"/>
+		<mapping class="com.cplsystems.stock.domain.RequisicionProducto"/>
 		<mapping class="com.cplsystems.stock.domain.Sexo"/>
+		<mapping class="com.cplsystems.stock.domain.Unidad"/>
 		<mapping class="com.cplsystems.stock.domain.Telefono"/>
 		 
 		

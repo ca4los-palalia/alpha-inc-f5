@@ -23,7 +23,7 @@ import com.cplsystems.stock.app.vm.BasicStructure;
 public class MenuVM extends BasicStructure {
 	public static final String PAGE_TO_RENDER = "pageToRender";
 	private Map<String, Object> args;
-
+	
 	@Init
 	public void init() {
 		args = new HashMap<String, Object>();
@@ -35,7 +35,77 @@ public class MenuVM extends BasicStructure {
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
 		System.out.println("MenuVM.showProducts()");
 	}
+	
+	@Command
+	public void showProductsReportesArticulos() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_ARTICULOS);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		System.out.println("MenuVM.showProductsReportesArticulos()");
+	}
 
+	
+	/****/
+	
+	@Command
+	public void showProductsReportesClasificacion() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_CLASIFICACION);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		System.out.println("MenuVM.showProductsReportesArticulos()");
+	}
+	@Command
+	public void showProductsReportesCodigos() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_MULTIPLES_CODIGOS);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		System.out.println("MenuVM.showProductsReportesArticulos()");
+	}
+	@Command
+	public void showProductsReportesPrecioCosto() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_PRECIO_COSTO);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		System.out.println("MenuVM.showProductsReportesArticulos()");
+	}
+	@Command
+	public void showProductsReportesActualizacionRapida() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_ACTUALIZACION_RAPIDA);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		System.out.println("MenuVM.showProductsReportesArticulos()");
+	}
+	@Command
+	public void showProductsReportesAjusteExistencia() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_AJUSTE_EXISTENCIA);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		System.out.println("MenuVM.showProductsReportesArticulos()");
+	}
+	@Command
+	public void showProductsReportesArticuloSustituto() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_ARTICULO_SUSTITUTO);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		System.out.println("MenuVM.showProductsReportesArticulos()");
+	}
+	@Command
+	public void showProductsReportesTipoMovimiento() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_TIPO_MOVIMIENTO);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		System.out.println("MenuVM.showProductsReportesArticulos()");
+	}
+	@Command
+	public void showProductsReportesRregistroMovimiento() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_REGISTRO_MOVIMIENTO);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		System.out.println("MenuVM.showProductsReportesArticulos()");
+	}
+	@Command
+	public void showProductsReportesKardex() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_KARDEX);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		System.out.println("MenuVM.showProductsReportesArticulos()");
+	}
+	/****/
+	
+	
+	
+	
+	
 	@Command
 	public void showProviders() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PROVEEDORES);

@@ -39,140 +39,222 @@
 		<separator/>
 		<separator/>
 		
-		<tabbox id="tb">
-			<tabs id="tabs">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<tabbox mold="accordion">
+			<tabs>
 				
-				<tab label="Áreas" image="/images/toolbar/area.png" onSelect="@command('selectTabArea')"/>
-				<tab label="Puestos" image="/images/toolbar/area.png" onSelect="@command('selectTabPuesto')"/>
-				<tab label="Bancos" image="/images/toolbar/bank.png" onSelect="@command('selectTabBanco')"/>
-				<tab label="Monedas" image="/images/toolbar/coins.png" onSelect="@command('selectTabMoneda')"/>
-				<tab label="Tipo de productos" image="/images/toolbar/products.png" onSelect="@command('selectTabProducto')"/>
-				<tab label="Contratos" image="/images/toolbar/linedpaperpencil32.png" onSelect="@command('selectTabContratos')"/>
+				<tab label="Configuracion del sistema" image="/images/toolbar/area.png"/>
+				<tab label="Configuracion de usuario" image="/images/toolbar/area.png"/>
+				<tab label="Catalogos" image="/images/toolbar/area.png"/>
 				
 			</tabs>
 			<tabpanels>
 				<tabpanel>
-					<listbox emptyMessage="Por el momento no se encuentran Áreas registradas" rows="10" autopaging="true"
-			            model="@load(cvm.areas)" selectedItem="@bind(cvm.area)">
-			            <listhead>
-			                <listheader label="Nombre" />
-			                <listheader label="Seleccionar" width="15%" style="text-align:center" />
-			            </listhead>
-			            <template name="model" var="areav">
-			                <listitem>
-			                    <listcell>
-			                    	<textbox value="@bind(areav.nombre)" inplace="true" width="70%"/>
-			                    </listcell>
-			                    <listcell>
-			                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
-			                    </listcell>
-			                </listitem>
-			            </template>
-			        </listbox>
 				</tabpanel>
 				
 				<tabpanel>
-					<listbox emptyMessage="Por el momento no se encuentran puestos registrados" rows="10" autopaging="true"
-			            model="@load(cvm.posiciones)" selectedItem="@bind(cvm.posicion)">
-			            
-			            <listhead>
-			                <listheader label="Nombre" />
-			                <listheader label="Seleccionar" width="15%" style="text-align:center" />
-			            </listhead>
-			            <template name="model" var="puestoV">
-			                <listitem>
-			                    <listcell>
-			                    	<textbox value="@bind(puestoV.nombre)" inplace="true" width="70%"/>
-			                    </listcell>
-			                    <listcell>
-			                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
-			                    </listcell>
-			                </listitem>
-			            </template>
-			        </listbox>
-				</tabpanel>
-				
-				
-				<tabpanel>
-					<listbox emptyMessage="Por el momento no se encuentran bancos registrados" rows="10" autopaging="true"
-			            model="@load(cvm.bancosDB)" selectedItem="@bind(cvm.bancoSeleccionado)">
-			            
-			            <listhead>
-			                <listheader label="Nombre" />
-			                <listheader label="Seleccionar" width="15%" style="text-align:center" />
-			            </listhead>
-			            <template name="model" var="monedaVar">
-			                <listitem>
-			                    <listcell>
-			                    	<textbox value="@bind(monedaVar.nombre)" inplace="true" width="70%"/>
-			                    </listcell>
-			                    <listcell>
-			                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
-			                    </listcell>
-			                </listitem>
-			            </template>
-			        </listbox>
 				</tabpanel>
 				
 				<tabpanel>
-					<listbox emptyMessage="Por el momento no existe un tipo de moneda en el catalogo" rows="10" autopaging="true"
-			            model="@load(cvm.monedasDB)" selectedItem="@bind(cvm.monedaSeleccionada)">
-			            
-			            <listhead>
-			                <listheader label="Nombre" />
-			                <listheader label="Simbolo" width="20%" />
-			                <listheader label="Seleccionar" width="15%" style="text-align:center" />
-			            </listhead>
-			            <template name="model" var="monedaVar">
-			                <listitem>
-			                    <listcell>
-			                    	<textbox value="@bind(monedaVar.nombre)" inplace="true" width="100%"/>
-			                    </listcell>
-			                    <listcell>
-			                    	<textbox value="@bind(monedaVar.simbolo)" inplace="true" width="100%"/>
-			                    </listcell>
-			                    <listcell>
-			                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
-			                    </listcell>
-			                </listitem>
-			            </template>
-			        </listbox>
-				</tabpanel>
-				
-				
-				
-				
-				
-				
-				
-				
-				<tabpanel>
-					<listbox emptyMessage="Por el momento no se encuentran Tipos de productos registrados" rows="10" autopaging="true"
-			            model="@load(cvm.productoTipoDB)" selectedItem="@bind(cvm.productoTipoSelected)">
-			            
-			            <listhead>
-			                <listheader label="Nombre" width="25%"/>
-			                <listheader label="Descripción" />
-			                <listheader label="Seleccionar" width="15%" style="text-align:center" />
-			            </listhead>
-			            <template name="model" var="productoTipoVar">
-			                <listitem>
-			                    <listcell>
-			                    	<textbox value="@bind(productoTipoVar.nombre)" inplace="true" width="100%"/>
-			                    </listcell>
-			                    <listcell>
-			                    	<textbox value="@bind(productoTipoVar.descripcion)" inplace="true" width="100%"/>
-			                    </listcell>
-			                    <listcell>
-			                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
-			                    </listcell>
-			                </listitem>
-			            </template>
-			        </listbox>
+					<tabbox>
+						<tabs>
+							
+							<tab label="Áreas" image="/images/toolbar/area.png" onSelect="@command('selectTabArea')"/>
+							<tab label="Puestos" image="/images/toolbar/area.png" onSelect="@command('selectTabPuesto')"/>
+							<tab label="Bancos" image="/images/toolbar/bank.png" onSelect="@command('selectTabBanco')"/>
+							<tab label="Divisas" image="/images/toolbar/coins.png" onSelect="@command('selectTabMoneda')"/>
+							<tab label="Tipo de productos" image="/images/toolbar/products.png" onSelect="@command('selectTabProducto')"/>
+							<tab label="Contratos" image="/images/toolbar/linedpaperpencil32.png" onSelect="@command('selectTabContratos')"/>
+							
+						</tabs>
+						<tabpanels>
+							<tabpanel>
+								<listbox emptyMessage="Por el momento no se encuentran Áreas registradas" rows="10" autopaging="true"
+						            model="@load(cvm.areas)" selectedItem="@bind(cvm.area)">
+						            <listhead>
+						                <listheader label="Nombre" />
+						                <listheader label="Seleccionar" width="15%" style="text-align:center" />
+						            </listhead>
+						            <template name="model" var="areav">
+						                <listitem>
+						                    <listcell>
+						                    	<textbox value="@bind(areav.nombre)" inplace="true" width="70%"/>
+						                    </listcell>
+						                    <listcell>
+						                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
+						                    </listcell>
+						                </listitem>
+						            </template>
+						        </listbox>
+							</tabpanel>
+							
+							<tabpanel>
+								<listbox emptyMessage="Por el momento no se encuentran puestos registrados" rows="10" autopaging="true"
+						            model="@load(cvm.posiciones)" selectedItem="@bind(cvm.posicion)">
+						            
+						            <listhead>
+						                <listheader label="Nombre" />
+						                <listheader label="Seleccionar" width="15%" style="text-align:center" />
+						            </listhead>
+						            <template name="model" var="puestoV">
+						                <listitem>
+						                    <listcell>
+						                    	<textbox value="@bind(puestoV.nombre)" inplace="true" width="70%"/>
+						                    </listcell>
+						                    <listcell>
+						                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
+						                    </listcell>
+						                </listitem>
+						            </template>
+						        </listbox>
+							</tabpanel>
+							
+							
+							<tabpanel>
+								<listbox emptyMessage="Por el momento no se encuentran bancos registrados" rows="10" autopaging="true"
+						            model="@load(cvm.bancosDB)" selectedItem="@bind(cvm.bancoSeleccionado)">
+						            
+						            <listhead>
+						                <listheader label="Nombre" />
+						                <listheader label="Seleccionar" width="15%" style="text-align:center" />
+						            </listhead>
+						            <template name="model" var="monedaVar">
+						                <listitem>
+						                    <listcell>
+						                    	<textbox value="@bind(monedaVar.nombre)" inplace="true" width="70%"/>
+						                    </listcell>
+						                    <listcell>
+						                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
+						                    </listcell>
+						                </listitem>
+						            </template>
+						        </listbox>
+							</tabpanel>
+							
+							<tabpanel>
+								<listbox emptyMessage="Por el momento no existe un tipo de moneda en el catalogo" rows="10" autopaging="true"
+						            model="@load(cvm.monedasDB)" selectedItem="@bind(cvm.monedaSeleccionada)">
+						            
+						            <listhead>
+						                <listheader label="Nombre" />
+						                <listheader label="Simbolo" width="20%" />
+						                <listheader label="Seleccionar" width="15%" style="text-align:center" />
+						            </listhead>
+						            <template name="model" var="monedaVar">
+						                <listitem>
+						                    <listcell>
+						                    	<textbox value="@bind(monedaVar.nombre)" inplace="true" width="100%"/>
+						                    </listcell>
+						                    <listcell>
+						                    	<textbox value="@bind(monedaVar.simbolo)" inplace="true" width="100%"/>
+						                    </listcell>
+						                    <listcell>
+						                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
+						                    </listcell>
+						                </listitem>
+						            </template>
+						        </listbox>
+							</tabpanel>
+							
+							
+							
+							
+							
+							
+							
+							
+							<tabpanel>
+								<listbox emptyMessage="Por el momento no se encuentran Tipos de productos registrados" rows="10" autopaging="true"
+						            model="@load(cvm.productoTipoDB)" selectedItem="@bind(cvm.productoTipoSelected)">
+						            
+						            <listhead>
+						                <listheader label="Nombre" width="25%"/>
+						                <listheader label="Descripción" />
+						                <listheader label="Seleccionar" width="15%" style="text-align:center" />
+						            </listhead>
+						            <template name="model" var="productoTipoVar">
+						                <listitem>
+						                    <listcell>
+						                    	<textbox value="@bind(productoTipoVar.nombre)" inplace="true" width="100%"/>
+						                    </listcell>
+						                    <listcell>
+						                    	<textbox value="@bind(productoTipoVar.descripcion)" inplace="true" width="100%"/>
+						                    </listcell>
+						                    <listcell>
+						                    	<image src="/images/toolbar/select.png" tooltiptext="Clic para seleccionar la fila"/>
+						                    </listcell>
+						                </listitem>
+						            </template>
+						        </listbox>
+							</tabpanel>
+							
+						</tabpanels>
+					</tabbox>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 				</tabpanel>
 				
 			</tabpanels>
 		</tabbox>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

@@ -8,6 +8,7 @@ import java.util.List;
 import org.zkoss.bind.Validator;
 import org.zkoss.bind.annotation.NotifyChange;
 
+import com.cplsystems.stock.app.utils.ClasificacionPrecios;
 import com.cplsystems.stock.app.vm.BasicStructure;
 import com.cplsystems.stock.app.vm.producto.TabInfo;
 import com.cplsystems.stock.domain.Cotizacion;
@@ -27,10 +28,15 @@ public abstract class ProductoVariables extends BasicStructure {
 	protected List<Producto> productoDB;
 	protected List<Cotizacion> cotizacionDB;
 	protected Producto productoSeleccionado;
-	protected List<ProductoTipo> productoTipoDB;
-	protected List<TabInfo> tabListClasificacionProductos;
+	protected List<ClasificacionPrecios> precios;
+	protected ClasificacionPrecios precioSelected;
+	
+	
+	//protected List<TabInfo> tabListClasificacionProductos;
 	protected TabInfo tabSelected;
 	protected Validator productoValidator;
+	
+	
 	
 	public String getClaveProducto() {
 		return claveProducto;
@@ -75,15 +81,6 @@ public abstract class ProductoVariables extends BasicStructure {
 	public void setProductoTipoDB(List<ProductoTipo> productoTipoDB) {
 		this.productoTipoDB = productoTipoDB;
 	}
-
-	public List<TabInfo> getTabListClasificacionProductos() {
-		return tabListClasificacionProductos;
-	}
-
-	public void setTabListClasificacionProductos(
-			List<TabInfo> tabListClasificacionProductos) {
-		this.tabListClasificacionProductos = tabListClasificacionProductos;
-	}	
 	public void setTabSelected(TabInfo tabSelected) {
 		this.tabSelected = tabSelected;
 	}
@@ -102,7 +99,21 @@ public abstract class ProductoVariables extends BasicStructure {
 	public void setCotizacionDB(List<Cotizacion> cotizacionDB) {
 		this.cotizacionDB = cotizacionDB;
 	}
-	
-	
+
+	public List<ClasificacionPrecios> getPrecios() {
+		return precios;
+	}
+
+	public void setPrecios(List<ClasificacionPrecios> precios) {
+		this.precios = precios;
+	}
+
+	public ClasificacionPrecios getPrecioSelected() {
+		return precioSelected;
+	}
+
+	public void setPrecioSelected(ClasificacionPrecios precioSelected) {
+		this.precioSelected = precioSelected;
+	}
 	
 }

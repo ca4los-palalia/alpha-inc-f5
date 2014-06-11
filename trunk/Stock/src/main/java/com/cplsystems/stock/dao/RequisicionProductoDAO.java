@@ -31,4 +31,8 @@ public interface RequisicionProductoDAO {
 	public List<RequisicionProducto> getByLugar(Lugar lugar);
 
 	public List<RequisicionProducto> getAll();
+	
+	public List<RequisicionProducto> getAllRequisiciones();
+	
+	
 }
