@@ -16,6 +16,17 @@ public class StockConstants {
 		public static final String HOME_URL = "/home.zul";
 		public static final String LOGIN_URL = "/login.zul";
 		public static final String PRODUCTOS = "/modulos/productos/productos.zul";
+		public static final String PRODUCTOS_REPORTE_ARTICULOS = "/modulos/productos/reportesArticulos.zul";
+		
+		public static final String PRODUCTOS_REPORTE_CLASIFICACION = "/modulos/productos/reportesClasificaciones.zul";
+		public static final String PRODUCTOS_REPORTE_MULTIPLES_CODIGOS = "/modulos/productos/reportesMultiplesCodigos.zul";
+		public static final String PRODUCTOS_REPORTE_PRECIO_COSTO = "/modulos/productos/reportesActualizacionPrecioCosto.zul";
+		public static final String PRODUCTOS_REPORTE_ACTUALIZACION_RAPIDA = "/modulos/productos/reportesActualizacionRapida.zul";
+		public static final String PRODUCTOS_REPORTE_AJUSTE_EXISTENCIA = "/modulos/productos/reportesAjusteExistencia.zul";
+		public static final String PRODUCTOS_REPORTE_ARTICULO_SUSTITUTO = "/modulos/productos/reportesArticuloSustituto.zul";
+		public static final String PRODUCTOS_REPORTE_TIPO_MOVIMIENTO = "/modulos/productos/reportesTipoMovimiento.zul";
+		public static final String PRODUCTOS_REPORTE_REGISTRO_MOVIMIENTO = "/modulos/productos/reportesRegistroMovimiento.zul";
+		public static final String PRODUCTOS_REPORTE_KARDEX = "/modulos/productos/reportesKardex.zul";
 		public static final String PROVEEDORES = "/modulos/proveedores/proveedores.zul";
 		public static final String REQUISICION = "/modulos/requisicion/requisicion.zul";
 		public static final String USUARIOS = "/modulos/usuarios/usuario.zul";
@@ -42,4 +53,9 @@ public class StockConstants {
 	public static final String TOOL_TIP_ROW_SELECTED_MONEDA = "Seleccionar una moneda";
 	public static final String TOOL_TIP_ROW_SELECTED_TIPO_PRODUCTO = "Seleccionar un tipo de producto";
 	public static final String TOOL_TIP_ROW_EDICION_NOMBRE = "Clic sobre esta columna para editar nombre";
+	
+	public static final String REPORT_PROVEEDOR_NAME_FILE = "C:\\reportProveedores.pdf";
+	public static final String REPORT_PROVEEDOR_PARAM1 = "parameter1";
+	public static final String REPORT_PROVEEDOR_NOMBRE_EMPRESA = "empresaTitle";
+	public static final String REPORT_PRODUCTO_NAME_FILE = "C:\\reportProductos.pdf";
 }

@@ -56,5 +56,8 @@ public class RequisicionProductoService {
 	public List<RequisicionProducto> getAll()throws DataAccessException {
 		return requisicionProductoDAO.getAll();
 	}
-
+	
+	public List<RequisicionProducto> getAllRequisiciones()throws DataAccessException {
+		return requisicionProductoDAO.getAllRequisiciones();
+	}
 }

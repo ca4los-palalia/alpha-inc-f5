@@ -16,16 +16,24 @@ import javax.persistence.Transient;
 public class Producto {
 
 	private Long idProducto;
+	
+	private boolean activo;
 	private String clave;
+	private String codigoBarras;
 	private String descripcion;
-	private String nombre;
-	private Float precio;
-	private String unidad;
 	private String marca;
 	private String modelo;
-	private String codigoBarras;
+	private String nombre;
+	private Float precio;
 	private ProductoTipo productoTipo;
-	private boolean seleccionar;
+	private Boolean seleccionar;
+	private Unidad unidad;
+	private Integer enExistencia;
+	
+	
+	
+	
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,16 +72,7 @@ public class Producto {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-	@Column(name = "unidad", length = 250)
-	public String getUnidad() {
-		return unidad;
-	}
-
-	public void setUnidad(String unidad) {
-		this.unidad = unidad;
-	}
-
+	
 	@Column
 	public Float getPrecio() {
 		return precio;
@@ -116,17 +115,43 @@ public class Producto {
 		return productoTipo;
 	}
 
+	@Column
+	public boolean getActivo() {
+		return activo;
+	}
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+	
 	public void setProductoTipo(ProductoTipo productoTipo) {
 		this.productoTipo = productoTipo;
 	}
+	@Column
+	public Integer getEnExistencia() {
+		return enExistencia;
+	}
 
+	public void setEnExistencia(Integer enExistencia) {
+		this.enExistencia = enExistencia;
+	}
 	@Transient
-	public boolean isSeleccionar() {
+	public Boolean isSeleccionar() {
 		return seleccionar;
 	}
 
-	public void setSeleccionar(boolean seleccionar) {
+	public void setSeleccionar(Boolean seleccionar) {
 		this.seleccionar = seleccionar;
 	}
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "unidad")
+	public Unidad getUnidad() {
+		return unidad;
+	}
+
+	public void setUnidad(Unidad unidad) {
+		this.unidad = unidad;
+	}
+	
 	
 }

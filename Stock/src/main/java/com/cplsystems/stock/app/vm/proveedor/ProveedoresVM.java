@@ -3,6 +3,8 @@
  */
 package com.cplsystems.stock.app.vm.proveedor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.zkoss.bind.annotation.Command;
@@ -14,8 +16,11 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
 
+import com.cplsystems.stock.app.utils.AplicacionExterna;
+import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.domain.Banco;
 import com.cplsystems.stock.domain.Proveedor;
+import com.sun.org.apache.bcel.internal.generic.ARRAYLENGTH;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class ProveedoresVM extends ProveedorMetaClass {
@@ -27,6 +32,7 @@ public class ProveedoresVM extends ProveedorMetaClass {
 	public void init() {
 		super.init();
 		completeBancos = bancosDB;
+		readJasper = generarUrlString("jasperTemplates/reportProductos.jasper");
 	}
 
 	@Command
@@ -39,8 +45,9 @@ public class ProveedoresVM extends ProveedorMetaClass {
 		botonMuenu5.setVisible(false);
 		botonMuenu6.setVisible(false);
 		botonMuenu7.setVisible(false);
+		botonMuenu8.setVisible(false);
 	}
-	
+
 	@Command
 	@NotifyChange("*")
 	public void selectTab2() {
@@ -51,8 +58,9 @@ public class ProveedoresVM extends ProveedorMetaClass {
 		botonMuenu5.setVisible(true);
 		botonMuenu6.setVisible(false);
 		botonMuenu7.setVisible(false);
+		botonMuenu8.setVisible(true);
 	}
-	
+
 	@Command
 	@NotifyChange("*")
 	public void selectTab3() {
@@ -63,6 +71,7 @@ public class ProveedoresVM extends ProveedorMetaClass {
 		botonMuenu5.setVisible(false);
 		botonMuenu6.setVisible(true);
 		botonMuenu7.setVisible(true);
+		botonMuenu8.setVisible(true);
 	}
 
 	@SuppressWarnings("static-access")
@@ -81,19 +90,19 @@ public class ProveedoresVM extends ProveedorMetaClass {
 					initObjects();
 					stockUtils.showSuccessmessage(nuevoProveedor.getNombre()
 							+ " ha sido guardado",
-							Clients.NOTIFICATION_TYPE_INFO, 0);
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
 				} else
 					stockUtils.showSuccessmessage(
 							"Los campos marcados con (*) son requeridos: \n"
 									+ mensajeValidacion,
-							Clients.NOTIFICATION_TYPE_WARNING, 0);
+							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 			} else
 				stockUtils.showSuccessmessage(nuevoProveedor.getNombre()
 						+ " ya se encuentra registrado",
-						Clients.NOTIFICATION_TYPE_WARNING, 0);
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		} else
 			stockUtils.showSuccessmessage("Nombre del proveedor requerido",
-					Clients.NOTIFICATION_TYPE_WARNING, 0);
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 
 	}
 
@@ -106,10 +115,10 @@ public class ProveedoresVM extends ProveedorMetaClass {
 			actualizarProveedorCambios();
 			stockUtils.showSuccessmessage(
 					"La lista de proveedores ha sido actualizada",
-					Clients.NOTIFICATION_TYPE_INFO, 0);
+					Clients.NOTIFICATION_TYPE_INFO, 0, null);
 		} else
 			stockUtils.showSuccessmessage("La lista no contiene proveedores",
-					Clients.NOTIFICATION_TYPE_WARNING, 0);
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 
 	}
 
@@ -137,7 +146,7 @@ public class ProveedoresVM extends ProveedorMetaClass {
 												proveedorSelected.getNombre()
 														+ " ha sido eliminado",
 												Clients.NOTIFICATION_TYPE_INFO,
-												0);
+												0, null);
 										proveedorSelected = null;
 										return;
 									}
@@ -147,7 +156,7 @@ public class ProveedoresVM extends ProveedorMetaClass {
 		} else {
 			stockUtils.showSuccessmessage(
 					"Seleccione un proveedor para llevar acabo la eliminación",
-					Clients.NOTIFICATION_TYPE_WARNING, 0);
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 
@@ -172,12 +181,12 @@ public class ProveedoresVM extends ProveedorMetaClass {
 				if (buscarProveedor.getNombre().equals("*"))
 					stockUtils.showSuccessmessage(
 							"Tu búsqueda obtuvo todos los proveedores",
-							Clients.NOTIFICATION_TYPE_INFO, 0);
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
 				else
 					stockUtils.showSuccessmessage("Tu búsqueda -"
 							+ buscarProveedor.getNombre() + "- obtuvo "
 							+ proveedoresLista.size() + " " + mensaje,
-							Clients.NOTIFICATION_TYPE_INFO, 0);
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
 				buscarProveedor.setComentario(proveedoresLista.size() + " "
 						+ mensaje);
 
@@ -185,12 +194,12 @@ public class ProveedoresVM extends ProveedorMetaClass {
 				stockUtils.showSuccessmessage(
 						"Tu búsqueda -" + buscarProveedor.getNombre()
 								+ "- no obtuvo ningún resultado",
-						Clients.NOTIFICATION_TYPE_WARNING, 0);
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 
 		} else {
 			stockUtils.showSuccessmessage(
 					"Tu búsqueda no obtuvo ningún resultado",
-					Clients.NOTIFICATION_TYPE_ERROR, 0);
+					Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 		}
 	}
 
@@ -218,12 +227,12 @@ public class ProveedoresVM extends ProveedorMetaClass {
 				if (buscarProveedorAsociar.getNombre().equals("*"))
 					stockUtils.showSuccessmessage(
 							"Tu búsqueda obtuvo todos los proveedores",
-							Clients.NOTIFICATION_TYPE_INFO, 0);
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
 				else
 					stockUtils.showSuccessmessage("Tu búsqueda -"
 							+ buscarProveedorAsociar.getNombre() + "- obtuvo "
 							+ proveedoresAsociacion.size() + " " + mensaje,
-							Clients.NOTIFICATION_TYPE_INFO, 0);
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
 				buscarProveedorAsociar.setComentario(String
 						.valueOf(proveedoresAsociacion.size()));
 
@@ -231,12 +240,12 @@ public class ProveedoresVM extends ProveedorMetaClass {
 				stockUtils.showSuccessmessage(
 						"Tu búsqueda -" + buscarProveedor.getNombre()
 								+ "- no obtuvo ningún resultado",
-						Clients.NOTIFICATION_TYPE_WARNING, 0);
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 
 		} else {
 			stockUtils.showSuccessmessage(
 					"Tu búsqueda no obtuvo ningún resultado",
-					Clients.NOTIFICATION_TYPE_ERROR, 0);
+					Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 		}
 	}
 
@@ -262,12 +271,12 @@ public class ProveedoresVM extends ProveedorMetaClass {
 				if (buscarProducto.getNombre().equals("*"))
 					stockUtils.showSuccessmessage(
 							"Tu búsqueda obtuvo todos los proveedores",
-							Clients.NOTIFICATION_TYPE_INFO, 0);
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
 				else
 					stockUtils.showSuccessmessage("Tu búsqueda -"
 							+ buscarProducto.getNombre() + "- obtuvo "
 							+ productosDB.size() + " " + mensaje,
-							Clients.NOTIFICATION_TYPE_INFO, 0);
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
 				buscarProducto
 						.setDescripcion(String.valueOf(productosDB.size()));
 
@@ -275,12 +284,12 @@ public class ProveedoresVM extends ProveedorMetaClass {
 				stockUtils.showSuccessmessage(
 						"Tu búsqueda -" + buscarProducto.getNombre()
 								+ "- no obtuvo ningún resultado",
-						Clients.NOTIFICATION_TYPE_WARNING, 0);
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 
 		} else {
 			stockUtils.showSuccessmessage(
 					"Tu búsqueda no obtuvo ningún resultado",
-					Clients.NOTIFICATION_TYPE_ERROR, 0);
+					Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 		}
 
 	}
@@ -296,5 +305,36 @@ public class ProveedoresVM extends ProveedorMetaClass {
 		return completeBancos;
 	}
 
-	
+	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
+	@Command
+	@NotifyChange("*")
+	public void reporteProveedores() {
+		if (proveedoresLista != null) {
+			
+			HashMap mapa = new HashMap();
+			mapa.put(StockConstants.REPORT_PROVEEDOR_PARAM1,
+					"REPORTE DE PROVEEDORES");
+			mapa.put(StockConstants.REPORT_PROVEEDOR_NOMBRE_EMPRESA, "PROVEEDORA DE MATERIAL ELECTRICO Y PLOMERIA S.A. de C.V.");
+			List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
+			listaHashsParametros.add(mapa);
+			
+			
+			List<AplicacionExterna> aplicaciones = new ArrayList<AplicacionExterna>();
+			AplicacionExterna aplicacion = new AplicacionExterna();
+			aplicacion.setNombre("PDFXCview");
+			aplicaciones.add(aplicacion);
+			
+			stockUtils
+					.showSuccessmessage(
+							generarReporteProveedor(listaHashsParametros,
+									aplicaciones),
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
+		} else {
+			stockUtils
+					.showSuccessmessage(
+							"NO existe algún resultado de busqueda para generar el reporte (PDF)",
+							Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+		}
+	}
+
 }

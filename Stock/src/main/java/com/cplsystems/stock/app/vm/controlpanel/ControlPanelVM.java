@@ -10,6 +10,7 @@ import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Tab;
 
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.controlpanel.utils.ControlPanelVariables;
@@ -30,10 +31,8 @@ public class ControlPanelVM extends ControlPanelVariables{
 
 	private static final long serialVersionUID = -8141487067470696501L;
 	
-	
 	@Init
 	public void init() {
-		
 		selectTab = new SelectedTabsControlPanel();
 		activarBotonesAreas();
 		areas = areaService.getAll();
@@ -111,7 +110,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		
 		stockUtils.showSuccessmessage(
 				"Catalogo de áreas actualizado",
-				Clients.NOTIFICATION_TYPE_INFO, 0);
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
 		
 	}
 	
@@ -142,7 +141,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		
 		stockUtils.showSuccessmessage(
 				"Catalogo de puestos actualizados",
-				Clients.NOTIFICATION_TYPE_INFO, 0);
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
 		
 	}
 	
@@ -172,7 +171,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		
 		stockUtils.showSuccessmessage(
 				"Catalogo de bancos actualizados",
-				Clients.NOTIFICATION_TYPE_INFO, 0);
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
 	}
 
 	@SuppressWarnings("static-access")
@@ -201,7 +200,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		
 		stockUtils.showSuccessmessage(
 				"Catalogo de monedas actualizados",
-				Clients.NOTIFICATION_TYPE_INFO, 0);
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
 	}
 	
 	@SuppressWarnings("static-access")
@@ -230,7 +229,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		
 		stockUtils.showSuccessmessage(
 				"Catalogo de tipo de productos actualizado",
-				Clients.NOTIFICATION_TYPE_INFO, 0);
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
 	}
 	
 	@SuppressWarnings("static-access")
@@ -258,14 +257,14 @@ public class ControlPanelVM extends ControlPanelVariables{
 						
 						stockUtils.showSuccessmessage(
 								area.getNombre() + " ha sido eliminado",
-								Clients.NOTIFICATION_TYPE_INFO, 0);
+								Clients.NOTIFICATION_TYPE_INFO, 0, null);
 					/*}
 				}
 			});*/
 		}else{
 			stockUtils.showSuccessmessage(
 					"Debe seleccionar un área para proceder con la eliminación",
-					Clients.NOTIFICATION_TYPE_WARNING, 0);
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 	
@@ -285,11 +284,11 @@ public class ControlPanelVM extends ControlPanelVariables{
 			}
 			stockUtils.showSuccessmessage(
 					posicion.getNombre() + " ha sido eliminado",
-					Clients.NOTIFICATION_TYPE_INFO, 0);
+					Clients.NOTIFICATION_TYPE_INFO, 0, null);
 		}else{
 			stockUtils.showSuccessmessage(
 					"Debe seleccionar un puesto para proceder con la eliminación",
-					Clients.NOTIFICATION_TYPE_WARNING, 0);
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 	
@@ -309,11 +308,11 @@ public class ControlPanelVM extends ControlPanelVariables{
 			}
 			stockUtils.showSuccessmessage(
 					bancoSeleccionado.getNombre() + " ha sido eliminado",
-					Clients.NOTIFICATION_TYPE_INFO, 0);
+					Clients.NOTIFICATION_TYPE_INFO, 0, null);
 		}else{
 			stockUtils.showSuccessmessage(
 					"Debe seleccionar un banco para proceder con la eliminación",
-					Clients.NOTIFICATION_TYPE_WARNING, 0);
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 	
@@ -331,11 +330,11 @@ public class ControlPanelVM extends ControlPanelVariables{
 			}
 			stockUtils.showSuccessmessage(
 					bancoSeleccionado.getNombre() + " ha sido eliminado",
-					Clients.NOTIFICATION_TYPE_INFO, 0);
+					Clients.NOTIFICATION_TYPE_INFO, 0, null);
 		}else{
 			stockUtils.showSuccessmessage(
 					"Debe seleccionar una moneda para proceder con la eliminación",
-					Clients.NOTIFICATION_TYPE_WARNING, 0);
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 
@@ -355,11 +354,11 @@ public class ControlPanelVM extends ControlPanelVariables{
 			}
 			stockUtils.showSuccessmessage(
 					productoTipoSelected.getNombre() + " ha sido eliminado",
-					Clients.NOTIFICATION_TYPE_INFO, 0);
+					Clients.NOTIFICATION_TYPE_INFO, 0, null);
 		}else{
 			stockUtils.showSuccessmessage(
 					"Debe seleccionar un tipo de producto para proceder con la eliminación",
-					Clients.NOTIFICATION_TYPE_WARNING, 0);
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 	

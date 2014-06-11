@@ -3,13 +3,10 @@
  */
 package com.cplsystems.stock.app.vm;
 
-import java.io.Serializable;
-
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockUtils;
-import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.services.AreaService;
 import com.cplsystems.stock.services.BancoService;
 import com.cplsystems.stock.services.ContactoService;
@@ -24,13 +21,14 @@ import com.cplsystems.stock.services.MunicipioService;
 import com.cplsystems.stock.services.PaisService;
 import com.cplsystems.stock.services.PersonaService;
 import com.cplsystems.stock.services.PosicionService;
+import com.cplsystems.stock.services.ProductoService;
 import com.cplsystems.stock.services.ProductoTipoService;
 import com.cplsystems.stock.services.ProveedorProductoService;
 import com.cplsystems.stock.services.ProveedorService;
-import com.cplsystems.stock.services.ProductoService;
 import com.cplsystems.stock.services.RequisicionProductoService;
 import com.cplsystems.stock.services.RequisicionService;
 import com.cplsystems.stock.services.TelefonoService;
+import com.cplsystems.stock.services.UnidadService;
 import com.cplsystems.stock.services.UsuarioService;
 
 /**
@@ -113,4 +111,8 @@ public abstract class ServiceLayer extends DataLayer {
 	
 	@WireVariable
 	protected AreaService areaService;
+	
+	@WireVariable
+	protected UnidadService unidadService;
+	
 }

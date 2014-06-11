@@ -7,9 +7,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.zkoss.bind.annotation.NotifyChange;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
-import com.cplsystems.stock.app.vm.producto.TabInfo;
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
@@ -29,7 +29,9 @@ import com.cplsystems.stock.domain.ProductoTipo;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.ProveedorProducto;
 import com.cplsystems.stock.domain.Requisicion;
+import com.cplsystems.stock.domain.RequisicionProducto;
 import com.cplsystems.stock.domain.Telefono;
+import com.cplsystems.stock.domain.Unidad;
 import com.cplsystems.stock.domain.Usuario;
 
 /**
@@ -56,6 +58,7 @@ public class DataLayer implements Serializable {
 	protected MenuButtonsActivated botonMuenu5;
 	protected MenuButtonsActivated botonMuenu6;
 	protected MenuButtonsActivated botonMuenu7;
+	protected MenuButtonsActivated botonMuenu8;
 	protected Moneda monedaSeleccionada;
 	protected Municipio municipioProveedor;
 	protected Proveedor buscarProveedor;
@@ -73,9 +76,14 @@ public class DataLayer implements Serializable {
 	protected Telefono telefonoContacto;
 	protected Telefono telefonoProveedor;
 	protected Usuario usuarioProveedor;
+	protected Unidad unidadSelected;
 	protected ProveedorProducto proveedorProducto;
+	protected RequisicionProducto requisicionProducto;
 	protected Area area;
 	protected Posicion posicion;
+	protected String readJasper;
+	protected JasperPrint print;
+	protected JasperViewer jviewer;
 	
 	protected List<ProductoTipo> productoTipoDB;
 	protected List<Proveedor> proveedoresLista;
@@ -84,13 +92,15 @@ public class DataLayer implements Serializable {
 	private List<ProductoTipo> productoTipo;
 	protected List<Moneda> monedasDB;
 	protected List<ProveedorProducto> proveedorProductos;
+	protected List<Unidad> unidadesDB;
 	
 	protected List<Contrato> contratos;
 	protected List<Estado> estados;
 	protected List<Pais> paises;
 	protected List<Municipio> municipios;
 	protected List<Producto> productosDB;
-	
+	protected List<RequisicionProducto> requisicionProductos;
+	protected List<Requisicion> requisiciones;
 	protected List<Area> areas;
 	protected List<Posicion> posiciones;
 
@@ -399,6 +409,67 @@ public class DataLayer implements Serializable {
 	}
 	public void setPosiciones(List<Posicion> posiciones) {
 		this.posiciones = posiciones;
+	}
+	public MenuButtonsActivated getBotonMuenu8() {
+		return botonMuenu8;
+	}
+	public void setBotonMuenu8(MenuButtonsActivated botonMuenu8) {
+		this.botonMuenu8 = botonMuenu8;
+	}
+	public String getReadJasper() {
+		return readJasper;
+	}
+	public void setReadJasper(String readJasper) {
+		this.readJasper = readJasper;
+	}
+	public List<ProductoTipo> getProductoTipo() {
+		return productoTipo;
+	}
+	public void setProductoTipo(List<ProductoTipo> productoTipo) {
+		this.productoTipo = productoTipo;
+	}
+	public JasperPrint getPrint() {
+		return print;
+	}
+	public void setPrint(JasperPrint print) {
+		this.print = print;
+	}
+	public JasperViewer getJviewer() {
+		return jviewer;
+	}
+	public void setJviewer(JasperViewer jviewer) {
+		this.jviewer = jviewer;
+	}
+	public List<RequisicionProducto> getRequisicionProductos() {
+		return requisicionProductos;
+	}
+	public void setRequisicionProductos(
+			List<RequisicionProducto> requisicionProductos) {
+		this.requisicionProductos = requisicionProductos;
+	}
+	public RequisicionProducto getRequisicionProducto() {
+		return requisicionProducto;
+	}
+	public void setRequisicionProducto(RequisicionProducto requisicionProducto) {
+		this.requisicionProducto = requisicionProducto;
+	}
+	public List<Requisicion> getRequisiciones() {
+		return requisiciones;
+	}
+	public void setRequisiciones(List<Requisicion> requisiciones) {
+		this.requisiciones = requisiciones;
+	}
+	public Unidad getUnidadSelected() {
+		return unidadSelected;
+	}
+	public void setUnidadSelected(Unidad unidadSelected) {
+		this.unidadSelected = unidadSelected;
+	}
+	public List<Unidad> getUnidadesDB() {
+		return unidadesDB;
+	}
+	public void setUnidadesDB(List<Unidad> unidadesDB) {
+		this.unidadesDB = unidadesDB;
 	}
 	
 }

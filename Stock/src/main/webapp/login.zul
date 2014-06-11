@@ -6,12 +6,14 @@
 	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('com.cplsystems.stock.app.vm.LoginVM')">
 
+
 		<borderlayout sclass="contentPageLogin" width="980px">
 			<north sclass="headerHome" height="85px">
 				<div sclass="childrenNorth"></div>
 			</north>
 			<center sclass="centerHome" border="0">
 				<vlayout sclass="contentRegistro">
+					<label value="carlos"/>
 					<image src="/images/home/mainLogo.png" />
 					<textbox id="user" type="text"
 						value="@bind(vm.user)" zclass="textbox"

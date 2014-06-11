@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.ProductoTipo;
-import com.cplsystems.stock.domain.Proveedor;
 
 /**
  * @author Carlos Palalía López
@@ -31,4 +30,12 @@ public interface ProductoDAO {
 	public List<Producto> getByClaveNombre(String buscarTexto);
 	
 	public List<Producto> getByTipo(ProductoTipo productoTipo);
+	
+	public List<Producto> getPreciosMaximos();
+	
+	public List<Producto> getPreciosMinimos();
+	
+	public List<Producto> getPreciosPromedio();
+	
+	public List<Producto> getByPrecio(String precio);
 }

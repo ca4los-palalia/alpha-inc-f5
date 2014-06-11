@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "Requsicion")
@@ -20,7 +19,7 @@ public class Requisicion {
 	private String emailAlmacenista;
 	private String clave;
 //	private Long entregarEn;
-	private Direccion entregarEn;
+	//private Direccion entregarEn;
 	private Calendar fecha;
 	private Calendar fechaEntrega;
 	private Calendar fechaSolicitudProveedor;
@@ -143,7 +142,7 @@ public class Requisicion {
 		this.proyecto = proyecto;
 	}
 
-	@OneToOne
+	/*@OneToOne
 	@JoinColumn(name = "entregarEn")
 	public Direccion getEntregarEn() {
 		return entregarEn;
@@ -151,7 +150,7 @@ public class Requisicion {
 
 	public void setEntregarEn(Direccion entregarEn) {
 		this.entregarEn = entregarEn;
-	}
+	}*/
 
 	@OneToOne
 	@JoinColumn(name = "area")

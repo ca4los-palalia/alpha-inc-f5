@@ -3,6 +3,9 @@
  */
 package com.cplsystems.stock.dao;
 
+import java.util.List;
+
+import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
 
 /**
@@ -12,5 +15,17 @@ import com.cplsystems.stock.domain.Requisicion;
 public interface RequisicionDAO {
 
 	public void save(final Requisicion requisicion);
+	
+	public void update (final Requisicion requisicion);
+	
+	public void delete (final Requisicion requisicion);
+	
+	public Requisicion getById(final Long idRequisicion);
+	
+	public Requisicion getByPersona(final Persona persona);
+	
+	public String getUltimoFolio();
+	
+	public List<Requisicion> getAll();
 	
 }
