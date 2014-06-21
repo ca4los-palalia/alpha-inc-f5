@@ -194,15 +194,15 @@ div {
 	height: 90%;
 	width: 15%;
 	padding-left: 10px;
-	border-color: black;
 	float: left;
+	border-color: black;
 	border-color: black;
 }
 
 .homeContent {
 	padding-top: 10px;
 	height: 90%;
-	/*width: 50%;*/
+	width: 50%;
 	width: 56%;
 	border-left-style: inset;
 	border-left-color: #D9E0E7;

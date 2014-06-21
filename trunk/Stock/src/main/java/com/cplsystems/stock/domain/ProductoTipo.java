@@ -20,6 +20,7 @@ public class ProductoTipo {
 	private String toolTipIndice;
 	private String toolTipNombre;
 	private boolean nuevoRegistro;
+	private boolean seleccionar;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,6 +80,13 @@ public class ProductoTipo {
 	}
 	public void setNuevoRegistro(boolean nuevoRegistro) {
 		this.nuevoRegistro = nuevoRegistro;
+	}
+	@Transient
+	public boolean isSeleccionar() {
+		return seleccionar;
+	}
+	public void setSeleccionar(boolean seleccionar) {
+		this.seleccionar = seleccionar;
 	}
 	
 }

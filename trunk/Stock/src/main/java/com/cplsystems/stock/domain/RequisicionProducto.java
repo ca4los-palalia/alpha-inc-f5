@@ -3,6 +3,9 @@
  */
 package com.cplsystems.stock.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,7 +29,10 @@ public class RequisicionProducto {
 	private Requisicion requisicion;
 	private Producto producto;
 	private Float importe;
-
+	private String partida;
+	private Float totalProductoPorUnidad;
+	
+	
 	public RequisicionProducto() {
 		producto = new Producto();
 	}
@@ -118,4 +124,25 @@ public class RequisicionProducto {
 		this.importe = importe;
 	}
 
+	@Column
+	public String getPartida() {
+		return partida;
+	}
+
+	public void setPartida(String partida) {
+		this.partida = partida;
+	}
+	
+	@Transient
+	public Float getTotalProductoPorUnidad() {
+		if(cantidad != null && (producto != null && producto.getPrecio() != null)){
+			totalProductoPorUnidad = cantidad * producto.getPrecio();
+		}
+		return totalProductoPorUnidad;
+	}
+
+	public void setTotalProductoPorUnidad(Float totalProductoPorUnidad) {
+		this.totalProductoPorUnidad = totalProductoPorUnidad;
+	}
+	
 }

@@ -1,0 +1,138 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/styles/home/styleGlobal.css" />
+	<style src="/styles/home/styleHome.css" />
+	<window apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('rvm') @init('com.cplsystems.stock.app.vm.requisicion.concentradoVM')">
+
+
+		<vlayout>
+
+
+			<grid>
+				<columns>
+					<column />
+					<column width="35%" zclass="shadowMenuActions" />
+				</columns>
+				<rows>
+					<row zclass="shadowMenuActions">
+						<div style="margin:5px">
+							<button label="Requisición > concentrado"
+								image="/images/toolbar/home32.png"
+								zclass="panelInfoItemMenuTitle" />
+						</div>
+						<hlayout style="text-align:right">
+							<button image="/images/toolbar/saveOff.png"
+								visible="false" sclass="web_button"
+								tooltiptext="Guardar nueva requisición"
+								onClick="@command('saveChanges')" />
+
+							<button label="Autorizar" />
+
+						</hlayout>
+					</row>
+				</rows>
+			</grid>
+
+			<vlayout>
+				<combobox readonly="true" model="@load(rvm.requisiciones)" 
+							sclass="invoiceCatalogos" width="100%">
+							<template name="model">
+		                        <comboitem label="@load(each.folio)"/>
+		                    </template>
+						</combobox>
+
+			</vlayout>
+
+			<listbox sclass="invoiceTable" rows="5"
+				model="@load(rvm.requisicionProductos)" onSelect="@command('cargarProveedoresProducto')"
+				selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
+				emptyMessage="No hay elementos en la requisición">
+				<listhead>
+					<listheader label="Clave" width="10%"
+						sclass="invoiceLabel" />
+
+					<listheader label="Cantidad" sclass="invoiceLabel" />
+
+					<listheader label="Descripcion"
+						sclass="invoiceLabel" />
+
+					<listheader label="Importe" sclass="invoiceLabel" />
+
+					<listheader label="Total" sclass="invoiceLabel" />
+
+				</listhead>
+				<template name="model" var="requisicionProducto">
+					<listitem>
+						<listcell>
+							<label
+								value="@bind(requisicionProducto.producto.clave)" />
+						</listcell>
+						<listcell>
+							<label
+								value="@bind(requisicionProducto.cantidad)" />
+						</listcell>
+						<listcell>
+							<label
+								value="@bind(requisicionProducto.descripcion)" />
+						</listcell>
+						<listcell>
+							<label
+								value="@bind(requisicionProducto.producto.precio)" />
+						</listcell>
+						<listcell>
+							<label
+								value="@bind(requisicionProducto.totalProductoPorUnidad)" />
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+
+
+			<grid>
+				<columns>
+					<column style="text-align:right" />
+					<column width="10%" style="text-align:right" />
+				</columns>
+				<rows>
+					<row>
+						<label value="Subtotal" width="100%" />
+						<label
+							value="@bind(rvm.desgloceTotal.subtotal)" />
+					</row>
+					<row>
+						<label value="Iva" />
+						<label value="@bind(rvm.desgloceTotal.iva)" />
+					</row>
+					<row>
+						<label value="Total" />
+						<label value="@bind(rvm.desgloceTotal.total)" />
+					</row>
+				</rows>
+			</grid>
+
+
+			<listbox 
+				model="@load(rvm.proveedorProductos)" rows="4"
+				>
+				<listhead>
+					<listheader label="Proveedores que surten este artículo" width="100%"
+						sclass="invoiceLabel" />
+
+
+				</listhead>
+				<template name="model" var="proveedor">
+					<listitem>
+						<listcell>
+							<label width="100%"
+								value="@bind(proveedor.proveedor.nombre)" />
+						</listcell>
+						
+					</listitem>
+				</template>
+			</listbox>
+
+		</vlayout>
+
+	</window>
+</zk>

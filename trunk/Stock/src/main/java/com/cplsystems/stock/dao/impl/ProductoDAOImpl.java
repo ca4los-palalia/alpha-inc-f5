@@ -30,19 +30,22 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 	@Transactional
 	public void save(Producto producto) {
 		getHibernateTemplate().saveOrUpdate(producto);
-
 	}
 
 	@Transactional
 	public void delete(Producto producto) {
 		getHibernateTemplate().delete(producto);
-
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked" })
+	@Transactional(readOnly = true)
 	public Producto getById(Long idProducto) {
-		List<Producto> producto = getHibernateTemplate().find(
-				"FROM Producto as p WHERE p.idProducto = ?", idProducto);
+		List<Producto> producto = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Producto.class);
+		criteria.setFetchMode("unidad", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("idProducto", idProducto));
+		producto = criteria.list();
 		return producto.size() > 0 ? producto.get(0) : null;
 	}
 
@@ -79,35 +82,36 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 	@Transactional(readOnly = true)
 	public List<Producto> getByClaveNombre(String buscarTexto) {
 		List<Producto> lista = null;
-		
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Producto.class);
+
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Producto.class);
 		criteria.setFetchMode("unidad", FetchMode.JOIN);
-		criteria.add(Restrictions.sqlRestriction("clave LIKE '%" + buscarTexto + "%'"));
+		criteria.add(Restrictions.sqlRestriction("clave LIKE '%" + buscarTexto
+				+ "%'"));
 		criteria.addOrder(Order.asc("idProducto"));
-        
+
 		lista = criteria.list();
-		
-		if(lista.equals(null) || lista.size() < 1){
-			Criteria criteria2 = getHibernateTemplate().getSessionFactory().openSession().
-					createCriteria(Producto.class);
+
+		if (lista.equals(null) || lista.size() < 1) {
+			Criteria criteria2 = getHibernateTemplate().getSessionFactory()
+					.openSession().createCriteria(Producto.class);
 			criteria.setFetchMode("unidad", FetchMode.JOIN);
-			criteria2.add(Restrictions.sqlRestriction("nombre LIKE '%" + buscarTexto + "%'"));
+			criteria2.add(Restrictions.sqlRestriction("nombre LIKE '%"
+					+ buscarTexto + "%'"));
 			criteria2.addOrder(Order.asc("idProducto"));
 			lista = criteria2.list();
 		}
-		
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Producto> getByTipo(ProductoTipo productoTipo) {
-		
+
 		Criteria criteria = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Producto.class);
 		criteria.addOrder(Order.asc("nombre"));
-		criteria.add(Restrictions.eq("productoTipo",productoTipo));
+		criteria.add(Restrictions.eq("productoTipo", productoTipo));
 		List<Producto> tipo = criteria.list();
 		return tipo.size() > 0 ? tipo : null;
 	}
@@ -116,20 +120,20 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 	@Transactional(readOnly = true)
 	public List<Producto> getPreciosMaximos() {
 		List<Producto> lista = null;
-		
+
 		Criteria crMax = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Producto.class);
 		crMax.setProjection(Projections.max("precio"));
 		Float maximo = (Float) crMax.list().get(0);
-		
+
 		Criteria crAvg = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Producto.class);
 		crAvg.setProjection(Projections.avg("precio"));
 		List<Double> listAvg = crAvg.list();
 		Float promedio = recuperarPromedio(listAvg);
-		
-		if(promedio != null && promedio > 0F){
-			if(maximo != null && maximo > 0F){
+
+		if (promedio != null && promedio > 0F) {
+			if (maximo != null && maximo > 0F) {
 				Criteria criteria = getHibernateTemplate().getSessionFactory()
 						.openSession().createCriteria(Producto.class);
 				criteria.add(Restrictions.between("precio", promedio, maximo));
@@ -144,20 +148,20 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 	@Transactional(readOnly = true)
 	public List<Producto> getPreciosMinimos() {
 		List<Producto> lista = null;
-		
+
 		Criteria crMin = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Producto.class);
 		crMin.setProjection(Projections.min("precio"));
 		Float minimo = (Float) crMin.list().get(0);
-		
+
 		Criteria crAvg = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Producto.class);
 		crAvg.setProjection(Projections.avg("precio"));
 		List<Double> listAvg = crAvg.list();
 		Float promedio = recuperarPromedio(listAvg);
-		
-		if(promedio != null && promedio > 0F){
-			if(minimo != null && minimo > 0F){
+
+		if (promedio != null && promedio > 0F) {
+			if (minimo != null && minimo > 0F) {
 				Criteria criteria = getHibernateTemplate().getSessionFactory()
 						.openSession().createCriteria(Producto.class);
 				criteria.add(Restrictions.between("precio", minimo, promedio));
@@ -172,33 +176,32 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 	@Transactional(readOnly = true)
 	public List<Producto> getPreciosPromedio() {
 		List<Producto> lista = null;
-		
+
 		Criteria crAvg = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Producto.class);
 		crAvg.setProjection(Projections.avg("precio"));
 		List<Double> listAvg = crAvg.list();
 		Float promedio = recuperarPromedio(listAvg);
-		
-		if(promedio != null && promedio > 0F){
+
+		if (promedio != null && promedio > 0F) {
 			Criteria criteria = getHibernateTemplate().getSessionFactory()
 					.openSession().createCriteria(Producto.class);
-			criteria.add(Restrictions.eq("precio",promedio));
+			criteria.add(Restrictions.eq("precio", promedio));
 			criteria.setMaxResults(1000);
 			lista = criteria.list();
 		}
-
 		return lista.size() > 0 ? lista : null;
 	}
 
-	private Float recuperarPromedio(List<Double> listAvg){
+	private Float recuperarPromedio(List<Double> listAvg) {
 		Float resultado = 0F;
-		if(listAvg != null && listAvg.size() > 0){
+		if (listAvg != null && listAvg.size() > 0) {
 			DecimalFormat df = new DecimalFormat("###.###");
 			String convercion = df.format(listAvg.get(0));
 			String[] floatComoArray = convercion.split(",");
-			resultado = Float.parseFloat(floatComoArray[0] + "." + floatComoArray[1]);
+			resultado = Float.parseFloat(floatComoArray[0] + "."
+					+ floatComoArray[1]);
 		}
-		
 		return resultado;
 	}
 
@@ -208,8 +211,38 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		Criteria criteria = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Producto.class);
 		criteria.addOrder(Order.asc("nombre"));
-		criteria.add(Restrictions.sqlRestriction(" precio LIKE '" + precio + "%'"));
+		criteria.add(Restrictions.sqlRestriction(" precio LIKE '" + precio
+				+ "%'"));
 		List<Producto> tipo = criteria.list();
 		return tipo.size() > 0 ? tipo : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	@Override
+	public Producto getByClaveNombrePrecioCosto(String buscarTexto) {
+		List<Producto> lista = null;
+
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Producto.class);
+		criteria.setFetchMode("unidad", FetchMode.JOIN);
+		criteria.add(Restrictions.sqlRestriction("clave LIKE '" + buscarTexto
+				+ "'"));
+		criteria.addOrder(Order.asc("idProducto"));
+		criteria.setMaxResults(1);
+
+		lista = criteria.list();
+
+		if (lista.equals(null) || lista.size() < 1) {
+			Criteria criteria2 = getHibernateTemplate().getSessionFactory()
+					.openSession().createCriteria(Producto.class);
+			criteria.setFetchMode("unidad", FetchMode.JOIN);
+			criteria2.add(Restrictions.sqlRestriction("nombre LIKE '"
+					+ buscarTexto + "'"));
+			criteria2.addOrder(Order.asc("idProducto"));
+			criteria2.setMaxResults(1);
+			lista = criteria2.list();
+		}
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 }

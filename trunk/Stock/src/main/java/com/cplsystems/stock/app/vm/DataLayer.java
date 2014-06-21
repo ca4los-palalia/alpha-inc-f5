@@ -13,18 +13,22 @@ import net.sf.jasperreports.view.JasperViewer;
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
+import com.cplsystems.stock.domain.CodigoBarrasProducto;
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Contrato;
+import com.cplsystems.stock.domain.CostosProducto;
 import com.cplsystems.stock.domain.CuentaPago;
 import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Email;
 import com.cplsystems.stock.domain.Estado;
+import com.cplsystems.stock.domain.FamiliasProducto;
 import com.cplsystems.stock.domain.Moneda;
 import com.cplsystems.stock.domain.Municipio;
 import com.cplsystems.stock.domain.Pais;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Posicion;
 import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.ProductoNaturaleza;
 import com.cplsystems.stock.domain.ProductoTipo;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.ProveedorProducto;
@@ -80,11 +84,20 @@ public class DataLayer implements Serializable {
 	protected ProveedorProducto proveedorProducto;
 	protected RequisicionProducto requisicionProducto;
 	protected Area area;
+	protected Unidad unidad;
 	protected Posicion posicion;
+	protected FamiliasProducto familiasProducto;
+	protected ProductoNaturaleza productoNaturaleza;
+	protected CodigoBarrasProducto codigoBarrasProducto;
+	protected CostosProducto costosProducto;
+	protected CostosProducto costosProductoNuevo;
 	protected String readJasper;
 	protected JasperPrint print;
 	protected JasperViewer jviewer;
 	
+	protected List<CostosProducto> costosProductos;
+	protected List<CodigoBarrasProducto> codigosBarrasProductos;
+	protected List<FamiliasProducto> familiasProductos;
 	protected List<ProductoTipo> productoTipoDB;
 	protected List<Proveedor> proveedoresLista;
 	protected List<Proveedor> proveedoresAsociacion;
@@ -103,11 +116,13 @@ public class DataLayer implements Serializable {
 	protected List<Requisicion> requisiciones;
 	protected List<Area> areas;
 	protected List<Posicion> posiciones;
+	protected List<ProductoNaturaleza> productosNaturalezas;
 
 	
 	public Producto getProducto() {
 		return producto;
 	}
+	
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
@@ -470,6 +485,86 @@ public class DataLayer implements Serializable {
 	}
 	public void setUnidadesDB(List<Unidad> unidadesDB) {
 		this.unidadesDB = unidadesDB;
+	}
+	public Unidad getUnidad() {
+		return unidad;
+	}
+	public void setUnidad(Unidad unidad) {
+		this.unidad = unidad;
+	}
+
+	public ProductoNaturaleza getProductoNaturaleza() {
+		return productoNaturaleza;
+	}
+
+	public void setProductoNaturaleza(ProductoNaturaleza productoNaturaleza) {
+		this.productoNaturaleza = productoNaturaleza;
+	}
+
+	public List<ProductoNaturaleza> getProductosNaturalezas() {
+		return productosNaturalezas;
+	}
+
+	public void setProductosNaturalezas(
+			List<ProductoNaturaleza> productosNaturalezas) {
+		this.productosNaturalezas = productosNaturalezas;
+	}
+
+	public FamiliasProducto getFamiliasProducto() {
+		return familiasProducto;
+	}
+
+	public void setFamiliasProducto(FamiliasProducto familiasProducto) {
+		this.familiasProducto = familiasProducto;
+	}
+
+	public List<FamiliasProducto> getFamiliasProductos() {
+		return familiasProductos;
+	}
+
+	public void setFamiliasProductos(List<FamiliasProducto> familiasProductos) {
+		this.familiasProductos = familiasProductos;
+	}
+
+	public CodigoBarrasProducto getCodigoBarrasProducto() {
+		return codigoBarrasProducto;
+	}
+
+	public void setCodigoBarrasProducto(CodigoBarrasProducto codigoBarrasProducto) {
+		this.codigoBarrasProducto = codigoBarrasProducto;
+	}
+
+	public List<CodigoBarrasProducto> getCodigosBarrasProductos() {
+		return codigosBarrasProductos;
+	}
+
+	public void setCodigosBarrasProductos(
+			List<CodigoBarrasProducto> codigosBarrasProductos) {
+		this.codigosBarrasProductos = codigosBarrasProductos;
+	}
+
+	public CostosProducto getCostosProducto() {
+		return costosProducto;
+	}
+
+	public void setCostosProducto(CostosProducto costosProducto) {
+		this.costosProducto = costosProducto;
+	}
+
+	public List<CostosProducto> getCostosProductos() {
+		return costosProductos;
+	}
+
+	public void setCostosProductos(List<CostosProducto> costosProductos) {
+		this.costosProductos = costosProductos;
+	}
+
+	public CostosProducto getCostosProductoNuevo() {
+		return costosProductoNuevo;
+	}
+
+	public void setCostosProductoNuevo(CostosProducto costosProductoNuevo) {
+		this.costosProductoNuevo = costosProductoNuevo;
 	}
 	
 }

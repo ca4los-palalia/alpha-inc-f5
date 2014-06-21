@@ -15,11 +15,14 @@
 		       </columns>
 		       <rows>
 					<row zclass="shadowMenuActions">
+						
 						<div style="margin:5px">
-							<label zclass="panelInfoItemMenuTitle" 
-								width="100%" 
-								value="REQUISICIÓN DE COMPRA:"/>
+							<button
+								label="Requisición"
+								image="/images/toolbar/home32.png"
+								zclass="panelInfoItemMenuTitle" />
 						</div>
+						
 						<div style="margin:5px">
 							<label zclass="panelInfoItemMenuContent" 
 								width="100%" 
@@ -142,7 +145,7 @@
 		        </columns>
 		        <rows>
 		            <row style="background-color:transparent; border: 0;">
-		            	<label value="Adscripción:"
+		            	<label value="Descripción"
 							sclass="invoiceLabel" />
 						<textbox maxlength="120" width="100%" value="@bind(rvm.requisicion.adscripcion)"
 							sclass="invoiceTextBox tBox" />
@@ -203,6 +206,8 @@
 										sclass="invoiceLabel" />
 									<listheader label="Descripción"
 										sclass="invoiceLabel" />
+									<listheader label="Partida genérica"
+										sclass="invoiceLabel" />
 									<listheader label="Importe" width="120px"
 										sclass="invoiceLabel" />
 								</listhead>
@@ -229,6 +234,12 @@
 												constraint="no empty: Especifique la descripción del producto solicitado"
 												maxlength="60" value="@bind(requisicionProducto.descripcion)" />
 										</listcell>
+										
+										<listcell>
+											<textbox zclass="tBox" width="100%" value="@bind(requisicionProducto.partida)"
+												maxlength="60"/>
+										</listcell>
+										
 										<listcell>
 											<doublebox zclass="tBox" width="100%"
 												constraint="no empty: El importe del producto es un valor requerido"

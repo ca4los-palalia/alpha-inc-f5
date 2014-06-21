@@ -69,4 +69,8 @@ public class ProductoService {
 	public List<Producto> getByPrecio(String precio){
 		return productoDAO.getByPrecio(precio);
 	}
+	
+	public Producto getByClaveNombrePrecioCosto(String buscarTexto){
+		return productoDAO.getByClaveNombrePrecioCosto(buscarTexto);
+	}
 }
