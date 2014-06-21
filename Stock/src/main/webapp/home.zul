@@ -11,16 +11,51 @@
 		viewModel="@id('vm') @init('com.cplsystems.stock.app.vm.HomeVM')">
 		<div id="container" zclass="homeContainer">
 
-			<div id="header" zclass="homeHeader"></div>
+			<div id="header" zclass="homeHeader">
+			
+			
+				<vlayout style="text-align:right; margin:5px ">
+						<label value="cerrar sesión" style="color: #FFFFFF; font-weight:bold;"/>
+					
+				</vlayout>
+			
+			
+			</div>
 
-			<div id="menu" zclass="homeMenu" >
+
+
+
+
+			
+
+			<!--  NUEVO -->
+			<borderlayout style="width: 73%;">
+				<west title="Menú" size="20%" flex="true" style="height: 90%;" 
+					tooltiptext="Barra de menú"
+					splittable="true" collapsible="true">
+					<div id="menu" >
+						<include src="/menu.zul" />
+					</div>
+				</west>
+				<center border="none" flex="true" style="height: 90%;">
+					<div id="content">
+						<include src="/inicio.zul" />
+					</div>
+				</center>
+			</borderlayout>
+			
+			
+
+			<!--  ORIGINAL -->
+			<div zclass="homeMenu" visible="false">
 				<include src="/menu.zul" />
 			</div>
 
-			<div id="content" zclass="homeContent" hflex="min">
+			<div  zclass="homeContent" hflex="min" visible="false">
 				<include src="/modulos/requisicion/requisicion.zul" />
-				
+
 			</div>
+
 
 			<div id="footer" zclass="homeFooter">
 				Copyright © CPL Systems

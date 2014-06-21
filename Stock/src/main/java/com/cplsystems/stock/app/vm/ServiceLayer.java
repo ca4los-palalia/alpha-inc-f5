@@ -9,18 +9,22 @@ import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.services.AreaService;
 import com.cplsystems.stock.services.BancoService;
+import com.cplsystems.stock.services.CodigoBarrasProductoService;
 import com.cplsystems.stock.services.ContactoService;
 import com.cplsystems.stock.services.ContratoService;
+import com.cplsystems.stock.services.CostosProductoService;
 import com.cplsystems.stock.services.CotizacionService;
 import com.cplsystems.stock.services.CuentasPagoService;
 import com.cplsystems.stock.services.DireccionService;
 import com.cplsystems.stock.services.EmailService;
 import com.cplsystems.stock.services.EstadoService;
+import com.cplsystems.stock.services.FamiliasProductoService;
 import com.cplsystems.stock.services.MonedaService;
 import com.cplsystems.stock.services.MunicipioService;
 import com.cplsystems.stock.services.PaisService;
 import com.cplsystems.stock.services.PersonaService;
 import com.cplsystems.stock.services.PosicionService;
+import com.cplsystems.stock.services.ProductoNaturalezaService;
 import com.cplsystems.stock.services.ProductoService;
 import com.cplsystems.stock.services.ProductoTipoService;
 import com.cplsystems.stock.services.ProveedorProductoService;
@@ -115,4 +119,15 @@ public abstract class ServiceLayer extends DataLayer {
 	@WireVariable
 	protected UnidadService unidadService;
 	
+	@WireVariable
+	protected ProductoNaturalezaService productoNaturalezaService;
+	
+	@WireVariable
+	protected FamiliasProductoService familiasProductoService;
+	
+	@WireVariable
+	protected CodigoBarrasProductoService codigoBarrasProductoService;
+	
+	@WireVariable
+	protected CostosProductoService costosProductoService;
 }

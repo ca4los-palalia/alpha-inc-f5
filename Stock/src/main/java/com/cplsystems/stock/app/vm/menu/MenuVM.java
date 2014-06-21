@@ -58,12 +58,31 @@ public class MenuVM extends BasicStructure {
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
 		System.out.println("MenuVM.showProductsReportesArticulos()");
 	}
+	
 	@Command
 	public void showProductsReportesPrecioCosto() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_PRECIO_COSTO);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-		System.out.println("MenuVM.showProductsReportesArticulos()");
 	}
+	
+	@Command
+	public void showProductsReportesPrecio() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_PRECIO);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+	}
+	
+	@Command
+	public void showProductsReportesCosto() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_COSTO);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+	}
+	
+	@Command
+	public void showProductsReportesPrecioCostoMasiva() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_PRECIO_COSTO_MASIVA);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+	}
+	
 	@Command
 	public void showProductsReportesActualizacionRapida() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_ACTUALIZACION_RAPIDA);
@@ -110,14 +129,24 @@ public class MenuVM extends BasicStructure {
 	public void showProviders() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PROVEEDORES);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);		
-		System.out.println("MenuVM.showProviders()");
 	}
 
 	@Command
 	public void showRequisitions() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.REQUISICION);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);		
-		System.out.println("MenuVM.showRequisitions()");
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+	}
+	
+	@Command
+	public void showConcentrado() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.CONCENTRADO);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+	}
+	
+	@Command
+	public void showCotizacion() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.COTIZACION);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
 	}
 
 	@Command
@@ -139,6 +168,12 @@ public class MenuVM extends BasicStructure {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.CONTROL_PANEL);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);		
 		System.out.println("MenuVM.showControlPanel()");
+	}
+	
+	@Command
+	public void showDemo() {
+				
+		System.out.println("Demos");
 	}
 
 }

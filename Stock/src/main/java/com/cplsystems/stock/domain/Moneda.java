@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table
-public class Moneda implements Serializable {
+public class Moneda{
 	
 	private static final long serialVersionUID = -7164588155326780268L;
 	

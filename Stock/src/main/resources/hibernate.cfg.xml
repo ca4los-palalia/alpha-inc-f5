@@ -21,8 +21,10 @@
 	
 		<mapping class="com.cplsystems.stock.domain.Area"/>
 		<mapping class="com.cplsystems.stock.domain.Banco"/>
+		<mapping class="com.cplsystems.stock.domain.CodigoBarrasProducto"/>
 		<mapping class="com.cplsystems.stock.domain.Contacto"/>
 		<mapping class="com.cplsystems.stock.domain.Contrato"/>
+		<mapping class="com.cplsystems.stock.domain.CostosProducto"/>
 		<mapping class="com.cplsystems.stock.domain.Cotizacion"/>
 		<mapping class="com.cplsystems.stock.domain.CotizacionProducto"/>
 		<mapping class="com.cplsystems.stock.domain.CuentaPago"/>
@@ -31,6 +33,7 @@
 		<mapping class="com.cplsystems.stock.domain.DireccionEntrega"/>
 		<mapping class="com.cplsystems.stock.domain.Email"/>
 		<mapping class="com.cplsystems.stock.domain.Estado"/>
+		<mapping class="com.cplsystems.stock.domain.FamiliasProducto"/>
 		<mapping class="com.cplsystems.stock.domain.Lugar"/>
 		<mapping class="com.cplsystems.stock.domain.Moneda"/>
 		<mapping class="com.cplsystems.stock.domain.Municipio"/>
@@ -41,6 +44,7 @@
 		<mapping class="com.cplsystems.stock.domain.Persona"/>
 		<mapping class="com.cplsystems.stock.domain.Posicion"/>
 		<mapping class="com.cplsystems.stock.domain.Producto"/>
+		<mapping class="com.cplsystems.stock.domain.ProductoNaturaleza"/>
 		<mapping class="com.cplsystems.stock.domain.ProductoTipo"/>
 		<mapping class="com.cplsystems.stock.domain.ProductoTope"/>
 		<mapping class="com.cplsystems.stock.domain.Proveedor"/>

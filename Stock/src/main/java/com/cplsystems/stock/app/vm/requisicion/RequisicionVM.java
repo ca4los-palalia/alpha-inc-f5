@@ -71,7 +71,8 @@ public class RequisicionVM extends RequisicionVariables {
 		
 		if (validateBill()) {
 			requisicionService.save(requisicion);
-			for (RequisicionProducto requisicionProducto : requisicionProductos) {
+			for (int i = 0; i < requisicionProductos.size(); i++) {
+				RequisicionProducto requisicionProducto = requisicionProductos.get(i);
 				requisicionProducto.setRequisicion(requisicion);
 				requisicionProductoService.save(requisicionProducto);
 			}
@@ -153,6 +154,8 @@ public class RequisicionVM extends RequisicionVariables {
 			@BindingParam("productoSeleccionado") Producto productoSeleccionado) {
 		if (productoSeleccionado != null) {
 			if (!verifyItemsInRequisition(productoSeleccionado)) {
+				if(requisicionProductoSeleccionado == null)
+					requisicionProductoSeleccionado = new RequisicionProducto();
 				requisicionProductoSeleccionado
 						.setProducto(productoSeleccionado);
 			} else {

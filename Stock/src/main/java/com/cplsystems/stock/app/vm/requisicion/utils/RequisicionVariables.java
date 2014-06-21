@@ -29,6 +29,7 @@ public class RequisicionVariables extends BasicStructure {
 	protected Integer itemsOnList = 0;
 	protected Date fecha;
 	protected Calendar fechaCalendar;
+	protected DesgloceTotal desgloceTotal;
 	
 	public RequisicionVariables() {
 		requisicionProductos = new ArrayList<RequisicionProducto>();
@@ -96,4 +97,13 @@ public class RequisicionVariables extends BasicStructure {
 		}
 		this.fecha = fecha;
 	}
+
+	public DesgloceTotal getDesgloceTotal() {
+		return desgloceTotal;
+	}
+
+	public void setDesgloceTotal(DesgloceTotal desgloceTotal) {
+		this.desgloceTotal = desgloceTotal;
+	}
+
 }

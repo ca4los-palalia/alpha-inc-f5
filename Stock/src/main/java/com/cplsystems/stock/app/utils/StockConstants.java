@@ -21,6 +21,10 @@ public class StockConstants {
 		public static final String PRODUCTOS_REPORTE_CLASIFICACION = "/modulos/productos/reportesClasificaciones.zul";
 		public static final String PRODUCTOS_REPORTE_MULTIPLES_CODIGOS = "/modulos/productos/reportesMultiplesCodigos.zul";
 		public static final String PRODUCTOS_REPORTE_PRECIO_COSTO = "/modulos/productos/reportesActualizacionPrecioCosto.zul";
+		public static final String PRODUCTOS_REPORTE_COSTO = "/modulos/productos/reportesActualizacionCosto.zul";
+		public static final String PRODUCTOS_REPORTE_PRECIO = "/modulos/productos/reportesActualizacionPrecio.zul";
+		public static final String PRODUCTOS_REPORTE_PRECIO_COSTO_MASIVA = "/modulos/productos/reportesActualizacionPrecioCostoMasiva.zul";
+		
 		public static final String PRODUCTOS_REPORTE_ACTUALIZACION_RAPIDA = "/modulos/productos/reportesActualizacionRapida.zul";
 		public static final String PRODUCTOS_REPORTE_AJUSTE_EXISTENCIA = "/modulos/productos/reportesAjusteExistencia.zul";
 		public static final String PRODUCTOS_REPORTE_ARTICULO_SUSTITUTO = "/modulos/productos/reportesArticuloSustituto.zul";
@@ -29,6 +33,10 @@ public class StockConstants {
 		public static final String PRODUCTOS_REPORTE_KARDEX = "/modulos/productos/reportesKardex.zul";
 		public static final String PROVEEDORES = "/modulos/proveedores/proveedores.zul";
 		public static final String REQUISICION = "/modulos/requisicion/requisicion.zul";
+		
+		public static final String CONCENTRADO = "/modulos/requisicion/concentrado.zul";
+		public static final String COTIZACION = "/modulos/requisicion/cotizacion.zul";
+		
 		public static final String USUARIOS = "/modulos/usuarios/usuario.zul";
 		public static final String CONTROL_PANEL = "/modulos/controlPanel/controlPanel.zul";
 		public static final String REPORTS = "/modulos/reportes/reportes.zul";
