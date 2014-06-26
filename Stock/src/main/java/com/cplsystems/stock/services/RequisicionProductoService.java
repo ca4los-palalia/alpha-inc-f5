@@ -10,9 +10,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.RequisicionProductoDAO;
-import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Lugar;
+import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
+import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
 /**
@@ -37,12 +38,12 @@ public class RequisicionProductoService {
 		return requisicionProductoDAO.getById(idRequisicionProducto);
 	}
 
-	public List<RequisicionProducto> getByProducto(Contacto contacto)throws DataAccessException {
-		return requisicionProductoDAO.getByProducto(contacto);
+	public List<RequisicionProducto> getByProducto(Producto producto)throws DataAccessException {
+		return requisicionProductoDAO.getByProducto(producto);
 	}
 
-	public List<RequisicionProducto> getByRequisicion(Contacto contacto)throws DataAccessException {
-		return requisicionProductoDAO.getByRequisicion(contacto);
+	public List<RequisicionProducto> getByRequisicion(Requisicion requisicion)throws DataAccessException {
+		return requisicionProductoDAO.getByRequisicion(requisicion);
 	}
 
 	public List<RequisicionProducto> getByProveedor(Proveedor proveedor)throws DataAccessException {

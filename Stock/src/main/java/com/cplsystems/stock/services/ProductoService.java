@@ -51,15 +51,11 @@ public class ProductoService {
 	public List<Producto> getByClaveNombre(String buscarTexto){
 		return productoDAO.getByClaveNombre(buscarTexto);
 	}
-	
-	public List<Producto> getByTipo(ProductoTipo productoTipo){
-		return productoDAO.getByTipo(productoTipo);
-	}
-	
 	public List<Producto> getPreciosMaximos(){
 		return productoDAO.getPreciosMaximos();
 	}
 	public List<Producto> getPreciosMinimos(){
+		
 		return productoDAO.getPreciosMinimos();
 	}
 	public List<Producto> getPreciosPromedio(){

@@ -13,9 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.RequisicionProductoDAO;
-import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Lugar;
+import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
+import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
 
@@ -53,30 +54,42 @@ public class RequisicionProductoDAOImpl extends HibernateDAOSuportUtil implement
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<RequisicionProducto> getByProducto(Contacto contacto) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RequisicionProducto> getByProducto(Producto producto) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(RequisicionProducto.class);
+		criteria.add(Restrictions.eq("producto", producto));
+		List<RequisicionProducto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<RequisicionProducto> getByRequisicion(Contacto contacto) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RequisicionProducto> getByRequisicion(Requisicion requisicion) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(RequisicionProducto.class);
+		criteria.add(Restrictions.eq("requisicion", requisicion));
+		List<RequisicionProducto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<RequisicionProducto> getByProveedor(Proveedor proveedor) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(RequisicionProducto.class);
+		criteria.add(Restrictions.eq("proveedor", proveedor));
+		List<RequisicionProducto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<RequisicionProducto> getByLugar(Lugar lugar) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(RequisicionProducto.class);
+		criteria.add(Restrictions.eq("lugar", lugar));
+		List<RequisicionProducto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 	
 	@SuppressWarnings("unchecked")

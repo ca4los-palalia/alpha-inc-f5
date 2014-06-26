@@ -3,24 +3,43 @@
  */
 package com.cplsystems.stock.app.vm.producto;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.zkoss.bind.BindContext;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.ContextParam;
+import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.image.Image;
+import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
+import org.zkoss.image.AImage;
 
 import com.cplsystems.stock.app.utils.AplicacionExterna;
+import com.cplsystems.stock.app.utils.BarCodeUtility;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.domain.CodigoBarrasProducto;
 import com.cplsystems.stock.domain.CostosProducto;
@@ -38,11 +57,29 @@ public class ProductosVM extends ProductoMetaClass {
 	@Init
 	public void init() {
 		super.init();
+		producto.setCambioNaturaleza(true);
+
+	}
+
+	@Command("upload")
+	@NotifyChange("imagenProducto")
+	public void onImageUpload(
+			@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) {
+		processImageUpload(ctx.getTriggerEvent());
+	}
+	
+	@Command
+	@NotifyChange("imagenProducto")
+	public void generarBar() {
+		BarCodeUtility barCodeUtil = new BarCodeUtility();
+	      // This will generate Bar-Code 3 of 9 format
+	      barCodeUtil.createBarCode39("naeemgik - 12345");
+	    
+	      // This will generate Bar-Code 128 format
+	      barCodeUtil.createBarCode128("0123456789");
 	}
 	
 	
-	
-
 	@Command
 	@NotifyChange("*")
 	public void nuevaCaptura() {
@@ -59,11 +96,11 @@ public class ProductosVM extends ProductoMetaClass {
 		if (producto != null && producto.getIdProducto() == null) {
 			String validar = validarNuevoProducto();
 			if (validar.isEmpty()) {
+				
 				productoService.save(producto);
-
-				for (FamiliasProducto fp : familiasProductos) {
+				for (FamiliasProducto fp : familiasProductos)
 					familiasProductoService.save(fp);
-				}
+				
 				stockUtils.showSuccessmessage("Un nuevo producto con nombre "
 						+ producto.getNombre() + " ha sido creado.",
 						Clients.NOTIFICATION_TYPE_INFO, 0, saveButton);
@@ -99,46 +136,60 @@ public class ProductosVM extends ProductoMetaClass {
 			Messagebox.show("El producto no puede ser eliminado "
 					+ "Asegurese de haber seleccionado un producto");
 			return;
-		}
-		Messagebox.show("¿Está seguro de remover este producto?, "
-				+ "esta acción es irreversible", "Question", Messagebox.OK
-				| Messagebox.CANCEL, Messagebox.QUESTION,
-				new EventListener<Event>() {
-					@SuppressWarnings("static-access")
-					public void onEvent(Event event) throws Exception {
-						if (((Integer) event.getData()).intValue() == Messagebox.OK) {
-							/*
-							 * Map<String, Object> args = new HashMap<String,
-							 * Object>(); args.put("producto", producto);
-							 * BindUtils.postGlobalCommand(null, null,
-							 * "deleteProduct", args);
-							 */
-							productoService.delete(producto);
-							productosDB.remove(producto);
-
-							familiasProductos = familiasProductoService
-									.getByProducto(producto);
-							if (familiasProductos != null) {
-								for (FamiliasProducto fp : familiasProductos)
-									familiasProductoService.delete(fp);
-							}
-							familiasProductos = new ArrayList<FamiliasProducto>();
-							stockUtils.showSuccessmessage("el producto -"
-									+ producto.getNombre()
-									+ "- ha sido eliminado",
-									Clients.NOTIFICATION_TYPE_INFO, 0, null);
-							producto = null;
-						} else {
-							stockUtils.showSuccessmessage(
-									"La eliminacion del producto -"
+		}else{
+			String validarProducto = detectarEliminacionDeProducto(producto);
+			if(validarProducto.equals("")){
+				Messagebox.show("¿Está seguro de remover este producto?, "
+						+ "esta acción es irreversible", "Question", Messagebox.OK
+						| Messagebox.CANCEL, Messagebox.QUESTION,
+						new EventListener<Event>() {
+							@SuppressWarnings("static-access")
+							public void onEvent(Event event) throws Exception {
+								if (((Integer) event.getData()).intValue() == Messagebox.OK) {
+									/*
+									 * Map<String, Object> args = new HashMap<String,
+									 * Object>(); args.put("producto", producto);
+									 * BindUtils.postGlobalCommand(null, null,
+									 * "deleteProduct", args);
+									 */
+									productoService.delete(producto);
+									productoDB.remove(producto);
+									
+									//+++++++++++++++++
+									familiasProductos = familiasProductoService
+											.getByProducto(producto);
+									if (familiasProductos != null) {
+										for (FamiliasProducto fp : familiasProductos)
+											familiasProductoService.delete(fp);
+									}
+									familiasProductos = new ArrayList<FamiliasProducto>();
+									//+++++++++++++++++
+									stockUtils.showSuccessmessage("el producto -"
 											+ producto.getNombre()
-											+ "- ha sido cancelada",
-									Clients.NOTIFICATION_TYPE_INFO, 0, null);
-							producto = productoService.getById(producto
-									.getIdProducto());
-						}
-					}
-				});
+											+ "- ha sido eliminado",
+											Clients.NOTIFICATION_TYPE_INFO, 0, null);
+									producto = null;
+								} else {
+									stockUtils.showSuccessmessage(
+											"La eliminacion del producto -"
+													+ producto.getNombre()
+													+ "- ha sido cancelada",
+											Clients.NOTIFICATION_TYPE_INFO, 0, null);
+									producto = productoService.getById(producto
+											.getIdProducto());
+								}
+							}
+						});
+			}else
+				stockUtils.showSuccessmessage(
+						validarProducto,
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+				producto = productoService.getById(producto
+						.getIdProducto());
+		}
+		
+		
+		
 
 	}
 
@@ -147,13 +198,13 @@ public class ProductosVM extends ProductoMetaClass {
 	@NotifyChange("producto")
 	public void saveChanges() {
 		if (producto != null && producto.getIdProducto() != null) {
-			Messagebox.show(
+			/*Messagebox.show(
 					"Se han detectado cambios que no han sido confirmados, "
 							+ "¿Está seguro de crear un nuevo registro?",
 					"Question", Messagebox.OK | Messagebox.CANCEL,
 					Messagebox.QUESTION, new EventListener<Event>() {
 						public void onEvent(Event event) throws Exception {
-							if (((Integer) event.getData()).intValue() == Messagebox.OK) {
+							if (((Integer) event.getData()).intValue() == Messagebox.OK) {*/
 								/*
 								 * Map<String, Object> args = new
 								 * HashMap<String, Object>();
@@ -165,16 +216,16 @@ public class ProductosVM extends ProductoMetaClass {
 
 								productoService.save(producto);
 
-								for (FamiliasProducto fp : familiasProductos)
+								/*for (FamiliasProducto fp : familiasProductos)
 									if (fp.getIdFamiliasProducto() == null)
-										familiasProductoService.save(fp);
+										familiasProductoService.save(fp);*/
 
 								stockUtils.showSuccessmessage("el producto -"
 										+ producto.getNombre()
 										+ "- ha sido actualizado",
 										Clients.NOTIFICATION_TYPE_INFO, 0, null);
 								return;
-							} else {
+							/*} else {
 								unidad = null;
 								stockUtils.showSuccessmessage(
 										"La actualizacion para el producto -"
@@ -185,7 +236,7 @@ public class ProductosVM extends ProductoMetaClass {
 										.getIdProducto());
 							}
 						}
-					});
+					});*/
 		}
 		if (producto == null) {
 			producto = new Producto();
@@ -222,15 +273,16 @@ public class ProductosVM extends ProductoMetaClass {
 			producto = productoSeleccionado;
 		}
 	}
-
+/*
 	@Command
 	@NotifyChange("*")
 	public void selectDynamic(@BindingParam("tabs") TabInfo tabs) {
 		if (tabs != null) {
 			productoDB = productoService.getByTipo(tabs.getProductoTipo());
+			//METODO getByTipo ya no existe
 		}
 
-	}
+	}*/
 
 	@NotifyChange("*")
 	@Command
@@ -273,15 +325,15 @@ public class ProductosVM extends ProductoMetaClass {
 			if (buscarProducto.getNombre().equals("*")) {
 				// productosDB = productoService.getAll();
 			} else {
-				productosDB = productoService.getByClaveNombre(buscarProducto
+				productoDB = productoService.getByClaveNombre(buscarProducto
 						.getNombre());
 			}
 
-			if (productosDB != null) {
+			if (productoDB != null) {
 				String mensaje = "";
-				if (productosDB.size() == 1)
+				if (productoDB.size() == 1)
 					mensaje = "producto";
-				else if (productosDB.size() > 1)
+				else if (productoDB.size() > 1)
 					mensaje = "productos";
 
 				if (buscarProducto.getNombre().equals("*"))
@@ -291,10 +343,10 @@ public class ProductosVM extends ProductoMetaClass {
 				else
 					stockUtils.showSuccessmessage("Tu búsqueda -"
 							+ buscarProducto.getNombre() + "- obtuvo "
-							+ productosDB.size() + " " + mensaje,
+							+ productoDB.size() + " " + mensaje,
 							Clients.NOTIFICATION_TYPE_INFO, 0, null);
 				buscarProducto
-						.setDescripcion(String.valueOf(productosDB.size()));
+						.setDescripcion(String.valueOf(productoDB.size()));
 				producto = new Producto();
 				enableComboBoxUnidades = true;
 
@@ -360,9 +412,37 @@ public class ProductosVM extends ProductoMetaClass {
 	@NotifyChange("*")
 	@Command
 	public void changeComboClasificacion() {
+		
+		
+		
+		
+		
 		String mensaje = "Ningun producto encontrado de tipo: "
 				+ productoTipoSelected.getNombre();
+		familiasProductos = familiasProductoService.getByFamilia(productoTipoSelected);
 
+		if (familiasProductos != null) {
+			if (familiasProductos.size() == 1)
+				mensaje = "Se encontro " + familiasProductos.size()
+						+ " producto de tipo "
+						+ productoTipoSelected.getNombre();
+			else
+				mensaje = "Se encontraron " + familiasProductos.size()
+						+ " productos de tipo "
+						+ productoTipoSelected.getNombre();
+
+			stockUtils.showSuccessmessage(mensaje,
+					Clients.NOTIFICATION_TYPE_INFO, 0, clasificacionButton);
+		}
+
+		else{
+			stockUtils.showSuccessmessage(mensaje,
+					Clients.NOTIFICATION_TYPE_WARNING, 0, clasificacionButton);
+		}
+		
+		/*String mensaje = "Ningun producto encontrado de tipo: "
+				+ productoTipoSelected.getNombre();
+		
 		productoDB = productoService.getByTipo(productoTipoSelected);
 
 		if (productoDB != null) {
@@ -379,9 +459,11 @@ public class ProductosVM extends ProductoMetaClass {
 					Clients.NOTIFICATION_TYPE_INFO, 0, clasificacionButton);
 		}
 
-		else
+		else{
 			stockUtils.showSuccessmessage(mensaje,
 					Clients.NOTIFICATION_TYPE_WARNING, 0, clasificacionButton);
+		}*/
+			
 
 	}
 
@@ -459,7 +541,7 @@ public class ProductosVM extends ProductoMetaClass {
 	@Command
 	@NotifyChange("*")
 	public void reporteProductos() {
-		if (productosDB != null) {
+		if (productoDB != null) {
 
 			HashMap mapa = new HashMap();
 			mapa.put(StockConstants.REPORT_PROVEEDOR_PARAM1,
@@ -476,7 +558,7 @@ public class ProductosVM extends ProductoMetaClass {
 
 			stockUtils.showSuccessmessage(
 					generarReportePrductos(listaHashsParametros, aplicaciones,
-							productosDB), Clients.NOTIFICATION_TYPE_INFO, 0,
+							productoDB), Clients.NOTIFICATION_TYPE_INFO, 0,
 					null);
 		} else {
 			stockUtils
@@ -642,11 +724,11 @@ public class ProductosVM extends ProductoMetaClass {
 		if (codigosBarrasProductos != null && codigosBarrasProductos.size() > 0) {
 			for (CodigoBarrasProducto item : codigosBarrasProductos) {
 				item.setProducto(producto);
-				if (item.getCodigo() != null && !item.getCodigo().isEmpty()){
+				if (item.getCodigo() != null && !item.getCodigo().isEmpty()) {
 					item.setCodigo(item.getCodigo().toUpperCase());
 					codigoBarrasProductoService.save(item);
 				}
-					
+
 			}
 			stockUtils.showSuccessmessage(
 					"Nuevos codigos han sido guardados para el producto "
@@ -661,7 +743,7 @@ public class ProductosVM extends ProductoMetaClass {
 	@Command
 	@NotifyChange("*")
 	public void actualizarPrecioCosto() {
-		
+
 		if (producto != null && producto.getIdProducto() != null) {
 			String mensaje = "";
 			if (costosProductoNuevo.getReposicionUnitario() != null
@@ -673,7 +755,7 @@ public class ProductosVM extends ProductoMetaClass {
 				mensaje += "costos";
 			}
 
-			if(!mensaje.equals(""))
+			if (!mensaje.equals(""))
 				mensaje += " y precios han sido actualizados";
 			else
 				mensaje += " los precios han sido actualizados";
@@ -684,9 +766,8 @@ public class ProductosVM extends ProductoMetaClass {
 				costosProducto = new CostosProducto();
 
 			costosProductoNuevo = new CostosProducto();
-			
-			stockUtils.showSuccessmessage(
-					mensaje,
+
+			stockUtils.showSuccessmessage(mensaje,
 					Clients.NOTIFICATION_TYPE_INFO, 0, null);
 
 		} else
@@ -695,19 +776,18 @@ public class ProductosVM extends ProductoMetaClass {
 					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 	}
 
-	
 	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
 	public void precioMasivoFamilia() {
-		if(productoTipoDB == null || productoTipoDB.size() == 0)
+		if (productoTipoDB == null || productoTipoDB.size() == 0)
 			productoTipoDB = productoTipoService.getAll();
 		hiddeFamilia = true;
 		hiddeProveedor = false;
-		
+
 		System.err.println("familia");
 	}
-	
+
 	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
@@ -716,4 +796,91 @@ public class ProductosVM extends ProductoMetaClass {
 		hiddeFamilia = false;
 		hiddeProveedor = true;
 	}
+
+	@SuppressWarnings("static-access")
+	@Command
+	@NotifyChange("*")
+	public void seleccionNaturalezaProducto() {
+		if (productoNaturaleza != null) {
+			if (productoNaturaleza.getNombre().equals("Producto")) {
+				producto.setCambioNaturaleza(false);
+				producto.setEnExistencia(null);
+			} else {
+				producto.setCambioNaturaleza(true);
+				producto.setEnExistencia(null);
+			}
+
+		}
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void buscarPorFamilia(){
+		modoDeBusqueda.setOcultarFamilia(false);
+		modoDeBusqueda.setOcultarPersonalizado(true);
+		modoDeBusqueda.setTipoFamilia(false);
+		modoDeBusqueda.setTipoPersonalizado(true);
+		familiasProductos = new ArrayList<FamiliasProducto>();
+		familiasProducto = new FamiliasProducto();
+		producto = new Producto();
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void buscarPorPerzonalizado(){
+		modoDeBusqueda.setOcultarFamilia(true);
+		modoDeBusqueda.setOcultarPersonalizado(false);
+		modoDeBusqueda.setTipoFamilia(true);
+		modoDeBusqueda.setTipoPersonalizado(false);
+		productoDB = new ArrayList<Producto>();
+		producto = new Producto();
+	}
+	
+	
+	
+	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
+	@Command
+	@NotifyChange("*")
+	public void reporteProductosClasificacionSubmenu() {
+		if(familiasProductos != null && familiasProductos.size() > 0){
+			if(productoDB == null)
+				productoDB = new ArrayList<Producto>();
+			
+			for (FamiliasProducto fp : familiasProductos) {
+				productoDB.add(fp.getProducto());
+			}
+			if (productoDB != null) {
+
+				HashMap mapa = new HashMap();
+				mapa.put(StockConstants.REPORT_PROVEEDOR_PARAM1,
+						"REPORTE PRODUCTOS DE : ''"
+								+ productoTipoSelected.getNombre().toUpperCase()
+								+ "''");
+				mapa.put(StockConstants.REPORT_PROVEEDOR_NOMBRE_EMPRESA,
+						"PROVEEDORA DE MATERIAL ELECTRICO Y PLOMERIA S.A. de C.V.");
+				List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
+				listaHashsParametros.add(mapa);
+
+				List<AplicacionExterna> aplicaciones = new ArrayList<AplicacionExterna>();
+				AplicacionExterna aplicacion = new AplicacionExterna();
+				aplicacion.setNombre("PDFXCview");
+				aplicaciones.add(aplicacion);
+
+				// readJasper = getReadJasperReconstruccion(readJasper, file)
+
+				stockUtils.showSuccessmessage(
+						generarReportePrductos(listaHashsParametros, aplicaciones,
+								productoDB), Clients.NOTIFICATION_TYPE_INFO, 0,
+						null);
+			} else {
+				stockUtils
+						.showSuccessmessage(
+								"NO existe algún resultado de busqueda para generar el reporte (PDF)",
+								Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			}
+		}
+		
+		
+	}
+	
 }

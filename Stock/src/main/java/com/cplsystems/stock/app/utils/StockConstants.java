@@ -16,6 +16,7 @@ public class StockConstants {
 		public static final String HOME_URL = "/home.zul";
 		public static final String LOGIN_URL = "/login.zul";
 		public static final String PRODUCTOS = "/modulos/productos/productos.zul";
+		public static final String PRODUCTOS_BUSCADOR = "/modulos/productos/productosBuscador.zul";
 		public static final String PRODUCTOS_REPORTE_ARTICULOS = "/modulos/productos/reportesArticulos.zul";
 		
 		public static final String PRODUCTOS_REPORTE_CLASIFICACION = "/modulos/productos/reportesClasificaciones.zul";

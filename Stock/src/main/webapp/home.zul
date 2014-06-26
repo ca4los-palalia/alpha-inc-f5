@@ -30,15 +30,15 @@
 
 			<!--  NUEVO -->
 			<borderlayout style="width: 73%;">
-				<west title="Menú" size="20%" flex="true" style="height: 90%;" 
+				<west title="Menú" size="20%" flex="true"  
 					tooltiptext="Barra de menú"
 					splittable="true" collapsible="true">
 					<div id="menu" >
 						<include src="/menu.zul" />
 					</div>
 				</west>
-				<center border="none" flex="true" style="height: 90%;">
-					<div id="content">
+				<center border="none" flex="true">
+					<div id="content" style="padding: 1px; overflow:auto;" >
 						<include src="/inicio.zul" />
 					</div>
 				</center>

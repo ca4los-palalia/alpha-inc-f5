@@ -3,6 +3,8 @@
  */
 package com.cplsystems.stock.app.vm.producto;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,12 +15,22 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
+import org.zkoss.bind.BindContext;
+import org.zkoss.bind.annotation.ContextParam;
+import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.Init;
+import org.zkoss.image.AImage;
+import org.zkoss.image.Image;
+import org.zkoss.io.Files;
+import org.zkoss.util.media.Media;
+import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zul.Fileupload;
 
 import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.ClasificacionPrecios;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.producto.utils.FuncionesModificacion;
+import com.cplsystems.stock.app.vm.producto.utils.ModoDeBusqueda;
 import com.cplsystems.stock.app.vm.producto.utils.ProductoVariables;
 import com.cplsystems.stock.domain.CodigoBarrasProducto;
 import com.cplsystems.stock.domain.CostosProducto;
@@ -53,6 +65,7 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 		codigoBarrasProducto = new CodigoBarrasProducto();
 		costosProductoNuevo = new CostosProducto();
 		costosProductos = new ArrayList<CostosProducto>();
+		modoDeBusqueda = new ModoDeBusqueda();
 	}
 
 	public void initProperties() {
@@ -64,7 +77,8 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 		//enableComboBoxUnidades = true;
 		cargarListaPrecios();
 		crearFuncionesModificaciones();
-		
+		modoDeBusqueda.setTipoFamilia(true);
+		modoDeBusqueda.setTipoPersonalizado(true);
 	}
 
 	private void crearFuncionesModificaciones(){
@@ -205,4 +219,71 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 		return mensaje;
 	}
 
+	
+	public void processImageUpload(Object event) {
+		
+		boolean processFile = false;
+		
+		UploadEvent upEvent = null;
+		Object objUploadEvent = event;
+		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent)) {
+			upEvent = (UploadEvent) objUploadEvent;
+		}
+		if (upEvent != null) {
+			Media media = upEvent.getMedia();
+			int lengthofImage = media.getByteData().length;
+			if (media instanceof Image) {
+				/*
+				 * if (lengthofSignature > 500 * 1024) {
+				 * showInfo("Please Select a Image of size less than 500Kb.");
+				 * return; } else {
+				 */
+				imagenProducto = (AImage) media;// Initialize the bind object to
+											// show image in zul page and
+											// Notify it also
+				
+				copiarArchivo(media, "C:\\Stock\\Users\\" + upEvent.getMedia().getName());
+				// }
+			}
+		}
+	}
+	
+	
+	private void copiarArchivo(Media media, String destino){
+		
+		try {
+			File dst = new File(destino);
+			Files.copy(dst, media.getStreamData());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String detectarEliminacionDeProducto(Producto producto){
+		String mensaje = "";
+		
+		if(requisicionProductoService.getByProducto(producto) != null)
+			mensaje = producto.getNombre() + " se encuentra en el catalogo de requisicion producto";
+		
+		if(mensaje.equals(""))
+			if(proveedorProductoService.getByProducto(producto) != null)
+				mensaje = producto.getNombre() + " se encuentra en el catalogo de proveedor producto";
+
+		if(mensaje.equals(""))
+			if(familiasProductoService.getByProducto(producto) != null)
+				mensaje = producto.getNombre() + " esta asignado al catalogo familias";
+		
+		if(mensaje.equals(""))
+			if(codigoBarrasProductoService.getByProducto(producto) != null)
+				mensaje = producto.getNombre() + " tiene asignado codigos de barras";
+		
+		if(mensaje.equals(""))
+			if(costosProductoService.getByProducto(producto) != null)
+				mensaje = producto.getNombre() + " tiene asignado costos";
+		
+		
+		//ELIMMINAR DEL PRODUCTO LOS CATALOGO DE COSTOS
+		//CODIGOS DE BARRAS
+		return mensaje;
+	}
 }

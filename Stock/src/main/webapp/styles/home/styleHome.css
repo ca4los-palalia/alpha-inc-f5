@@ -23,7 +23,7 @@
 }
 
 * /
-	/*NOTA: contenedor de elementos del pie*/      
+	/*NOTA: contenedor de elementos del pie*/       
 	                              
 .footHome .z-south-body {
 	height: 100%;
@@ -176,7 +176,7 @@
 	left: 15%;
 	right: 15%;
 	width: 100%;
-	height: 100%;
+	height: 91%;
 }
 /*
 div {
@@ -309,3 +309,4 @@ div {
 .current_page_item {
 	background-color: yellow;
 }
+

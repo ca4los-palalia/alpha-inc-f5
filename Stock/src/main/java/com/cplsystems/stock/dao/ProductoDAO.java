@@ -31,8 +31,6 @@ public interface ProductoDAO {
 	
 	public Producto getByClaveNombrePrecioCosto(String buscarTexto);
 	
-	public List<Producto> getByTipo(ProductoTipo productoTipo);
-	
 	public List<Producto> getPreciosMaximos();
 	
 	public List<Producto> getPreciosMinimos();

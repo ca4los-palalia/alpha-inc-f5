@@ -1,7 +1,7 @@
 package com.cplsystems.stock.domain;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -19,7 +20,7 @@ import javax.persistence.Transient;
 public class Producto {
 
 	private Long idProducto;
-	
+
 	private boolean activo;
 	private String clave;
 	private String codigoBarras;
@@ -57,25 +58,22 @@ public class Producto {
 	private Float margen8;
 	private Float margen9;
 	private Float margen10;
-	private Float costoMaximo;//ELIMINAR
-	private Calendar costoMaximoFecha;//ELIMINAR
-	private Float costoReposicion;//ELIMINAR
-	private Calendar costoReposicionFecha;//ELIMINAR
-	private Float costoCapa;//ELIMINAR
-	private Calendar costoCapaFecha;//ELIMINAR
-	private Float costoUltimo;//ELIMINAR
-	private Calendar costoUltimoFecha;//ELIMINAR
-	private Float costoPromedio;//ELIMINAR
+	private Float costoMaximo;// ELIMINAR
+	private Calendar costoMaximoFecha;// ELIMINAR
+	private Float costoReposicion;// ELIMINAR
+	private Calendar costoReposicionFecha;// ELIMINAR
+	private Float costoCapa;// ELIMINAR
+	private Calendar costoCapaFecha;// ELIMINAR
+	private Float costoUltimo;// ELIMINAR
+	private Calendar costoUltimoFecha;// ELIMINAR
+	private Float costoPromedio;// ELIMINAR
 	private Float precioPublico;
-	private ProductoTipo productoTipo;
 	private boolean seleccionar;
-	private Unidad unidad;
+	private boolean cambioNaturaleza;
 	private Integer enExistencia;
+	private Unidad unidad;
 	private ProductoNaturaleza productoNaturaleza;
 	private Moneda moneda;
-	
-	
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -114,7 +112,7 @@ public class Producto {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+
 	@Column
 	public Float getPrecio() {
 		return precio;
@@ -151,23 +149,15 @@ public class Producto {
 		this.codigoBarras = codigoBarras;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "productoTipo")
-	public ProductoTipo getProductoTipo() {
-		return productoTipo;
-	}
-
 	@Column
 	public boolean getActivo() {
 		return activo;
 	}
+
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
-	
-	public void setProductoTipo(ProductoTipo productoTipo) {
-		this.productoTipo = productoTipo;
-	}
+
 	@Column
 	public Integer getEnExistencia() {
 		return enExistencia;
@@ -176,6 +166,7 @@ public class Producto {
 	public void setEnExistencia(Integer enExistencia) {
 		this.enExistencia = enExistencia;
 	}
+
 	@Transient
 	public boolean isSeleccionar() {
 		return seleccionar;
@@ -183,16 +174,6 @@ public class Producto {
 
 	public void setSeleccionar(boolean seleccionar) {
 		this.seleccionar = seleccionar;
-	}
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "unidad")
-	public Unidad getUnidad() {
-		return unidad;
-	}
-
-	public void setUnidad(Unidad unidad) {
-		this.unidad = unidad;
 	}
 
 	@Column
@@ -203,6 +184,7 @@ public class Producto {
 	public void setPrecio2(Float precio2) {
 		this.precio2 = precio2;
 	}
+
 	@Column
 	public Float getPrecio3() {
 		return precio3;
@@ -211,6 +193,7 @@ public class Producto {
 	public void setPrecio3(Float precio3) {
 		this.precio3 = precio3;
 	}
+
 	@Column
 	public Float getPrecio4() {
 		return precio4;
@@ -219,6 +202,7 @@ public class Producto {
 	public void setPrecio4(Float precio4) {
 		this.precio4 = precio4;
 	}
+
 	@Column
 	public Float getPrecio5() {
 		return precio5;
@@ -227,6 +211,7 @@ public class Producto {
 	public void setPrecio5(Float precio5) {
 		this.precio5 = precio5;
 	}
+
 	@Column
 	public Float getPrecio6() {
 		return precio6;
@@ -235,6 +220,7 @@ public class Producto {
 	public void setPrecio6(Float precio6) {
 		this.precio6 = precio6;
 	}
+
 	@Column
 	public Float getPrecio7() {
 		return precio7;
@@ -243,6 +229,7 @@ public class Producto {
 	public void setPrecio7(Float precio7) {
 		this.precio7 = precio7;
 	}
+
 	@Column
 	public Float getPrecio8() {
 		return precio8;
@@ -251,6 +238,7 @@ public class Producto {
 	public void setPrecio8(Float precio8) {
 		this.precio8 = precio8;
 	}
+
 	@Column
 	public Float getPrecio9() {
 		return precio9;
@@ -259,6 +247,7 @@ public class Producto {
 	public void setPrecio9(Float precio9) {
 		this.precio9 = precio9;
 	}
+
 	@Column
 	public Float getPrecio10() {
 		return precio10;
@@ -294,6 +283,7 @@ public class Producto {
 	public void setFactor3(Integer factor3) {
 		this.factor3 = factor3;
 	}
+
 	@Column
 	public Integer getFactor4() {
 		return factor4;
@@ -302,6 +292,7 @@ public class Producto {
 	public void setFactor4(Integer factor4) {
 		this.factor4 = factor4;
 	}
+
 	@Column
 	public Integer getFactor5() {
 		return factor5;
@@ -310,6 +301,7 @@ public class Producto {
 	public void setFactor5(Integer factor5) {
 		this.factor5 = factor5;
 	}
+
 	@Column
 	public Integer getFactor6() {
 		return factor6;
@@ -318,6 +310,7 @@ public class Producto {
 	public void setFactor6(Integer factor6) {
 		this.factor6 = factor6;
 	}
+
 	@Column
 	public Integer getFactor7() {
 		return factor7;
@@ -326,6 +319,7 @@ public class Producto {
 	public void setFactor7(Integer factor7) {
 		this.factor7 = factor7;
 	}
+
 	@Column
 	public Integer getFactor8() {
 		return factor8;
@@ -334,6 +328,7 @@ public class Producto {
 	public void setFactor8(Integer factor8) {
 		this.factor8 = factor8;
 	}
+
 	@Column
 	public Integer getFactor9() {
 		return factor9;
@@ -342,6 +337,7 @@ public class Producto {
 	public void setFactor9(Integer factor9) {
 		this.factor9 = factor9;
 	}
+
 	@Column
 	public Integer getFactor10() {
 		return factor10;
@@ -350,6 +346,7 @@ public class Producto {
 	public void setFactor10(Integer factor10) {
 		this.factor10 = factor10;
 	}
+
 	@Column
 	public Float getMargen1() {
 		return margen1;
@@ -358,6 +355,7 @@ public class Producto {
 	public void setMargen1(Float margen1) {
 		this.margen1 = margen1;
 	}
+
 	@Column
 	public Float getMargen2() {
 		return margen2;
@@ -366,6 +364,7 @@ public class Producto {
 	public void setMargen2(Float margen2) {
 		this.margen2 = margen2;
 	}
+
 	@Column
 	public Float getMargen3() {
 		return margen3;
@@ -374,6 +373,7 @@ public class Producto {
 	public void setMargen3(Float margen3) {
 		this.margen3 = margen3;
 	}
+
 	@Column
 	public Float getMargen4() {
 		return margen4;
@@ -382,6 +382,7 @@ public class Producto {
 	public void setMargen4(Float margen4) {
 		this.margen4 = margen4;
 	}
+
 	@Column
 	public Float getMargen5() {
 		return margen5;
@@ -390,6 +391,7 @@ public class Producto {
 	public void setMargen5(Float margen5) {
 		this.margen5 = margen5;
 	}
+
 	@Column
 	public Float getMargen6() {
 		return margen6;
@@ -398,6 +400,7 @@ public class Producto {
 	public void setMargen6(Float margen6) {
 		this.margen6 = margen6;
 	}
+
 	@Column
 	public Float getMargen7() {
 		return margen7;
@@ -406,6 +409,7 @@ public class Producto {
 	public void setMargen7(Float margen7) {
 		this.margen7 = margen7;
 	}
+
 	@Column
 	public Float getMargen8() {
 		return margen8;
@@ -414,6 +418,7 @@ public class Producto {
 	public void setMargen8(Float margen8) {
 		this.margen8 = margen8;
 	}
+
 	@Column
 	public Float getMargen9() {
 		return margen9;
@@ -422,6 +427,7 @@ public class Producto {
 	public void setMargen9(Float margen9) {
 		this.margen9 = margen9;
 	}
+
 	@Column
 	public Float getMargen10() {
 		return margen10;
@@ -430,6 +436,7 @@ public class Producto {
 	public void setMargen10(Float margen10) {
 		this.margen10 = margen10;
 	}
+
 	@Column
 	public Float getCostoMaximo() {
 		return costoMaximo;
@@ -438,6 +445,7 @@ public class Producto {
 	public void setCostoMaximo(Float costoMaximo) {
 		this.costoMaximo = costoMaximo;
 	}
+
 	@Column
 	public Calendar getCostoMaximoFecha() {
 		return costoMaximoFecha;
@@ -446,6 +454,7 @@ public class Producto {
 	public void setCostoMaximoFecha(Calendar costoMaximoFecha) {
 		this.costoMaximoFecha = costoMaximoFecha;
 	}
+
 	@Column
 	public Float getCostoReposicion() {
 		return costoReposicion;
@@ -454,6 +463,7 @@ public class Producto {
 	public void setCostoReposicion(Float costoReposicion) {
 		this.costoReposicion = costoReposicion;
 	}
+
 	@Column
 	public Calendar getCostoReposicionFecha() {
 		return costoReposicionFecha;
@@ -462,6 +472,7 @@ public class Producto {
 	public void setCostoReposicionFecha(Calendar costoReposicionFecha) {
 		this.costoReposicionFecha = costoReposicionFecha;
 	}
+
 	@Column
 	public Float getCostoCapa() {
 		return costoCapa;
@@ -470,6 +481,7 @@ public class Producto {
 	public void setCostoCapa(Float costoCapa) {
 		this.costoCapa = costoCapa;
 	}
+
 	@Column
 	public Calendar getCostoCapaFecha() {
 		return costoCapaFecha;
@@ -478,6 +490,7 @@ public class Producto {
 	public void setCostoCapaFecha(Calendar costoCapaFecha) {
 		this.costoCapaFecha = costoCapaFecha;
 	}
+
 	@Column
 	public Float getCostoUltimo() {
 		return costoUltimo;
@@ -486,6 +499,7 @@ public class Producto {
 	public void setCostoUltimo(Float costoUltimo) {
 		this.costoUltimo = costoUltimo;
 	}
+
 	@Column
 	public Calendar getCostoUltimoFecha() {
 		return costoUltimoFecha;
@@ -494,6 +508,7 @@ public class Producto {
 	public void setCostoUltimoFecha(Calendar costoUltimoFecha) {
 		this.costoUltimoFecha = costoUltimoFecha;
 	}
+
 	@Column
 	public Float getCostoPromedio() {
 		return costoPromedio;
@@ -502,6 +517,7 @@ public class Producto {
 	public void setCostoPromedio(Float costoPromedio) {
 		this.costoPromedio = costoPromedio;
 	}
+
 	@Column
 	public Float getPrecioPublico() {
 		return precioPublico;
@@ -511,17 +527,36 @@ public class Producto {
 		this.precioPublico = precioPublico;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@Transient
+	public boolean isCambioNaturaleza() {
+		return cambioNaturaleza;
+	}
+
+	public void setCambioNaturaleza(boolean cambioNaturaleza) {
+		this.cambioNaturaleza = cambioNaturaleza;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "unidad")
+	public Unidad getUnidad() {
+		return unidad;
+	}
+
+	public void setUnidad(Unidad unidad) {
+		this.unidad = unidad;
+	}
+
+	@OneToOne
 	@JoinColumn(name = "productoNaturaleza")
 	public ProductoNaturaleza getProductoNaturaleza() {
 		return productoNaturaleza;
 	}
-	
+
 	public void setProductoNaturaleza(ProductoNaturaleza productoNaturaleza) {
 		this.productoNaturaleza = productoNaturaleza;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name = "moneda")
 	public Moneda getMoneda() {
 		return moneda;

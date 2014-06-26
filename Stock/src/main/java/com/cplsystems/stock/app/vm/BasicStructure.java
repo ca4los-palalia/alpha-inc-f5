@@ -116,4 +116,9 @@ public abstract class BasicStructure extends ServiceLayer {
 
 		return parametrosGenerados;
 	}
+	
+	
+	public void generarArbolDirectorios(){
+		
+	}
 }

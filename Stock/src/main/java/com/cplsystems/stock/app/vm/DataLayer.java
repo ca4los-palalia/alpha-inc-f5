@@ -10,6 +10,10 @@ import java.util.List;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
+import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.image.AImage;
+import org.zkoss.zul.TreeModel;
+
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
@@ -94,7 +98,9 @@ public class DataLayer implements Serializable {
 	protected String readJasper;
 	protected JasperPrint print;
 	protected JasperViewer jviewer;
+	protected AImage imagenProducto;
 	
+		
 	protected List<CostosProducto> costosProductos;
 	protected List<CodigoBarrasProducto> codigosBarrasProductos;
 	protected List<FamiliasProducto> familiasProductos;
@@ -140,7 +146,7 @@ public class DataLayer implements Serializable {
 	}
 	public Proveedor getProveedorSelected() {
 		
-		if(proveedorSelected != null && proveedorSelected.getProveedorProducto() != null){
+		/*if(proveedorSelected != null && proveedorSelected.getProveedorProducto() != null){
 			List<ProductoTipo> tipo = new ArrayList<ProductoTipo>();
 			
 			for (ProveedorProducto pp : proveedorSelected.getProveedorProducto()) {
@@ -148,7 +154,7 @@ public class DataLayer implements Serializable {
 					tipo.add(pp.getProducto().getProductoTipo());
 			}
 			proveedorSelected.setTipoProductos(tipo);
-		}
+		}*/
 		return proveedorSelected;
 	}
 	public void setProveedorSelected(Proveedor proveedorSelected) {
@@ -514,7 +520,10 @@ public class DataLayer implements Serializable {
 		return familiasProducto;
 	}
 
+	@NotifyChange("producto")
 	public void setFamiliasProducto(FamiliasProducto familiasProducto) {
+		if(familiasProducto != null)
+			producto = familiasProducto.getProducto();
 		this.familiasProducto = familiasProducto;
 	}
 
@@ -565,6 +574,14 @@ public class DataLayer implements Serializable {
 
 	public void setCostosProductoNuevo(CostosProducto costosProductoNuevo) {
 		this.costosProductoNuevo = costosProductoNuevo;
+	}
+
+	public AImage getImagenProducto() {
+		return imagenProducto;
+	}
+
+	public void setImagenProducto(AImage imagenProducto) {
+		this.imagenProducto = imagenProducto;
 	}
 	
 }

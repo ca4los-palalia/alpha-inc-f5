@@ -43,6 +43,7 @@ public abstract class ProductoVariables extends BasicStructure {
 	private Date costoCapaFechaDate;
 	private Date costoUltimoFechaDate;
 	protected boolean enableComboBoxUnidades;
+	protected ModoDeBusqueda modoDeBusqueda;
 	
 	
 	//protected List<TabInfo> tabListClasificacionProductos;
@@ -100,8 +101,8 @@ public abstract class ProductoVariables extends BasicStructure {
 	
 	@NotifyChange("*")
 	public TabInfo getTabSelected() {
-		if(tabSelected != null)
-			productoDB = productoService.getByTipo(tabSelected.getProductoTipo());
+		/*if(tabSelected != null)
+			productoDB = productoService.getByTipo(tabSelected.getProductoTipo());*/
 		return tabSelected;
 	}
 
@@ -242,5 +243,14 @@ public abstract class ProductoVariables extends BasicStructure {
 			FuncionesModificacion funcionesModificacione) {
 		this.funcionesModificacione = funcionesModificacione;
 	}
+
+	public ModoDeBusqueda getModoDeBusqueda() {
+		return modoDeBusqueda;
+	}
+
+	public void setModoDeBusqueda(ModoDeBusqueda modoDeBusqueda) {
+		this.modoDeBusqueda = modoDeBusqueda;
+	}
+	
 	
 }
