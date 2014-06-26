@@ -73,7 +73,7 @@ FamiliasProductoDAO {
 		List<FamiliasProducto> familiasProductoList = null;
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(FamiliasProducto.class);
-		criteria.add(Restrictions.eq("producto", familiasProductoList));
+		criteria.add(Restrictions.eq("producto", producto));
 		familiasProductoList = criteria.list();
 		return familiasProductoList.size() > 0 ? familiasProductoList : null;
 	}

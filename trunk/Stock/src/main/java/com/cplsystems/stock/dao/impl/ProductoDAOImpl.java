@@ -12,12 +12,16 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.ProductoDAO;
+import com.cplsystems.stock.domain.Moneda;
 import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.ProductoNaturaleza;
 import com.cplsystems.stock.domain.ProductoTipo;
+import com.cplsystems.stock.domain.Unidad;
 
 /**
  * @author Carlos Palalía López
@@ -85,9 +89,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 
 		Criteria criteria = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Producto.class);
-		criteria.setFetchMode("unidad", FetchMode.JOIN);
-		criteria.add(Restrictions.sqlRestriction("clave LIKE '%" + buscarTexto
-				+ "%'"));
+		criteria.add(Restrictions.ilike("clave", "%" + buscarTexto + "%"));
 		criteria.addOrder(Order.asc("idProducto"));
 
 		lista = criteria.list();
@@ -95,25 +97,11 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		if (lista.equals(null) || lista.size() < 1) {
 			Criteria criteria2 = getHibernateTemplate().getSessionFactory()
 					.openSession().createCriteria(Producto.class);
-			criteria.setFetchMode("unidad", FetchMode.JOIN);
-			criteria2.add(Restrictions.sqlRestriction("nombre LIKE '%"
-					+ buscarTexto + "%'"));
+			criteria2.add(Restrictions.ilike("nombre", "%" + buscarTexto + "%"));
 			criteria2.addOrder(Order.asc("idProducto"));
 			lista = criteria2.list();
 		}
 		return lista != null && !lista.isEmpty() ? lista : null;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Transactional(readOnly = true)
-	public List<Producto> getByTipo(ProductoTipo productoTipo) {
-
-		Criteria criteria = getHibernateTemplate().getSessionFactory()
-				.openSession().createCriteria(Producto.class);
-		criteria.addOrder(Order.asc("nombre"));
-		criteria.add(Restrictions.eq("productoTipo", productoTipo));
-		List<Producto> tipo = criteria.list();
-		return tipo.size() > 0 ? tipo : null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -226,8 +214,8 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		Criteria criteria = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Producto.class);
 		criteria.setFetchMode("unidad", FetchMode.JOIN);
-		criteria.add(Restrictions.sqlRestriction("clave LIKE '" + buscarTexto
-				+ "'"));
+		
+		criteria.add(Restrictions.ilike("clave", "%" + buscarTexto + "%"));
 		criteria.addOrder(Order.asc("idProducto"));
 		criteria.setMaxResults(1);
 
@@ -237,8 +225,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 			Criteria criteria2 = getHibernateTemplate().getSessionFactory()
 					.openSession().createCriteria(Producto.class);
 			criteria.setFetchMode("unidad", FetchMode.JOIN);
-			criteria2.add(Restrictions.sqlRestriction("nombre LIKE '"
-					+ buscarTexto + "'"));
+			criteria.add(Restrictions.ilike("nombre", "%" + buscarTexto + "%"));
 			criteria2.addOrder(Order.asc("idProducto"));
 			criteria2.setMaxResults(1);
 			lista = criteria2.list();

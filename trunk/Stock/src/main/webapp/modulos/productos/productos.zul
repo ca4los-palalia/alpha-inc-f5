@@ -1,37 +1,11 @@
 <?page contentType="text/html;charset=UTF-8"?>
-<zk>
+<zk xmlns:x="xhtml">
 	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
 	<script src="/scripts/watermarks.js" type="text/javascript" />
-
-	<style>
-		.tab-red .z-tab-accordion-hm { color: white; height: 10px;
-		padding: 8px; text-align: left; color: #FFFFFF; font-family:
-		'Arial'; font-size: 18px; background: #a7c7dc; /* Old browsers
-		*/ /* IE9 SVG, needs conditional override of 'filter' to 'none'
-		*/ background:
-		url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2E3YzdkYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4NWIyZDMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-		background: -moz-linear-gradient(top, #a7c7dc 0%, #85b2d3 100%);
-		/* FF3.6+ */ background: -webkit-gradient(linear, left top, left
-		bottom, color-stop(0%,#a7c7dc), color-stop(100%,#85b2d3)); /*
-		Chrome,Safari4+ */ background: -webkit-linear-gradient(top,
-		#a7c7dc 0%,#85b2d3 100%); /* Chrome10+,Safari5.1+ */ background:
-		-o-linear-gradient(top, #a7c7dc 0%,#85b2d3 100%); /* Opera
-		11.10+ */ background: -ms-linear-gradient(top, #a7c7dc
-		0%,#85b2d3 100%); /* IE10+ */ background: linear-gradient(to
-		bottom, #a7c7dc 0%,#85b2d3 100%); /* W3C */ filter:
-		progid:DXImageTransform.Microsoft.gradient(
-		startColorstr='#a7c7dc', endColorstr='#85b2d3',GradientType=0 );
-		/* IE6-8 */
-
-
-		} .menutabs.z-tab .z-tab-text { color: red; cursor: pointer;
-		font-family: arial,sans-serif; font-size: 12px;
-		font-size-adjust: none; font-weight : bold; padding: 4px 14px;
-		white-space: nowrap; }
-
-	</style>
-
+	<script src="/scripts/folderChooser.js" />
+	
+		
 	<div apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.producto.ProductosVM')"
 		form="@id('fx') @save(pvm.producto, before='saveChanges')
@@ -40,7 +14,8 @@
 
 		<radiogroup id="sv1"
 			onCheck="choice1.value = self.selectedItem.label" />
-
+			
+	
 		<vlayout>
 			<grid>
 				<columns>
@@ -63,9 +38,10 @@
 							<button id="saveButton"
 								image="/images/toolbar/saveOff.png" sclass="web_button"
 								onClick="@command('newRecord')" />
-							<button image="/images/toolbar/update.png"
+								
+							<button image="/images/toolbar/update.png" visible="false"
 								sclass="web_button" onClick="@command('saveChanges')" />
-							<button image="/images/toolbar/delete.png"
+							<button image="/images/toolbar/delete.png" visible="false"
 								sclass="web_button" onClick="@command('deleteRecord')" />
 							<button image="/images/toolbar/find.png"
 								visible="false" sclass="web_button"
@@ -77,238 +53,172 @@
 
 		</vlayout>
 
-
-
-		<separator />
 		<separator />
 
 
+		<vlayout><!-- DETALLES DEL PRODUCTO -->
+			<grid style="border: 0;">
+				<columns>
+					<column width="13%" />
+					<column width="25%" />
+					<column width="13%" />
+					<column />
+				</columns>
+				<rows>
+					<row
+						style="background-color:transparent; border: 0;">
+						<label value="* Clave:" zclass="rowChooser"
+							width="100%" />
+						<textbox id="clave" zclass="tBox" maxlength="24"
+							width="100%" value="@bind(pvm.producto.clave)" />
+						<label value="* Nombre:" />
+						<textbox zclass="tBox" width="100%"
+							value="@bind(pvm.producto.nombre)" maxlength="60" />
+					</row>
+					<row
+						style="background-color:transparent; border: 0;">
+						<label value="*Marca:" />
+						<textbox zclass="tBox" width="100%"
+							maxlength="22" value="@bind(pvm.producto.marca)" />
+						<label value="*Modelo :" />
+						<textbox zclass="tBox" width="100%"
+							maxlength="24" value="@bind(pvm.producto.modelo)" />
+					</row>
+				</rows>
+			</grid>
+
+			<grid style="border: 0;">
+				<columns>
+					<column width="13%" />
+					<column width="25%" />
+					<column width="13%" />
+					<column />
+					<column width="5" />
+					<column />
+				</columns>
+				<rows>
+					<row
+						style="background-color:transparent; border: 0;">
+						<label value="C. Barras:" />
+						<textbox width="100%"
+							value="@bind(pvm.producto.codigoBarras)" zclass="tBox"
+							maxlength="12" />
+
+						<label value="* Unidad :" />
+						<textbox
+							value="@bind(pvm.producto.unidad.nombre)" width="100%"
+							readonly="true" />
+
+						<checkbox
+							onClick="@command('activarComboBoxUnidades')" label="Modificar"
+							tooltiptext="La modificación solo se lleva a cabo sobre un producto ya existente"
+							checked="@bind(pvm.producto.seleccionar)" />
+						<combobox model="@load(pvm.unidadesDB)"
+							onChange="@command('actualizaNombreUnidad')"
+							disabled="@bind(pvm.enableComboBoxUnidades)"
+							tooltiptext="Seleccionar unidad de medida"
+							selectedItem="@bind(pvm.unidad)" readonly="true" width="100%"
+							autodrop="true">
+							<template name="model">
+								<comboitem label="@load(each.nombre)" />
+							</template>
+						</combobox>
+					</row>
+				</rows>
+			</grid>
+
+			<grid style="border: 0;">
+
+				<columns>
+					<column width="13%" />
+					<column />
+					<column width="10%" />
+					<column style="text-align:center;" width="120px" />
+				</columns>
+				<rows>
+					<row
+						style="background-color:transparent; border: 0;">
+						<label value="Descripción:" />
+						<textbox multiline="true" width="100%"
+							value="@bind(pvm.producto.descripcion)" droppable="false"
+							type="text" zclass="tBox" height="80px" />
+
+						<vlayout>
+							<label value="imagen:" />
+							<button id="btnUpload" mold="trendy"
+								upload="true" label="Abrir"
+								onUpload="@command('upload')" />
+						</vlayout>
+						<image content="@bind(pvm.imagenProducto)"
+							height="100px" width="100px" />
+
+					</row>
+				</rows>
+			</grid>
 
 
-		<panel collapsible="true" open="false" title="Buscador">
-			<panelchildren>
-				<vlayout>
-					<grid style="border: 0;">
-						<columns>
-							<column width="15%" />
-							<column />
-							<column width="13%" />
-						</columns>
-						<rows>
-							<row
-								style="background-color:transparent; border: 0;">
-								<label value="Buscar"
-									sclass="fontSizeContentGrid" tooltiptext="nombre o clave" />
-								<textbox id="buscadorProducto"
-									value="@bind(pvm.buscarProducto.nombre)" width="100%"
-									sclass="fontSizeContentGrid" />
-								<hlayout style="text-align:center">
-									<button
-										image="/images/toolbar/find16x16.png" zclass="find_button"
-										onClick="@command('findProductos')"
-										tooltiptext="Buscar Productos" />
-									<button
-										image="/images/toolbar/pdf.png" sclass="web_button"
-										zclass="find_button" onClick="@command('reporteProductos')"
-										tooltiptext="Exportar a un archivo PDF" />
-								</hlayout>
-							</row>
-						</rows>
-					</grid>
-					<listbox onSelect="@command('obtenerListaFamiliasProducto')"
-						emptyMessage="No se encontro ningun producto" rows="3"
-						sclass="heightGrid" model="@load(pvm.productosDB)"
-						selectedItem="@bind(pvm.producto)">
-						<listhead>
-							<listheader label="Clave" width="15%" />
-							<listheader label="Nombre" width="100%" />
-						</listhead>
-						<template name="model" var="productoVar">
-							<listitem>
-								<listcell>
-									<label
-										value="@bind(productoVar.clave)" width="100%"
-										sclass="heightGrid" />
-								</listcell>
-								<listcell>
-									<label
-										value="@bind(productoVar.nombre)" width="100%"
-										sclass="heightGrid" />
-								</listcell>
-							</listitem>
-						</template>
-					</listbox>
-				</vlayout>
-			</panelchildren>
-		</panel>
+			<separator bar="true" />
+
+			<grid style="border: 0;">
+				<columns>
+					<column width="13%" />
+					<column width="10%" />
+					<column />
+					<column style="text-align:right;" />
+					<column />
+					<column />
+					<column />
+
+				</columns>
+				<rows>
+					<row
+						style="background-color:transparent; border: 0;">
+						<hlayout></hlayout>
+
+
+
+						<label value="Naturaleza:" />
+						<combobox width="100%" readonly="true"
+							model="@bind(pvm.productosNaturalezas)"
+							onSelect="@command('seleccionNaturalezaProducto')"
+							selectedItem="@bind(pvm.producto.productoNaturaleza)">
+							<template name="model">
+								<comboitem label="@load(each.nombre)" />
+							</template>
+						</combobox>
+
+
+						<label value="Activo" width="100%" />
+						<checkbox checked="@bind(pvm.producto.activo)" />
+
+
+						<label value="En existencia" />
+						<longbox width="100%" maxlength="5"
+							value="@bind(pvm.producto.enExistencia)" />
+
+
+					</row>
+				</rows>
+			</grid>
+
+		</vlayout><!-- END DETALLES DEL PRODUCTO -->
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		<separator />
 		<separator bar="true" sclass="separador" />
 		<separator />
-
-		<panel collapsible="true"
-			title="Informacion del producto / Capturar y modificar producto">
-			<panelchildren>
-
-
-				<grid style="border: 0;">
-					<columns>
-						<column width="13%" />
-						<column width="25%" />
-						<column width="13%" />
-						<column />
-					</columns>
-					<rows>
-
-
-						<row
-							style="background-color:transparent; border: 0;">
-							<label value="* Clave:" />
-							<textbox id="clave" zclass="tBox"
-								maxlength="24" width="100%" value="@bind(pvm.producto.clave)" />
-							<label value="* Nombre:" />
-							<textbox zclass="tBox" width="100%"
-								value="@bind(pvm.producto.nombre)" maxlength="60" />
-						</row>
-
-						<row
-							style="background-color:transparent; border: 0;">
-							<label value="*Marca:" />
-							<textbox zclass="tBox" width="100%"
-								maxlength="22" value="@bind(pvm.producto.marca)" />
-							<label value="*Modelo :" />
-							<textbox zclass="tBox" width="100%"
-								maxlength="24" value="@bind(pvm.producto.modelo)" />
-						</row>
-					</rows>
-				</grid>
-
-				<grid style="border: 0;">
-					<columns>
-						<column width="13%" />
-						<column width="25%" />
-						<column width="13%" />
-						<column />
-						<column width="5" />
-						<column />
-					</columns>
-					<rows>
-						<row
-							style="background-color:transparent; border: 0;">
-							<label value="C. Barras:" />
-							<textbox width="100%"
-								value="@bind(pvm.producto.codigoBarras)" zclass="tBox"
-								maxlength="20" />
-
-							<label value="* Unidad :" />
-							<textbox
-								value="@bind(pvm.producto.unidad.nombre)" width="100%"
-								readonly="true" />
-
-							<checkbox
-								onClick="@command('activarComboBoxUnidades')" label="Modificar"
-								tooltiptext="La modificación solo se lleva a cabo sobre un producto ya existente"
-								checked="@bind(pvm.producto.seleccionar)" />
-							<combobox model="@load(pvm.unidadesDB)"
-								onChange="@command('actualizaNombreUnidad')"
-								disabled="@bind(pvm.enableComboBoxUnidades)"
-								tooltiptext="Seleccionar unidad de medida"
-								selectedItem="@bind(pvm.unidad)" readonly="true" width="100%"
-								autodrop="true">
-								<template name="model">
-									<comboitem
-										label="@load(each.nombre)" />
-								</template>
-							</combobox>
-						</row>
-					</rows>
-				</grid>
-
-				<grid style="border: 0;">
-
-					<columns>
-						<column width="13%" />
-						<column />
-						<column width="13%" />
-						<column style="text-align:center;"
-							width="100px" />
-					</columns>
-					<rows>
-						<row
-							style="background-color:transparent; border: 0;">
-							<label value="Descripción:" />
-							<textbox multiline="true" width="100%"
-								value="@bind(pvm.producto.descripcion)" droppable="false"
-								type="text" zclass="tBox" height="80px" />
-
-							<label value="imagen:" />
-							<image src="C:\\productTemp.png"
-								width="80px" height="80px" />
-						</row>
-						<row
-							style="background-color:transparent; border: 0;">
-							<label />
-							<label />
-
-							<label />
-							<button label="Subir imagen" width="100%" />
-						</row>
-					</rows>
-				</grid>
-
-
-				<separator bar="true" />
-
-				<grid style="border: 0;">
-					<columns>
-						<column width="13%" />
-						<column width="25%" />
-						<column width="13%" />
-						<column width="16%" />
-						<column />
-					</columns>
-					<rows>
-						<row
-							style="background-color:transparent; border: 0;">
-							<hlayout>
-								<label value="Activo" />
-								<checkbox
-									checked="@bind(pvm.producto.activo)" />
-							</hlayout>
-
-
-							<hlayout>
-								<label value="En existencia" />
-								<longbox width="100%"
-									value="@bind(pvm.producto.enExistencia)" />
-							</hlayout>
-
-							<label value="" />
-
-							<label value="Naturaleza:" />
-
-							<combobox width="100%" readonly="true"
-								model="@bind(pvm.productosNaturalezas)"
-								selectedItem="@bind(pvm.producto.productoNaturaleza)">
-								<template name="model">
-									<comboitem
-										label="@load(each.nombre)" />
-								</template>
-							</combobox>
-						</row>
-					</rows>
-				</grid>
-
-				<separator bar="true" sclass="separador" />
-				<separator />
-
-
-
-
-			</panelchildren>
-		</panel>
-
-		
 
 		<!-- TABBOX (Clasificacion, Precios, ultimas compras) -->
 		<vlayout zclass="tabBox">
@@ -363,7 +273,8 @@
 								<row
 									style="background-color:transparent; border: 0;">
 
-									<listbox selectedItem="@bind(pvm.productoTipoSelected)"
+									<listbox
+										selectedItem="@bind(pvm.productoTipoSelected)"
 										emptyMessage="No se encontraron familias para productos"
 										rows="5" width="100%" model="@bind(pvm.productoTipoDB)">
 
@@ -394,9 +305,10 @@
 
 
 
-									<listbox selectedItem="@bind(pvm.familiasProducto)"
-										emptyMessage="No se encontraron familias"
-										rows="5" width="100%" model="@bind(pvm.familiasProductos)">
+									<listbox
+										selectedItem="@bind(pvm.familiasProducto)"
+										emptyMessage="No se encontraron familias" rows="5"
+										width="100%" model="@bind(pvm.familiasProductos)">
 
 										<listhead>
 											<listheader label="Nombre" />

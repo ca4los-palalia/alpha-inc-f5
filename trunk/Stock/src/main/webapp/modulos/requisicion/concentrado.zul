@@ -44,22 +44,22 @@
 
 			</vlayout>
 
-			<listbox sclass="invoiceTable" rows="5"
+			<listbox rows="5"
 				model="@load(rvm.requisicionProductos)" onSelect="@command('cargarProveedoresProducto')"
 				selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
 				emptyMessage="No hay elementos en la requisición">
 				<listhead>
 					<listheader label="Clave" width="10%"
-						sclass="invoiceLabel" />
-
-					<listheader label="Cantidad" sclass="invoiceLabel" />
+						/>
+					
+					<listheader label="Cantidad"/>
 
 					<listheader label="Descripcion"
-						sclass="invoiceLabel" />
-
-					<listheader label="Importe" sclass="invoiceLabel" />
-
-					<listheader label="Total" sclass="invoiceLabel" />
+						/>
+					
+					<listheader label="Importe"/>
+					
+					<listheader label="Total"/>
 
 				</listhead>
 				<template name="model" var="requisicionProducto">

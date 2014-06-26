@@ -70,10 +70,6 @@
 								image="/images/toolbar/find16x16.png" zclass="find_button"
 								onClick="@command('findProductoPrecioCosto')"
 								tooltiptext="Buscar Productos" />
-							<button image="/images/toolbar/pdf.png"
-								visible="false" sclass="web_button" zclass="find_button"
-								onClick="@command('reporteProductos')"
-								tooltiptext="Exportar a un archivo PDF" />
 						</hlayout>
 					</row>
 				</rows>
@@ -122,7 +118,7 @@
 							<image src="/images/toolbar/rightArrow.png" />
 						</listcell>
 						<listcell>
-							<textbox value="@bind(codigo.codigo)" zclass="upperCase"
+							<textbox value="@bind(codigo.codigo)" zclass="upperCase" maxlength="12"
 								width="100%" sclass="heightGrid" />
 						</listcell>
 					</listitem>

@@ -37,6 +37,12 @@ public class MenuVM extends BasicStructure {
 	}
 	
 	@Command
+	public void showBuscadorProductos() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_BUSCADOR);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+	}
+	
+	@Command
 	public void showProductsReportesArticulos() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_ARTICULOS);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);

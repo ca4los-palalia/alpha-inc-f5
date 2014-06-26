@@ -5,9 +5,10 @@ package com.cplsystems.stock.dao;
 
 import java.util.List;
 
-import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Lugar;
+import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
+import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
 /**
@@ -22,9 +23,9 @@ public interface RequisicionProductoDAO {
 
 	public RequisicionProducto getById(Long idRequisicionProducto);
 
-	public List<RequisicionProducto> getByProducto(Contacto contacto);
+	public List<RequisicionProducto> getByProducto(Producto producto);
 
-	public List<RequisicionProducto> getByRequisicion(Contacto contacto);
+	public List<RequisicionProducto> getByRequisicion(Requisicion requisicion);
 
 	public List<RequisicionProducto> getByProveedor(Proveedor proveedor);
 

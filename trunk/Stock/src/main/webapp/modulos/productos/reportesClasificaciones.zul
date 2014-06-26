@@ -32,7 +32,7 @@
 					<hlayout style="text-align:right; margin:5px ">
 						<button image="/images/toolbar/pdf32.png"
 							sclass="web_button"
-							onClick="@command('reporteProductosClasificacion')"
+							onClick="@command('reporteProductosClasificacionSubmenu')"
 							tooltiptext="Exportar a un archivo PDF" />
 					</hlayout>
 				</row>
@@ -66,7 +66,7 @@
 		<separator />
 
 		<listbox emptyMessage="No se encontraron productos" rows="8"
-			width="100%" model="@bind(pvm.productoDB)">
+			width="100%" model="@bind(pvm.familiasProductos)">
 
 			<auxhead>
 				<auxheader colspan="6">
@@ -93,30 +93,30 @@
 			<template name="model" var="tipo">
 				<listitem>
 					<listcell>
-						<label value="@bind(tipo.clave)" />
+						<label value="@bind(tipo.producto.clave)" />
 					</listcell>
 
 					<listcell>
-						<label value="@bind(tipo.nombre)" width="100%" />
+						<label value="@bind(tipo.producto.nombre)" width="100%" />
 					</listcell>
 
 					<listcell>
-						<label value="@bind(tipo.costoMaximo)"
+						<label value="@bind(tipo.producto.costoMaximo)"
 							width="100%" />
 					</listcell>
 
 					<listcell>
 						<label
-							value="@bind(tipo.productoNaturaleza.nombre)" width="100%" />
+							value="@bind(tipo.producto.productoNaturaleza.nombre)" width="100%" />
 					</listcell>
 
 					<listcell>
-						<label value="@bind(tipo.unidad.nombre)"
+						<label value="@bind(tipo.producto.unidad.nombre)"
 							width="100%" />
 					</listcell>
 
 					<listcell>
-						<label value="@bind(tipo.enExistencia)"
+						<label value="@bind(tipo.producto.enExistencia)"
 							width="100%" />
 					</listcell>
 				</listitem>
