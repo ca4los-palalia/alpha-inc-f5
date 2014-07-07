@@ -48,7 +48,7 @@ public abstract class RequisicionMetaClass extends RequisicionVariables {
 			JasperExportManager.exportReportToPdfFile(print,
 					StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE);
 			openPdf(StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE);
-			mensaje = "PDF del reporte generado: "
+			mensaje = "REQUISICIÓN GENERADA EN PDF"
 					+ StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE;
 
 		} catch (JRException e) {
@@ -63,8 +63,7 @@ public abstract class RequisicionMetaClass extends RequisicionVariables {
 				openPdf(StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE);
 				mensaje = "Se ha generado un PDFPDF del reporte generado: "
 						+ StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE;
-			} catch (JRException e1) {
-			}
+			} catch (JRException e1) {}
 		}
 		return mensaje;
 	}

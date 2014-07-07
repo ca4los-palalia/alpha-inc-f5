@@ -381,7 +381,7 @@
 								</template>
 								<listfoot style="height:40px">
 									<listfooter
-										style="text-align:right">
+										style="text-align:left">
 										<hlayout>
 											<button
 												image="/images/toolbar/add16.png" zclass="find_button"
@@ -396,7 +396,7 @@
 										</hlayout>
 									</listfooter>
 
-									<listfooter span="2"
+									<listfooter span="3"
 										style="text-align:right">
 										<hlayout>
 											<image
