@@ -24,7 +24,9 @@ public interface ProveedorDAO {
 	public void delete(Proveedor proveedor);
 
 	public Proveedor getById(Long idProveedor);
-
+	
+	public List<Proveedor> getProveedoresById(List<Long> idsProveedores);
+	
 	public List<Proveedor> getByContacto(Contacto contacto);
 
 	public List<Proveedor> getByContrato(Contrato contrato);

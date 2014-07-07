@@ -9,12 +9,14 @@
 
 	<session-factory>
 		<!-- Configuration Data -->
+		
 		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
 		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/stock</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
 		<property name="connection.username">carlos</property>
 		<property name="connection.password">carlos</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
+		
 		<!-- END Configuration Data -->
 
 		<!-- Mapping of Classes -->
@@ -22,6 +24,10 @@
 		<mapping class="com.cplsystems.stock.domain.Area"/>
 		<mapping class="com.cplsystems.stock.domain.Banco"/>
 		<mapping class="com.cplsystems.stock.domain.CodigoBarrasProducto"/>
+		<mapping class="com.cplsystems.stock.domain.CofiaFuenteFinanciamiento"/>
+		<mapping class="com.cplsystems.stock.domain.CofiaPartidaGenerica"/>
+		<mapping class="com.cplsystems.stock.domain.CofiaProg"/>
+		<mapping class="com.cplsystems.stock.domain.CofiaPy"/>
 		<mapping class="com.cplsystems.stock.domain.Contacto"/>
 		<mapping class="com.cplsystems.stock.domain.Contrato"/>
 		<mapping class="com.cplsystems.stock.domain.CostosProducto"/>
@@ -33,7 +39,9 @@
 		<mapping class="com.cplsystems.stock.domain.DireccionEntrega"/>
 		<mapping class="com.cplsystems.stock.domain.Email"/>
 		<mapping class="com.cplsystems.stock.domain.Estado"/>
+		<mapping class="com.cplsystems.stock.domain.EstatusRequisicion"/>
 		<mapping class="com.cplsystems.stock.domain.FamiliasProducto"/>
+		<mapping class="com.cplsystems.stock.domain.Giro"/>
 		<mapping class="com.cplsystems.stock.domain.Lugar"/>
 		<mapping class="com.cplsystems.stock.domain.Moneda"/>
 		<mapping class="com.cplsystems.stock.domain.Municipio"/>

@@ -35,45 +35,7 @@ public class ProveedoresVM extends ProveedorMetaClass {
 		readJasper = generarUrlString("jasperTemplates/reportProductos.jasper");
 	}
 
-	@Command
-	@NotifyChange("*")
-	public void selectTab1() {
-		botonMuenu1.setVisible(true);
-		botonMuenu2.setVisible(true);
-		botonMuenu3.setVisible(false);
-		botonMuenu4.setVisible(false);
-		botonMuenu5.setVisible(false);
-		botonMuenu6.setVisible(false);
-		botonMuenu7.setVisible(false);
-		botonMuenu8.setVisible(false);
-	}
-
-	@Command
-	@NotifyChange("*")
-	public void selectTab2() {
-		botonMuenu1.setVisible(false);
-		botonMuenu2.setVisible(false);
-		botonMuenu3.setVisible(true);
-		botonMuenu4.setVisible(true);
-		botonMuenu5.setVisible(true);
-		botonMuenu6.setVisible(false);
-		botonMuenu7.setVisible(false);
-		botonMuenu8.setVisible(true);
-	}
-
-	@Command
-	@NotifyChange("*")
-	public void selectTab3() {
-		botonMuenu1.setVisible(false);
-		botonMuenu2.setVisible(false);
-		botonMuenu3.setVisible(false);
-		botonMuenu4.setVisible(false);
-		botonMuenu5.setVisible(false);
-		botonMuenu6.setVisible(true);
-		botonMuenu7.setVisible(true);
-		botonMuenu8.setVisible(true);
-	}
-
+	
 	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
@@ -86,11 +48,12 @@ public class ProveedoresVM extends ProveedorMetaClass {
 			if (validarExistencia == null) {
 				String mensajeValidacion = validarEntradaDatosProveedor();
 				if (mensajeValidacion.equals("")) {
+					nuevoProveedor.setProveedorActivo(true);
 					guardarProveedor();
-					initObjects();
 					stockUtils.showSuccessmessage(nuevoProveedor.getNombre()
 							+ " ha sido guardado",
 							Clients.NOTIFICATION_TYPE_INFO, 0, null);
+					initObjects();
 				} else
 					stockUtils.showSuccessmessage(
 							"Los campos marcados con (*) son requeridos: \n"
@@ -139,7 +102,7 @@ public class ProveedoresVM extends ProveedorMetaClass {
 										proveedorSelected
 												.setProveedorActivo(false);
 										proveedorService
-												.update(proveedorSelected);
+												.save(proveedorSelected);
 										proveedoresLista
 												.remove(proveedorSelected);
 										stockUtils.showSuccessmessage(
@@ -190,11 +153,14 @@ public class ProveedoresVM extends ProveedorMetaClass {
 				buscarProveedor.setComentario(proveedoresLista.size() + " "
 						+ mensaje);
 
-			} else
+			} else{
 				stockUtils.showSuccessmessage(
 						"Tu búsqueda -" + buscarProveedor.getNombre()
 								+ "- no obtuvo ningún resultado",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+				proveedorSelected = new Proveedor();
+			}
+				
 
 		} else {
 			stockUtils.showSuccessmessage(
@@ -336,5 +302,4 @@ public class ProveedoresVM extends ProveedorMetaClass {
 							Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 		}
 	}
-
 }

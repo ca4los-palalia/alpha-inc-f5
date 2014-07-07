@@ -74,6 +74,8 @@ public class Producto {
 	private Unidad unidad;
 	private ProductoNaturaleza productoNaturaleza;
 	private Moneda moneda;
+	private Long minimo;
+	private Long maximo;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -564,6 +566,22 @@ public class Producto {
 
 	public void setMoneda(Moneda moneda) {
 		this.moneda = moneda;
+	}
+	@Column
+	public Long getMinimo() {
+		return minimo;
+	}
+
+	public void setMinimo(Long minimo) {
+		this.minimo = minimo;
+	}
+	@Column
+	public Long getMaximo() {
+		return maximo;
+	}
+
+	public void setMaximo(Long maximo) {
+		this.maximo = maximo;
 	}
 	
 }

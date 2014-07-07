@@ -80,4 +80,17 @@ public class ProveedorProductoDAOImpl extends HibernateDAOSuportUtil implements 
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public List<ProveedorProducto> getByProductoProveedor(Producto producto,
+			Proveedor proveedor) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(ProveedorProducto.class);
+		criteria.add(Restrictions.eq("proveedor", proveedor));
+		criteria.add(Restrictions.eq("producto", producto));
+		List<ProveedorProducto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
+	}
+
 }

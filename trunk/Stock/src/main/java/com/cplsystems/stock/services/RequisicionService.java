@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.RequisicionDAO;
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
 
@@ -26,27 +27,32 @@ public class RequisicionService {
 		requisicionDAO.save(requisicion);
 	}
 
-	public void update(final Requisicion requisicion){
+	public void update(final Requisicion requisicion) {
 		requisicionDAO.update(requisicion);
 	}
 
-	public void delete(final Requisicion requisicion){
+	public void delete(final Requisicion requisicion) {
 		requisicionDAO.delete(requisicion);
 	}
 
-	public Requisicion getById(final Long idRequisicion){
+	public Requisicion getById(final Long idRequisicion) {
 		return requisicionDAO.getById(idRequisicion);
 	}
-	
-	public Requisicion getByPersona(final Persona persona){
+
+	public Requisicion getByPersona(final Persona persona) {
 		return requisicionDAO.getByPersona(persona);
 	}
-	
-	public String getUltimoFolio(){
+
+	public String getUltimoFolio() {
 		return requisicionDAO.getUltimoFolio();
 	}
-	
-	public List<Requisicion> getAll(){
+
+	public List<Requisicion> getAll() {
 		return requisicionDAO.getAll();
+	}
+
+	public List<Requisicion> getByEstatusRequisicion(
+			EstatusRequisicion estatusRequisicion) {
+		return requisicionDAO.getByEstatusRequisicion(estatusRequisicion);
 	}
 }

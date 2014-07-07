@@ -3,31 +3,16 @@
  */
 package com.cplsystems.stock.app.vm.requisicion;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.zkoss.bind.annotation.AfterCompose;
-import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
-import org.zkoss.bind.annotation.ContextParam;
-import org.zkoss.bind.annotation.ContextType;
-import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.SimpleListModel;
-import org.zkoss.zul.Window;
 
-import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.requisicion.utils.DesgloceTotal;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
-import com.cplsystems.stock.domain.Persona;
-import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
 /**
@@ -44,8 +29,11 @@ public class concentradoVM extends RequisicionVariables {
 	public void init() {
 		super.init();
 		
-		requisiciones = requisicionService.getAll();
-		requisicionProductos = requisicionProductoService.getAll();
+		EstatusRequisicion estado = estatusRequisicionService.getByClave("RQ");
+		requisiciones = requisicionService.getByEstatusRequisicion(estado);
+		
+		
+		requisicionProductos = requisicionProductoService.getRequisicionesConEstadoEspecifico(estado);
 		Float subtotal = new Float(0.0);
 		
 		if(requisicionProductos !=null ){
@@ -64,21 +52,88 @@ public class concentradoVM extends RequisicionVariables {
 		
 	}
 	@Command
-	@NotifyChange("*")
+	@NotifyChange("proveedorProductos")
 	public void cargarProveedoresProducto(){
 		if(requisicionProductoSeleccionado != null){
 			if(requisicionProductoSeleccionado.getProducto() != null)
 				proveedorProductos = proveedorProductoService.getByProducto(requisicionProductoSeleccionado.getProducto());
-			
 		}
+	}
+	
+	
+	@Command
+	@NotifyChange("requisicionProductos")
+	public void seleccionarProveedor() {
+		if(proveedorProducto != null){
+			for (RequisicionProducto item : requisicionProductos) {
+				if(requisicionProductoSeleccionado.equals(item)){
+					item.setProveedor(proveedorProducto.getProveedor());
+					break;
+				}	
+			}
+		}
+	}
+	
+	@Command
+	@NotifyChange("requisicionProductos")
+	public void filtrarProductoPorRequisicion(){
+		if(requisicion != null)
+			requisicionProductos = requisicionProductoService.getByRequisicion(requisicion);
 	}
 	
 	@SuppressWarnings("static-access")
 	@Command
 	public void autorizar() {
-		
+		if(requisicionProductos != null){
+			Integer count = 0;
+			
+			for (RequisicionProducto item : requisicionProductos) {
+				if(item.getProveedor() != null){
+					requisicionProductoService.save(item);
+					count ++;
+				}
+			}
+			if(count > 0){
+				String mensaje = "";
+				if(count == 1)
+					mensaje = "se ha actualizado el proveedor para " + count + " producto";	
+				else
+					mensaje = "se han actualizado los proveedores para " + count + " productos";
+				stockUtils.showSuccessmessage(
+						mensaje,
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+			}
+				
+		}
 		
 	}
 
+	@SuppressWarnings("static-access")
+	@Command
+	@NotifyChange("*")
+	public void removerProductoDeListaGeneralDeProductos(){
+		requisicionProductoService.delete(requisicionProductoSeleccionado);
+		requisicionProductos.remove(requisicionProductoSeleccionado);
+		
+		stockUtils.showSuccessmessage("El producto -" + 
+				requisicionProductoSeleccionado.getProducto().getNombre() + "- ha sido removido de la requisición -" + requisicionProductoSeleccionado.getRequisicion().getFolio() + "-",
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+	}
+	
+	@SuppressWarnings("static-access")
+	@Command
+	@NotifyChange("*")
+	public void cancelarRequisicion(){
+		EstatusRequisicion estado = estatusRequisicionService.getByClave("RQC");
+		Requisicion rq = requisicionProductoSeleccionado.getRequisicion();
+		rq.setEstatusRequisicion(estado);
+		requisicionService.save(rq);
+		
+		stockUtils.showSuccessmessage("La requisición -" + requisicionProductoSeleccionado.getRequisicion().getFolio() + "- ha sido cancelada",
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+		estado = estatusRequisicionService.getByClave("RQ");
+		requisiciones = requisicionService.getByEstatusRequisicion(estado);
+		requisicionProductos = requisicionProductoService.getRequisicionesConEstadoEspecifico(estado);
+	}
 	
 }

@@ -28,7 +28,6 @@ public class Proveedor {
 	private Long idProveedor;
 	private String comentario;
 	private String clave;
-	private String giro;
 	private String nombre;
 	private String password;
 	private String razonSocial;
@@ -36,6 +35,9 @@ public class Proveedor {
 	private String status;
 	private boolean proveedorActivo;
 	private Long cuentaCargo;
+	private Calendar fechaActualizacion;
+	private String paginaWeb;
+	
 	private Contacto contacto;
 	private Contrato contrato;
 	private Direccion direccionDevolucion;
@@ -45,15 +47,8 @@ public class Proveedor {
 	private Persona gerenteVentas;
 	private Persona representanteLegal;
 	private Persona representanteAteCliente;
-	private Calendar fechaActualizacion;
-	private String paginaWeb;
-	private List<ProveedorProducto> proveedorProducto;
-	public List<ProductoTipo> tipoProductos;
+	private Giro giro;
 	
-	public Proveedor() {
-		proveedorProducto = new ArrayList<ProveedorProducto>();
-		tipoProductos = new ArrayList<ProductoTipo>();
-	}
 	
 	@Id
 	@Column(name = "idProveedor", nullable = false)
@@ -75,16 +70,6 @@ public class Proveedor {
 		this.clave = clave;
 	}
 	
-
-	@Column
-	public String getGiro() {
-		return giro;
-	}
-
-	public void setGiro(String giro) {
-		this.giro = giro;
-	}
-
 	@Column
 	public String getNombre() {
 		return nombre;
@@ -120,101 +105,6 @@ public class Proveedor {
 	public void setRfc(String rfc) {
 		this.rfc = rfc;
 	}
-
-	
-	
-	
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "contacto")
-	public Contacto getContacto() {
-		return contacto;
-	}
-
-	public void setContacto(Contacto contacto) {
-		this.contacto = contacto;
-	}
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "contrato")
-	public Contrato getContrato() {
-		return contrato;
-	}
-
-	public void setContrato(Contrato contrato) {
-		this.contrato = contrato;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "direccionDevolucion")
-	public Direccion getDireccionDevolucion() {
-		return direccionDevolucion;
-	}
-
-	public void setDireccionDevolucion(Direccion direccionDevolucion) {
-		this.direccionDevolucion = direccionDevolucion;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "direccionFiscal")
-	public Direccion getDireccionFiscal() {
-		return direccionFiscal;
-	}
-
-	public void setDireccionFiscal(Direccion direccionFiscal) {
-		this.direccionFiscal = direccionFiscal;
-	}
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "director")
-	public Persona getDirector() {
-		return director;
-	}
-
-	public void setDirector(Persona director) {
-		this.director = director;
-	}
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "gerenteFinanzas")
-	public Persona getGerenteFinanzas() {
-		return gerenteFinanzas;
-	}
-
-	public void setGerenteFinanzas(Persona gerenteFinanzas) {
-		this.gerenteFinanzas = gerenteFinanzas;
-	}
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "gerenteVentas")
-	public Persona getGerenteVentas() {
-		return gerenteVentas;
-	}
-
-	public void setGerenteVentas(Persona gerenteVentas) {
-		this.gerenteVentas = gerenteVentas;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "representanteLegal")
-	public Persona getRepresentanteLegal() {
-		return representanteLegal;
-	}
-
-	public void setRepresentanteLegal(Persona representanteLegal) {
-		this.representanteLegal = representanteLegal;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "representanteAteCliente")
-	public Persona getRepresentanteAteCliente() {
-		return representanteAteCliente;
-	}
-
-	public void setRepresentanteAteCliente(Persona representanteAteCliente) {
-		this.representanteAteCliente = representanteAteCliente;
-	}
-	
 	@Column
 	public Long getCuentaCargo() {
 		return cuentaCargo;
@@ -269,21 +159,108 @@ public class Proveedor {
 	public void setPaginaWeb(String paginaWeb) {
 		this.paginaWeb = paginaWeb;
 	}
-	@OneToMany(mappedBy="proveedor")
-	public List<ProveedorProducto> getProveedorProducto() {
-		return proveedorProducto;
+	
+	
+	
+	
+	@OneToOne
+	@JoinColumn(name = "contacto")
+	public Contacto getContacto() {
+		return contacto;
 	}
 
-	public void setProveedorProducto(List<ProveedorProducto> proveedorProducto) {
-		this.proveedorProducto = proveedorProducto;
-	}
-	@Transient
-	public List<ProductoTipo> getTipoProductos() {
-		return tipoProductos;
+	public void setContacto(Contacto contacto) {
+		this.contacto = contacto;
 	}
 
-	public void setTipoProductos(List<ProductoTipo> tipoProductos) {
-		this.tipoProductos = tipoProductos;
+	@OneToOne
+	@JoinColumn(name = "contrato")
+	public Contrato getContrato() {
+		return contrato;
+	}
+
+	public void setContrato(Contrato contrato) {
+		this.contrato = contrato;
+	}
+
+	@OneToOne//@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "direccionDevolucion")
+	public Direccion getDireccionDevolucion() {
+		return direccionDevolucion;
+	}
+
+	public void setDireccionDevolucion(Direccion direccionDevolucion) {
+		this.direccionDevolucion = direccionDevolucion;
+	}
+
+	@OneToOne//@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "direccionFiscal")
+	public Direccion getDireccionFiscal() {
+		return direccionFiscal;
+	}
+
+	public void setDireccionFiscal(Direccion direccionFiscal) {
+		this.direccionFiscal = direccionFiscal;
+	}
+
+	@OneToOne//(fetch = FetchType.LAZY)
+	@JoinColumn(name = "director")
+	public Persona getDirector() {
+		return director;
+	}
+
+	public void setDirector(Persona director) {
+		this.director = director;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "gerenteFinanzas")
+	public Persona getGerenteFinanzas() {
+		return gerenteFinanzas;
+	}
+
+	public void setGerenteFinanzas(Persona gerenteFinanzas) {
+		this.gerenteFinanzas = gerenteFinanzas;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "gerenteVentas")
+	public Persona getGerenteVentas() {
+		return gerenteVentas;
+	}
+
+	public void setGerenteVentas(Persona gerenteVentas) {
+		this.gerenteVentas = gerenteVentas;
+	}
+
+	@OneToOne//@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "representanteLegal")
+	public Persona getRepresentanteLegal() {
+		return representanteLegal;
+	}
+
+	public void setRepresentanteLegal(Persona representanteLegal) {
+		this.representanteLegal = representanteLegal;
+	}
+
+	@OneToOne//@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "representanteAteCliente")
+	public Persona getRepresentanteAteCliente() {
+		return representanteAteCliente;
+	}
+
+	public void setRepresentanteAteCliente(Persona representanteAteCliente) {
+		this.representanteAteCliente = representanteAteCliente;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "giro")
+	public Giro getGiro() {
+		return giro;
+	}
+
+	public void setGiro(Giro giro) {
+		this.giro = giro;
 	}
 	
 	

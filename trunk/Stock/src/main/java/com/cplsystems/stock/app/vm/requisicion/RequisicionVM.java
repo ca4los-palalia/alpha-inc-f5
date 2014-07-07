@@ -3,8 +3,10 @@
  */
 package com.cplsystems.stock.app.vm.requisicion;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.zkoss.bind.annotation.AfterCompose;
@@ -22,10 +24,15 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.SimpleListModel;
 import org.zkoss.zul.Window;
 
+import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
+import com.cplsystems.stock.domain.CofiaPartidaGenerica;
+import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.FamiliasProducto;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
 /**
@@ -33,7 +40,7 @@ import com.cplsystems.stock.domain.RequisicionProducto;
  * 
  */
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class RequisicionVM extends RequisicionVariables {
+public class RequisicionVM extends RequisicionMetaClass {
 
 	private static final long serialVersionUID = 2584088569805199520L;
 	public static final String REQUISICION_GLOBALCOMMAND_NAME_FOR_UPDATE = "updateCommandFromItemFinder";
@@ -41,17 +48,17 @@ public class RequisicionVM extends RequisicionVariables {
 	@Init
 	public void init() {
 		super.init();
-		
+
 		areas = areaService.getAll();
-		requisicion.setPersona(new Persona());
+		if(requisicion == null)
+			requisicion =  new Requisicion();
+		
 		requisicion.setFecha(Calendar.getInstance());
 		posiciones = posicionService.getAll();
 		
 		loadItemsKeys();
 		initDefaultValues();
-		
-		
-		
+
 	}
 
 	private void loadItemsKeys() {
@@ -60,34 +67,185 @@ public class RequisicionVM extends RequisicionVariables {
 			productosModel = new SimpleListModel<String>(productosTemporalModel);
 		}
 	}
-	
+
 	@SuppressWarnings("static-access")
 	@Command
 	public void saveChanges() {
-		
-		personaService.save(requisicion.getPersona());
-		requisicion.setFecha(Calendar.getInstance());
-		requisicion.setStatus("En espera");
-		
-		if (validateBill()) {
-			requisicionService.save(requisicion);
-			for (int i = 0; i < requisicionProductos.size(); i++) {
-				RequisicionProducto requisicionProducto = requisicionProductos.get(i);
-				requisicionProducto.setRequisicion(requisicion);
-				requisicionProductoService.save(requisicionProducto);
+		String validacion = validarCapturaRequisicion();
+		if (validacion.isEmpty()) {
+			if (validateBill()) {
+				if(estatusRequisicion == null)
+					estatusRequisicion = new EstatusRequisicion();
+				
+				
+				
+				
+				if(requisicion.getIdRequisicion() == null){// NUEVO REGISTRO
+					estatusRequisicion = estatusRequisicionService.getByClave("RQ");
+					requisicion.setEstatusRequisicion(estatusRequisicion);
+					requisicion.setFecha(Calendar.getInstance());
+					personaService.save(requisicion.getPersona());
+					requisicionService.save(requisicion);
+					
+					String productosNoGuardados = "";
+					for (int i = 0; i < requisicionProductos.size(); i++) {
+						RequisicionProducto requisicionProducto = requisicionProductos
+								.get(i);
+						requisicionProducto.setRequisicion(requisicion);
+						
+						if(requisicionProducto.getProducto() != null && requisicionProducto.getProducto().getIdProducto() != null)
+							requisicionProductoService.save(requisicionProducto);
+						else{//INTENTAR SALVAR
+							List<Producto> p = productoService.getByClaveNombre(requisicionProducto.getProducto().getClave());
+							if(p != null){
+								requisicionProducto.setProducto(p.get(0));
+								requisicionProductoService.save(requisicionProducto);
+							}else
+								productosNoGuardados += "||" + requisicionProducto.getProducto().getClave() + "|| ";
+						}
+						
+					}
+					String mensajeError = "";
+					if(!productosNoGuardados.isEmpty()){
+						mensajeError = "Los siguientes artículos no se guardaron: \n" + productosNoGuardados + ". Posible causa, la clave del producto que se ingreso no es la correcta";
+					}
+					
+					stockUtils.showSuccessmessage("La requisición con fólio -"
+							+ requisicion.getFolio() + "- ha sído creada. " + mensajeError,
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
+					requisicion =  new Requisicion();
+					requisicionProductos =  new  ArrayList<RequisicionProducto>();
+					addNewItemToBill();
+				}else{//ACTUALIZACIOND E REQUISICION
+					requisicion.setFecha(Calendar.getInstance());
+					requisicionService.save(requisicion);
+					
+					String productosNoGuardados = "";
+					
+					//ELIMINAR ANTERIORES PRODUCTOS DE ESTA REQUISICION
+					/*List<RequisicionProducto> rpl = requisicionProductoService.getByRequisicion(requisicion);
+					if(rpl != null){
+						for (RequisicionProducto item : rpl) {
+							requisicionProductoService.delete(item);
+						}
+					}*///------------------------------
+					
+					
+					for (int i = 0; i < requisicionProductos.size(); i++) {
+						RequisicionProducto requisicionProducto = requisicionProductos
+								.get(i);
+						requisicionProducto.setRequisicion(requisicion);
+						
+						if(requisicionProducto.getProducto() != null && requisicionProducto.getProducto().getIdProducto() != null)
+							requisicionProductoService.save(requisicionProducto);
+						else{//INTENTAR SALVAR
+							List<Producto> p = productoService.getByClaveNombre(requisicionProducto.getProducto().getClave());
+							if(p != null){
+								requisicionProducto.setProducto(p.get(0));
+								requisicionProductoService.save(requisicionProducto);
+							}else
+								productosNoGuardados += "||" + requisicionProducto.getProducto().getClave() + "|| ";
+						}
+						
+					}
+					String mensajeError = "";
+					if(!productosNoGuardados.isEmpty()){
+						mensajeError = "Los siguientes artículos no se guardaron: \n" + productosNoGuardados + ". Posible causa, la clave del producto que se ingreso no es la correcta";
+					}
+					
+					stockUtils.showSuccessmessage("La requisición con fólio -"
+							+ requisicion.getFolio() + "- ha sído actualizada. " + mensajeError,
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
+					requisicion =  new Requisicion();
+					requisicionProductos =  new  ArrayList<RequisicionProducto>();
+					addNewItemToBill();
+				}
+				
+				
+				
 			}
-		}
-		
-		stockUtils.showSuccessmessage(
-				"Una nueva requisicion ha sido creada"
-						+ requisicion.getFolio(),
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+		} else
+			stockUtils.showSuccessmessage(validacion,
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+	}
+
+	private String validarCapturaRequisicion() {
+		String mensaje = "";
+
+		if (requisicion.getArea() != null) {
+			if (requisicion.getCofiaProg() != null) {
+				if (requisicion.getCofiaPy() != null) {
+					if (requisicion.getCofiaFuenteFinanciamiento() != null) {
+						if (requisicion.getPersona() != null
+								&& ((requisicion.getPersona().getNombre() != null && !requisicion
+										.getPersona().getNombre().isEmpty())
+										&& (requisicion.getPersona()
+												.getApellidoPaterno() != null && !requisicion
+												.getPersona()
+												.getApellidoPaterno().isEmpty()) && (requisicion
+										.getPersona().getApellidoMaterno() != null && !requisicion
+										.getPersona().getApellidoMaterno()
+										.isEmpty()))) {
+							if (requisicion.getPosicion() != null) {
+								if (requisicion.getJustificacion() != null) {
+									if (requisicion.getNumeroInventario() != null) {
+										
+										
+										if (requisicionProductos != null
+												&& requisicionProductos.size() > 0) {
+											boolean verificar = true;
+							
+											for (RequisicionProducto item : requisicionProductos) {
+												if(item.getProducto() == null || item.getCantidad() == null){
+													verificar = false;
+													break;
+												}
+											}
+											if(!verificar)
+												mensaje = "Es requerido agregar al menos un producto en la lista de productos";
+										} else
+											mensaje = "Es requerido agregar al menos un producto en la lista de productos";
+										
+										
+									} else
+										mensaje = "Es requerido ingresar el número de inventario";
+								} else
+									mensaje = "Es requerido ingresar una justificación para la requisición";
+							} else
+								mensaje = "Es requerido ingresar el puesto que ocupa " +requisicion.getPersona()
+										.getNombre() + " "+ requisicion.getPersona()
+										.getApellidoPaterno() + " " +requisicion.getPersona()
+										.getApellidoMaterno() + " dentro de la organización";
+						} else 
+							mensaje = "Es requerido el nombre completo del solicitante (Nombre, apellido paterno-materno)";
+					} else 
+						mensaje = "Es requerido seleccionar una fuente de financiamiento";
+				} else 
+					mensaje = "Es requerido seleccionar una opcion PY";
+			} else 
+				mensaje = "Es requerido seleccionar una opcion PROG";
+		} else 
+			mensaje = "Es requerido ingresar el área quien solicita la requisición";
+		return mensaje;
 	}
 
 	private void initDefaultValues() {
+		cofiaPartidaGenericas = cofiaPartidaGenericaService.getAll();
+		cofiaPartidaGenericas = cofiaPartidaGenericaService.getAll();
+		cofiaProgs = cofiaProgService.getAll();
+		cofiaPys = cofiaPyService.getAll();
+		cofiaFuenteFinanciamientos = cofiaFuenteFinanciamientoService.getAll();
+		
+		requisicion.setPersona(new Persona());
+		
+		EstatusRequisicion estatus = estatusRequisicionService.getByClave("RQ");
+		requisiciones = requisicionService.getByEstatusRequisicion(estatus);
+		
 		addNewItemToBill();
 		String folio = "F" + requisicionService.getUltimoFolio();
 		requisicion.setFolio(folio);
+		
+		
 	}
 
 	@AfterCompose
@@ -98,7 +256,12 @@ public class RequisicionVM extends RequisicionVariables {
 	@NotifyChange({ "requisicionProductos", "itemsOnList" })
 	@Command
 	public void addNewItemToBill() {
-		requisicionProductos.add(new RequisicionProducto());
+		RequisicionProducto objeto = new RequisicionProducto();
+		objeto.setCofiaPartidaGenerica(new CofiaPartidaGenerica());
+		
+		if(requisicionProductos == null)
+			requisicionProductos = new ArrayList<RequisicionProducto>();
+		requisicionProductos.add(objeto);
 		itemsOnList = requisicionProductos.size();
 	}
 
@@ -109,8 +272,11 @@ public class RequisicionVM extends RequisicionVariables {
 			if (requisicionProductoSeleccionado != null) {
 				if (requisicionProductos
 						.contains(requisicionProductoSeleccionado)) {
-					requisicionProductos
-							.remove(requisicionProductoSeleccionado);
+					
+					if(requisicion.getIdRequisicion() != null)
+						requisicionProductoService.delete(requisicionProductoSeleccionado);
+					
+					requisicionProductos.remove(requisicionProductoSeleccionado);
 					itemsOnList = requisicionProductos.size();
 					updateTotal();
 				}
@@ -154,7 +320,7 @@ public class RequisicionVM extends RequisicionVariables {
 			@BindingParam("productoSeleccionado") Producto productoSeleccionado) {
 		if (productoSeleccionado != null) {
 			if (!verifyItemsInRequisition(productoSeleccionado)) {
-				if(requisicionProductoSeleccionado == null)
+				if (requisicionProductoSeleccionado == null)
 					requisicionProductoSeleccionado = new RequisicionProducto();
 				requisicionProductoSeleccionado
 						.setProducto(productoSeleccionado);
@@ -166,15 +332,13 @@ public class RequisicionVM extends RequisicionVariables {
 		}
 	}
 
-	
-
 	@SuppressWarnings("static-access")
 	private boolean validateBill() {
 		boolean continuar = true;
 		for (RequisicionProducto requisicionProducto : requisicionProductos) {
 			if (!verifyItemsInRequisition(requisicionProducto.getProducto())) {
 				stockUtils.showSuccessmessage(
-						"Ya existe un producto registrado con esta clave "
+						"Ya existe un pxroducto registrado con esta clave "
 								+ requisicionProducto.getProducto().getClave(),
 						Clients.NOTIFICATION_TYPE_WARNING, 4000, null);
 				continuar = true;
@@ -183,7 +347,7 @@ public class RequisicionVM extends RequisicionVariables {
 		}
 		return continuar;
 	}
-	
+
 	private boolean verifyItemsInRequisition(Producto productoSeleccionado) {
 		for (RequisicionProducto requisicionProducto : requisicionProductos) {
 			if (requisicionProducto.getProducto().getIdProducto() != null
@@ -196,4 +360,72 @@ public class RequisicionVM extends RequisicionVariables {
 		return false;
 	}
 
+	@Command
+	@NotifyChange("*")
+	public void buscarRequisicion(){
+		requisicionProductos = requisicionProductoService.getByRequisicion(requisicion);
+		
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void limpiarFormulario(){
+		requisicionProductos = new ArrayList<RequisicionProducto>();
+		requisicion = new Requisicion();
+		loadItemsKeys();
+		initDefaultValues();
+	}
+	
+	
+	
+	
+	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
+	@Command
+	@NotifyChange("*")
+	public void imprimirRequisicion() {
+		
+		if(requisicion != null && requisicion.getIdRequisicion() != null){
+			if(requisicionProductos == null)
+				requisicionProductos = new ArrayList<RequisicionProducto>();
+			
+			
+			if (requisicionProductos != null) {
+
+				HashMap mapa = new HashMap();
+				mapa.put("folio",requisicion.getFolio());
+				mapa.put("area",requisicion.getArea().getNombre());
+				mapa.put("prog",requisicion.getCofiaProg().getNombre());
+				mapa.put("py",requisicion.getCofiaPy().getNombre());
+				mapa.put("fuente",requisicion.getCofiaFuenteFinanciamiento().getNombre());
+				mapa.put("solicitante",requisicion.getPersona().getApellidoPaterno()
+						+ " " + requisicion.getPersona().getApellidoMaterno()
+						+ " " + requisicion.getPersona().getNombre());
+				mapa.put("puesto",requisicion.getPosicion().getNombre());
+				mapa.put("descripcion",requisicion.getAdscripcion());
+				mapa.put("justificacion",requisicion.getJustificacion());
+				mapa.put("NoInventario",requisicion.getNumeroInventario());
+				
+				
+				
+				List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
+				listaHashsParametros.add(mapa);
+
+				List<AplicacionExterna> aplicaciones = new ArrayList<AplicacionExterna>();
+				AplicacionExterna aplicacion = new AplicacionExterna();
+				aplicacion.setNombre("PDFXCview");
+				aplicaciones.add(aplicacion);				
+
+				stockUtils.showSuccessmessage(
+						generarRequisicionJasper(listaHashsParametros, aplicaciones,
+								requisicionProductos), Clients.NOTIFICATION_TYPE_INFO, 0,
+						null);
+			} else {
+				stockUtils
+						.showSuccessmessage(
+								"NO existe algún resultado de busqueda para generar el reporte (PDF)",
+								Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			}
+		}
+	}
+	
 }

@@ -10,6 +10,7 @@ package com.cplsystems.stock.app.utils;
 public class StockConstants {
 
 	public final static String MODAL_VIEW_PRODUCTOS = "/modulos/productos/utils/buscarProducto.zul";
+	public final static String MODAL_VIEW_DETALLES_REQUISICION = "/modulos/requisicion/requisicionDetalles.zul";
 	public final static String CURRENCY_FORMAT = "###,###,###.00";
 
 	public final static class GLOBAL_PAGES {
@@ -21,11 +22,9 @@ public class StockConstants {
 		
 		public static final String PRODUCTOS_REPORTE_CLASIFICACION = "/modulos/productos/reportesClasificaciones.zul";
 		public static final String PRODUCTOS_REPORTE_MULTIPLES_CODIGOS = "/modulos/productos/reportesMultiplesCodigos.zul";
-		public static final String PRODUCTOS_REPORTE_PRECIO_COSTO = "/modulos/productos/reportesActualizacionPrecioCosto.zul";
 		public static final String PRODUCTOS_REPORTE_COSTO = "/modulos/productos/reportesActualizacionCosto.zul";
 		public static final String PRODUCTOS_REPORTE_PRECIO = "/modulos/productos/reportesActualizacionPrecio.zul";
 		public static final String PRODUCTOS_REPORTE_PRECIO_COSTO_MASIVA = "/modulos/productos/reportesActualizacionPrecioCostoMasiva.zul";
-		
 		public static final String PRODUCTOS_REPORTE_ACTUALIZACION_RAPIDA = "/modulos/productos/reportesActualizacionRapida.zul";
 		public static final String PRODUCTOS_REPORTE_AJUSTE_EXISTENCIA = "/modulos/productos/reportesAjusteExistencia.zul";
 		public static final String PRODUCTOS_REPORTE_ARTICULO_SUSTITUTO = "/modulos/productos/reportesArticuloSustituto.zul";
@@ -33,11 +32,15 @@ public class StockConstants {
 		public static final String PRODUCTOS_REPORTE_REGISTRO_MOVIMIENTO = "/modulos/productos/reportesRegistroMovimiento.zul";
 		public static final String PRODUCTOS_REPORTE_KARDEX = "/modulos/productos/reportesKardex.zul";
 		public static final String PROVEEDORES = "/modulos/proveedores/proveedores.zul";
-		public static final String REQUISICION = "/modulos/requisicion/requisicion.zul";
 		
+		public static final String PROVEEDORES_BUSCADOR = "/modulos/proveedores/proveedoresBuscador.zul";
+		public static final String PROVEEDORES_PRODUCTO = "/modulos/proveedores/proveedoresProducto.zul";
+		
+		
+		
+		public static final String REQUISICION = "/modulos/requisicion/requisicion.zul";
 		public static final String CONCENTRADO = "/modulos/requisicion/concentrado.zul";
 		public static final String COTIZACION = "/modulos/requisicion/cotizacion.zul";
-		
 		public static final String USUARIOS = "/modulos/usuarios/usuario.zul";
 		public static final String CONTROL_PANEL = "/modulos/controlPanel/controlPanel.zul";
 		public static final String REPORTS = "/modulos/reportes/reportes.zul";
@@ -66,5 +69,8 @@ public class StockConstants {
 	public static final String REPORT_PROVEEDOR_NAME_FILE = "C:\\reportProveedores.pdf";
 	public static final String REPORT_PROVEEDOR_PARAM1 = "parameter1";
 	public static final String REPORT_PROVEEDOR_NOMBRE_EMPRESA = "empresaTitle";
-	public static final String REPORT_PRODUCTO_NAME_FILE = "C:\\reportProductos.pdf";
+	public static final String REPORT_VARIABLE_PRODUCTO_NAME_FILE = "C:\\reportProductos.pdf";
+	public static final String REPORT_VARIABLE_REQUISICION_NAME_FILE = "C:\\requisicion.pdf";
+	
+	public static final String NOMBRE_TEMPORAL_USUARIO_SYSTEMA = "NOMBRE TEMPORAL DE LA EMPRESA";
 }
