@@ -52,4 +52,8 @@ public class ProveedorProductoService {
 	public List<ProveedorProducto> getAll() throws DataAccessException {
 		return proveedorProductoDAO.getAll();
 	}
+	
+	public List<ProveedorProducto> getByProductoProveedor(Producto producto, Proveedor proveedor){
+		return proveedorProductoDAO.getByProductoProveedor(producto, proveedor);
+	}
 }

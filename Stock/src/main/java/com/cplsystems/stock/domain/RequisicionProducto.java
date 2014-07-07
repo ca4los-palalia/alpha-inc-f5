@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -22,7 +23,6 @@ import javax.persistence.Transient;
 public class RequisicionProducto {
 	private Long idRequisionProducto;
 	private Float cantidad;
-	private Long idLugar;
 	private String descripcion;
 	private Lugar lugar;
 	private Proveedor proveedor;
@@ -30,8 +30,8 @@ public class RequisicionProducto {
 	private Producto producto;
 	private Float importe;
 	private String partida;
+	private CofiaPartidaGenerica cofiaPartidaGenerica;
 	private Float totalProductoPorUnidad;
-	
 	
 	public RequisicionProducto() {
 		producto = new Producto();
@@ -57,16 +57,7 @@ public class RequisicionProducto {
 		this.cantidad = cantidad;
 	}
 
-	@Column(name = "idLugar", length = 250)
-	public Long getIdLugar() {
-		return idLugar;
-	}
-
-	public void setIdLugar(Long idLugar) {
-		this.idLugar = idLugar;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne//@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "lugar")
 	public Lugar getLugar() {
 		return lugar;
@@ -76,7 +67,7 @@ public class RequisicionProducto {
 		this.lugar = lugar;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne//@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proveedor")
 	public Proveedor getProveedor() {
 		return proveedor;
@@ -86,7 +77,7 @@ public class RequisicionProducto {
 		this.proveedor = proveedor;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne//@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "requisicion")
 	public Requisicion getRequisicion() {
 		return requisicion;
@@ -96,7 +87,7 @@ public class RequisicionProducto {
 		this.requisicion = requisicion;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne//@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
 		return producto;
@@ -144,5 +135,13 @@ public class RequisicionProducto {
 	public void setTotalProductoPorUnidad(Float totalProductoPorUnidad) {
 		this.totalProductoPorUnidad = totalProductoPorUnidad;
 	}
-	
+	@OneToOne
+	@JoinColumn(name = "cofiaPartidaGenerica")
+	public CofiaPartidaGenerica getCofiaPartidaGenerica() {
+		return cofiaPartidaGenerica;
+	}
+
+	public void setCofiaPartidaGenerica(CofiaPartidaGenerica cofiaPartidaGenerica) {
+		this.cofiaPartidaGenerica = cofiaPartidaGenerica;
+	}
 }

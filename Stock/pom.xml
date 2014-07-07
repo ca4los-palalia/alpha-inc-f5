@@ -254,12 +254,7 @@
 			<artifactId>commons-logging</artifactId>
 			<version>1.1</version>
 		</dependency>
-  
-		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
-			<version>1.7.5</version>
-		</dependency>
+
 
 		<dependency>
 			<groupId>com.lowagie</groupId>
@@ -272,6 +267,13 @@
 			<artifactId>jasperreports</artifactId>
 			<version>4.1.1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>net.sf.barcode4j</groupId>
+			<artifactId>barcode4j</artifactId>
+			<version>2.1</version>
+		</dependency>
+
 
 	</dependencies>
 	<build>

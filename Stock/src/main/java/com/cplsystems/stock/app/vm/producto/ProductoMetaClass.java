@@ -74,43 +74,43 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 		unidadesDB = unidadService.getAll();
 		productosNaturalezas = productoNaturalezaService.getAll();
 		readJasper = generarUrlString("jasperTemplates/reportProduct.jasper");
-		//enableComboBoxUnidades = true;
+		// enableComboBoxUnidades = true;
 		cargarListaPrecios();
 		crearFuncionesModificaciones();
 		modoDeBusqueda.setTipoFamilia(true);
 		modoDeBusqueda.setTipoPersonalizado(true);
 	}
 
-	private void crearFuncionesModificaciones(){
+	private void crearFuncionesModificaciones() {
 		funcionesModificaciones = new ArrayList<FuncionesModificacion>();
 		FuncionesModificacion item1 = new FuncionesModificacion();
 		item1.setIdentificador(1);
 		item1.setNombre("Margen o factor");
-		
+
 		FuncionesModificacion item2 = new FuncionesModificacion();
 		item2.setIdentificador(2);
 		item2.setNombre("Precio");
-		
+
 		FuncionesModificacion item3 = new FuncionesModificacion();
 		item3.setIdentificador(3);
 		item3.setNombre("Máximo costo");
-		
+
 		FuncionesModificacion item4 = new FuncionesModificacion();
 		item4.setIdentificador(4);
 		item4.setNombre("Incremento precio por porcentaje");
-		
+
 		FuncionesModificacion item5 = new FuncionesModificacion();
 		item5.setIdentificador(5);
 		item5.setNombre("Incrementar precios en valor");
-		
+
 		FuncionesModificacion item6 = new FuncionesModificacion();
 		item6.setIdentificador(6);
 		item6.setNombre("Incrementar máximo costo por porcentaje");
-		
+
 		FuncionesModificacion item7 = new FuncionesModificacion();
 		item7.setIdentificador(7);
 		item7.setNombre("Incrementar máximo costo en valor");
-		
+
 		funcionesModificaciones.add(item1);
 		funcionesModificaciones.add(item2);
 		funcionesModificaciones.add(item3);
@@ -119,7 +119,7 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 		funcionesModificaciones.add(item6);
 		funcionesModificaciones.add(item7);
 	}
-	
+
 	private void cargarListaPrecios() {
 		ClasificacionPrecios precioMinimo = new ClasificacionPrecios();
 		precioMinimo.setNombre("Precio Minimo");
@@ -138,10 +138,9 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 		precios.add(precioMaximo);
 		precios.add(precioPromedio);
 		precios.add(precioPersonalizado);
-		
-		
+
 	}
-	
+
 	public String validarNuevoProducto() {
 		String validacion = "";
 		if (producto.getClave() != null && !producto.getClave().isEmpty())
@@ -151,7 +150,52 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 					if (producto.getModelo() != null
 							&& !producto.getModelo().isEmpty())
 						if (producto.getUnidad() != null)
-							System.err.println();
+							if (producto.getActivo())
+								if (producto.getProductoNaturaleza() != null) {
+
+									if (producto.getProductoNaturaleza()
+											.getSimbolo().equals("PRO")) {
+										if ((producto.getMaximo() != null && producto
+												.getMaximo() > 0)
+												&& (producto.getMinimo() != null && producto
+														.getMinimo() > 0)) {
+											if (producto.getMaximo() < producto
+													.getMinimo())
+												validacion = "Existencia maxima no puede ser menor al minimo";
+											else if (producto.getMinimo() > producto
+													.getMaximo())
+												validacion = "Existencia minima no puede ser mayor al maximo";
+										} else
+											validacion = "Es requerido el minimo y maximo de existencia para un producto";
+									}
+
+									if (validacion.isEmpty()) {
+										if (familiasProductos != null
+												&& familiasProductos.size() > 0) {
+
+											if ((producto.getPrecio() != null && producto
+													.getPrecio() > 1)
+													|| (producto.getPrecio2() != null && producto
+															.getPrecio2() > 1)
+													|| (producto.getPrecio3() != null && producto
+															.getPrecio3() > 1)
+													|| (producto.getPrecio4() != null && producto
+															.getPrecio4() > 1)
+													|| (producto.getPrecio5() != null && producto
+															.getPrecio5() > 1)
+
+											) {
+
+											} else
+												validacion = "Es necesario asignar al menos un precio para el articulo/servicio";
+										} else
+											validacion = "El nuevo registro debe ser agregado al menos a una familia";
+									}
+
+								} else
+									validacion = "Es necesario marcar la naturaleza del nuevo registro (producto/servicio)";
+							else
+								validacion = "Es necesario marcar com producto activo";
 						else
 							validacion = "La unidad de medida del producto es requerido";
 					else
@@ -162,7 +206,7 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 				validacion = "El nombre del producto es requerido";
 		else
 			validacion = "La clave del producto es requerido";
-		
+
 		return validacion;
 	}
 
@@ -192,38 +236,35 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 
 			print = JasperFillManager.fillReport(readJasper, hashParametros,
 					new JRBeanCollectionDataSource(lista));
-
-			jviewer = new JasperViewer(print, false);
+			
 			JasperExportManager.exportReportToPdfFile(print,
-					StockConstants.REPORT_PRODUCTO_NAME_FILE);
-			openPdf(StockConstants.REPORT_PRODUCTO_NAME_FILE);
+					StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE);
+			openPdf(StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE);
 			mensaje = "PDF del reporte generado: "
-					+ StockConstants.REPORT_PRODUCTO_NAME_FILE;
-			// jviewer.setVisible(true);
+					+ StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE;
 
 		} catch (JRException e) {
-			
+
 			e.printStackTrace();
 			for (AplicacionExterna aplicacion : aplicaciones)
 				closePdf(aplicacion.getNombre());
 
 			try {
 				JasperExportManager.exportReportToPdfFile(print,
-						StockConstants.REPORT_PRODUCTO_NAME_FILE);
-				openPdf(StockConstants.REPORT_PRODUCTO_NAME_FILE);
+						StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE);
+				openPdf(StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE);
 				mensaje = "PDF del reporte generado: "
-						+ StockConstants.REPORT_PRODUCTO_NAME_FILE;
+						+ StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE;
 			} catch (JRException e1) {
 			}
 		}
 		return mensaje;
 	}
 
-	
 	public void processImageUpload(Object event) {
-		
+
 		boolean processFile = false;
-		
+
 		UploadEvent upEvent = null;
 		Object objUploadEvent = event;
 		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent)) {
@@ -239,18 +280,18 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 				 * return; } else {
 				 */
 				imagenProducto = (AImage) media;// Initialize the bind object to
-											// show image in zul page and
-											// Notify it also
-				
-				copiarArchivo(media, "C:\\Stock\\Users\\" + upEvent.getMedia().getName());
+				// show image in zul page and
+				// Notify it also
+
+				copiarArchivo(media, "C:\\Stock\\Users\\"
+						+ upEvent.getMedia().getName());
 				// }
 			}
 		}
 	}
-	
-	
-	private void copiarArchivo(Media media, String destino){
-		
+
+	private void copiarArchivo(Media media, String destino) {
+
 		try {
 			File dst = new File(destino);
 			Files.copy(dst, media.getStreamData());
@@ -258,32 +299,35 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 			e.printStackTrace();
 		}
 	}
-	
-	public String detectarEliminacionDeProducto(Producto producto){
-		String mensaje = "";
-		
-		if(requisicionProductoService.getByProducto(producto) != null)
-			mensaje = producto.getNombre() + " se encuentra en el catalogo de requisicion producto";
-		
-		if(mensaje.equals(""))
-			if(proveedorProductoService.getByProducto(producto) != null)
-				mensaje = producto.getNombre() + " se encuentra en el catalogo de proveedor producto";
 
-		if(mensaje.equals(""))
-			if(familiasProductoService.getByProducto(producto) != null)
-				mensaje = producto.getNombre() + " esta asignado al catalogo familias";
-		
-		if(mensaje.equals(""))
-			if(codigoBarrasProductoService.getByProducto(producto) != null)
-				mensaje = producto.getNombre() + " tiene asignado codigos de barras";
-		
-		if(mensaje.equals(""))
-			if(costosProductoService.getByProducto(producto) != null)
+	public String detectarEliminacionDeProducto(Producto producto) {
+		String mensaje = "";
+
+		if (requisicionProductoService.getByProducto(producto) != null)
+			mensaje = producto.getNombre()
+					+ " se encuentra en el catalogo de requisicion producto";
+
+		if (mensaje.equals(""))
+			if (proveedorProductoService.getByProducto(producto) != null)
+				mensaje = producto.getNombre()
+						+ " se encuentra en el catalogo de proveedor producto";
+
+		if (mensaje.equals(""))
+			if (familiasProductoService.getByProducto(producto) != null)
+				mensaje = producto.getNombre()
+						+ " esta asignado al catalogo familias";
+
+		if (mensaje.equals(""))
+			if (codigoBarrasProductoService.getByProducto(producto) != null)
+				mensaje = producto.getNombre()
+						+ " tiene asignado codigos de barras";
+
+		if (mensaje.equals(""))
+			if (costosProductoService.getByProducto(producto) != null)
 				mensaje = producto.getNombre() + " tiene asignado costos";
-		
-		
-		//ELIMMINAR DEL PRODUCTO LOS CATALOGO DE COSTOS
-		//CODIGOS DE BARRAS
+
+		// ELIMMINAR DEL PRODUCTO LOS CATALOGO DE COSTOS
+		// CODIGOS DE BARRAS
 		return mensaje;
 	}
 }

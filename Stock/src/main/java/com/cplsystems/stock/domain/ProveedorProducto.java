@@ -6,9 +6,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "proveedorProducto")
@@ -70,7 +71,7 @@ public class ProveedorProducto {
 		this.precioFinal = precioFinal;
 	}
 
-	@ManyToOne (fetch = FetchType.LAZY)
+	@OneToOne//@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name = "proveedor")
 	public Proveedor getProveedor() {
 		return proveedor;
@@ -81,7 +82,7 @@ public class ProveedorProducto {
 		this.proveedor = proveedor;
 	}
     
-	@ManyToOne (fetch = FetchType.LAZY)
+	@OneToOne//@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
 		return producto;

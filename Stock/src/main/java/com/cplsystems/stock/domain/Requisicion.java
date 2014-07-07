@@ -18,26 +18,23 @@ public class Requisicion {
 	private Long idRequisicion;
 	private String emailAlmacenista;
 	private String clave;
-//	private Long entregarEn;
-	//private Direccion entregarEn;
 	private Calendar fecha;
 	private Calendar fechaEntrega;
 	private Calendar fechaSolicitudProveedor;
 	private Proyecto proyecto;
 	private String emailPersonaRevisoRequisicion;
 	private String emailPersonaSolicitante;
-	private String status;
 	private Area area;
 	private Posicion posicion; //Puesto
-	private String prog;
-	private String py;
 	private Persona persona;//Solicitante
 	private String adscripcion;
 	private String justificacion;
-	private String partidaGenerica;
-	private String fuenteFinanciamiento;
+	private CofiaProg cofiaProg;
+	private CofiaPy cofiaPy;
+	private CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento; 
 	private Long numeroInventario;
 	private String folio;
+	private EstatusRequisicion estatusRequisicion;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,15 +64,6 @@ public class Requisicion {
 	public void setClave(String clave) {
 		this.clave = clave;
 	}
-/*
-	@Column(name = "entregarEn", nullable = false)
-	public Long getEntregarEn() {
-		return entregarEn;
-	}
-
-	public void setEntregarEn(Long entregarEn) {
-		this.entregarEn = entregarEn;
-	}*/
 
 	@Column(name = "fecha", length = 250)
 	public Calendar getFecha() {
@@ -123,15 +111,6 @@ public class Requisicion {
 		this.emailPersonaSolicitante = emailPersonaSolicitante;
 	}
 
-	@Column(name = "status", length = 250)
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	@OneToOne
 	@JoinColumn(name = "proyecto")
 	public Proyecto getProyecto() {
@@ -141,16 +120,6 @@ public class Requisicion {
 	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
 	}
-
-	/*@OneToOne
-	@JoinColumn(name = "entregarEn")
-	public Direccion getEntregarEn() {
-		return entregarEn;
-	}
-
-	public void setEntregarEn(Direccion entregarEn) {
-		this.entregarEn = entregarEn;
-	}*/
 
 	@OneToOne
 	@JoinColumn(name = "area")
@@ -176,24 +145,7 @@ public class Requisicion {
 	 * **/
 	public void setPosicion(Posicion posicion) {
 		this.posicion = posicion;
-	}
-
-	@Column
-	public String getProg() {
-		return prog;
-	}
-
-	public void setProg(String prog) {
-		this.prog = prog;
-	}
-	@Column
-	public String getPy() {
-		return py;
-	}
-
-	public void setPy(String py) {
-		this.py = py;
-	}
+	}	
 	@Column
 	public String getAdscripcion() {
 		return adscripcion;
@@ -209,22 +161,6 @@ public class Requisicion {
 
 	public void setJustificacion(String justificacion) {
 		this.justificacion = justificacion;
-	}
-	@Column
-	public String getPartidaGenerica() {
-		return partidaGenerica;
-	}
-
-	public void setPartidaGenerica(String partidaGenerica) {
-		this.partidaGenerica = partidaGenerica;
-	}
-	@Column
-	public String getFuenteFinanciamiento() {
-		return fuenteFinanciamiento;
-	}
-
-	public void setFuenteFinanciamiento(String fuenteFinanciamiento) {
-		this.fuenteFinanciamiento = fuenteFinanciamiento;
 	}
 	@Column
 	public Long getNumeroInventario() {
@@ -257,6 +193,48 @@ public class Requisicion {
 
 	public void setFolio(String folio) {
 		this.folio = folio;
+	}
+
+	
+
+	@OneToOne
+	@JoinColumn(name = "cofiaProg")
+	public CofiaProg getCofiaProg() {
+		return cofiaProg;
+	}
+
+	public void setCofiaProg(CofiaProg cofiaProg) {
+		this.cofiaProg = cofiaProg;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "cofiaPy")
+	public CofiaPy getCofiaPy() {
+		return cofiaPy;
+	}
+
+	public void setCofiaPy(CofiaPy cofiaPy) {
+		this.cofiaPy = cofiaPy;
+	}
+	@OneToOne
+	@JoinColumn(name = "cofiaFuenteFinanciamiento")
+	public CofiaFuenteFinanciamiento getCofiaFuenteFinanciamiento() {
+		return cofiaFuenteFinanciamiento;
+	}
+
+	public void setCofiaFuenteFinanciamiento(
+			CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento) {
+		this.cofiaFuenteFinanciamiento = cofiaFuenteFinanciamiento;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "estatusRequisicion")
+	public EstatusRequisicion getEstatusRequisicion() {
+		return estatusRequisicion;
+	}
+
+	public void setEstatusRequisicion(EstatusRequisicion estatusRequisicion) {
+		this.estatusRequisicion = estatusRequisicion;
 	}
 	
 }

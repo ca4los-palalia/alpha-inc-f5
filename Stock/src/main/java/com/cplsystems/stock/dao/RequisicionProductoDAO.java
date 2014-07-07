@@ -5,6 +5,7 @@ package com.cplsystems.stock.dao;
 
 import java.util.List;
 
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Lugar;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
@@ -26,6 +27,8 @@ public interface RequisicionProductoDAO {
 	public List<RequisicionProducto> getByProducto(Producto producto);
 
 	public List<RequisicionProducto> getByRequisicion(Requisicion requisicion);
+	
+	public List<RequisicionProducto> getRequisicionesConEstadoEspecifico(EstatusRequisicion estatusRequisicion);
 
 	public List<RequisicionProducto> getByProveedor(Proveedor proveedor);
 
@@ -34,6 +37,9 @@ public interface RequisicionProductoDAO {
 	public List<RequisicionProducto> getAll();
 	
 	public List<RequisicionProducto> getAllRequisiciones();
+	
+	public List<Proveedor> getAllDistinctByProveedor();
+	
 	
 	
 }

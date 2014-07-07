@@ -7,9 +7,16 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.domain.CofiaPartidaGenerica;
+import com.cplsystems.stock.domain.CofiaProg;
+import com.cplsystems.stock.domain.CofiaPy;
 import com.cplsystems.stock.services.AreaService;
 import com.cplsystems.stock.services.BancoService;
 import com.cplsystems.stock.services.CodigoBarrasProductoService;
+import com.cplsystems.stock.services.CofiaFuenteFinanciamientoService;
+import com.cplsystems.stock.services.CofiaPartidaGenericaService;
+import com.cplsystems.stock.services.CofiaProgService;
+import com.cplsystems.stock.services.CofiaPyService;
 import com.cplsystems.stock.services.ContactoService;
 import com.cplsystems.stock.services.ContratoService;
 import com.cplsystems.stock.services.CostosProductoService;
@@ -18,7 +25,9 @@ import com.cplsystems.stock.services.CuentasPagoService;
 import com.cplsystems.stock.services.DireccionService;
 import com.cplsystems.stock.services.EmailService;
 import com.cplsystems.stock.services.EstadoService;
+import com.cplsystems.stock.services.EstatusRequisicionService;
 import com.cplsystems.stock.services.FamiliasProductoService;
+import com.cplsystems.stock.services.GiroService;
 import com.cplsystems.stock.services.MonedaService;
 import com.cplsystems.stock.services.MunicipioService;
 import com.cplsystems.stock.services.PaisService;
@@ -130,4 +139,22 @@ public abstract class ServiceLayer extends DataLayer {
 	
 	@WireVariable
 	protected CostosProductoService costosProductoService;
+	
+	@WireVariable
+	protected GiroService giroService;
+	
+	@WireVariable
+	protected CofiaPartidaGenericaService cofiaPartidaGenericaService;
+	
+	@WireVariable
+	protected CofiaProgService cofiaProgService;
+	
+	@WireVariable
+	protected CofiaPyService cofiaPyService;
+	
+	@WireVariable
+	protected CofiaFuenteFinanciamientoService cofiaFuenteFinanciamientoService;
+	
+	@WireVariable
+	protected EstatusRequisicionService estatusRequisicionService;
 }

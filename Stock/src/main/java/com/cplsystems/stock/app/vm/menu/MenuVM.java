@@ -46,11 +46,7 @@ public class MenuVM extends BasicStructure {
 	public void showProductsReportesArticulos() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_ARTICULOS);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-		System.out.println("MenuVM.showProductsReportesArticulos()");
 	}
-
-	
-	/****/
 	
 	@Command
 	public void showProductsReportesClasificacion() {
@@ -58,6 +54,7 @@ public class MenuVM extends BasicStructure {
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
 		System.out.println("MenuVM.showProductsReportesArticulos()");
 	}
+	
 	@Command
 	public void showProductsReportesCodigos() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_MULTIPLES_CODIGOS);
@@ -66,20 +63,14 @@ public class MenuVM extends BasicStructure {
 	}
 	
 	@Command
-	public void showProductsReportesPrecioCosto() {
-		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_PRECIO_COSTO);
+	public void showProductsReportesCosto() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_COSTO);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
 	}
 	
 	@Command
 	public void showProductsReportesPrecio() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_PRECIO);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-	
-	@Command
-	public void showProductsReportesCosto() {
-		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_COSTO);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
 	}
 	
@@ -117,26 +108,31 @@ public class MenuVM extends BasicStructure {
 	public void showProductsReportesRregistroMovimiento() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_REGISTRO_MOVIMIENTO);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-		System.out.println("MenuVM.showProductsReportesArticulos()");
 	}
 	@Command
 	public void showProductsReportesKardex() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_KARDEX);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-		System.out.println("MenuVM.showProductsReportesArticulos()");
 	}
-	/****/
-	
-	
-	
-	
 	
 	@Command
 	public void showProviders() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PROVEEDORES);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);		
 	}
-
+	
+	@Command
+	public void showProvidersSearch() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PROVEEDORES_BUSCADOR);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);		
+	}
+	
+	@Command
+	public void showProvidersProduct() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PROVEEDORES_PRODUCTO);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);		
+	}
+	
 	@Command
 	public void showRequisitions() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.REQUISICION);

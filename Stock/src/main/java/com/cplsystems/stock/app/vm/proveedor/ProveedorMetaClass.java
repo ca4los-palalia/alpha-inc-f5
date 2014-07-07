@@ -21,6 +21,7 @@ import org.zkoss.zk.ui.util.Clients;
 
 import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.StockConstants;
+import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
 import com.cplsystems.stock.domain.Banco;
 import com.cplsystems.stock.domain.Contacto;
@@ -93,6 +94,7 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 		bancosDB = bancoService.getAll();
 		monedasDB = monedaService.getAll();
 		paisProveedor = paisService.findById(157L);
+		giros = giroService.getAll();
 		generarBotonesMenu();
 
 	}
@@ -116,6 +118,7 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 		botonMuenu7.setNumero(7);
 		botonMuenu8.setNombre("Exportar");
 		botonMuenu8.setNumero(8);
+		proveedoresAsociacionSelected = new Proveedor();
 	}
 
 	public String validarEntradaDatosProveedor() {
@@ -248,7 +251,9 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 			direccionProveedor.setPais(paisProveedor);
 			direccionProveedor.setNumExt(direccionProveedor.getNumExt()
 					.toUpperCase());
-			direccionProveedor.setNumInt(direccionProveedor.getNumInt()
+			
+			if(direccionProveedor.getNumInt() != null)
+				direccionProveedor.setNumInt(direccionProveedor.getNumInt()
 					.toUpperCase());
 			direccionService.save(direccionProveedor);
 			guardadoDireccionProveedor = true;
@@ -286,7 +291,6 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 									.toUpperCase()
 							+ estadoProveedor.getNombre().substring(0, 1)
 									.toUpperCase());
-
 			nuevoProveedor.setFechaActualizacion(Calendar.getInstance());
 			proveedorService.save(nuevoProveedor);
 			guardadoNuevoProveedor = true;
@@ -300,11 +304,22 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 			guardadoCuentaPago = true;
 		}
 
+		if (contrato != null
+				&& (contrato.getFechaVigenciaInicio() != null && contrato
+						.getFechaVigenciaFin() != null)) {
+			contratoService.save(contrato);
+			nuevoProveedor.setContrato(contrato);
+		}
 	}
 
 	public void actualizarProveedorCambios() {
-		for (Proveedor proveedor : proveedoresLista) {
-			proveedorService.update(proveedor);
+		/*
+		 * for (Proveedor proveedor : proveedoresLista) {
+		 * proveedorService.update(proveedor); }
+		 */
+
+		if (proveedorSelected != null) {
+			proveedorService.save(proveedorSelected);
 		}
 	}
 
@@ -321,21 +336,19 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 			if (productosDB != null) {
 
 				for (Producto productoSeleccionado : productosDB) {
-					if (productoSeleccionado.isSeleccionar()) {
+					if (productoSeleccionado.isSeleccionar()) { // leer solo
+																// productos
+																// seleccionados
+
+						List<ProveedorProducto> proveedorProducto = proveedorProductoService
+								.getByProductoProveedor(productoSeleccionado,
+										proveedoresAsociacionSelected);
 
 						boolean guardarProducto = true;
-						for (ProveedorProducto proveedorProducto : proveedoresAsociacionSelected
-								.getProveedorProducto()) {
-							if (proveedorProducto.getProducto() == null) {
-								guardarProducto = false;
-								break;
-							} else if (proveedorProducto.getProducto()
-									.getClave()
-									.equals(productoSeleccionado.getClave())) {
-								guardarProducto = false;
-								break;
-							}
-						}
+
+						if (proveedorProducto != null
+								&& proveedorProducto.size() > 0)
+							guardarProducto = false;
 
 						if (guardarProducto) {
 							ProveedorProducto nuevoProveedorProducto = new ProveedorProducto();
@@ -343,22 +356,11 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 									.setProveedor(proveedoresAsociacionSelected);
 							nuevoProveedorProducto
 									.setProducto(productoSeleccionado);
-							proveedoresAsociacionSelected
-									.getProveedorProducto().add(
-											nuevoProveedorProducto);// agregar
-																	// nuevo
-																	// producto
-																	// a la
-																	// lista de
-																	// proveedor
-																	// para ser
-																	// mostrada
 							proveedorProductoService
 									.save(nuevoProveedorProducto);
 							actualizados++;
 						} else
 							noActualizados++;
-
 					}
 				}
 				for (Producto producto : productosDB) {
@@ -366,6 +368,8 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 						producto.setSeleccionar(false);
 					}
 				}
+				proveedorProductos = proveedorProductoService
+						.getByProveedor(proveedoresAsociacionSelected);
 				if (noActualizados > 0)
 					mensajeNoActualizado = "Se detectaron productos existentes para este proveedor ["
 							+ noActualizados + "].";
@@ -394,13 +398,14 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 	public void quitarProductosDeProveedor() {
 		Integer registrosRemovidos = 0;
 
-		if (proveedoresAsociacionSelected != null) {
+		if (proveedoresAsociacionSelected != null) {// SELECCIONAR PROVEEDOR
 
-			if (proveedoresAsociacionSelected.getProveedorProducto() != null) {
+			/** RECODIFICAR CODIGO **/
+
+			if (proveedorProductos != null && proveedorProductos.size() > 0) {//LISTA DE PRODUCTOS DEL PROVEEDOR SELECCIOADO NO ESTE VACIA
 				List<ProveedorProducto> removerProductos = new ArrayList<ProveedorProducto>();
 
-				for (ProveedorProducto proveedorProducto : proveedoresAsociacionSelected
-						.getProveedorProducto()) {
+				for (ProveedorProducto proveedorProducto : proveedorProductos) {
 					if (proveedorProducto.getProducto().isSeleccionar()) {
 						removerProductos.add(proveedorProducto);
 
@@ -409,8 +414,10 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 					}
 					proveedorProducto.getProducto().setSeleccionar(false);
 				}
-				proveedoresAsociacionSelected = proveedorService
-						.getById(proveedoresAsociacionSelected.getIdProveedor());
+				/*proveedoresAsociacionSelected = proveedorService
+						.getById(proveedoresAsociacionSelected.getIdProveedor());*/
+				
+				proveedorProductos = proveedorProductoService.getByProveedor(proveedoresAsociacionSelected);
 				String mensaje = "";
 
 				if (registrosRemovidos > 0)
@@ -428,6 +435,7 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 						+ proveedoresAsociacionSelected.getNombre()
 						+ "- no cuenta con productos. Nada que eliminar",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+
 		} else {
 			stockUtils.showSuccessmessage(
 					"No ha sido seleccionado un proveedor",
@@ -455,11 +463,11 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String generarReporteProveedor(List<HashMap> listaHashsParametros, List<AplicacionExterna> aplicaciones) {
+	public String generarReporteProveedor(List<HashMap> listaHashsParametros,
+			List<AplicacionExterna> aplicaciones) {
 		String mensaje = "";
 
-		HashMap hashParametros =  
-				construirHashMapParametros(listaHashsParametros);
+		HashMap hashParametros = construirHashMapParametros(listaHashsParametros);
 
 		try {
 
@@ -475,7 +483,7 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 			// jviewer.setVisible(true);
 
 		} catch (JRException e) {
-			
+
 			for (AplicacionExterna aplicacion : aplicaciones)
 				closePdf(aplicacion.getNombre());
 
@@ -491,7 +499,42 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 		return mensaje;
 	}
 
-	
+	@Command
+	@NotifyChange("*")
+	public void obtenerInformacionProveedorBuscado() {
+		if (proveedorSelected != null) {
+			List<CuentaPago> cp = cuentasPagoService
+					.getByProveedor(proveedorSelected);
+			if (cp != null) {
+				cuentaPago = cp.get(0);
+				monedaSeleccionada = cuentaPago.getMoneda();
+				bancoSeleccionado = cuentaPago.getBanco();
+			}
 
-	
+			if (proveedorSelected.getContrato() != null) {
+				contratoVigenciaInicio = new StockUtils()
+						.convertirCalendarToDate(proveedorSelected
+								.getContrato().getFechaVigenciaInicio());
+				contratoVigenciaFin = new StockUtils()
+						.convertirCalendarToDate(proveedorSelected
+								.getContrato().getFechaVigenciaFin());
+			}
+			if(proveedorProductos == null)
+				proveedorProductos = new ArrayList<ProveedorProducto>();
+			proveedorProductos = proveedorProductoService
+					.getByProveedor(proveedorSelected);
+
+		}
+	}
+
+	// cuentaPago
+
+	@Command
+	@NotifyChange("proveedorProductos")
+	public void seleccionarProveedorRelacionProducto() {
+		if (proveedoresAsociacionSelected != null)
+			proveedorProductos = proveedorProductoService
+					.getByProveedor(proveedoresAsociacionSelected);
+	}
+
 }

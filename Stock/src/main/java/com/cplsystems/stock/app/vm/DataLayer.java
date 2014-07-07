@@ -4,7 +4,6 @@
 package com.cplsystems.stock.app.vm;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.jasperreports.engine.JasperPrint;
@@ -12,12 +11,15 @@ import net.sf.jasperreports.view.JasperViewer;
 
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.AImage;
-import org.zkoss.zul.TreeModel;
 
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
 import com.cplsystems.stock.domain.CodigoBarrasProducto;
+import com.cplsystems.stock.domain.CofiaFuenteFinanciamiento;
+import com.cplsystems.stock.domain.CofiaPartidaGenerica;
+import com.cplsystems.stock.domain.CofiaProg;
+import com.cplsystems.stock.domain.CofiaPy;
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Contrato;
 import com.cplsystems.stock.domain.CostosProducto;
@@ -25,7 +27,9 @@ import com.cplsystems.stock.domain.CuentaPago;
 import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Email;
 import com.cplsystems.stock.domain.Estado;
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.FamiliasProducto;
+import com.cplsystems.stock.domain.Giro;
 import com.cplsystems.stock.domain.Moneda;
 import com.cplsystems.stock.domain.Municipio;
 import com.cplsystems.stock.domain.Pais;
@@ -81,6 +85,10 @@ public class DataLayer implements Serializable {
 	protected Proveedor proveedoresAsociacionSelected;
 	protected Persona representanteLegal;
 	protected Requisicion requisicion;
+	protected CofiaPartidaGenerica cofiaPartidaGenerica;
+	protected CofiaProg cofiaProg;
+	protected CofiaPy cofiaPy;
+	protected CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento;
 	protected Telefono telefonoContacto;
 	protected Telefono telefonoProveedor;
 	protected Usuario usuarioProveedor;
@@ -95,12 +103,17 @@ public class DataLayer implements Serializable {
 	protected CodigoBarrasProducto codigoBarrasProducto;
 	protected CostosProducto costosProducto;
 	protected CostosProducto costosProductoNuevo;
+	protected Giro giro;
+	protected EstatusRequisicion estatusRequisicion;
 	protected String readJasper;
 	protected JasperPrint print;
 	protected JasperViewer jviewer;
 	protected AImage imagenProducto;
 	
-		
+	protected List<CofiaFuenteFinanciamiento> cofiaFuenteFinanciamientos;
+	protected List<CofiaPartidaGenerica> cofiaPartidaGenericas;
+	protected List<CofiaProg> cofiaProgs;
+	protected List<CofiaPy> cofiaPys;
 	protected List<CostosProducto> costosProductos;
 	protected List<CodigoBarrasProducto> codigosBarrasProductos;
 	protected List<FamiliasProducto> familiasProductos;
@@ -112,7 +125,7 @@ public class DataLayer implements Serializable {
 	protected List<Moneda> monedasDB;
 	protected List<ProveedorProducto> proveedorProductos;
 	protected List<Unidad> unidadesDB;
-	
+	protected List<EstatusRequisicion> estatusRequisiciones;
 	protected List<Contrato> contratos;
 	protected List<Estado> estados;
 	protected List<Pais> paises;
@@ -123,7 +136,7 @@ public class DataLayer implements Serializable {
 	protected List<Area> areas;
 	protected List<Posicion> posiciones;
 	protected List<ProductoNaturaleza> productosNaturalezas;
-
+	protected List<Giro> giros;
 	
 	public Producto getProducto() {
 		return producto;
@@ -582,6 +595,89 @@ public class DataLayer implements Serializable {
 
 	public void setImagenProducto(AImage imagenProducto) {
 		this.imagenProducto = imagenProducto;
+	}
+
+	public Giro getGiro() {
+		return giro;
+	}
+
+	public void setGiro(Giro giro) {
+		this.giro = giro;
+	}
+
+	public List<Giro> getGiros() {
+		return giros;
+	}
+
+	public void setGiros(List<Giro> giros) {
+		this.giros = giros;
+	}
+
+	public CofiaPartidaGenerica getCofiaPartidaGenerica() {
+		return cofiaPartidaGenerica;
+	}
+
+	public void setCofiaPartidaGenerica(CofiaPartidaGenerica cofiaPartidaGenerica) {
+		this.cofiaPartidaGenerica = cofiaPartidaGenerica;
+	}
+
+	public CofiaProg getCofiaProg() {
+		return cofiaProg;
+	}
+
+	public void setCofiaProg(CofiaProg cofiaProg) {
+		this.cofiaProg = cofiaProg;
+	}
+
+	public CofiaPy getCofiaPy() {
+		return cofiaPy;
+	}
+
+	public void setCofiaPy(CofiaPy cofiaPy) {
+		this.cofiaPy = cofiaPy;
+	}
+
+	public List<CofiaPartidaGenerica> getCofiaPartidaGenericas() {
+		return cofiaPartidaGenericas;
+	}
+
+	public void setCofiaPartidaGenericas(
+			List<CofiaPartidaGenerica> cofiaPartidaGenericas) {
+		this.cofiaPartidaGenericas = cofiaPartidaGenericas;
+	}
+
+	public List<CofiaProg> getCofiaProgs() {
+		return cofiaProgs;
+	}
+
+	public void setCofiaProgs(List<CofiaProg> cofiaProgs) {
+		this.cofiaProgs = cofiaProgs;
+	}
+
+	public List<CofiaPy> getCofiaPys() {
+		return cofiaPys;
+	}
+
+	public void setCofiaPys(List<CofiaPy> cofiaPys) {
+		this.cofiaPys = cofiaPys;
+	}
+
+	public CofiaFuenteFinanciamiento getCofiaFuenteFinanciamiento() {
+		return cofiaFuenteFinanciamiento;
+	}
+
+	public void setCofiaFuenteFinanciamiento(
+			CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento) {
+		this.cofiaFuenteFinanciamiento = cofiaFuenteFinanciamiento;
+	}
+
+	public List<CofiaFuenteFinanciamiento> getCofiaFuenteFinanciamientos() {
+		return cofiaFuenteFinanciamientos;
+	}
+
+	public void setCofiaFuenteFinanciamientos(
+			List<CofiaFuenteFinanciamiento> cofiaFuenteFinanciamientos) {
+		this.cofiaFuenteFinanciamientos = cofiaFuenteFinanciamientos;
 	}
 	
 }

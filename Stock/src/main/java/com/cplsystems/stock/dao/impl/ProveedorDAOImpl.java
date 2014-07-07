@@ -37,7 +37,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 
 	@Transactional
 	public void save(Proveedor proveedor) {
-		getHibernateTemplate().save(proveedor);
+		getHibernateTemplate().saveOrUpdate(proveedor);
 	}
 
 	@Transactional
@@ -169,24 +169,25 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 		
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Proveedor.class);
+		
+		criteria.add(Restrictions.ilike("clave", "%" + buscarTexto + "%"));
 		criteria.add(Restrictions.eq("proveedorActivo", true));
-		criteria.add(Restrictions.sqlRestriction("clave LIKE '%" + buscarTexto + "%'"));
 		criteria.addOrder(Order.desc("fechaActualizacion"));
 		lista = criteria.list();
 		
 		if(lista.equals(null) || lista.size() < 1){
 			Criteria criteria2 = getHibernateTemplate().getSessionFactory().openSession().
 					createCriteria(Proveedor.class);
-			criteria.add(Restrictions.eq("proveedorActivo", true));
-			criteria2.add(Restrictions.sqlRestriction("nombre LIKE '%" + buscarTexto + "%'"));
+			criteria2.add(Restrictions.ilike("nombre", "%" + buscarTexto + "%"));
+			criteria2.add(Restrictions.eq("proveedorActivo", true));
 			criteria2.addOrder(Order.desc("fechaActualizacion"));
 			lista = criteria2.list();
 			
 			if(lista.equals(null) || lista.size() < 1){
 				Criteria criteria3 = getHibernateTemplate().getSessionFactory().openSession().
 						createCriteria(Proveedor.class);
-				criteria.add(Restrictions.eq("proveedorActivo", true));
-				criteria3.add(Restrictions.sqlRestriction("rfc LIKE '%" + buscarTexto + "%'"));
+				criteria3.add(Restrictions.eq("proveedorActivo", true));
+				criteria3.add(Restrictions.ilike("rfc", "%" + buscarTexto + "%"));
 				criteria3.addOrder(Order.desc("fechaActualizacion"));
 				lista = criteria3.list();
 			}
@@ -202,8 +203,21 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
-		criteria.add(Restrictions.sqlRestriction("nombre LIKE '%" + nombre + "%'"));
+		criteria.add(Restrictions.ilike("nombre", "%" + nombre + "%"));
 		criteria.addOrder(Order.desc("fechaActualizacion"));
+		lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public List<Proveedor> getProveedoresById(List<Long> idsProveedores) {
+		List<Proveedor> lista = null;
+		
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Proveedor.class);
+		criteria.add(Restrictions.in("idProveedor", idsProveedores));
 		lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}

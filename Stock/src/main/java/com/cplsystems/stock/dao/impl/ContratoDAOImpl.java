@@ -23,7 +23,7 @@ import com.cplsystems.stock.domain.Contrato;
 public class ContratoDAOImpl extends HibernateDAOSuportUtil implements ContratoDAO{
 
 	public void save(Contrato contrato) {
-		getHibernateTemplate().save(contrato);
+		getHibernateTemplate().saveOrUpdate(contrato);
 	}
 
 	public void update(Contrato contrato) {

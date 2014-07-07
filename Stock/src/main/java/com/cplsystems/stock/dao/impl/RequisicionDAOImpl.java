@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.RequisicionDAO;
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
 
@@ -95,6 +96,16 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 	public List<Requisicion> getAll() {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Requisicion.class);
+		List<Requisicion> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista: null;
+	}
+
+	@Override
+	public List<Requisicion> getByEstatusRequisicion(
+			EstatusRequisicion estatusRequisicion) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Requisicion.class);
+		criteria.add(Restrictions.eq("estatusRequisicion", estatusRequisicion));
 		List<Requisicion> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista: null;
 	}

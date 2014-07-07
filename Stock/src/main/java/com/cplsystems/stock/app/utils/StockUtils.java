@@ -4,6 +4,8 @@
 package com.cplsystems.stock.app.utils;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
@@ -67,5 +69,17 @@ public class StockUtils {
 			return format.format(quantity);
 		}
 		return null;
+	}
+	
+	
+	public Calendar convertirDateToCalendar(Date date){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		return calendar;
+	}
+	
+	public Date convertirCalendarToDate(Calendar calendar){
+		Date date = calendar.getTime();
+		return date;
 	}
 }

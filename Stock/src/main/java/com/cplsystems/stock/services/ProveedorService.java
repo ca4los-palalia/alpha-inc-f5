@@ -95,4 +95,8 @@ public class ProveedorService {
 	public List<Proveedor> getByNombre(String nombre){
 		return proveedorDAO.getByNombre(nombre);
 	}
+	
+	public List<Proveedor> getProveedoresById(List<Long> idsProveedores){
+		return proveedorDAO.getProveedoresById(idsProveedores);
+	}
 }

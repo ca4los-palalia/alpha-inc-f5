@@ -413,10 +413,6 @@ public class ProductosVM extends ProductoMetaClass {
 	@Command
 	public void changeComboClasificacion() {
 		
-		
-		
-		
-		
 		String mensaje = "Ningun producto encontrado de tipo: "
 				+ productoTipoSelected.getNombre();
 		familiasProductos = familiasProductoService.getByFamilia(productoTipoSelected);
@@ -864,9 +860,7 @@ public class ProductosVM extends ProductoMetaClass {
 				List<AplicacionExterna> aplicaciones = new ArrayList<AplicacionExterna>();
 				AplicacionExterna aplicacion = new AplicacionExterna();
 				aplicacion.setNombre("PDFXCview");
-				aplicaciones.add(aplicacion);
-
-				// readJasper = getReadJasperReconstruccion(readJasper, file)
+				aplicaciones.add(aplicacion);				
 
 				stockUtils.showSuccessmessage(
 						generarReportePrductos(listaHashsParametros, aplicaciones,
