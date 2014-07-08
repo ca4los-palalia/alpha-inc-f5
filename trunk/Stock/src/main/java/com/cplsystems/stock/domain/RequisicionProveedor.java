@@ -19,12 +19,13 @@ import javax.persistence.Table;
 @Table(name = "RequsicionProveedor")
 public class RequisicionProveedor implements Serializable {
 
+	private static final long serialVersionUID = 6555204962404224362L;
 	private Long idRequisicionProveedor;
 	private Integer status;
 	private Proveedor proveedor;
 	private Requisicion requisicion;
 
-	@ManyToOne  (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proveedor")
 	public Proveedor getProveedor() {
 		return proveedor;
@@ -34,7 +35,7 @@ public class RequisicionProveedor implements Serializable {
 		this.proveedor = proveedor;
 	}
 
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "requisicion")
 	public Requisicion getRequisicion() {
 		return requisicion;
@@ -44,7 +45,7 @@ public class RequisicionProveedor implements Serializable {
 		this.requisicion = requisicion;
 	}
 
-	@Id 
+	@Id
 	@Column(name = "idRequisicionProveedor", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdRequisicionProveedor() {
@@ -54,8 +55,6 @@ public class RequisicionProveedor implements Serializable {
 	public void setIdRequisicionProveedor(Long idRequisicionProveedor) {
 		this.idRequisicionProveedor = idRequisicionProveedor;
 	}
-
-	
 
 	@Column(name = "status", length = 250)
 	public Integer getStatus() {

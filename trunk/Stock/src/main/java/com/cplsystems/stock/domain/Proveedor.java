@@ -1,30 +1,24 @@
 package com.cplsystems.stock.domain;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Calendar;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 
 @Entity
 @Table(name = "provedor")
-public class Proveedor {
+public class Proveedor implements Serializable {
 
+	private static final long serialVersionUID = 5955369590591544443L;
 	private Long idProveedor;
 	private String comentario;
 	private String clave;
@@ -37,7 +31,7 @@ public class Proveedor {
 	private Long cuentaCargo;
 	private Calendar fechaActualizacion;
 	private String paginaWeb;
-	
+
 	private Contacto contacto;
 	private Contrato contrato;
 	private Direccion direccionDevolucion;
@@ -48,8 +42,7 @@ public class Proveedor {
 	private Persona representanteLegal;
 	private Persona representanteAteCliente;
 	private Giro giro;
-	
-	
+
 	@Id
 	@Column(name = "idProveedor", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,7 +62,7 @@ public class Proveedor {
 	public void setClave(String clave) {
 		this.clave = clave;
 	}
-	
+
 	@Column
 	public String getNombre() {
 		return nombre;
@@ -105,6 +98,7 @@ public class Proveedor {
 	public void setRfc(String rfc) {
 		this.rfc = rfc;
 	}
+
 	@Column
 	public Long getCuentaCargo() {
 		return cuentaCargo;
@@ -113,7 +107,7 @@ public class Proveedor {
 	public void setCuentaCargo(Long cuentaCargo) {
 		this.cuentaCargo = cuentaCargo;
 	}
-	
+
 	@Column
 	public String getStatus() {
 		return status;
@@ -122,7 +116,6 @@ public class Proveedor {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
 
 	@Column
 	public String getComentario() {
@@ -132,7 +125,7 @@ public class Proveedor {
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
-	
+
 	@Column
 	public boolean isProveedorActivo() {
 		return proveedorActivo;
@@ -156,13 +149,11 @@ public class Proveedor {
 	public String getPaginaWeb() {
 		return paginaWeb;
 	}
+
 	public void setPaginaWeb(String paginaWeb) {
 		this.paginaWeb = paginaWeb;
 	}
-	
-	
-	
-	
+
 	@OneToOne
 	@JoinColumn(name = "contacto")
 	public Contacto getContacto() {
@@ -183,7 +174,8 @@ public class Proveedor {
 		this.contrato = contrato;
 	}
 
-	@OneToOne//@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne
+	// @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "direccionDevolucion")
 	public Direccion getDireccionDevolucion() {
 		return direccionDevolucion;
@@ -193,7 +185,8 @@ public class Proveedor {
 		this.direccionDevolucion = direccionDevolucion;
 	}
 
-	@OneToOne//@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne
+	// @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "direccionFiscal")
 	public Direccion getDireccionFiscal() {
 		return direccionFiscal;
@@ -203,7 +196,8 @@ public class Proveedor {
 		this.direccionFiscal = direccionFiscal;
 	}
 
-	@OneToOne//(fetch = FetchType.LAZY)
+	@OneToOne
+	// (fetch = FetchType.LAZY)
 	@JoinColumn(name = "director")
 	public Persona getDirector() {
 		return director;
@@ -233,7 +227,8 @@ public class Proveedor {
 		this.gerenteVentas = gerenteVentas;
 	}
 
-	@OneToOne//@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne
+	// @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "representanteLegal")
 	public Persona getRepresentanteLegal() {
 		return representanteLegal;
@@ -243,7 +238,8 @@ public class Proveedor {
 		this.representanteLegal = representanteLegal;
 	}
 
-	@OneToOne//@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne
+	// @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "representanteAteCliente")
 	public Persona getRepresentanteAteCliente() {
 		return representanteAteCliente;
@@ -262,6 +258,5 @@ public class Proveedor {
 	public void setGiro(Giro giro) {
 		this.giro = giro;
 	}
-	
-	
+
 }
