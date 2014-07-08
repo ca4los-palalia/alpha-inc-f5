@@ -20,53 +20,53 @@
 		<!-- END Configuration Data -->
 
 		<!-- Mapping of Classes -->
-	
-		<mapping class="com.cplsystems.stock.domain.Area"/>
-		<mapping class="com.cplsystems.stock.domain.Banco"/>
-		<mapping class="com.cplsystems.stock.domain.CodigoBarrasProducto"/>
-		<mapping class="com.cplsystems.stock.domain.CofiaFuenteFinanciamiento"/>
-		<mapping class="com.cplsystems.stock.domain.CofiaPartidaGenerica"/>
-		<mapping class="com.cplsystems.stock.domain.CofiaProg"/>
-		<mapping class="com.cplsystems.stock.domain.CofiaPy"/>
-		<mapping class="com.cplsystems.stock.domain.Contacto"/>
-		<mapping class="com.cplsystems.stock.domain.Contrato"/>
-		<mapping class="com.cplsystems.stock.domain.CostosProducto"/>
-		<mapping class="com.cplsystems.stock.domain.Cotizacion"/>
-		<mapping class="com.cplsystems.stock.domain.CotizacionProducto"/>
-		<mapping class="com.cplsystems.stock.domain.CuentaPago"/>
-		<mapping class="com.cplsystems.stock.domain.Destino"/>
-		<mapping class="com.cplsystems.stock.domain.Direccion"/>
-		<mapping class="com.cplsystems.stock.domain.DireccionEntrega"/>
-		<mapping class="com.cplsystems.stock.domain.Email"/>
-		<mapping class="com.cplsystems.stock.domain.Estado"/>
-		<mapping class="com.cplsystems.stock.domain.EstatusRequisicion"/>
-		<mapping class="com.cplsystems.stock.domain.FamiliasProducto"/>
-		<mapping class="com.cplsystems.stock.domain.Giro"/>
-		<mapping class="com.cplsystems.stock.domain.Lugar"/>
-		<mapping class="com.cplsystems.stock.domain.Moneda"/>
-		<mapping class="com.cplsystems.stock.domain.Municipio"/>
-		<mapping class="com.cplsystems.stock.domain.OrdenCompraProducto"/>
-		<mapping class="com.cplsystems.stock.domain.OrdenCompra"/>
-		<mapping class="com.cplsystems.stock.domain.Pais"/>
-		<mapping class="com.cplsystems.stock.domain.Partida"/>
-		<mapping class="com.cplsystems.stock.domain.Persona"/>
-		<mapping class="com.cplsystems.stock.domain.Posicion"/>
-		<mapping class="com.cplsystems.stock.domain.Producto"/>
-		<mapping class="com.cplsystems.stock.domain.ProductoNaturaleza"/>
-		<mapping class="com.cplsystems.stock.domain.ProductoTipo"/>
-		<mapping class="com.cplsystems.stock.domain.ProductoTope"/>
-		<mapping class="com.cplsystems.stock.domain.Proveedor"/>
-		<mapping class="com.cplsystems.stock.domain.ProveedorProducto"/>
-		<mapping class="com.cplsystems.stock.domain.Proyecto"/>
-		<mapping class="com.cplsystems.stock.domain.Requisicion"/>
-		<mapping class="com.cplsystems.stock.domain.RequisicionPartida"/>
-		<mapping class="com.cplsystems.stock.domain.RequisicionProducto"/>
-		<mapping class="com.cplsystems.stock.domain.Sexo"/>
-		<mapping class="com.cplsystems.stock.domain.Unidad"/>
-		<mapping class="com.cplsystems.stock.domain.Telefono"/>
-		 
-		
-
+		<mapping class="com.cplsystems.stock.domain.Area" />
+		<mapping class="com.cplsystems.stock.domain.Banco" />
+		<mapping class="com.cplsystems.stock.domain.CodigoBarrasProducto" />
+		<mapping class="com.cplsystems.stock.domain.CofiaFuenteFinanciamiento" />
+		<mapping class="com.cplsystems.stock.domain.CofiaPartidaGenerica" />
+		<mapping class="com.cplsystems.stock.domain.CofiaProg" />
+		<mapping class="com.cplsystems.stock.domain.CofiaPy" />
+		<mapping class="com.cplsystems.stock.domain.Contacto" />
+		<mapping class="com.cplsystems.stock.domain.Contrato" />
+		<mapping class="com.cplsystems.stock.domain.CostosProducto" />
+		<mapping class="com.cplsystems.stock.domain.Cotizacion" />
+		<mapping class="com.cplsystems.stock.domain.CotizacionProducto" />
+		<mapping class="com.cplsystems.stock.domain.CuentaPago" />
+		<mapping class="com.cplsystems.stock.domain.Destino" />
+		<mapping class="com.cplsystems.stock.domain.Direccion" />
+		<mapping class="com.cplsystems.stock.domain.DireccionEntrega" />
+		<mapping class="com.cplsystems.stock.domain.Email" />
+		<mapping class="com.cplsystems.stock.domain.Estado" />
+		<mapping class="com.cplsystems.stock.domain.EstatusRequisicion" />
+		<mapping class="com.cplsystems.stock.domain.FamiliasProducto" />
+		<mapping class="com.cplsystems.stock.domain.Giro" />
+		<mapping class="com.cplsystems.stock.domain.Lugar" />
+		<mapping class="com.cplsystems.stock.domain.Moneda" />
+		<mapping class="com.cplsystems.stock.domain.Modulos" />
+		<mapping class="com.cplsystems.stock.domain.ModulosOrganizacion" />
+		<mapping class="com.cplsystems.stock.domain.Municipio" />
+		<mapping class="com.cplsystems.stock.domain.OrdenCompraProducto" />
+		<mapping class="com.cplsystems.stock.domain.OrdenCompra" />
+		<mapping class="com.cplsystems.stock.domain.Organizacion" />
+		<mapping class="com.cplsystems.stock.domain.Pais" />
+		<mapping class="com.cplsystems.stock.domain.Partida" />
+		<mapping class="com.cplsystems.stock.domain.Persona" />
+		<mapping class="com.cplsystems.stock.domain.Posicion" />
+		<mapping class="com.cplsystems.stock.domain.Producto" />
+		<mapping class="com.cplsystems.stock.domain.ProductoNaturaleza" />
+		<mapping class="com.cplsystems.stock.domain.ProductoTipo" />
+		<mapping class="com.cplsystems.stock.domain.ProductoTope" />
+		<mapping class="com.cplsystems.stock.domain.Proveedor" />
+		<mapping class="com.cplsystems.stock.domain.ProveedorProducto" />
+		<mapping class="com.cplsystems.stock.domain.Proyecto" />
+		<mapping class="com.cplsystems.stock.domain.Requisicion" />
+		<mapping class="com.cplsystems.stock.domain.RequisicionPartida" />
+		<mapping class="com.cplsystems.stock.domain.RequisicionProducto" />
+		<mapping class="com.cplsystems.stock.domain.Sexo" />
+		<mapping class="com.cplsystems.stock.domain.Telefono" />
+		<mapping class="com.cplsystems.stock.domain.Unidad" />
+		<mapping class="com.cplsystems.stock.domain.Usuarios" />
 	</session-factory>
 
 </hibernate-configuration>
