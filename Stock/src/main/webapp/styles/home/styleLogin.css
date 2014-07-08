@@ -15,6 +15,34 @@
 	margin-top: 30px;
 }
 */
+.loginContainer {
+	height: 100%;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.topContainer {
+	background-color: #4F7094;
+	height: 50px;
+}
+
+.bottomContainer {
+	background-color: #4F7094;
+	height: 50px;
+	background-color: #4F7094;
+}
+
+.footerLabels {
+	font-family: tahoma;
+	font-size: 12px;
+}
+
+.contentContainer {
+	padding-top: 200px;
+	height: 100%;
+	width: 60%;
+}
 
 .txtLogin {
 	background-color: gray !important;
@@ -47,7 +75,8 @@
 	text-shadow: -1px -1px 0 #bac8d5;
 	font-weight: bold;
 	color: #FFFFFF;
-	background-color: #bac8d5;
+	/*background-color: #bac8d5;*/
+	background-color: black;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#E6E6E6),
 		to(#bac8d5));
 	background-image: -webkit-linear-gradient(top, #E6E6E6, #CCCCCC);
