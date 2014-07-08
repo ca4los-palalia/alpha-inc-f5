@@ -1,29 +1,29 @@
 package com.cplsystems.stock.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "proveedorProducto")
-public class ProveedorProducto {
+public class ProveedorProducto implements Serializable {
 
-	
+	private static final long serialVersionUID = -4209263282220593763L;
 	private Long idProveedorProdcuto;
 	private String cantidad;
 	private String descuento;
 	private String precio;
 	private String precioFinal;
-    private Proveedor proveedor;
-    private Producto producto;
-    
+	private Proveedor proveedor;
+	private Producto producto;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idProveedorProducto", length = 250)
@@ -71,18 +71,19 @@ public class ProveedorProducto {
 		this.precioFinal = precioFinal;
 	}
 
-	@OneToOne//@ManyToOne (fetch = FetchType.LAZY)
+	@OneToOne
+	// @ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name = "proveedor")
 	public Proveedor getProveedor() {
 		return proveedor;
 	}
 
-	
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
 	}
-    
-	@OneToOne//@ManyToOne (fetch = FetchType.LAZY)
+
+	@OneToOne
+	// @ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
 		return producto;
@@ -91,7 +92,5 @@ public class ProveedorProducto {
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
-	
-	
 
 }

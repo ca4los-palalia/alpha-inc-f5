@@ -3,24 +3,23 @@
  */
 package com.cplsystems.stock.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name = "RequsicionProducto")
-public class RequisicionProducto {
+public class RequisicionProducto implements Serializable {
+
+	private static final long serialVersionUID = -9121053303871749035L;
 	private Long idRequisionProducto;
 	private Float cantidad;
 	private String descripcion;
@@ -32,7 +31,7 @@ public class RequisicionProducto {
 	private String partida;
 	private CofiaPartidaGenerica cofiaPartidaGenerica;
 	private Float totalProductoPorUnidad;
-	
+
 	public RequisicionProducto() {
 		producto = new Producto();
 	}
@@ -57,7 +56,8 @@ public class RequisicionProducto {
 		this.cantidad = cantidad;
 	}
 
-	@OneToOne//@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne
+	// @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "lugar")
 	public Lugar getLugar() {
 		return lugar;
@@ -67,7 +67,8 @@ public class RequisicionProducto {
 		this.lugar = lugar;
 	}
 
-	@OneToOne//@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne
+	// @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proveedor")
 	public Proveedor getProveedor() {
 		return proveedor;
@@ -77,7 +78,8 @@ public class RequisicionProducto {
 		this.proveedor = proveedor;
 	}
 
-	@OneToOne//@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne
+	// @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "requisicion")
 	public Requisicion getRequisicion() {
 		return requisicion;
@@ -87,7 +89,8 @@ public class RequisicionProducto {
 		this.requisicion = requisicion;
 	}
 
-	@OneToOne//@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne
+	// @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
 		return producto;
@@ -123,10 +126,11 @@ public class RequisicionProducto {
 	public void setPartida(String partida) {
 		this.partida = partida;
 	}
-	
+
 	@Transient
 	public Float getTotalProductoPorUnidad() {
-		if(cantidad != null && (producto != null && producto.getPrecio() != null)){
+		if (cantidad != null
+				&& (producto != null && producto.getPrecio() != null)) {
 			totalProductoPorUnidad = cantidad * producto.getPrecio();
 		}
 		return totalProductoPorUnidad;
@@ -135,13 +139,15 @@ public class RequisicionProducto {
 	public void setTotalProductoPorUnidad(Float totalProductoPorUnidad) {
 		this.totalProductoPorUnidad = totalProductoPorUnidad;
 	}
+
 	@OneToOne
 	@JoinColumn(name = "cofiaPartidaGenerica")
 	public CofiaPartidaGenerica getCofiaPartidaGenerica() {
 		return cofiaPartidaGenerica;
 	}
 
-	public void setCofiaPartidaGenerica(CofiaPartidaGenerica cofiaPartidaGenerica) {
+	public void setCofiaPartidaGenerica(
+			CofiaPartidaGenerica cofiaPartidaGenerica) {
 		this.cofiaPartidaGenerica = cofiaPartidaGenerica;
 	}
 }

@@ -15,6 +15,7 @@ import javax.persistence.Table;
 @Table(name = "destino")
 public class Destino implements Serializable {
 
+	private static final long serialVersionUID = -825268613541991802L;
 	private Long idDestino;
 	private Lugar lugar;
 

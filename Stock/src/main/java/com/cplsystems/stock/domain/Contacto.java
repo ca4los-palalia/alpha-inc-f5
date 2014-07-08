@@ -16,6 +16,7 @@ import javax.persistence.Table;
 @Table(name = "contacto")
 public class Contacto implements Serializable {
 
+	private static final long serialVersionUID = -7065704145995755117L;
 	private Long idContacto;
 	private Telefono telefono;
 	private Email email;

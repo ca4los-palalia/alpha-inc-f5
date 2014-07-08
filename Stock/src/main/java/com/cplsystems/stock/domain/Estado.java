@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Table (name= "Estado")
 public class Estado implements Serializable {
 	
+	private static final long serialVersionUID = -6891447220002443668L;
 	private long idEstado;
 	private String nombre;
 	

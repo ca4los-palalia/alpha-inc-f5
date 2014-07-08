@@ -1,23 +1,23 @@
 package com.cplsystems.stock.domain;
 
+import java.io.Serializable;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table
-public class Producto {
+public class Producto implements Serializable {
+
+	private static final long serialVersionUID = 8065024909123508528L;
 
 	private Long idProducto;
 
@@ -567,6 +567,7 @@ public class Producto {
 	public void setMoneda(Moneda moneda) {
 		this.moneda = moneda;
 	}
+
 	@Column
 	public Long getMinimo() {
 		return minimo;
@@ -575,6 +576,7 @@ public class Producto {
 	public void setMinimo(Long minimo) {
 		this.minimo = minimo;
 	}
+
 	@Column
 	public Long getMaximo() {
 		return maximo;
@@ -583,5 +585,5 @@ public class Producto {
 	public void setMaximo(Long maximo) {
 		this.maximo = maximo;
 	}
-	
+
 }

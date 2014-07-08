@@ -1,5 +1,7 @@
 package com.cplsystems.stock.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +11,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class Unidad {
+public class Unidad implements Serializable {
 
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4408663347154767420L;
 	private Long idUnidad;
 	private String nombre;
 	private String abreviatura;
