@@ -44,7 +44,7 @@ import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
 import com.cplsystems.stock.domain.Telefono;
 import com.cplsystems.stock.domain.Unidad;
-import com.cplsystems.stock.domain.Usuario;
+import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -91,7 +91,7 @@ public class DataLayer implements Serializable {
 	protected CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento;
 	protected Telefono telefonoContacto;
 	protected Telefono telefonoProveedor;
-	protected Usuario usuarioProveedor;
+	protected Usuarios usuarioProveedor;
 	protected Unidad unidadSelected;
 	protected ProveedorProducto proveedorProducto;
 	protected RequisicionProducto requisicionProducto;
@@ -251,10 +251,10 @@ public class DataLayer implements Serializable {
 	public void setTelefonoContacto(Telefono telefonoContacto) {
 		this.telefonoContacto = telefonoContacto;
 	}
-	public Usuario getUsuarioProveedor() {
+	public Usuarios getUsuarioProveedor() {
 		return usuarioProveedor;
 	}
-	public void setUsuarioProveedor(Usuario usuarioProveedor) {
+	public void setUsuarioProveedor(Usuarios usuarioProveedor) {
 		this.usuarioProveedor = usuarioProveedor;
 	}
 	public Contacto getContactoContacto() {
