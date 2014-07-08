@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.EstatusRequisicionDAO;
 import com.cplsystems.stock.domain.EstatusRequisicion;
-import com.cplsystems.stock.domain.EstatusRequisicion;
 
 /**
  * @author Carlos Palalía López
@@ -20,33 +19,33 @@ import com.cplsystems.stock.domain.EstatusRequisicion;
 public class EstatusRequisicionService {
 
 	@Autowired
-	private EstatusRequisicionDAO EstatusRequisicionDAO;
+	private EstatusRequisicionDAO estatusRequisicionDAO;
 
 	public void save(EstatusRequisicion estatusRequisicion){
-		EstatusRequisicionDAO.save(estatusRequisicion);
+		estatusRequisicionDAO.save(estatusRequisicion);
 	}
 
 	public void delete(EstatusRequisicion estatusRequisicion){
-		EstatusRequisicionDAO.delete(estatusRequisicion);
+		estatusRequisicionDAO.delete(estatusRequisicion);
 	}
 
 	public EstatusRequisicion getById(Long idEstatusRequisicion){
-		return EstatusRequisicionDAO.getById(idEstatusRequisicion);
+		return estatusRequisicionDAO.getById(idEstatusRequisicion);
 	}
 
 	public List<EstatusRequisicion> getAll(){
-		return EstatusRequisicionDAO.getAll();
+		return estatusRequisicionDAO.getAll();
 	}
 	
 	public EstatusRequisicion getByNombre(String nombre){
-		return EstatusRequisicionDAO.getByNombre(nombre);
+		return estatusRequisicionDAO.getByNombre(nombre);
 	}
 	
 	public EstatusRequisicion getByClave(String clave){
-		return EstatusRequisicionDAO.getByClave(clave);
+		return estatusRequisicionDAO.getByClave(clave);
 	}
 
 	public EstatusRequisicion getByEstado(boolean estado){
-		return EstatusRequisicionDAO.getByEstado(estado);
+		return estatusRequisicionDAO.getByEstado(estado);
 	}
 }
