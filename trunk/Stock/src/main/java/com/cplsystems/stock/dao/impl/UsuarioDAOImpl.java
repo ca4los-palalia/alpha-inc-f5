@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.dao.UsuarioDAO;
-import com.cplsystems.stock.domain.Usuario;
+import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -30,10 +30,10 @@ public class UsuarioDAOImpl extends HibernateDaoSupport implements UsuarioDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public Usuario getUsuarioByCredentials(String usuario, String password) {
-		List<Usuario> user = getHibernateTemplate()
-				.find("FROM Usuario as u WHERE u.usuario = ? "
-						+ "AND u.password = ?", usuario, password);
+	public Usuarios getUsuarioByCredentials(String usuario, String password) {
+		List<Usuarios> user = getHibernateTemplate()
+				.find("FROM Usuarios as u WHERE u.benutzer = ? "
+						+ "AND u.kennwort = ?", usuario, password);
 		return user.size() > 0 ? user.get(0) : null;
 	}
 }
