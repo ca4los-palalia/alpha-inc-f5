@@ -1,6 +1,6 @@
 <?page title="Home" contentType="text/html;charset=UTF-8"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
-
+<?init class="com.cplsystems.stock.app.utils.IntegrityChecker" BENUTZER="${sessionUtils}"?>
 <zk>
 	<script src="/scripts/watermarkPlugin.js" type="text/javascript" />
 	<script src="/scripts/controlsGeneric.js" type="text/javascript" />
