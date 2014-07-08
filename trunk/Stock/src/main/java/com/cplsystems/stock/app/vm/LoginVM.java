@@ -4,12 +4,15 @@
 package com.cplsystems.stock.app.vm;
 
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
-import org.zkoss.zul.Messagebox;
+import org.zkoss.zk.ui.util.Clients;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
-import com.cplsystems.stock.domain.Usuario;
+import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -18,21 +21,29 @@ import com.cplsystems.stock.domain.Usuario;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class LoginVM extends BasicStructure {
 
+	private static final long serialVersionUID = -2184499179368861931L;
 	private String user;
 	private String password;
 
+	@NotifyChange({ "user", "password" })
 	@Command
 	public void authenticateUser() {
-		Usuario usuario = usuarioService
-				.getUsuarioByCredentials(user, password);
+		Usuarios usuario = usuarioService.getUsuarioByCredentials(user,
+				password);
 		PERFORM_AUTENTICATION: {
 			if (usuario == null) {
-				Messagebox.show("Las credenciales de acceso son incorrectas, "
-						+ "por favor intente nuevamente", "Error",
-						Messagebox.OK, Messagebox.ERROR);
+				StockUtils.showSuccessmessage(
+						"Las credenciales de acceso son incorrectas. "
+								+ "Por favor intente nuevamente",
+						Clients.NOTIFICATION_TYPE_ERROR, 2000, null);
+				user = "";
+				password = "";
 				return;
 			} else {
+				Organizacion org = organizacionService
+						.getOrganizacionByUsuario(usuario);
 				sessionUtils.addToSession(SessionUtils.USUARIO, usuario);
+				sessionUtils.addToSession(SessionUtils.FIRMA, org);
 				stockUtils.redirect(StockConstants.GLOBAL_PAGES.HOME_URL);
 			}
 		}

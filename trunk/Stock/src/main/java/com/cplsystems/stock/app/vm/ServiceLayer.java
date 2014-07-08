@@ -30,6 +30,7 @@ import com.cplsystems.stock.services.FamiliasProductoService;
 import com.cplsystems.stock.services.GiroService;
 import com.cplsystems.stock.services.MonedaService;
 import com.cplsystems.stock.services.MunicipioService;
+import com.cplsystems.stock.services.OrganizacionService;
 import com.cplsystems.stock.services.PaisService;
 import com.cplsystems.stock.services.PersonaService;
 import com.cplsystems.stock.services.PosicionService;
@@ -50,7 +51,6 @@ import com.cplsystems.stock.services.UsuarioService;
  */
 public abstract class ServiceLayer extends DataLayer {
 
-
 	private static final long serialVersionUID = 2608753945339387415L;
 
 	@WireVariable
@@ -70,7 +70,7 @@ public abstract class ServiceLayer extends DataLayer {
 
 	@WireVariable
 	protected ProductoTipoService productoTipoService;
-	
+
 	@WireVariable
 	protected EstadoService estadoService;
 
@@ -103,58 +103,61 @@ public abstract class ServiceLayer extends DataLayer {
 
 	@WireVariable
 	protected RequisicionProductoService requisicionProductoService;
-	
+
 	@WireVariable
 	protected BancoService bancoService;
-	
+
 	@WireVariable
 	protected MonedaService monedaService;
-	
+
 	@WireVariable
 	protected CuentasPagoService cuentasPagoService;
 
 	@WireVariable
 	protected ProveedorProductoService proveedorProductoService;
-	
+
 	@WireVariable
 	protected CotizacionService cotizacionService;
-	
+
 	@WireVariable
 	protected PosicionService posicionService;
-	
+
 	@WireVariable
 	protected AreaService areaService;
-	
+
 	@WireVariable
 	protected UnidadService unidadService;
-	
+
 	@WireVariable
 	protected ProductoNaturalezaService productoNaturalezaService;
-	
+
 	@WireVariable
 	protected FamiliasProductoService familiasProductoService;
-	
+
 	@WireVariable
 	protected CodigoBarrasProductoService codigoBarrasProductoService;
-	
+
 	@WireVariable
 	protected CostosProductoService costosProductoService;
-	
+
 	@WireVariable
 	protected GiroService giroService;
-	
+
 	@WireVariable
 	protected CofiaPartidaGenericaService cofiaPartidaGenericaService;
-	
+
 	@WireVariable
 	protected CofiaProgService cofiaProgService;
-	
+
 	@WireVariable
 	protected CofiaPyService cofiaPyService;
-	
+
 	@WireVariable
 	protected CofiaFuenteFinanciamientoService cofiaFuenteFinanciamientoService;
-	
+
 	@WireVariable
 	protected EstatusRequisicionService estatusRequisicionService;
+
+	@WireVariable
+	protected OrganizacionService organizacionService;
 }
