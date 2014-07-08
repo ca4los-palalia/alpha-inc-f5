@@ -12,6 +12,7 @@ public class SessionUtils {
 	public static final String USUARIO = "usuario";
 	public static final String SUCURSAL = "sucursal";
 	public static final String MATRIZ = "matriz";
+	public static final String FIRMA = "FIRMA";
 
 	private Logger log = LogManager.getLogger(this.getClass().getName());
 
