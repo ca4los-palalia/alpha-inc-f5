@@ -6,13 +6,13 @@ package com.cplsystems.stock.domain;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Entity;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -21,15 +21,16 @@ import javax.persistence.Entity;
 
 @Entity
 @Table
-public class Usuario implements Serializable {
+public class Usuarios implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7367612078810564830L;
 	private Long idUsuario;
-	private String user;
-	private String password;
+	private String benutzer;
+	private String kennwort;
 	private Persona persona;
 
 	@Id
+	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdUsuario() {
 		return idUsuario;
@@ -40,21 +41,21 @@ public class Usuario implements Serializable {
 	}
 
 	@Column
-	public String getUser() {
-		return user;
+	public String getBenutzer() {
+		return benutzer;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setBenutzer(String benutzer) {
+		this.benutzer = benutzer;
 	}
 
 	@Column
-	public String getPassword() {
-		return password;
+	public String getKennwort() {
+		return kennwort;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setKennwort(String kennwort) {
+		this.kennwort = kennwort;
 	}
 
 	@OneToOne
