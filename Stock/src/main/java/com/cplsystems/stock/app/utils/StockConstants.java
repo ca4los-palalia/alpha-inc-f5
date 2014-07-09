@@ -32,13 +32,15 @@ public class StockConstants {
 		public static final String PRODUCTOS_REPORTE_REGISTRO_MOVIMIENTO = "/modulos/productos/reportesRegistroMovimiento.zul";
 		public static final String PRODUCTOS_REPORTE_KARDEX = "/modulos/productos/reportesKardex.zul";
 		public static final String PROVEEDORES = "/modulos/proveedores/proveedores.zul";
-
+		
 		public static final String PROVEEDORES_BUSCADOR = "/modulos/proveedores/proveedoresBuscador.zul";
 		public static final String PROVEEDORES_PRODUCTO = "/modulos/proveedores/proveedoresProducto.zul";
 
 		public static final String REQUISICION = "/modulos/requisicion/requisicion.zul";
+		public static final String REQUISICION_BUSCADOR = "/modulos/requisicion/requisicionBuscador.zul";
 		public static final String CONCENTRADO = "/modulos/requisicion/concentrado.zul";
 		public static final String COTIZACION = "/modulos/requisicion/cotizacion.zul";
+		public static final String COTIZACION_BUSCADOR = "/modulos/requisicion/cotizacionBuscador.zul";
 		public static final String USUARIOS = "/modulos/usuarios/usuario.zul";
 		public static final String CONTROL_PANEL = "/modulos/controlPanel/controlPanel.zul";
 		public static final String REPORTS = "/modulos/reportes/reportes.zul";
