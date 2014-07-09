@@ -15,17 +15,11 @@
 			
 			
 				<vlayout style="text-align:right; margin:5px ">
-						<label value="cerrar sesión" style="color: #FFFFFF; font-weight:bold;"/>
-					
+						<include src="/header.zul" />				
 				</vlayout>
 			
 			
 			</div>
-
-
-
-
-
 			
 
 			<!--  NUEVO -->

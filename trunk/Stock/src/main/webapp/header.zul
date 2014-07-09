@@ -1,0 +1,19 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/styles/home/styleHome.css" />
+	<div apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('hvm') @init('com.cplsystems.stock.app.vm.HeaderVM')">
+		<hlayout hflex="1">
+			<hlayout style="padding-top:8px">
+				<label zclass="tlLabel" value="@load(hvm.compania)"
+					sclass="company" />
+			</hlayout>
+			<hlayout
+				style="width:5px; text-align:right;padding-right:10px; padding-top:5px"
+				hflex="1">
+				<button image="/images/home/logout.png"
+					onClick="@command('logOut')" sclass="round-button" />
+			</hlayout>
+		</hlayout>
+	</div>
+</zk>
