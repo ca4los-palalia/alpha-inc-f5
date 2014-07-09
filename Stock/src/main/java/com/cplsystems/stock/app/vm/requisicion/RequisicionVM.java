@@ -26,10 +26,9 @@ import org.zkoss.zul.Window;
 
 import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.StockConstants;
-import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
+import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.EstatusRequisicion;
-import com.cplsystems.stock.domain.FamiliasProducto;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Requisicion;
@@ -48,7 +47,10 @@ public class RequisicionVM extends RequisicionMetaClass {
 	@Init
 	public void init() {
 		super.init();
-
+		
+		disabledBuscadorFolio = true;
+		disabledBuscadorArea = true;
+		areaBuscar = new Area();
 		areas = areaService.getAll();
 		if(requisicion == null)
 			requisicion =  new Requisicion();
@@ -238,8 +240,8 @@ public class RequisicionVM extends RequisicionMetaClass {
 		
 		requisicion.setPersona(new Persona());
 		
-		EstatusRequisicion estatus = estatusRequisicionService.getByClave("RQ");
-		requisiciones = requisicionService.getByEstatusRequisicion(estatus);
+		//EstatusRequisicion estatus = estatusRequisicionService.getByClave("RQ");
+		//requisiciones = requisicionService.getByEstatusRequisicion(estatus);
 		
 		addNewItemToBill();
 		String folio = "F" + requisicionService.getUltimoFolio();
@@ -360,10 +362,53 @@ public class RequisicionVM extends RequisicionMetaClass {
 		return false;
 	}
 
+	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
-	public void buscarRequisicion(){
-		requisicionProductos = requisicionProductoService.getByRequisicion(requisicion);
+	public void buscarRequisicionFolio(){
+		
+		if(requisicion != null && (requisicion.getBuscarRequisicion() != null && !requisicion.getBuscarRequisicion().isEmpty()) ){
+			Requisicion buscarRequisicion = requisicionService.getByFolio(requisicion.getBuscarRequisicion());
+			
+			if(buscarRequisicion != null){
+				requisicion = buscarRequisicion;
+				requisicionProductos = requisicionProductoService.getByRequisicion(buscarRequisicion);
+			}else
+				stockUtils.showSuccessmessage(
+						"No se encontro alguna coincidencia con la busqueda -" + requisicion.getBuscarRequisicion() + "-",
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+		}else
+			stockUtils.showSuccessmessage(
+					"el campo de busqueda es requerido. asegurece de ingresar alguna palabra",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+	}
+	
+	@SuppressWarnings("static-access")
+	@Command
+	@NotifyChange("*")
+	public void buscarRequisicionArea(){
+		if(areaBuscar != null){
+			areaBuscar = areaService.getById(areaBuscar.getIdArea());
+			
+			if(areaBuscar != null){
+				if(requisicion == null)
+					requisicion = new Requisicion();
+				
+				requisicion = requisicionService.getByUnidadResponsable(areaBuscar);
+				
+				if(requisicion != null)
+					requisicionProductos = requisicionProductoService.getByRequisicion(requisicion);
+				else
+					stockUtils.showSuccessmessage(
+							"No se encotro la requisicion con busqueda de Area(UR) -" + areaBuscar.getNombre() + "-",
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
+			}
+		}else{
+			stockUtils.showSuccessmessage(
+					"No existen Áreas(UR)Para realizar la busqueda sobre este tipo",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+		}
+		
 		
 	}
 	
@@ -427,5 +472,22 @@ public class RequisicionVM extends RequisicionMetaClass {
 			}
 		}
 	}
+	
+	@Command
+	@NotifyChange("*")
+	public void seleccionarOpcionBuscarArea(){
+		disabledBuscadorFolio = true;
+		disabledBuscadorArea = false;
+		requisicion.setBuscarRequisicion("");;
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void seleccionarOpcionBuscarFolio(){
+		areaBuscar = new Area();
+		disabledBuscadorFolio = false;
+		disabledBuscadorArea = true;
+	}
+	
 	
 }

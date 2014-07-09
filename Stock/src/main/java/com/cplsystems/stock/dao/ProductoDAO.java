@@ -38,4 +38,6 @@ public interface ProductoDAO {
 	public List<Producto> getPreciosPromedio();
 	
 	public List<Producto> getByPrecio(String precio);
+	
+	public Producto getByClave(String clave);
 }

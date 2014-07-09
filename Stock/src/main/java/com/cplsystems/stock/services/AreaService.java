@@ -42,5 +42,9 @@ public class AreaService {
 	public List<Area> getAll() throws DataAccessException {
 		return areaDAO.getAll();
 	}
+	
+	public Area getByNombre(String nombre){
+		return areaDAO.getByNombre(nombre);
+	}
 
 }

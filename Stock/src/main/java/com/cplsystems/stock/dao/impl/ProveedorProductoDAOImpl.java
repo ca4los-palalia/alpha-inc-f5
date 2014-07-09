@@ -80,7 +80,6 @@ public class ProveedorProductoDAOImpl extends HibernateDAOSuportUtil implements 
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<ProveedorProducto> getByProductoProveedor(Producto producto,

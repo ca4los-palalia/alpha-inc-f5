@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "Requsicion")
@@ -36,6 +37,8 @@ public class Requisicion {
 	private String folio;
 	private EstatusRequisicion estatusRequisicion;
 
+	private String buscarRequisicion;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idRequisicion", nullable = false)
@@ -235,6 +238,15 @@ public class Requisicion {
 
 	public void setEstatusRequisicion(EstatusRequisicion estatusRequisicion) {
 		this.estatusRequisicion = estatusRequisicion;
+	}
+
+	@Transient
+	public String getBuscarRequisicion() {
+		return buscarRequisicion;
+	}
+
+	public void setBuscarRequisicion(String buscarRequisicion) {
+		this.buscarRequisicion = buscarRequisicion;
 	}
 	
 }

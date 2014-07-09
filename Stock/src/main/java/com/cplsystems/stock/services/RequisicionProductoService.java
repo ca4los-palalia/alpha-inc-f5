@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.RequisicionProductoDAO;
+import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Lugar;
 import com.cplsystems.stock.domain.Producto;
@@ -69,5 +70,9 @@ public class RequisicionProductoService {
 	
 	public List<Proveedor> getAllDistinctByProveedor(){
 		return requisicionProductoDAO.getAllDistinctByProveedor();
+	}
+	
+	public List<RequisicionProducto> getByConfiaPartidaGenerica(CofiaPartidaGenerica cofiaPartidaGenerica){
+		return requisicionProductoDAO.getByConfiaPartidaGenerica(cofiaPartidaGenerica);
 	}
 }

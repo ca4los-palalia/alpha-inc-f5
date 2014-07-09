@@ -209,7 +209,6 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Proveedor> getProveedoresById(List<Long> idsProveedores) {

@@ -207,7 +207,6 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	@Override
 	public Producto getByClaveNombrePrecioCosto(String buscarTexto) {
 		List<Producto> lista = null;
 
@@ -230,6 +229,21 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 			criteria2.setMaxResults(1);
 			lista = criteria2.list();
 		}
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Producto getByClave(String clave) {
+		List<Producto> lista = null;
+
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Producto.class);
+		//criteria.setFetchMode("unidad", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("clave", clave));
+		criteria.setMaxResults(1);
+
+		lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 }

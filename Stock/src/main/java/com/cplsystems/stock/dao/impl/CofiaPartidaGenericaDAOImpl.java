@@ -31,7 +31,6 @@ public class CofiaPartidaGenericaDAOImpl extends HibernateDAOSuportUtil implemen
 		getHibernateTemplate().delete(cofiaPartidaGenerica);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public CofiaPartidaGenerica getById(Long idCofiaPartidaGenerica) {
@@ -42,7 +41,6 @@ public class CofiaPartidaGenericaDAOImpl extends HibernateDAOSuportUtil implemen
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<CofiaPartidaGenerica> getAll() {
@@ -50,6 +48,16 @@ public class CofiaPartidaGenericaDAOImpl extends HibernateDAOSuportUtil implemen
 				createCriteria(CofiaPartidaGenerica.class);
 		List<CofiaPartidaGenerica> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public CofiaPartidaGenerica getByNombre(String nombre) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(CofiaPartidaGenerica.class);
+		criteria.add(Restrictions.eq("nombre", nombre));
+		List<CofiaPartidaGenerica> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
 }

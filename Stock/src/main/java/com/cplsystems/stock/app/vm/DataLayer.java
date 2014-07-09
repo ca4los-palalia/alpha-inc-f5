@@ -96,6 +96,7 @@ public class DataLayer implements Serializable {
 	protected ProveedorProducto proveedorProducto;
 	protected RequisicionProducto requisicionProducto;
 	protected Area area;
+	protected Area areaBuscar;
 	protected Unidad unidad;
 	protected Posicion posicion;
 	protected FamiliasProducto familiasProducto;
@@ -678,6 +679,14 @@ public class DataLayer implements Serializable {
 	public void setCofiaFuenteFinanciamientos(
 			List<CofiaFuenteFinanciamiento> cofiaFuenteFinanciamientos) {
 		this.cofiaFuenteFinanciamientos = cofiaFuenteFinanciamientos;
+	}
+
+	public Area getAreaBuscar() {
+		return areaBuscar;
+	}
+
+	public void setAreaBuscar(Area areaBuscar) {
+		this.areaBuscar = areaBuscar;
 	}
 	
 }

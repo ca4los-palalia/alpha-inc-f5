@@ -39,7 +39,6 @@ import org.zkoss.zul.Window;
 import org.zkoss.image.AImage;
 
 import com.cplsystems.stock.app.utils.AplicacionExterna;
-import com.cplsystems.stock.app.utils.BarCodeUtility;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.domain.CodigoBarrasProducto;
 import com.cplsystems.stock.domain.CostosProducto;
@@ -71,12 +70,13 @@ public class ProductosVM extends ProductoMetaClass {
 	@Command
 	@NotifyChange("imagenProducto")
 	public void generarBar() {
+		/*
 		BarCodeUtility barCodeUtil = new BarCodeUtility();
 	      // This will generate Bar-Code 3 of 9 format
 	      barCodeUtil.createBarCode39("naeemgik - 12345");
 	    
 	      // This will generate Bar-Code 128 format
-	      barCodeUtil.createBarCode128("0123456789");
+	      barCodeUtil.createBarCode128("0123456789");*/
 	}
 	
 	

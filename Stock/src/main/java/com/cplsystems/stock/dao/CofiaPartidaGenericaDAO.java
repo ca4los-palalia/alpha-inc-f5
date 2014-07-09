@@ -21,4 +21,6 @@ public interface CofiaPartidaGenericaDAO {
 
 	public List<CofiaPartidaGenerica> getAll();
 	
+	public CofiaPartidaGenerica getByNombre(String nombre);
+	
 }

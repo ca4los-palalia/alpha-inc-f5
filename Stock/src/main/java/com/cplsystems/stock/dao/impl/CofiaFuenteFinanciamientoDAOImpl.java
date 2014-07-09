@@ -31,7 +31,6 @@ public class CofiaFuenteFinanciamientoDAOImpl extends HibernateDAOSuportUtil imp
 		getHibernateTemplate().delete(cofiaFuenteFinanciamiento);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public CofiaFuenteFinanciamiento getById(Long idCofiaFuenteFinanciamiento) {
@@ -42,7 +41,6 @@ public class CofiaFuenteFinanciamientoDAOImpl extends HibernateDAOSuportUtil imp
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<CofiaFuenteFinanciamiento> getAll() {

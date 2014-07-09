@@ -31,7 +31,6 @@ public class CofiaProgDAOImpl extends HibernateDAOSuportUtil implements CofiaPro
 		getHibernateTemplate().delete(cofiaProg);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public CofiaProg getById(Long idCofiaProg) {
@@ -42,7 +41,6 @@ public class CofiaProgDAOImpl extends HibernateDAOSuportUtil implements CofiaPro
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<CofiaProg> getAll() {

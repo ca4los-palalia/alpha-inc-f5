@@ -69,4 +69,8 @@ public class ProductoService {
 	public Producto getByClaveNombrePrecioCosto(String buscarTexto){
 		return productoDAO.getByClaveNombrePrecioCosto(buscarTexto);
 	}
+	
+	public Producto getByClave(String clave){
+		return productoDAO.getByClave(clave);
+	}
 }

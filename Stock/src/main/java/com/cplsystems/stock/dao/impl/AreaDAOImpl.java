@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.AreaDAO;
 import com.cplsystems.stock.domain.Area;
-import com.cplsystems.stock.domain.Posicion;
 
 /**
  * @author Carlos Palalía López
@@ -42,7 +41,7 @@ public class AreaDAOImpl extends HibernateDAOSuportUtil implements AreaDAO{
 	@Transactional(readOnly = true)
 	public Area getById(Long idArea) {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Posicion.class);
+				createCriteria(Area.class);
 		criteria.add(Restrictions.eq("idArea", idArea));
 		criteria.setMaxResults(1);
 		List<Area> lista = criteria.list();
@@ -56,5 +55,16 @@ public class AreaDAOImpl extends HibernateDAOSuportUtil implements AreaDAO{
 				createCriteria(Area.class);
 		List<Area> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Area getByNombre(String nombre) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Area.class);
+		criteria.add(Restrictions.eq("nombre", nombre));
+		criteria.setMaxResults(1);
+		List<Area> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}	
 }

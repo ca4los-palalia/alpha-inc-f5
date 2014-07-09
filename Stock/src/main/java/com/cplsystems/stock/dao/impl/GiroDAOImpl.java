@@ -31,7 +31,6 @@ public class GiroDAOImpl extends HibernateDAOSuportUtil implements GiroDAO{
 		getHibernateTemplate().delete(giro);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Giro getById(Long idGiro) {
@@ -42,7 +41,6 @@ public class GiroDAOImpl extends HibernateDAOSuportUtil implements GiroDAO{
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Giro> getAll() {
@@ -52,7 +50,6 @@ public class GiroDAOImpl extends HibernateDAOSuportUtil implements GiroDAO{
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Giro getByNombre(String nombre) {
