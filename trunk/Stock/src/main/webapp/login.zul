@@ -11,9 +11,9 @@
 			<center zclass="contentContainer">
 				<vlayout style="text-align:center">
 					<image src="/images/home/mainLogo.png" />
-					<textbox id="user" type="text"
+					<textbox id="user" type="text" onOK="@command('authenticateUser')"
 						value="@bind(vm.user)" zclass="textbox" tooltiptext="Usuario" />
-					<textbox id="password" type="password"
+					<textbox id="password" type="password" onOK="@command('authenticateUser')"
 						value="@bind(vm.password)" zclass="textboxPassword"
 						tooltiptext="Password" />
 					<button label="Accesar" tooltiptext="Autentificar"

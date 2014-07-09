@@ -31,7 +31,6 @@ public class EstatusRequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		getHibernateTemplate().delete(EstatusRequisicion);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public EstatusRequisicion getById(Long idEstatusRequisicion) {
@@ -42,7 +41,6 @@ public class EstatusRequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<EstatusRequisicion> getAll() {
@@ -52,7 +50,6 @@ public class EstatusRequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public EstatusRequisicion getByNombre(String nombre) {
@@ -63,7 +60,6 @@ public class EstatusRequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public EstatusRequisicion getByClave(String clave) {
@@ -74,7 +70,6 @@ public class EstatusRequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public EstatusRequisicion getByEstado(boolean estado) {

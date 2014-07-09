@@ -30,6 +30,8 @@ public class RequisicionVariables extends BasicStructure {
 	protected Date fecha;
 	protected Calendar fechaCalendar;
 	protected DesgloceTotal desgloceTotal;
+	protected boolean disabledBuscadorFolio;
+	protected boolean disabledBuscadorArea;
 	
 	public RequisicionVariables() {
 		requisicionProductos = new ArrayList<RequisicionProducto>();
@@ -106,4 +108,20 @@ public class RequisicionVariables extends BasicStructure {
 		this.desgloceTotal = desgloceTotal;
 	}
 
+	public boolean isDisabledBuscadorFolio() {
+		return disabledBuscadorFolio;
+	}
+
+	public void setDisabledBuscadorFolio(boolean disabledBuscadorFolio) {
+		this.disabledBuscadorFolio = disabledBuscadorFolio;
+	}
+
+	public boolean isDisabledBuscadorArea() {
+		return disabledBuscadorArea;
+	}
+
+	public void setDisabledBuscadorArea(boolean disabledBuscadorArea) {
+		this.disabledBuscadorArea = disabledBuscadorArea;
+	}
+	
 }

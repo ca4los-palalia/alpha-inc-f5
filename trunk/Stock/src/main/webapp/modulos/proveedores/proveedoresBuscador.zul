@@ -12,21 +12,18 @@
 
 		<grid>
 			<columns>
-				<column width="22%" />
 				<column />
 				<column width="40%" zclass="shadowMenuActions" />
 			</columns>
 			<rows>
 				<row zclass="shadowMenuActions">
 					<div style="margin:5px">
-						<label zclass="panelInfoItemMenuTitle"
-							width="100%" value="PROVEEDORES:" />
+						<button
+							label="Proveedores > Buscador proveedores"
+							image="/images/toolbar/home32.png"
+							zclass="panelInfoItemMenuTitle" />
 					</div>
-					<div style="margin:5px">
-						<label zclass="panelInfoItemMenuContent"
-							width="100%" value="BUSCADOR DE PROVEEDORES" />
-					</div>
-					<hlayout style="text-align:right">
+					<hlayout style="text-align:right; margin:5px ">
 
 						<button image="/images/toolbar/pdf32.png"
 							sclass="web_button" onClick="@command('reporteProveedores')"
@@ -142,8 +139,9 @@
 										value="@bind(pvm.proveedorSelected.nombre)" maxlength="25"
 										width="100%" />
 									<label value="Giro" />
-									<combobox model="@bind(pvm.giros)" autocomplete="true"
-										selectedItem="@bind(pvm.proveedorSelected.giro)" 
+									<combobox model="@bind(pvm.giros)"
+										autocomplete="true"
+										selectedItem="@bind(pvm.proveedorSelected.giro)"
 										width="100%">
 										<template name="model">
 											<comboitem

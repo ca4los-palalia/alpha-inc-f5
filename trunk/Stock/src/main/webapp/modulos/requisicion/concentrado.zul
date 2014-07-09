@@ -2,6 +2,7 @@
 <zk>
 	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
+	<script src="/scripts/watermarks.js" type="text/javascript" />
 	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('rvm') @init('com.cplsystems.stock.app.vm.requisicion.concentradoVM')">
 
@@ -12,16 +13,17 @@
 			<grid>
 				<columns>
 					<column />
-					<column width="35%" zclass="shadowMenuActions" />
+					<column width="50%" zclass="shadowMenuActions" />
 				</columns>
 				<rows>
 					<row zclass="shadowMenuActions">
 						<div style="margin:5px">
-							<button label="Requisición > concentrado"
+							<button label="Requisiciones > concentrado"
 								image="/images/toolbar/home32.png"
 								zclass="panelInfoItemMenuTitle" />
 						</div>
-						<hlayout style="text-align:right">
+						<hlayout
+							style="text-align:right; margin:5px ">
 							<button image="/images/toolbar/saveOff.png"
 								sclass="web_button" tooltiptext="Guardar cambios"
 								onClick="@command('autorizar')" />
@@ -30,27 +32,43 @@
 								sclass="web_button" tooltiptext="Cancelar requisición"
 								onClick="@command('cancelarRequisicion')" />
 
+							<button label="Generar cotizacion"
+								sclass="web_button" />
+								
 						</hlayout>
 					</row>
 				</rows>
 			</grid>
 
 
-			<vlayout>
-				<label value="Filtrar por requisicion" />
-				<combobox readonly="true"
-					onSelect="@command('filtrarProductoPorRequisicion')"
-					model="@load(rvm.requisiciones)" sclass="invoiceCatalogos"
-					selectedItem="@bind(rvm.requisicion)" width="100%">
-					<template name="model">
-						<comboitem label="@load(each.folio)" />
-					</template>
-				</combobox>
+<label value="Buscar por clave de producto, Area(UR), folio de la requicicion"></label>
+			<grid style="border: 0;">
+				<columns>
+					<column />
+					<column width="8%" />
+				</columns>
+				<rows>
+					<row
+						style="background-color:transparent; border: 0;">
+						<textbox
+							
+							id="buscadorConcentradoId"
+							value="@bind(rvm.requisicion.buscarRequisicion)" width="100%" />
 
-			</vlayout>
+						<hlayout style="text-align:center">
+
+							<button
+								
+								image="/images/toolbar/find16x16.png" zclass="find_button"
+								onClick="@command('filtrarProductoPorRequisicion')"
+								tooltiptext="Buscar" />
+						</hlayout>
+					</row>
+				</rows>
+			</grid>
 
 			<label value="Todos los productos de las requisiciones" />
-			
+
 			<listbox rows="5" model="@load(rvm.requisicionProductos)"
 				onSelect="@command('cargarProveedoresProducto')"
 				selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
@@ -58,6 +76,9 @@
 				<listhead>
 
 					<listheader label="Requisicion" width="10%"
+						tooltiptext="Foliio de la requisición" />
+						
+					<listheader label="Unidad responsable" width="17%"
 						tooltiptext="Foliio de la requisición" />
 
 					<listheader label="Clave" width="10%"
@@ -72,7 +93,7 @@
 					<listheader label="Importe" width="10%" />
 
 					<listheader label="Total" width="10%" />
-					
+
 				</listhead>
 				<template name="model" var="requisicionProducto">
 					<listitem>
@@ -82,6 +103,11 @@
 								value="@bind(requisicionProducto.requisicion.folio)" />
 						</listcell>
 						<listcell>
+							<label tooltiptext="Foliio de requisición"
+								style="font-size:smaller;"
+								value="@bind(requisicionProducto.requisicion.area.nombre)" />
+						</listcell>
+						<listcell>
 							<label
 								tooltiptext="@bind(requisicionProducto.producto.nombre)"
 								style="font-size:smaller;"
@@ -89,7 +115,7 @@
 						</listcell>
 						<listcell>
 							<intbox tooltiptext="cantidad de productos"
-								style="font-size:smaller;" inplace="true" 
+								style="font-size:smaller;" inplace="true"
 								value="@bind(requisicionProducto.cantidad)" />
 						</listcell>
 						<listcell>
@@ -176,7 +202,7 @@
 
 
 			<!--  LISTA DE POROVEEDORES -->
-			<listbox model="@load(rvm.proveedorProductos)" rows="4" 	
+			<listbox model="@load(rvm.proveedorProductos)" rows="4"
 				selectedItem="@bind(rvm.proveedorProducto)"
 				onSelect="@command('seleccionarProveedor')">
 				<listhead>

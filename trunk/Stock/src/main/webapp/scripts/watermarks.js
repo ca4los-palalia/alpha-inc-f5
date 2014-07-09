@@ -18,3 +18,11 @@ zk.afterMount(function() {
 zk.afterMount(function() {
     jq("$puestoId").Watermark("Teclear el nombre de la posición","gray");
 });
+
+zk.afterMount(function() {
+    jq("$buscarRequisicionId").Watermark("Buscar fólio o unidad responsiva","gray");
+});
+
+zk.afterMount(function() {
+    jq("$buscadorConcentradoId").Watermark("Buscar clave del producto, Area(UR) o folio de la requicición","gray");
+});

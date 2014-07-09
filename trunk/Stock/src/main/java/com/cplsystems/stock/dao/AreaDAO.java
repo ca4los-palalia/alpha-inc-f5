@@ -22,4 +22,6 @@ public interface AreaDAO {
 	public Area getById(Long idArea);
 
 	public List<Area> getAll();
+	
+	public Area getByNombre(String nombre);
 }

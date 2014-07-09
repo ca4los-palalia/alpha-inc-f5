@@ -24,26 +24,22 @@ import com.cplsystems.stock.domain.ProductoTipo;
 public class FamiliasProductoDAOImpl extends HibernateDAOSuportUtil implements
 FamiliasProductoDAO {
 
-	@Override
 	@Transactional
 	public void save(FamiliasProducto familiasProducto) {
 		getHibernateTemplate().saveOrUpdate(familiasProducto);
 	}
 
-	@Override
 	@Transactional
 	public void update(FamiliasProducto familiasProducto) {
 		getHibernateTemplate().update(familiasProducto);
 		
 	}
 	
-	@Override
 	@Transactional
 	public void delete(FamiliasProducto familiasProducto) {
 		getHibernateTemplate().delete(familiasProducto);
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public FamiliasProducto getById(Long idFamiliasProducto) {
@@ -55,7 +51,6 @@ FamiliasProductoDAO {
 		return producto.size() > 0 ? producto.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public List<FamiliasProducto> getAll() {
@@ -66,7 +61,6 @@ FamiliasProductoDAO {
 		return producto.size() > 0 ? producto : null;
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public List<FamiliasProducto> getByProducto(Producto producto) {
@@ -78,7 +72,6 @@ FamiliasProductoDAO {
 		return familiasProductoList.size() > 0 ? familiasProductoList : null;
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public List<FamiliasProducto> getByFamilia(ProductoTipo productoTipo) {

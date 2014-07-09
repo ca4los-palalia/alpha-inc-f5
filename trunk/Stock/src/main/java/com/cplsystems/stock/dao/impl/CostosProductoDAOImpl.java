@@ -23,19 +23,16 @@ import com.cplsystems.stock.domain.Producto;
 public class CostosProductoDAOImpl extends HibernateDAOSuportUtil implements
 CostosProductoDAO {
 
-	@Override
 	@Transactional
 	public void save(CostosProducto costosProducto) {
 		getHibernateTemplate().saveOrUpdate(costosProducto);
 	}
 
-	@Override
 	@Transactional
 	public void delete(CostosProducto costosProducto) {
 		getHibernateTemplate().delete(costosProducto);
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public CostosProducto getById(Long idCostosProducto) {
@@ -47,7 +44,6 @@ CostosProductoDAO {
 		return codigos.size() > 0 ? codigos.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public List<CostosProducto> getAll() {
@@ -58,7 +54,6 @@ CostosProductoDAO {
 		return codigos.size() > 0 ? codigos : null;
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public CostosProducto getByProducto(Producto producto) {

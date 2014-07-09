@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.RequisicionProductoDAO;
+import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Lugar;
 import com.cplsystems.stock.domain.Producto;
@@ -130,7 +131,6 @@ public class RequisicionProductoDAOImpl extends HibernateDAOSuportUtil implement
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<RequisicionProducto> getRequisicionesConEstadoEspecifico(
@@ -144,8 +144,6 @@ public class RequisicionProductoDAOImpl extends HibernateDAOSuportUtil implement
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
-	
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Proveedor> getAllDistinctByProveedor() {
@@ -160,6 +158,17 @@ public class RequisicionProductoDAOImpl extends HibernateDAOSuportUtil implement
 		criteria.add(Restrictions.eq("rq.estatusRequisicion", estado));
 		
 		lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public List<RequisicionProducto> getByConfiaPartidaGenerica(
+			CofiaPartidaGenerica cofiaPartidaGenerica) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(RequisicionProducto.class);
+		criteria.add(Restrictions.eq("cofiaPartidaGenerica", cofiaPartidaGenerica));
+		List<RequisicionProducto> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 	

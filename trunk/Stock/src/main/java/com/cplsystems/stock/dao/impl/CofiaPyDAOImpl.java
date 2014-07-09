@@ -31,7 +31,6 @@ public class CofiaPyDAOImpl extends HibernateDAOSuportUtil implements CofiaPyDAO
 		getHibernateTemplate().delete(cofiaPy);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public CofiaPy getById(Long idCofiaPy) {
@@ -42,7 +41,6 @@ public class CofiaPyDAOImpl extends HibernateDAOSuportUtil implements CofiaPyDAO
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<CofiaPy> getAll() {

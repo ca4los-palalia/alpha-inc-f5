@@ -8,14 +8,17 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.RequisicionDAO;
+import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
+import com.cplsystems.stock.services.EstatusRequisicionService;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -24,7 +27,9 @@ import com.cplsystems.stock.domain.Requisicion;
 @Repository
 public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		RequisicionDAO {
-
+	@Autowired
+	EstatusRequisicionService estatusRequisicionService;
+		
 	@Transactional
 	public void save(Requisicion requisicion) {
 		getHibernateTemplate().saveOrUpdate(requisicion);
@@ -100,7 +105,8 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		return lista != null && !lista.isEmpty() ? lista: null;
 	}
 
-	@Override
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Requisicion> getByEstatusRequisicion(
 			EstatusRequisicion estatusRequisicion) {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
@@ -108,6 +114,43 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		criteria.add(Restrictions.eq("estatusRequisicion", estatusRequisicion));
 		List<Requisicion> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista: null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Requisicion getByFolio(String folio) {
+		List<Requisicion> lista = null;
+		
+		EstatusRequisicion estatus = estatusRequisicionService.getByClave("RQ");
+		if(estatus != null){
+			Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+					createCriteria(Requisicion.class);
+			criteria.add(Restrictions.ilike("folio", "" + folio + "%"));
+			criteria.add(Restrictions.eq("estatusRequisicion", estatus));
+			criteria.setMaxResults(1);
+			lista = criteria.list();
+		}
+		
+		
+		return lista != null && !lista.isEmpty() ? lista.get(0): null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Requisicion getByUnidadResponsable(Area area) {
+		List<Requisicion> lista = null;
+		
+		EstatusRequisicion estatus = estatusRequisicionService.getByClave("RQ");
+		if(estatus != null){
+			Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+					createCriteria(Requisicion.class);
+			criteria.add(Restrictions.eq("area", area));
+			criteria.add(Restrictions.eq("estatusRequisicion", estatus));
+			criteria.setMaxResults(1);
+			lista = criteria.list();
+		}
+		
+		return lista != null && !lista.isEmpty() ? lista.get(0): null;
 	}
 
 }

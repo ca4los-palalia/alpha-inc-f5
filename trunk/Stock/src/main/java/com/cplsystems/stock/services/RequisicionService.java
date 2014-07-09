@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.RequisicionDAO;
+import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
@@ -54,5 +55,13 @@ public class RequisicionService {
 	public List<Requisicion> getByEstatusRequisicion(
 			EstatusRequisicion estatusRequisicion) {
 		return requisicionDAO.getByEstatusRequisicion(estatusRequisicion);
+	}
+	
+	public Requisicion getByFolio(String folio){
+		return requisicionDAO.getByFolio(folio);
+	}
+	
+	public Requisicion getByUnidadResponsable(Area area){
+		return requisicionDAO.getByUnidadResponsable(area);
 	}
 }

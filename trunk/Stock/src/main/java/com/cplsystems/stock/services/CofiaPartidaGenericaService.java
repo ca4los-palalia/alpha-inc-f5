@@ -36,4 +36,8 @@ public class CofiaPartidaGenericaService {
 	public List<CofiaPartidaGenerica> getAll(){
 		return cofiaPartidaGenericaDAO.getAll();
 	}
+	
+	public CofiaPartidaGenerica getByNombre(String nombre){
+		return cofiaPartidaGenericaDAO.getByNombre(nombre);
+	}
 }

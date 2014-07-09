@@ -5,6 +5,7 @@ package com.cplsystems.stock.dao;
 
 import java.util.List;
 
+import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
@@ -30,5 +31,9 @@ public interface RequisicionDAO {
 	public List<Requisicion> getAll();
 	
 	public List<Requisicion> getByEstatusRequisicion(EstatusRequisicion estatusRequisicion);
+	
+	public Requisicion getByFolio(String folio);
+	
+	public Requisicion getByUnidadResponsable(Area area);
 	
 }

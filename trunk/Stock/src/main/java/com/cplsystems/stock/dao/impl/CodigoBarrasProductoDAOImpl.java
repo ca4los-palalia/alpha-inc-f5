@@ -23,19 +23,16 @@ import com.cplsystems.stock.domain.Producto;
 public class CodigoBarrasProductoDAOImpl extends HibernateDAOSuportUtil implements
 CodigoBarrasProductoDAO {
 
-	@Override
 	@Transactional
 	public void save(CodigoBarrasProducto codigoBarrasProducto) {
 		getHibernateTemplate().saveOrUpdate(codigoBarrasProducto);
 	}
 
-	@Override
 	@Transactional
 	public void delete(CodigoBarrasProducto codigoBarrasProducto) {
 		getHibernateTemplate().delete(codigoBarrasProducto);
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public CodigoBarrasProducto getById(Long idCodigoBarrasProducto) {
@@ -47,7 +44,6 @@ CodigoBarrasProductoDAO {
 		return codigos.size() > 0 ? codigos.get(0) : null;
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public List<CodigoBarrasProducto> getAll() {
@@ -58,7 +54,6 @@ CodigoBarrasProductoDAO {
 		return codigos.size() > 0 ? codigos : null;
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public List<CodigoBarrasProducto> getByCodigo(String codigo) {
@@ -70,7 +65,6 @@ CodigoBarrasProductoDAO {
 		return codigos.size() > 0 ? codigos : null;
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked" })
 	@Transactional(readOnly = true)
 	public List<CodigoBarrasProducto> getByProducto(Producto producto) {
