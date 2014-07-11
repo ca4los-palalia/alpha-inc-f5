@@ -24,8 +24,8 @@
 						</div>
 						<hlayout
 							style="text-align:right; margin:5px ">
-							<button image="/images/toolbar/saveOff.png"
-								sclass="web_button" tooltiptext="Guardar cambios"
+							<button image="/images/toolbar/generate32.png" orient="vertical" label="Gerarar cotizacion"
+								sclass="web_button" tooltiptext="Generar cotización"
 								onClick="@command('autorizar')" />
 
 							<button image="/images/toolbar/delete.png"
@@ -41,7 +41,7 @@
 			</grid>
 
 
-<label value="Buscar por clave de producto, Area(UR), folio de la requicicion"></label>
+<label value="Buscar por clave de producto, Área(UR), folio de la requicición o partida generica"></label>
 			<grid style="border: 0;">
 				<columns>
 					<column />
@@ -67,7 +67,7 @@
 				</rows>
 			</grid>
 
-			<label value="Todos los productos de las requisiciones" />
+			
 
 			<listbox rows="5" model="@load(rvm.requisicionProductos)"
 				onSelect="@command('cargarProveedoresProducto')"
@@ -75,7 +75,7 @@
 				emptyMessage="No hay elementos en la requisición">
 				<listhead>
 
-					<listheader label="Requisicion" width="10%"
+					<listheader label="Requisicion" width="11%"
 						tooltiptext="Foliio de la requisición" />
 						
 					<listheader label="Unidad responsable" width="17%"

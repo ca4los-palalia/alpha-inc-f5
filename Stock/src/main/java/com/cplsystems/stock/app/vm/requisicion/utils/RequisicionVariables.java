@@ -32,6 +32,11 @@ public class RequisicionVariables extends BasicStructure {
 	protected DesgloceTotal desgloceTotal;
 	protected boolean disabledBuscadorFolio;
 	protected boolean disabledBuscadorArea;
+	protected boolean checkBuscarNueva;
+	protected boolean checkBuscarCancelada;
+	protected boolean checkBuscarEnviada;
+	protected boolean checkBuscarAceptada;
+	
 	
 	public RequisicionVariables() {
 		requisicionProductos = new ArrayList<RequisicionProducto>();
@@ -122,6 +127,38 @@ public class RequisicionVariables extends BasicStructure {
 
 	public void setDisabledBuscadorArea(boolean disabledBuscadorArea) {
 		this.disabledBuscadorArea = disabledBuscadorArea;
+	}
+
+	public boolean isCheckBuscarNueva() {
+		return checkBuscarNueva;
+	}
+
+	public void setCheckBuscarNueva(boolean checkBuscarNueva) {
+		this.checkBuscarNueva = checkBuscarNueva;
+	}
+
+	public boolean isCheckBuscarCancelada() {
+		return checkBuscarCancelada;
+	}
+
+	public void setCheckBuscarCancelada(boolean checkBuscarCancelada) {
+		this.checkBuscarCancelada = checkBuscarCancelada;
+	}
+
+	public boolean isCheckBuscarEnviada() {
+		return checkBuscarEnviada;
+	}
+
+	public void setCheckBuscarEnviada(boolean checkBuscarEnviada) {
+		this.checkBuscarEnviada = checkBuscarEnviada;
+	}
+
+	public boolean isCheckBuscarAceptada() {
+		return checkBuscarAceptada;
+	}
+
+	public void setCheckBuscarAceptada(boolean checkBuscarAceptada) {
+		this.checkBuscarAceptada = checkBuscarAceptada;
 	}
 	
 }

@@ -22,6 +22,7 @@ public class RequisicionProducto implements Serializable {
 	private static final long serialVersionUID = -9121053303871749035L;
 	private Long idRequisionProducto;
 	private Float cantidad;
+	private Long entregados;
 	private String descripcion;
 	private Lugar lugar;
 	private Proveedor proveedor;
@@ -31,6 +32,7 @@ public class RequisicionProducto implements Serializable {
 	private String partida;
 	private CofiaPartidaGenerica cofiaPartidaGenerica;
 	private Float totalProductoPorUnidad;
+	private Cotizacion cotizacion;
 
 	public RequisicionProducto() {
 		producto = new Producto();
@@ -150,4 +152,25 @@ public class RequisicionProducto implements Serializable {
 			CofiaPartidaGenerica cofiaPartidaGenerica) {
 		this.cofiaPartidaGenerica = cofiaPartidaGenerica;
 	}
+
+	@Column
+	public Long getEntregados() {
+		return entregados;
+	}
+
+	public void setEntregados(Long entregados) {
+		this.entregados = entregados;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "cotizacion")
+	public Cotizacion getCotizacion() {
+		return cotizacion;
+	}
+
+	public void setCotizacion(Cotizacion cotizacion) {
+		this.cotizacion = cotizacion;
+	}
+	
+	
 }

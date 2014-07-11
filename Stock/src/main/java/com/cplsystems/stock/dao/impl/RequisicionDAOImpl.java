@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
+import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.dao.RequisicionDAO;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.EstatusRequisicion;
@@ -121,7 +122,7 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 	public Requisicion getByFolio(String folio) {
 		List<Requisicion> lista = null;
 		
-		EstatusRequisicion estatus = estatusRequisicionService.getByClave("RQ");
+		EstatusRequisicion estatus = estatusRequisicionService.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
 		if(estatus != null){
 			Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 					createCriteria(Requisicion.class);
@@ -140,7 +141,7 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 	public Requisicion getByUnidadResponsable(Area area) {
 		List<Requisicion> lista = null;
 		
-		EstatusRequisicion estatus = estatusRequisicionService.getByClave("RQ");
+		EstatusRequisicion estatus = estatusRequisicionService.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
 		if(estatus != null){
 			Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 					createCriteria(Requisicion.class);
