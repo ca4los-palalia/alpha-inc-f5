@@ -9,22 +9,17 @@
 
 		<grid><!-- MENU DE ACCIONES-->
 			<columns>
-				<column width="22%" />
 				<column />
 				<column width="35%" zclass="shadowMenuActions" />
 			</columns>
 			<rows>
 				<row zclass="shadowMenuActions">
 					<div style="margin:5px">
-						<button label="Requisición > cotización"
+						<button label="Cotizacion> cotización"
 							image="/images/toolbar/home32.png"
 							zclass="panelInfoItemMenuTitle" />
 					</div>
-					<div style="margin:5px">
-						<label zclass="panelInfoItemMenuContent"
-							width="100%"
-							value="Altas, bajas, actualización y busqueda de requisiciones" />
-					</div>
+					
 					<hlayout style="text-align:right">
 						<button image="/images/toolbar/saveOff.png"
 							sclass="web_button" tooltiptext="Guardar nueva requisición"
@@ -48,6 +43,63 @@
 		<separator />
 		<separator />
 		<separator />
+
+
+		<groupbox>
+			<caption label="Cotización:"></caption>
+		</groupbox>
+		<grid>
+			<columns>
+				<column />
+				<column />
+				<column />
+				<column />
+			</columns>
+			<rows>
+				<row>
+					<checkbox value="@bind(rvm.checkBuscarNueva)"
+						label="Nueva" width="100%" />
+					<checkbox value="@bind(rvm.checkBuscarCancelada)"
+						label="Cancelada" width="100%" />
+					<checkbox value="@bind(rvm.checkBuscarEnviada)"
+						label="Enviada" width="100%" />
+					<checkbox value="@bind(rvm.checkBuscarAceptada)"
+						label="Aaceptada" width="100%" />
+				</row>
+			</rows>
+		</grid>
+
+
+		<grid style="border: 0;">
+			<columns>
+				<column />
+				<column width="8%" />
+			</columns>
+			<rows>
+				<row style="background-color:transparent; border: 0;">
+					<textbox
+						value="@bind(rvm.requisicion.buscarRequisicion)" width="100%" />
+
+					<hlayout style="text-align:center">
+
+						<button image="/images/toolbar/find16x16.png"
+							zclass="find_button"
+							onClick="@command('filtrarProductoPorRequisicion')"
+							tooltiptext="Buscar" />
+					</hlayout>
+				</row>
+			</rows>
+		</grid>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
 
 		<grid>
 			<columns>

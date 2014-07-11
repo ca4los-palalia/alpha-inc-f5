@@ -3,7 +3,11 @@
  */
 package com.cplsystems.stock.app.vm.requisicion;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
@@ -11,12 +15,14 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
 
-import com.cplsystems.stock.app.vm.requisicion.utils.DesgloceTotal;
+import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
+import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
@@ -34,7 +40,8 @@ public class concentradoVM extends RequisicionVariables {
 	public void init() {
 		super.init();
 		requisicion = new Requisicion();
-		EstatusRequisicion estado = estatusRequisicionService.getByClave("RQ");
+		/*
+		EstatusRequisicion estado = estatusRequisicionService.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
 		requisiciones = requisicionService.getByEstatusRequisicion(estado);
 
 		requisicionProductos = requisicionProductoService
@@ -51,7 +58,7 @@ public class concentradoVM extends RequisicionVariables {
 			desgloceTotal.setSubtotal(subtotal);
 			desgloceTotal.setIva(subtotal * new Float(0.16));
 			desgloceTotal.setTotal((subtotal) + (subtotal * new Float(0.16)));
-		}
+		}*/
 
 	}
 
@@ -157,34 +164,6 @@ public class concentradoVM extends RequisicionVariables {
 
 	@SuppressWarnings("static-access")
 	@Command
-	public void autorizar() {
-		if (requisicionProductos != null) {
-			Integer count = 0;
-
-			for (RequisicionProducto item : requisicionProductos) {
-				if (item.getProveedor() != null) {
-					requisicionProductoService.save(item);
-					count++;
-				}
-			}
-			if (count > 0) {
-				String mensaje = "";
-				if (count == 1)
-					mensaje = "se ha actualizado el proveedor para " + count
-							+ " producto";
-				else
-					mensaje = "se han actualizado los proveedores para "
-							+ count + " productos";
-				stockUtils.showSuccessmessage(mensaje,
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			}
-
-		}
-
-	}
-
-	@SuppressWarnings("static-access")
-	@Command
 	@NotifyChange("*")
 	public void removerProductoDeListaGeneralDeProductos() {
 		requisicionProductoService.delete(requisicionProductoSeleccionado);
@@ -201,7 +180,7 @@ public class concentradoVM extends RequisicionVariables {
 	@Command
 	@NotifyChange("*")
 	public void cancelarRequisicion() {
-		EstatusRequisicion estado = estatusRequisicionService.getByClave("RQC");
+		EstatusRequisicion estado = estatusRequisicionService.getByClave(StockConstants.ESTADO_REQUISICION_CANCELADA);
 		Requisicion rq = requisicionProductoSeleccionado.getRequisicion();
 		rq.setEstatusRequisicion(estado);
 		requisicionService.save(rq);
@@ -210,10 +189,108 @@ public class concentradoVM extends RequisicionVariables {
 				+ requisicionProductoSeleccionado.getRequisicion().getFolio()
 				+ "- ha sido cancelada", Clients.NOTIFICATION_TYPE_INFO, 0,
 				null);
-		estado = estatusRequisicionService.getByClave("RQ");
+		estado = estatusRequisicionService.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
 		requisiciones = requisicionService.getByEstatusRequisicion(estado);
 		requisicionProductos = requisicionProductoService
 				.getRequisicionesConEstadoEspecifico(estado);
+	}
+	
+	private List<Cotizacion> salvarCotizacion(){
+		Map<Proveedor,Requisicion> mapa = 
+			    new HashMap<Proveedor, Requisicion>();
+		
+		List<Cotizacion> cotizacionReturn = null;
+		if (requisicionProductos != null && requisicionProductos.size() > 0) {
+			cotizacionReturn = new ArrayList<Cotizacion>();
+			for (RequisicionProducto item : requisicionProductos) {
+				if(!mapa.containsKey(item.getProveedor()))
+					mapa.put(item.getProveedor(), item.getRequisicion());
+			}
+			if(mapa.size() > 0){
+				EstatusRequisicion estado = estatusRequisicionService.getByClave(StockConstants.ESTADO_COTIZACION_NUEVA);
+				for (Entry<Proveedor, Requisicion> elemento : mapa.entrySet()) {
+					Proveedor pr = elemento.getKey();
+					Requisicion rq = elemento.getValue();
+					System.out.println(pr.getNombre() + " _ " + rq.getFolio());
+					
+					Cotizacion cotizacion = new Cotizacion();
+					cotizacion.setProveedor(pr);
+					cotizacion.setRequisicion(rq);
+					cotizacion.setFolioCotizacion(generarFolioCotizacion());
+					cotizacionService.save(cotizacion);
+					cotizacion.setEstatusRequisicion(estado);
+					cotizacionReturn.add(cotizacion);
+				}
+			}
+		}
+		return cotizacionReturn;
+	}
+	
+	private Cotizacion obtenerCotizacion(Proveedor proRequisicion, List<Cotizacion> prosCotizaciones){
+		Cotizacion resultado = null;
+		for (Cotizacion cotizacion : prosCotizaciones) {
+			if(cotizacion.getProveedor().equals(proRequisicion)){
+				resultado = cotizacion;
+				break;
+			}	
+		}
+		return resultado;
+	}
+
+	private String generarFolioCotizacion(){
+		String folio = null;
+		Long countRows = cotizacionService.getCountRowsCotizacion();
+		if(countRows != null){
+			folio = "FCO";
+			if(String.valueOf(countRows.toString().length()).equals("1"))
+				folio += "00" + countRows;
+			else if(String.valueOf(countRows.toString().length()).equals("2"))
+				folio += "0" + countRows;
+			else if(String.valueOf(countRows.toString().length()).equals("3"))
+				folio += countRows;
+		}
+		
+		return folio;
+	}
+	
+	@SuppressWarnings("static-access")
+	@Command
+	public void autorizar() {
+		
+		generarFolioCotizacion();
+		/*
+		if (requisicionProductos != null) {
+			
+			List<Cotizacion> cotizacionesRequisicionPtoducto = salvarCotizacion();
+			if(cotizacionesRequisicionPtoducto != null){
+				
+				Integer count = 0;
+
+				for (RequisicionProducto item : requisicionProductos) {
+					if (item.getProveedor() != null) {
+						item.setCotizacion(obtenerCotizacion(item.getProveedor(), cotizacionesRequisicionPtoducto));
+						item.setEntregados(0L);
+						requisicionProductoService.save(item);
+						count++;
+					}
+				}
+				if (count > 0) {
+					String mensaje = "";
+					if (count == 1)
+						mensaje = "se ha actualizado el proveedor para " + count
+								+ " producto";
+					else
+						mensaje = "se han actualizado los proveedores para "
+								+ count + " productos";
+					stockUtils.showSuccessmessage(mensaje,
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
+				}
+			}
+		}else
+			stockUtils.showSuccessmessage("No se puede generar una cotización, asegurese de haber precargado una lista de productos.", Clients.NOTIFICATION_TYPE_WARNING, 0,
+					null);
+		*/
+			
 	}
 
 }

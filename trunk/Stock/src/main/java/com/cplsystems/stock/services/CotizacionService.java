@@ -69,4 +69,12 @@ public class CotizacionService {
 	public List<Cotizacion> getTopCompras(){
 		return cotizacionDAO.getTopCompras();	
 	}
+	
+	public Long getCountRowsCotizacion(){
+		return  cotizacionDAO.getCountRowsCotizacion();
+	}
+	
+	public Cotizacion getCotizacionByFolio(String folioCotizacion){
+		return  cotizacionDAO.getCotizacionByFolio(folioCotizacion);
+	}
 }

@@ -65,6 +65,18 @@ public class StockConstants {
 	public static final String TOOL_TIP_ROW_SELECTED_MONEDA = "Seleccionar una moneda";
 	public static final String TOOL_TIP_ROW_SELECTED_TIPO_PRODUCTO = "Seleccionar un tipo de producto";
 	public static final String TOOL_TIP_ROW_EDICION_NOMBRE = "Clic sobre esta columna para editar nombre";
+	
+	public static final String ESTADO_REQUISICION_NUEVA = "RQN";
+	public static final String ESTADO_REQUISICION_PENDIENTE = "RQP";
+	public static final String ESTADO_REQUISICION_TERMINADA = "RQT";
+	public static final String ESTADO_REQUISICION_CANCELADA = "RQC";
+	public static final String ESTADO_ORDEN_COMPRA_TERMINADA = "OCT";
+	public static final String ESTADO_ORDEN_COMPRA_NUEVA = "OCN";
+	public static final String ESTADO_ORDEN_COMPRA_CANCELADA = "OCC";
+	public static final String ESTADO_COTIZACION_NUEVA = "CON";
+	public static final String ESTADO_COTIZACION_ENVIADA = "COE";
+	public static final String ESTADO_COTIZACION_CANCELADA = "COC";
+	public static final String ESTADO_COTIZACION_ACEPTADA = "COA";
 
 	public static final String REPORT_PROVEEDOR_NAME_FILE = "C:\\reportProveedores.pdf";
 	public static final String REPORT_PROVEEDOR_PARAM1 = "parameter1";

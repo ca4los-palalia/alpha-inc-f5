@@ -36,4 +36,8 @@ public interface CotizacionDAO {
 	public List<Cotizacion> getByRequisicion(Requisicion requisicion);
 	
 	public List<Cotizacion> getTopCompras();
+	
+	public Long getCountRowsCotizacion();
+	
+	public Cotizacion getCotizacionByFolio(String folioCotizacion);
 }

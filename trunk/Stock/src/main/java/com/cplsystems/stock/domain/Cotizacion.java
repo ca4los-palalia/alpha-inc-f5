@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -25,13 +26,14 @@ public class Cotizacion {
 	private Calendar fechaResolucion;
 	private Float impuestos;
 	private Float retencion;
-	private Integer status;
 	private Integer statusPago;
 	private Float subTotal;
 	private Float total;
 	private Float extras;
 	private Proveedor proveedor;
 	private Requisicion requisicion;
+	private EstatusRequisicion estatusRequisicion;
+	private String folioCotizacion;
 
 	@Id
 	@Column(name = "idcotizacion", nullable = false)
@@ -89,15 +91,6 @@ public class Cotizacion {
 		this.retencion = retencion;
 	}
 
-	@Column(name = "status", length = 250)
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
 	@Column(name = "subTotal", length = 250)
 	public Float getSubTotal() {
 		return subTotal;
@@ -151,6 +144,24 @@ public class Cotizacion {
 
 	public void setStatusPago(Integer statusPago) {
 		this.statusPago = statusPago;
+	}
+	@OneToOne
+	@JoinColumn(name = "estatusRequisicion")
+	public EstatusRequisicion getEstatusRequisicion() {
+		return estatusRequisicion;
+	}
+
+	public void setEstatusRequisicion(EstatusRequisicion estatusRequisicion) {
+		this.estatusRequisicion = estatusRequisicion;
+	}
+
+	@Column
+	public String getFolioCotizacion() {
+		return folioCotizacion;
+	}
+
+	public void setFolioCotizacion(String folioCotizacion) {
+		this.folioCotizacion = folioCotizacion;
 	}
 	
 }
