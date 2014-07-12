@@ -4,15 +4,24 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -27,7 +36,16 @@ public class Usuarios implements Serializable {
 	private Long idUsuario;
 	private String benutzer;
 	private String kennwort;
+	private Date fechaCaducidad;
 	private Persona persona;
+	private Organizacion organizacion;
+	private String retypeKennwort;
+
+	private List<Privilegios> privilegios;
+
+	public Usuarios() {
+		privilegios = new ArrayList<Privilegios>();
+	}
 
 	@Id
 	@Column
@@ -66,6 +84,44 @@ public class Usuarios implements Serializable {
 
 	public void setPersona(Persona persona) {
 		this.persona = persona;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column
+	public Date getFechaCaducidad() {
+		return fechaCaducidad;
+	}
+
+	public void setFechaCaducidad(Date fechaCaducidad) {
+		this.fechaCaducidad = fechaCaducidad;
+	}
+
+	@Transient
+	public String getRetypeKennwort() {
+		return retypeKennwort;
+	}
+
+	public void setRetypeKennwort(String retypeKennwort) {
+		this.retypeKennwort = retypeKennwort;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "organizacion")
+	public Organizacion getOrganizacion() {
+		return organizacion;
+	}
+
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuarios")
+	public List<Privilegios> getPrivilegios() {
+		return privilegios;
+	}
+
+	public void setPrivilegios(List<Privilegios> privilegios) {
+		this.privilegios = privilegios;
 	}
 
 }
