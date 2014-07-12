@@ -3,16 +3,28 @@
  */
 package com.cplsystems.stock.app.vm.requisicion;
 
+import java.io.FileOutputStream;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.bouncycastle.util.encoders.Hex;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Checkbox;
 
-import com.cplsystems.stock.app.vm.requisicion.utils.DesgloceTotal;
+import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
+import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
-import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
 /**
@@ -25,127 +37,236 @@ public class CotizacionVM extends RequisicionVariables {
 	private static final long serialVersionUID = 2584088569805199520L;
 	public static final String REQUISICION_GLOBALCOMMAND_NAME_FOR_UPDATE = "updateCommandFromItemFinder";
 
+	@Wire
+	private Checkbox c1;
+
 	@Init
 	public void init() {
 		super.init();
-		
-		
-		//requisiciones = requisicionService.getByEstatusRequisicion(estado);
-		proveedoresLista = requisicionProductoService.getAllDistinctByProveedor();
-		
-		/*
-		Float subtotal = new Float(0.0);
-		
-		if(requisicionProductos !=null ){
-			desgloceTotal = new DesgloceTotal();
-			
-			for (RequisicionProducto sumar : requisicionProductos) {
-				subtotal += sumar.getTotalProductoPorUnidad();
-			}
 
-			desgloceTotal.setSubtotal(subtotal);
-			desgloceTotal.setIva(subtotal * new Float(0.16));
-			desgloceTotal.setTotal((subtotal) + (subtotal * new Float(0.16)));
-		}
-			*/
-		
-		
 	}
+
 	@Command
 	@NotifyChange("*")
-	public void obtenerListaDeProductosProveedorSeleccionado(){
-		if(proveedorSelected != null){
-			/*EstatusRequisicion estado = estatusRequisicionService.getByClave("RQ");
-			requisicionProductos = requisicionProductoService.getRequisicionesConEstadoEspecifico(estado);*/
-			requisicionProductos = requisicionProductoService.getByProveedor(proveedorSelected);
+	public void obtenerListaDeProductosProveedorSeleccionado() {
+		if (proveedorSelected != null) {
+			requisicionProductos = requisicionProductoService
+					.getByProveedor(proveedorSelected);
 		}
 	}
-	
-	
-	/*
+
 	@Command
-	@NotifyChange("proveedorProductos")
-	public void cargarProveedoresProducto(){
-		if(requisicionProductoSeleccionado != null){
-			if(requisicionProductoSeleccionado.getProducto() != null)
-				proveedorProductos = proveedorProductoService.getByProducto(requisicionProductoSeleccionado.getProducto());
+	public void checkNueva() {
+		if (!checkBuscarNueva)
+			checkBuscarNueva = true;
+		else
+			checkBuscarNueva = false;
+	}
+
+	@Command
+	public void checkCancelada() {
+		if (!checkBuscarCancelada)
+			checkBuscarCancelada = true;
+		else
+			checkBuscarCancelada = false;
+	}
+
+	@Command
+	public void checkEnviada() {
+		if (!checkBuscarEnviada)
+			checkBuscarEnviada = true;
+		else
+			checkBuscarEnviada = false;
+	}
+
+	@Command
+	public void checkAceptada() {
+		if (!checkBuscarAceptada)
+			checkBuscarAceptada = true;
+		else
+			checkBuscarAceptada = false;
+
+	}
+
+	private List<EstatusRequisicion> generarListaEstatusIN() {
+		List<EstatusRequisicion> lista = null;
+
+		if (checkBuscarNueva || checkBuscarCancelada || checkBuscarEnviada
+				|| checkBuscarAceptada) {
+			lista = new ArrayList<EstatusRequisicion>();
+
+			if (checkBuscarNueva)
+				lista.add(estatusRequisicionService
+						.getByClave(StockConstants.ESTADO_COTIZACION_NUEVA));
+			if (checkBuscarCancelada)
+				lista.add(estatusRequisicionService
+						.getByClave(StockConstants.ESTADO_COTIZACION_CANCELADA));
+			if (checkBuscarEnviada)
+				lista.add(estatusRequisicionService
+						.getByClave(StockConstants.ESTADO_COTIZACION_ENVIADA));
+			if (checkBuscarAceptada)
+				lista.add(estatusRequisicionService
+						.getByClave(StockConstants.ESTADO_COTIZACION_ACEPTADA));
+		}
+
+		return lista;
+	};
+
+	@SuppressWarnings("static-access")
+	@Command
+	@NotifyChange("*")
+	public void buscarPCotizacion() {
+		// cotizacionesList = new ArrayList<Cotizacion>();
+		if ((checkBuscarNueva || checkBuscarCancelada || checkBuscarEnviada || checkBuscarAceptada)
+				|| (requisicion != null && (requisicion.getBuscarRequisicion() != null && !requisicion
+						.getBuscarRequisicion().isEmpty()))) {
+
+			List<EstatusRequisicion> listaEstatus = generarListaEstatusIN();
+
+			cotizacionesList = cotizacionService
+					.getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(
+							requisicion.getBuscarRequisicion(), null,
+							listaEstatus);
+
+			if (cotizacionesList != null) {
+
+			}
+
+		} else
+			stockUtils
+					.showSuccessmessage(
+							"Debe elegir algun criterio para realizar la busqueda de cotizaciones (nueva, cancelada, enviada o aceptada) o (ingresar palabra en el buscador)",
+							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void mostrarProductosCotizacion() {
+		if (cotizacionSelected != null) {
+			Cotizacion cotizacion = cotizacionService
+					.getById(cotizacionSelected.getIdCotizacion());
+			requisicionProductos = requisicionProductoService
+					.getByCotizacion(cotizacion);
 		}
 	}
-	
-	
+
+	@SuppressWarnings("deprecation")
 	@Command
-	@NotifyChange("requisicionProductos")
-	public void seleccionarProveedor() {
-		if(proveedorProducto != null){
-			for (RequisicionProducto item : requisicionProductos) {
-				if(requisicionProductoSeleccionado.equals(item)){
-					item.setProveedor(proveedorProducto.getProveedor());
+	@NotifyChange("*")
+	public void exportarExcel() {
+		crearArchivoExcel();
+	}
+	
+	@SuppressWarnings({ "deprecation", "unused", "static-access" })
+	private void crearArchivoExcel(){
+		boolean excelGenerado = false;
+		HSSFSheet hoja;
+		hoja = libro.createSheet();
+		
+		//crear encabezado
+		HSSFRow row = hoja.createRow(0);//Crear row
+		HSSFCell cell = null;
+		HSSFRichTextString value = null;
+		
+		for (int j = 0; j < 8; j++) {
+			switch (j) {
+				case 0:
+					cell = row.createCell((short) j);
+					value = new HSSFRichTextString("No");
 					break;
-				}	
+				case 1:
+					cell = row.createCell((short) j);
+					value = new HSSFRichTextString("Clave");
+					break;
+				case 2:
+					cell = row.createCell((short) j);
+					value = new HSSFRichTextString("Producto");
+					break;
+				case 3:
+					cell = row.createCell((short) j);
+					value = new HSSFRichTextString("Partida genérica");
+					break;
+				case 4:
+					cell = row.createCell((short) j);
+					value = new HSSFRichTextString("Cantidad");
+					break;
+				case 5:
+					cell = row.createCell((short) j);
+					value = new HSSFRichTextString("U/M");
+					break;
+				case 6:
+					cell = row.createCell((short) j);
+					value = new HSSFRichTextString("Precio unitario");
+					break;
+				case 7:
+					cell = row.createCell((short) j);
+					value = new HSSFRichTextString("TOTAL");
+					break;
 			}
+			cell.setCellValue(value);
 		}
-	}
-	
-	@Command
-	@NotifyChange("requisicionProductos")
-	public void filtrarProductoPorRequisicion(){
-		if(requisicion != null)
-			requisicionProductos = requisicionProductoService.getByRequisicion(requisicion);
-	}
-	
-	@SuppressWarnings("static-access")
-	@Command
-	public void autorizar() {
-		if(requisicionProductos != null){
-			Integer count = 0;
+		//END crear encabezado
+		
+		for (int i = 0; i < requisicionProductos.size(); i++) {	
+			RequisicionProducto item = requisicionProductos.get(i);
 			
-			for (RequisicionProducto item : requisicionProductos) {
-				if(item.getProveedor() != null){
-					requisicionProductoService.save(item);
-					count ++;
+			HSSFRow fila = hoja.createRow(i+1);//Crear row
+			HSSFCell celda = null;
+			HSSFRichTextString texto = null;
+			
+			for (int j = 0; j < 8; j++) {
+				switch (j) {
+					case 0:
+						celda = fila.createCell((short) j);
+						texto = new HSSFRichTextString(String.valueOf(i+1));
+						break;
+					case 1:
+						celda = fila.createCell((short) j);
+						texto = new HSSFRichTextString(item.getProducto().getClave());
+						break;
+					case 2:
+						celda = fila.createCell((short) j);
+						texto = new HSSFRichTextString(item.getProducto().getNombre());
+						break;
+					case 3:
+						celda = fila.createCell((short) j);
+						texto = new HSSFRichTextString(item.getCofiaPartidaGenerica().getNombre());
+						break;
+					case 4:
+						celda = fila.createCell((short) j);
+						texto = new HSSFRichTextString(item.getCantidad().toString());
+						break;
+					case 5:
+						celda = fila.createCell((short) j);
+						texto = new HSSFRichTextString(item.getProducto().getUnidad().getNombre());
+						break;
+					case 6:
+						celda = fila.createCell((short) j);
+						texto = new HSSFRichTextString(String.valueOf(item.getProducto().getPrecio()));
+						break;
+					case 7:
+						celda = fila.createCell((short) j);
+						texto = new HSSFRichTextString(String.valueOf(item.getTotalProductoPorUnidad()));
+						break;
 				}
+				celda.setCellValue(texto);
 			}
-			if(count > 0){
-				String mensaje = "";
-				if(count == 1)
-					mensaje = "se ha actualizado el proveedor para " + count + " producto";	
-				else
-					mensaje = "se han actualizado los proveedores para " + count + " productos";
-				stockUtils.showSuccessmessage(
-						mensaje,
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			}
-				
 		}
-		
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(String.valueOf(cotizacionSelected.getIdCotizacion()).getBytes());
+			byte[] mb = md.digest();
+			
+			String hash = String.valueOf(Hex.encode(mb));
+			FileOutputStream elFichero = new FileOutputStream("C://" + hash + ".xls");
+			libro.write(elFichero);
+			
+			elFichero.close();
+			excelGenerado = true;
+			cotizacionSelected.setExcelFile(hash);
+			cotizacionService.save(cotizacionSelected);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	@SuppressWarnings("static-access")
-	@Command
-	@NotifyChange("*")
-	public void removerProductoDeListaGeneralDeProductos(){
-		requisicionProductoService.delete(requisicionProductoSeleccionado);
-		requisicionProductos.remove(requisicionProductoSeleccionado);
-		
-		stockUtils.showSuccessmessage("El producto -" + 
-				requisicionProductoSeleccionado.getProducto().getNombre() + "- ha sido removido de la requisición -" + requisicionProductoSeleccionado.getRequisicion().getFolio() + "-",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
-	}
-	
-	@SuppressWarnings("static-access")
-	@Command
-	@NotifyChange("*")
-	public void cancelarRequisicion(){
-		EstatusRequisicion estado = estatusRequisicionService.getByClave("RQC");
-		Requisicion rq = requisicionProductoSeleccionado.getRequisicion();
-		rq.setEstatusRequisicion(estado);
-		requisicionService.save(rq);
-		
-		stockUtils.showSuccessmessage("La requisición -" + requisicionProductoSeleccionado.getRequisicion().getFolio() + "- ha sido cancelada",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
-		estado = estatusRequisicionService.getByClave("RQ");
-		requisiciones = requisicionService.getByEstatusRequisicion(estado);
-		requisicionProductos = requisicionProductoService.getRequisicionesConEstadoEspecifico(estado);
-	}*/
-	
 }

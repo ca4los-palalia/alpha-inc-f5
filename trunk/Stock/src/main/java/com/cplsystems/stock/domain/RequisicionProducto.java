@@ -4,6 +4,7 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -134,6 +135,9 @@ public class RequisicionProducto implements Serializable {
 		if (cantidad != null
 				&& (producto != null && producto.getPrecio() != null)) {
 			totalProductoPorUnidad = cantidad * producto.getPrecio();
+			
+			DecimalFormat formato = new DecimalFormat("###.##");
+			totalProductoPorUnidad = Float.parseFloat(formato.format(totalProductoPorUnidad));
 		}
 		return totalProductoPorUnidad;
 	}

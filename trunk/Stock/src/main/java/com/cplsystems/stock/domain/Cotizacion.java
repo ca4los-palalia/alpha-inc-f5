@@ -33,6 +33,8 @@ public class Cotizacion {
 	private Proveedor proveedor;
 	private Requisicion requisicion;
 	private EstatusRequisicion estatusRequisicion;
+	private String excelFile;
+	
 	private String folioCotizacion;
 
 	@Id
@@ -162,6 +164,15 @@ public class Cotizacion {
 
 	public void setFolioCotizacion(String folioCotizacion) {
 		this.folioCotizacion = folioCotizacion;
+	}
+
+	@Column
+	public String getExcelFile() {
+		return excelFile;
+	}
+
+	public void setExcelFile(String excelFile) {
+		this.excelFile = excelFile;
 	}
 	
 }

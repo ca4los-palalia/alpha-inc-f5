@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -34,10 +36,10 @@ public abstract class BasicStructure extends ServiceLayer {
 	private static final long serialVersionUID = 3686010678115196973L;
 
 	public void init() {
-		
 		areas = new ArrayList<Area>();
 		posiciones = new ArrayList<Posicion>();
 		requisicion = new Requisicion();
+		libro = new HSSFWorkbook();
 	}
 	
 	public void newRecord() {

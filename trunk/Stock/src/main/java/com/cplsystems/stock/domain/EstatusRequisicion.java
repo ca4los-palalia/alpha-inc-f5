@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 @Table
 public class EstatusRequisicion {
@@ -15,6 +17,7 @@ public class EstatusRequisicion {
 	private Long idEstatusRequisicion;
 	private String nombre;
 	private String clave;
+	private String color;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,4 +42,13 @@ public class EstatusRequisicion {
 	public void setClave(String clave) {
 		this.clave = clave;
 	}
+	@Column(length=500)
+	@Length(max=500)
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	
 }

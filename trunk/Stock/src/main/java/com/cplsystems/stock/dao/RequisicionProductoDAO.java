@@ -6,6 +6,7 @@ package com.cplsystems.stock.dao;
 import java.util.List;
 
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
+import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Lugar;
 import com.cplsystems.stock.domain.Producto;
@@ -43,6 +44,6 @@ public interface RequisicionProductoDAO {
 	
 	public List<RequisicionProducto> getByConfiaPartidaGenerica(CofiaPartidaGenerica cofiaPartidaGenerica);
 	
-	
+	public List<RequisicionProducto> getByCotizacion(Cotizacion cotizacion);
 	
 }

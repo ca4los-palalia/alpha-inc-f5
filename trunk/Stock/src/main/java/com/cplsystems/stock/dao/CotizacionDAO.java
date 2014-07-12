@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.cplsystems.stock.domain.Cotizacion;
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
 
@@ -40,4 +41,7 @@ public interface CotizacionDAO {
 	public Long getCountRowsCotizacion();
 	
 	public Cotizacion getCotizacionByFolio(String folioCotizacion);
+	
+	
+	public List<Cotizacion> getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(String folioCotizacion, List<Proveedor> proveedores, List<EstatusRequisicion> estatus);
 }
