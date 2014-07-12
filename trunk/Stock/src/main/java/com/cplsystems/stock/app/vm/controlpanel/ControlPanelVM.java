@@ -10,7 +10,6 @@ import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Tab;
 
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.controlpanel.utils.ControlPanelVariables;
