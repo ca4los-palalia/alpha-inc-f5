@@ -6,11 +6,10 @@ package com.cplsystems.stock.dao;
 import java.util.List;
 
 import com.cplsystems.stock.domain.Organizacion;
-import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
- *
+ * 
  */
 public interface OrganizacionDAO {
 
@@ -18,9 +17,12 @@ public interface OrganizacionDAO {
 
 	void delete(Organizacion organizacion);
 
-
 	List<Organizacion> getOrganizaciones();
 
-	Organizacion getOrganizacionByUsuario(Usuarios usuario);
+	List<Organizacion> getCompaniasByNombreRFC(String compania, String rfc);
+
+	List<Organizacion> getCompaniasByNombre(String compania);
+
+	List<Organizacion> getCompaniasByRFC(String rfc);
 
 }
