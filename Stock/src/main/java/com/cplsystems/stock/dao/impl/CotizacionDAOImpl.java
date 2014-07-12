@@ -3,6 +3,7 @@
  */
 package com.cplsystems.stock.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,8 +15,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
+import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.dao.CotizacionDAO;
 import com.cplsystems.stock.domain.Cotizacion;
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
 
@@ -133,6 +136,42 @@ public class CotizacionDAOImpl extends HibernateDAOSuportUtil  implements Cotiza
 		lista = criteria.list();
 		
 		return lista.size() > 0 ? lista.get(0) : null;
+	}
+
+	@SuppressWarnings({ "unchecked"})
+	@Transactional(readOnly = true)
+	public List<Cotizacion> getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(
+			String folioCotizacion, List<Proveedor> profolioCotizacionveedores,
+			List<EstatusRequisicion> estatus) {
+		boolean realizarConsulta = true;
+		
+		List<Cotizacion> lista = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Cotizacion.class);
+		
+		//------------------------------------
+		if(folioCotizacion != null && !folioCotizacion.isEmpty()){
+			if(!folioCotizacion.equals(StockConstants.BUSCAR_TODO))
+				criteria.add(Restrictions.like("folioCotizacion", "%" + folioCotizacion + "%"));
+			else
+				realizarConsulta = false;
+		}	
+		if(profolioCotizacionveedores != null && profolioCotizacionveedores.size() > 0){
+			if(realizarConsulta)
+				criteria.add(Restrictions.in("proveedor", profolioCotizacionveedores));
+		}
+			
+		if(estatus != null && estatus.size() > 0){
+			if(realizarConsulta)
+				criteria.add(Restrictions.in("estatusRequisicion", estatus));
+		}
+			
+		//------------------------------------
+		
+		criteria.setMaxResults(100);
+		lista = criteria.list();
+		
+		return lista.size() > 0 ? lista : null;
 	}
 
 }

@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.ListModel;
 
 import com.cplsystems.stock.app.vm.BasicStructure;
@@ -36,6 +38,7 @@ public class RequisicionVariables extends BasicStructure {
 	protected boolean checkBuscarCancelada;
 	protected boolean checkBuscarEnviada;
 	protected boolean checkBuscarAceptada;
+	
 	
 	
 	public RequisicionVariables() {

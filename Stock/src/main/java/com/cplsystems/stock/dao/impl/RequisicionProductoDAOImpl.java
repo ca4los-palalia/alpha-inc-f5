@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.RequisicionProductoDAO;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
+import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Lugar;
 import com.cplsystems.stock.domain.Producto;
@@ -150,13 +151,14 @@ public class RequisicionProductoDAOImpl extends HibernateDAOSuportUtil implement
 		EstatusRequisicion estado = estatusRequisicionService.getByClave("RQ");
 		
 		List<Proveedor> lista = new ArrayList<Proveedor>();
+		//List<RequisicionProducto> listaObjeto = new ArrayList<RequisicionProducto>();
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(RequisicionProducto.class, "rp");
 		criteria.createAlias("rp.requisicion", "rq");
 		
 		criteria.setProjection(Projections.distinct(Projections.property("proveedor")));
 		criteria.add(Restrictions.eq("rq.estatusRequisicion", estado));
-		
+		//listaObjeto = criteria.list();
 		lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -168,6 +170,16 @@ public class RequisicionProductoDAOImpl extends HibernateDAOSuportUtil implement
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(RequisicionProducto.class);
 		criteria.add(Restrictions.eq("cofiaPartidaGenerica", cofiaPartidaGenerica));
+		List<RequisicionProducto> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public List<RequisicionProducto> getByCotizacion(Cotizacion cotizacion) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(RequisicionProducto.class);
+		criteria.add(Restrictions.eq("cotizacion", cotizacion));
 		List<RequisicionProducto> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}

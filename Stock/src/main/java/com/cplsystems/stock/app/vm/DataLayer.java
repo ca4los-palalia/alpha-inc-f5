@@ -9,6 +9,8 @@ import java.util.List;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.AImage;
 
@@ -23,6 +25,7 @@ import com.cplsystems.stock.domain.CofiaPy;
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Contrato;
 import com.cplsystems.stock.domain.CostosProducto;
+import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.CuentaPago;
 import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Email;
@@ -57,6 +60,7 @@ public class DataLayer implements Serializable {
 	protected Banco bancoSeleccionado;
 	protected Contacto contactoContacto;
 	protected Contacto contactoProveedor;
+	protected Cotizacion cotizacionSelected;
 	protected Contrato contrato;
 	protected CuentaPago cuentaPago;
 	protected Direccion direccionProveedor;
@@ -106,6 +110,11 @@ public class DataLayer implements Serializable {
 	protected CostosProducto costosProductoNuevo;
 	protected Giro giro;
 	protected EstatusRequisicion estatusRequisicion;
+	
+	
+	protected HSSFWorkbook libro;
+	
+	
 	protected String readJasper;
 	protected JasperPrint print;
 	protected JasperViewer jviewer;
@@ -115,6 +124,7 @@ public class DataLayer implements Serializable {
 	protected List<CofiaPartidaGenerica> cofiaPartidaGenericas;
 	protected List<CofiaProg> cofiaProgs;
 	protected List<CofiaPy> cofiaPys;
+	protected List<Cotizacion> cotizacionesList;
 	protected List<CostosProducto> costosProductos;
 	protected List<CodigoBarrasProducto> codigosBarrasProductos;
 	protected List<FamiliasProducto> familiasProductos;
@@ -687,6 +697,22 @@ public class DataLayer implements Serializable {
 
 	public void setAreaBuscar(Area areaBuscar) {
 		this.areaBuscar = areaBuscar;
+	}
+
+	public Cotizacion getCotizacionSelected() {
+		return cotizacionSelected;
+	}
+
+	public void setCotizacionSelected(Cotizacion cotizacionSelected) {
+		this.cotizacionSelected = cotizacionSelected;
+	}
+
+	public List<Cotizacion> getCotizacionesList() {
+		return cotizacionesList;
+	}
+
+	public void setCotizacionesList(List<Cotizacion> cotizacionesList) {
+		this.cotizacionesList = cotizacionesList;
 	}
 	
 }

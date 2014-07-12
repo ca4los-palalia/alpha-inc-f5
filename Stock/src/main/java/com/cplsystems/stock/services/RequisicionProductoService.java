@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.RequisicionProductoDAO;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
+import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Lugar;
 import com.cplsystems.stock.domain.Producto;
@@ -74,5 +75,9 @@ public class RequisicionProductoService {
 	
 	public List<RequisicionProducto> getByConfiaPartidaGenerica(CofiaPartidaGenerica cofiaPartidaGenerica){
 		return requisicionProductoDAO.getByConfiaPartidaGenerica(cofiaPartidaGenerica);
+	}
+	
+	public List<RequisicionProducto> getByCotizacion(Cotizacion cotizacion){
+		return requisicionProductoDAO.getByCotizacion(cotizacion);
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.CotizacionDAO;
 import com.cplsystems.stock.domain.Cotizacion;
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
 
@@ -76,5 +77,9 @@ public class CotizacionService {
 	
 	public Cotizacion getCotizacionByFolio(String folioCotizacion){
 		return  cotizacionDAO.getCotizacionByFolio(folioCotizacion);
+	}
+	
+	public List<Cotizacion> getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(String folioCotizacion, List<Proveedor> proveedores, List<EstatusRequisicion> estatus){
+		return cotizacionDAO.getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(folioCotizacion, proveedores, estatus);
 	}
 }
