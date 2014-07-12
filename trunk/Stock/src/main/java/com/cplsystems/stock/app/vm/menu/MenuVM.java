@@ -175,8 +175,15 @@ public class MenuVM extends BasicStructure {
 	}
 	
 	@Command
-	public void showDemo() {
-		System.out.println("Demos");
+	public void mostrarConfiguracionUsuario() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.CONTROL_PANEL_COFIGURACION_USUARIO);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);				
+	}
+	
+	@Command
+	public void configurarUsuariosNegocio() {
+		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.CONTROL_PANEL_USUARIOS_NEGOCIO);
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);			
 	}
 
 }
