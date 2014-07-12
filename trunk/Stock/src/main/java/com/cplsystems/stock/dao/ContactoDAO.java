@@ -23,6 +23,8 @@ public interface ContactoDAO {
 	public Contacto getByIdEmail(Email email);
 
 	public List<Contacto> getAll();
-	
+
 	public Contacto getUltimoRegistroContacto();
+
+	public Contacto getContactoByEmail(Email email);
 }
