@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.OrganizacionDAO;
 import com.cplsystems.stock.domain.Organizacion;
-import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -34,7 +33,16 @@ public class OrganizacionService {
 		return organizacionDAO.getOrganizaciones();
 	}
 
-	public Organizacion getOrganizacionByUsuario(Usuarios usuario) {
-		return organizacionDAO.getOrganizacionByUsuario(usuario);
+	public List<Organizacion> getCompaniasByNombreRFC(String compania,
+			String rfc) {
+		return organizacionDAO.getCompaniasByNombreRFC(compania, rfc);
+	}
+
+	public List<Organizacion> getCompaniasByNombre(String compania) {
+		return organizacionDAO.getCompaniasByNombre(compania);
+	}
+
+	public List<Organizacion> getCompaniasByRFC(String rfc) {
+		return organizacionDAO.getCompaniasByRFC(rfc);
 	}
 }
