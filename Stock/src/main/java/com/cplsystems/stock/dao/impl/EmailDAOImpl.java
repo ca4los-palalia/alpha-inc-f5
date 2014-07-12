@@ -13,9 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.EmailDAO;
-import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Email;
-import com.cplsystems.stock.domain.Proveedor;
 
 /**
  * @author Carlos Palalía López

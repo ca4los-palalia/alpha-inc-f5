@@ -14,22 +14,25 @@ import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.ContratoDAO;
 import com.cplsystems.stock.domain.Contrato;
 
-
 /**
  * @author Carlos Palalía López
  */
 
 @Repository
-public class ContratoDAOImpl extends HibernateDAOSuportUtil implements ContratoDAO{
+public class ContratoDAOImpl extends HibernateDAOSuportUtil implements
+		ContratoDAO {
 
+	@Transactional
 	public void save(Contrato contrato) {
 		getHibernateTemplate().saveOrUpdate(contrato);
 	}
 
+	@Transactional
 	public void update(Contrato contrato) {
 		getHibernateTemplate().update(contrato);
 	}
 
+	@Transactional
 	public void delete(Contrato contrato) {
 		getHibernateTemplate().delete(contrato);
 	}
@@ -37,8 +40,8 @@ public class ContratoDAOImpl extends HibernateDAOSuportUtil implements ContratoD
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Contrato getById(Long idContrato) {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Contrato.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Contrato.class);
 		criteria.add(Restrictions.eq("idContrato", idContrato));
 		List<Contrato> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
@@ -47,11 +50,10 @@ public class ContratoDAOImpl extends HibernateDAOSuportUtil implements ContratoD
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Contrato> getAll() {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Contrato.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Contrato.class);
 		List<Contrato> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
 
-	
 }
