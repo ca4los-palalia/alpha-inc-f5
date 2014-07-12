@@ -45,6 +45,9 @@ public class StockConstants {
 		public static final String CONTROL_PANEL = "/modulos/controlPanel/controlPanel.zul";
 		public static final String REPORTS = "/modulos/reportes/reportes.zul";
 		public static final String ORDERS = "/modulos/ordenCompra/ordenCompra.zul";
+		public static final String CONTROL_PANEL_COFIGURACION_USUARIO = "/modulos/controlPanel/usuario.zul";
+		public static final String MODAL_VIEW_COMPANIA = "/modulos/controlPanel/utils/buscarOrganizaciones.zul";
+		public static final String CONTROL_PANEL_USUARIOS_NEGOCIO = "/modulos/controlPanel/usuariosCliente.zul";
 	}
 
 	public static final String TOOL_TIP_SAVE_AREA = "Actualizar o salvar área";
