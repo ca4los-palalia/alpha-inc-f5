@@ -22,11 +22,12 @@ import com.cplsystems.stock.domain.Telefono;
  */
 
 @Repository
-public class ContactoDAOImpl extends HibernateDAOSuportUtil  implements ContactoDAO{
+public class ContactoDAOImpl extends HibernateDAOSuportUtil implements
+		ContactoDAO {
 
 	@Transactional
 	public void save(Contacto contacto) {
-		getHibernateTemplate().save(contacto);
+		getHibernateTemplate().saveOrUpdate(contacto);
 	}
 
 	@Transactional
@@ -42,8 +43,8 @@ public class ContactoDAOImpl extends HibernateDAOSuportUtil  implements Contacto
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Contacto getById(Long idContacto) {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Contacto.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Contacto.class);
 		criteria.add(Restrictions.eq("", idContacto));
 		List<Contacto> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
@@ -52,8 +53,8 @@ public class ContactoDAOImpl extends HibernateDAOSuportUtil  implements Contacto
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Contacto getByTelefono(Telefono telefono) {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Contacto.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Contacto.class);
 		criteria.add(Restrictions.eq("telefono", telefono));
 		List<Contacto> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
@@ -62,8 +63,8 @@ public class ContactoDAOImpl extends HibernateDAOSuportUtil  implements Contacto
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Contacto getByIdEmail(Email email) {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Contacto.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Contacto.class);
 		criteria.add(Restrictions.eq("email", email));
 		List<Contacto> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
@@ -72,8 +73,8 @@ public class ContactoDAOImpl extends HibernateDAOSuportUtil  implements Contacto
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Contacto> getAll() {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Contacto.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Contacto.class);
 		List<Contacto> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -81,12 +82,21 @@ public class ContactoDAOImpl extends HibernateDAOSuportUtil  implements Contacto
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Contacto getUltimoRegistroContacto() {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Contacto.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Contacto.class);
 		criteria.addOrder(Order.desc("idContacto"));
 		criteria.setMaxResults(1);
 		List<Contacto> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
-   
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Contacto getContactoByEmail(Email email) {
+		List<Contacto> contactos = getHibernateTemplate()
+				.find("FROM Contacto as c LEFT JOIN FETCH c.email as e WHERE c.email = ?",
+						email);
+		return contactos.size() > 0 ? contactos.get(0) : null;
+	}
+
 }
