@@ -3,42 +3,10 @@
 	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
 
-	<style>
-		.tab-red .z-tab-accordion-hm { color: white; height: 10px;
-		padding: 8px; text-align: left; color: #FFFFFF; font-family:
-		'Arial'; font-size: 18px; background: #a7c7dc; /* Old browsers
-		*/ /* IE9 SVG, needs conditional override of 'filter' to 'none'
-		*/ background:
-		url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2E3YzdkYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4NWIyZDMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-		background: -moz-linear-gradient(top, #a7c7dc 0%, #85b2d3 100%);
-		/* FF3.6+ */ background: -webkit-gradient(linear, left top, left
-		bottom, color-stop(0%,#a7c7dc), color-stop(100%,#85b2d3)); /*
-		Chrome,Safari4+ */ background: -webkit-linear-gradient(top,
-		#a7c7dc 0%,#85b2d3 100%); /* Chrome10+,Safari5.1+ */ background:
-		-o-linear-gradient(top, #a7c7dc 0%,#85b2d3 100%); /* Opera
-		11.10+ */ background: -ms-linear-gradient(top, #a7c7dc
-		0%,#85b2d3 100%); /* IE10+ */ background: linear-gradient(to
-		bottom, #a7c7dc 0%,#85b2d3 100%); /* W3C */ filter:
-		progid:DXImageTransform.Microsoft.gradient(
-		startColorstr='#a7c7dc', endColorstr='#85b2d3',GradientType=0 );
-		/* IE6-8 */
-
-
-		} .menutabs.z-tab .z-tab-text { color: red; cursor: pointer;
-		font-family: arial,sans-serif; font-size: 12px;
-		font-size-adjust: none; font-weight : bold; padding: 4px 14px;
-		white-space: nowrap; }
-
-	</style>
 	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('com.cplsystems.stock.app.vm.menu.MenuVM')">
-
-
-
-
 		<vlayout>
-
-			<tabbox mold="accordion">
+			<tabbox id="menu" mold="accordion">
 				<tabs>
 					<tab label="Productos"
 						image="/images/toolbar/box32.png" sclass="tab-red menutabs" />
@@ -292,7 +260,6 @@
 						</listbox>
 					</tabpanel>
 					<tabpanel sclass="tab-red">
-						
 						<listbox rows="3"
 							style="border: 0; background: #B8D335;"
 							sclass="tab-red menutabs">
@@ -306,7 +273,8 @@
 									<image
 										src="/images/toolbar/gear32.png" />
 								</listcell>
-								<listcell onClick="@command('showRequisitions')">
+								<listcell
+									onClick="@command('showRequisitions')">
 									<label value="Requisición"
 										width="100%" style="font-size: 10px;" />
 								</listcell>
@@ -344,7 +312,7 @@
 								<listheader width="20%" />
 								<listheader />
 							</listhead>
-
+							
 							<listitem
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
@@ -450,9 +418,26 @@
 									<image
 										src="/images/toolbar/gear32.png" />
 								</listcell>
+								<listcell
+									onClick="@command('mostrarConfiguracionUsuario')">
+									<label value="Clientes" width="100%"
+										style="font-size: 10px;" />
+								</listcell>
+								<listcell
+									onClick="@command('configurarUsuariosNegocio')">
+									<label value="Usuarios" width="100%"
+										style="font-size: 10px;" />
+								</listcell>
+							</listitem>
+							<listitem
+								style="background-color:#E6D92C; border: 0;">
 								<listcell>
-									<label
-										value="Configuración del usuario" width="100%"
+									<image
+										src="/images/toolbar/gear32.png" />
+								</listcell>
+								<listcell
+									onClick="@command('configurarUsuariosNegocio')">
+									<label value="Usuarios" width="100%"
 										style="font-size: 10px;" />
 								</listcell>
 							</listitem>
