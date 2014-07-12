@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "persona")
@@ -27,6 +28,8 @@ public class Persona {
 	private Contacto contacto;
 	private String rfc;
 	private String curp;
+
+	private String nombreCompleto;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -109,6 +112,7 @@ public class Persona {
 	public String getRfc() {
 		return rfc;
 	}
+
 	public void setRfc(String rfc) {
 		this.rfc = rfc;
 	}
@@ -117,8 +121,15 @@ public class Persona {
 	public String getCurp() {
 		return curp;
 	}
+
 	public void setCurp(String curp) {
 		this.curp = curp;
 	}
-	
+
+	@Transient
+	public String getNombreCompleto() {
+		return nombreCompleto = nombre + " " + apellidoPaterno + " "
+				+ apellidoMaterno;
+	}
+
 }

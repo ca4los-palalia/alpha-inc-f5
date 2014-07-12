@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -27,7 +25,9 @@ public class Organizacion implements Serializable {
 	private String nombre;
 	private String rfc;
 	private String logotipo;
-	private Usuarios usuarios;
+	private String calle;
+	private String codigoPostal;
+	private String pais;
 
 	@Id
 	@Column
@@ -67,14 +67,31 @@ public class Organizacion implements Serializable {
 		this.logotipo = logotipo;
 	}
 
-	@OneToOne
-	@JoinColumn(name = "usuarios")
-	public Usuarios getUsuarios() {
-		return usuarios;
+	@Column
+	public String getCalle() {
+		return calle;
 	}
 
-	public void setUsuarios(Usuarios usuarios) {
-		this.usuarios = usuarios;
+	public void setCalle(String calle) {
+		this.calle = calle;
+	}
+
+	@Column
+	public String getCodigoPostal() {
+		return codigoPostal;
+	}
+
+	public void setCodigoPostal(String codigoPostal) {
+		this.codigoPostal = codigoPostal;
+	}
+
+	@Column
+	public String getPais() {
+		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 
 }
