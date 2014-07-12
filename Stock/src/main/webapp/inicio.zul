@@ -6,6 +6,7 @@
 	<script src="/scripts/controlsGeneric.js" type="text/javascript" />
 	<style src="/styles/home/styleHome.css" />
 	<style src="/styles/home/styleGlobal.css" />
+	
 
 
 	<window apply="org.zkoss.bind.BindComposer"
