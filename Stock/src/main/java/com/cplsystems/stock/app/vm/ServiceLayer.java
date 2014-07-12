@@ -34,6 +34,7 @@ import com.cplsystems.stock.services.OrganizacionService;
 import com.cplsystems.stock.services.PaisService;
 import com.cplsystems.stock.services.PersonaService;
 import com.cplsystems.stock.services.PosicionService;
+import com.cplsystems.stock.services.PrivilegioService;
 import com.cplsystems.stock.services.ProductoNaturalezaService;
 import com.cplsystems.stock.services.ProductoService;
 import com.cplsystems.stock.services.ProductoTipoService;
@@ -160,4 +161,16 @@ public abstract class ServiceLayer extends DataLayer {
 
 	@WireVariable
 	protected OrganizacionService organizacionService;
+
+	@WireVariable
+	protected PrivilegioService privilegioService;
+
+	public UsuarioService getUsuarioService() {
+		return usuarioService;
+	}
+
+	public void setUsuarioService(UsuarioService usuarioService) {
+		this.usuarioService = usuarioService;
+	}
+
 }

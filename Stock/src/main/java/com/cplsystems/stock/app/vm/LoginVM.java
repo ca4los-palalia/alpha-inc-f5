@@ -11,7 +11,6 @@ import org.zkoss.zk.ui.util.Clients;
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
-import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Usuarios;
 
 /**
@@ -40,10 +39,9 @@ public class LoginVM extends BasicStructure {
 				password = "";
 				return;
 			} else {
-				Organizacion org = organizacionService
-						.getOrganizacionByUsuario(usuario);
 				sessionUtils.addToSession(SessionUtils.USUARIO, usuario);
-				sessionUtils.addToSession(SessionUtils.FIRMA, org);
+				sessionUtils.addToSession(SessionUtils.FIRMA,
+						usuario.getOrganizacion());
 				stockUtils.redirect(StockConstants.GLOBAL_PAGES.HOME_URL);
 			}
 		}
