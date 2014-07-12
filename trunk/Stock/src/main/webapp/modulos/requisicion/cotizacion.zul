@@ -2,278 +2,313 @@
 <zk>
 	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
-	<window apply="org.zkoss.bind.BindComposer"
+	<div apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('rvm') @init('com.cplsystems.stock.app.vm.requisicion.CotizacionVM')">
 
+		<vlayout>
+
+			<grid><!-- MENU DE ACCIONES-->
+				<columns>
+					<column />
+					<column width="35%" zclass="shadowMenuActions" />
+				</columns>
+				<rows>
+					<row zclass="shadowMenuActions">
+						<div style="margin:5px">
+							<button label="Cotizacion> cotización"
+								image="/images/toolbar/home32.png"
+								zclass="panelInfoItemMenuTitle" />
+						</div>
+
+						<hlayout style="text-align:right">
+							<button image="/images/toolbar/saveOff.png"
+								sclass="web_button" tooltiptext="Guardar nueva requisición"
+								onClick="@command('exportarExcel')" />
+						</hlayout>
+					</row>
+				</rows>
+			</grid>
+			<!-- END MENU DE ACCIONES-->
+
+			<separator />
 
 
-		<grid><!-- MENU DE ACCIONES-->
-			<columns>
-				<column />
-				<column width="35%" zclass="shadowMenuActions" />
-			</columns>
-			<rows>
-				<row zclass="shadowMenuActions">
-					<div style="margin:5px">
-						<button label="Cotizacion> cotización"
-							image="/images/toolbar/home32.png"
-							zclass="panelInfoItemMenuTitle" />
-					</div>
+			<groupbox><!-- BUSCADOR DE COTIZACIONES -->
+				<caption label="Buscar cotización:"></caption>
+
+				<grid style="border: 0;">
+					<columns>
+						<column />
+						<column />
+						<column />
+						<column />
+					</columns>
+					<rows>
+						<row
+							style="background-color: transparent; border: 0;">
+							<checkbox onCheck="@command('checkNueva')"
+								label="Nueva" width="100%" />
+							<checkbox
+								onCheck="@command('checkCancelada')" label="Cancelada"
+								width="100%" />
+							<checkbox onCheck="@command('checkEnviada')"
+								label="Enviada" width="100%" />
+							<checkbox
+								onCheck="@command('checkAceptada')" label="Aceptada"
+								width="100%" />
+						</row>
+					</rows>
+				</grid>
+				<grid style="border: 0;">
+					<columns>
+						<column />
+						<column width="8%" />
+					</columns>
+					<rows>
+						<row
+							style="background-color:transparent; border: 0;">
+							<textbox
+								value="@bind(rvm.requisicion.buscarRequisicion)" width="100%" />
+
+							<hlayout style="text-align:center">
+
+								<button
+									image="/images/toolbar/find16x16.png" zclass="find_button"
+									onClick="@command('buscarPCotizacion')" tooltiptext="Buscar" />
+							</hlayout>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+			<!-- END BUSCADOR DE COTIZACIONES -->
+
+			<separator />
+			<separator />
+
+			<grid style="border: 0;">
+				<columns>
+					<column width="13%" />
+					<column />
+					<column width="13%" />
+					<column />
+				</columns>
+				<rows>
+					<row
+						style="background-color: transparent; border: 0;">
+						<label value="Proveedor:" style="font-weight:bold;"/>
+						<label style="font-size:smaller;"
+							value="@bind(rvm.cotizacionSelected.proveedor.nombre)" />
+						
+						<label value="Atención:" style="font-weight:bold;"/>
+						<hlayout>
+							
+							<label style="font-size:smaller;"
+								value="@bind(rvm.cotizacionSelected.proveedor.representanteAteCliente.apellidoPaterno)" />
+							<label value=" " />
+							<label style="font-size:smaller;"
+								value="@bind(rvm.cotizacionSelected.proveedor.representanteAteCliente.apellidoMaterno)" />
+							<label value=" " />
+							<label style="font-size:smaller;"
+								value="@bind(rvm.cotizacionSelected.proveedor.representanteAteCliente.nombre)" />
+						</hlayout>
+
+					</row>
+				</rows>
+			</grid>
+			
+			<grid style="border: 0;">
+				<columns>
+					<column width="13%" />
+					<column />
 					
-					<hlayout style="text-align:right">
-						<button image="/images/toolbar/saveOff.png"
-							sclass="web_button" tooltiptext="Guardar nueva requisición"
-							onClick="@command('saveChanges')" />
-						<button image="/images/toolbar/update.png"
-							sclass="web_button" tooltiptext="Actualizar requisición"
-							onClick="@command('saveChanges')" />
-						<button image="/images/toolbar/delete.png"
-							sclass="web_button" tooltiptext="Eliminar requisición"
-							onClick="@command('deleteRecord')" />
-						<button image="/images/toolbar/find.png"
-							sclass="web_button" tooltiptext="Buscar requisición"
-							onClick="@command('search')" />
-					</hlayout>
-				</row>
-			</rows>
-		</grid>
-		<!-- END MENU DE ACCIONES-->
-
-
-		<separator />
-		<separator />
-		<separator />
-
-
-		<groupbox>
-			<caption label="Cotización:"></caption>
-		</groupbox>
-		<grid>
-			<columns>
-				<column />
-				<column />
-				<column />
-				<column />
-			</columns>
-			<rows>
-				<row>
-					<checkbox value="@bind(rvm.checkBuscarNueva)"
-						label="Nueva" width="100%" />
-					<checkbox value="@bind(rvm.checkBuscarCancelada)"
-						label="Cancelada" width="100%" />
-					<checkbox value="@bind(rvm.checkBuscarEnviada)"
-						label="Enviada" width="100%" />
-					<checkbox value="@bind(rvm.checkBuscarAceptada)"
-						label="Aaceptada" width="100%" />
-				</row>
-			</rows>
-		</grid>
-
-
-		<grid style="border: 0;">
-			<columns>
-				<column />
-				<column width="8%" />
-			</columns>
-			<rows>
-				<row style="background-color:transparent; border: 0;">
-					<textbox
-						value="@bind(rvm.requisicion.buscarRequisicion)" width="100%" />
-
-					<hlayout style="text-align:center">
-
-						<button image="/images/toolbar/find16x16.png"
-							zclass="find_button"
-							onClick="@command('filtrarProductoPorRequisicion')"
-							tooltiptext="Buscar" />
-					</hlayout>
-				</row>
-			</rows>
-		</grid>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-
-		<grid>
-			<columns>
-				<column width="13%" />
-				<column />
-
-			</columns>
-			<rows>
-				<row>
-					<label value="Seleccionar proveedor:" />
-					<combobox width="100%" readonly="true"
-						model="@bind(rvm.proveedoresLista)"
-						onSelect="@command('obtenerListaDeProductosProveedorSeleccionado')"
-						selectedItem="@bind(rvm.proveedorSelected)">
-						<template name="model">
-							<comboitem label="@load(each.nombre)" />
-						</template>
-					</combobox>
-				</row>
-			</rows>
-		</grid>
-
-		<separator />
-		<separator />
-		<separator />
-
-		<grid>
-			<columns>
-				<column width="13%" />
-				<column />
-				<column width="13%" />
-				<column />
-			</columns>
-			<rows>
-				<row>
-					<label value="Proveeror:" />
-					<label style="font-size:smaller;"
-						value="@bind(rvm.proveedorSelected.nombre)" />
-					<label value="Atención:" />
-					<label style="font-size:smaller;"
-						value="@bind(rvm.proveedorSelected.representanteAteCliente.apellidoPaterno)" />
-				</row>
-			</rows>
-		</grid>
-
-		<grid>
-			<columns>
-				<column width="13%" />
-				<column />
-				<column width="13%" />
-				<column />
-				<column width="13%" />
-				<column />
-			</columns>
-			<rows>
-				<row>
-					<label value="Telefono:" />
-					<label style="font-size:smaller;"
-						value="@bind(rvm.proveedorSelected.contacto.telefono.numero)" />
-					<label value="Mail:" />
-					<label style="font-size:smaller;"
-						value="@bind(rvm.proveedorSelected.contacto.email.email)" />
-					<label value="Fecha:" />
-					<textbox />
-				</row>
-			</rows>
-		</grid>
-
-		<separator />
-		<separator />
-		<separator />
-
-
-
-		<listbox rows="5" model="@load(rvm.requisicionProductos)"
-			selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
-			emptyMessage="No hay productos para esta cotización">
-			<listhead>
-
-				<listheader label="No" width="5%" />
-
-				<listheader label="Cantidad" width="10%" />
-
-				<listheader label="Unidad" width="15%" />
-
-				<listheader label="Artículo" />
-
-				<listheader label="Importe" width="10%" visible="false" />
-
-				<listheader label="Total" width="10%" visible="false" />
-
-			</listhead>
-			<template name="model">
-				<listitem>
-					<listcell>
+				</columns>
+				<rows>
+					<row
+						style="background-color: transparent; border: 0;">
+						<label value="Dirección:" style="font-weight:bold;"/>
+						<div>
+						
+							<hlayout>
+								<label style="font-size:smaller;"
+								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.calle)" />
+								
+								<label style="font-size:smaller;"
+								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.numExt)" />
+								
+								<label style="font-size:smaller;"
+								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.colonia)" />
+								
+								<label style="font-size:smaller;"
+								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.cp)" />
+								
+								<label style="font-size:smaller;"
+								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.cuidad)" />
+								
+								<label style="font-size:smaller;"
+								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.estado.nombre)" />
+								
+								<label style="font-size:smaller;"
+								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.pais.nombre)" />
+								
+							</hlayout>
+						</div>
+					</row>
+				</rows>
+			</grid>
+			
+			<grid style="border: 0;">
+				<columns>
+					<column width="13%" />
+					<column width="13%"/>
+					<column width="7%" />
+					<column width="17%"/>
+					<column width="13%" />
+					<column />
+				</columns>
+				<rows>
+					<row
+						style="background-color: transparent; border: 0;">
+						<label value="Telefono:" style="font-weight:bold;"/>
 						<label style="font-size:smaller;"
-							value="${forEachStatus.index + 1}" />
-					</listcell>
-
-					<listcell>
+							value="@bind(rvm.cotizacionSelected.proveedor.representanteAteCliente.contacto.telefono.numero)" />
+						<label value="E-mail:" style="font-weight:bold;"/>
 						<label style="font-size:smaller;"
-							value="@bind(each.cantidad)" />
-					</listcell>
-					<listcell>
-						<label
-							value="@bind(each.producto.unidad.nombre)" />
-					</listcell>
-					<listcell>
-						<label value="@bind(each.producto.nombre)"
-							style="font-size:smaller;" />
-					</listcell>
+							value="@bind(rvm.cotizacionSelected.proveedor.representanteAteCliente.contacto.email.email)" />
+						<label value="Fecha:" style="font-weight:bold;"/>
+						<textbox />
+					</row>
+				</rows>
+			</grid>
 
-					<listcell>
-						<doublebox style="font-size:smaller;"
-							format="###,###,###.00" readonly="true"
-							value="@bind(each.producto.precio)" />
-					</listcell>
-					<listcell>
-						<doublebox
-							value="@bind(each.totalProductoPorUnidad)"
-							style="font-size:smaller;" format="###,###,###.00"
-							readonly="true" />
-					</listcell>
-				</listitem>
-			</template>
+			<separator />
+			<separator />
+			<separator />
 
 
-			<listfoot style="height:20px" visible="false">
-				<listfooter style="text-align:right" span="7">
+			<listbox rows="4" model="@load(rvm.cotizacionesList)"
+				selectedItem="@bind(rvm.cotizacionSelected)"
+				onSelect="@command('mostrarProductosCotizacion')"
+				emptyMessage="No hay productos para esta cotización">
+				<listhead>
 
-					<grid style="border: 0;">
-						<columns>
-							<column style="text-align:left" width="7%" />
-							<column style="text-align:right" />
-							<column width="10%"
-								style="text-align:right" />
-						</columns>
-						<rows>
-							<row valign="top"
-								style="background-color:transparent; border: 0;">
-								<hlayout>
-									<button
-										image="/images/toolbar/add16.png" visible="false"
-										zclass="find_button" tooltiptext="Agregar producto a la lista"
-										onClick="@command('addNewItemToBill')" />
-									<button
-										image="/images/toolbar/remove16.png" zclass="find_button"
-										tooltiptext="Quitar producto de la lista"
-										onClick="@command('removerProductoDeListaGeneralDeProductos')" />
-								</hlayout>
+					<listheader label="No" width="5%" />
 
-								<label value="Subtotal" width="100%" />
+					<listheader label="Fólio" width="10%"
+						sort="auto(folioCotizacion)" />
+
+					<listheader label="Proveedor"
+						sort="auto(proveedor.nombre)" />
+
+					<listheader label="Requisición" width="12%"
+						sort="auto(requisicion.folio)" />
+
+					<listheader label="Estatus" width="20%"
+						sort="auto(estatusRequisicion.nombre)" />
+
+				</listhead>
+				<template name="model">
+					<listitem>
+						<listcell>
+							<label style="font-size:smaller;"
+								value="${forEachStatus.index + 1}" />
+						</listcell>
+
+						<listcell>
+							<label style="font-size:smaller;"
+								value="@bind(each.folioCotizacion)" />
+						</listcell>
+						<listcell>
+							<label value="@bind(each.proveedor.nombre)" />
+						</listcell>
+						<listcell>
+							<label value="@bind(each.requisicion.folio)"
+								style="font-size:smaller;" />
+						</listcell>
+						<listcell
+							style="@bind(each.estatusRequisicion.color)">
+							<div>
 								<label
-									value="@bind(rvm.desgloceTotal.subtotal)" />
-							</row>
-							<row
-								style="background-color:transparent; border: 0;">
-								<label value="" />
-								<label value="Iva" />
-								<label
-									value="@bind(rvm.desgloceTotal.iva)" />
-							</row>
-							<row
-								style="background-color:transparent; border: 0;">
-								<label value="" />
-								<label value="Total" />
-								<label
-									value="@bind(rvm.desgloceTotal.total)" />
-							</row>
-						</rows>
-					</grid>
-				</listfooter>
-			</listfoot>
-		</listbox>
+									value="@bind(each.estatusRequisicion.nombre)" />
+							</div>
+
+						</listcell>
+					</listitem>
+				</template>
+
+
+			</listbox>
+
+
+			<listbox rows="5" model="@load(rvm.requisicionProductos)"
+				emptyMessage="No hay productos para esta cotización">
+				<listhead>
+					<listheader label="No" width="5%" />
+
+					<listheader label="Clave" width="10%"
+						sort="auto(producto.clave)" />
+
+					<listheader label="Producto"
+						sort="auto(proveedor.nombre)" />
+
+					<listheader label="Partida generica" width="20%"
+						sort="auto(cofiaPartidaGenerica.nombre)" />
+
+					<listheader label="Cantidad" width="10%"
+						sort="auto(cantidad)" />
+					<listheader label="U/M" width="10%"
+						sort="auto(producto.unidad.nombre)" />
+
+					<listheader label="Precio unitario" width="10%"
+						sort="auto(producto.precio)" />
+
+					<listheader label="Total" width="10%" />
+
+				</listhead>
+				<template name="model">
+					<listitem>
+						<listcell>
+							<label style="font-size:smaller;"
+								value="${forEachStatus.index + 1}" />
+						</listcell>
+
+						<listcell>
+							<label style="font-size:smaller;"
+								value="@bind(each.producto.clave)" />
+						</listcell>
+						<listcell>
+							<label value="@bind(each.producto.nombre)" />
+						</listcell>
+						<listcell>
+							<label
+								value="@bind(each.cofiaPartidaGenerica.nombre)"
+								style="font-size:smaller;" />
+						</listcell>
+						<listcell>
+							<label value="@bind(each.cantidad)" />
+						</listcell>
+						<listcell>
+							<label
+								value="@bind(each.producto.unidad.nombre)" />
+						</listcell>
+						<listcell>
+							<label value="@bind(each.producto.precio)" />
+						</listcell>
+
+						<listcell>
+							<label value="@bind(each.totalProductoPorUnidad)" />
+						</listcell>
+
+					</listitem>
+				</template>
+
+
+			</listbox>
+
+
+
+
+
+		</vlayout>
 
 
 
@@ -284,23 +319,5 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	</window>
+	</div>
 </zk>
