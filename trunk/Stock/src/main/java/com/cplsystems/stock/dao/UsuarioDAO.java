@@ -24,4 +24,8 @@ public interface UsuarioDAO {
 
 	boolean verificarNombreUsuario(String benutzer, Long idUsuario);
 
+	Usuarios getClienteByOrganizacion(Organizacion organizacion);
+
+	Usuarios getOwner(Organizacion organizacion);
+
 }

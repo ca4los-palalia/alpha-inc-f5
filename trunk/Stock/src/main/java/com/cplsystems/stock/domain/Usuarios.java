@@ -40,6 +40,8 @@ public class Usuarios implements Serializable {
 	private Persona persona;
 	private Organizacion organizacion;
 	private String retypeKennwort;
+	private Boolean owner = false;
+	private Boolean client = false;
 
 	private List<Privilegios> privilegios;
 
@@ -122,6 +124,23 @@ public class Usuarios implements Serializable {
 
 	public void setPrivilegios(List<Privilegios> privilegios) {
 		this.privilegios = privilegios;
+	}
+
+	@Column
+	public Boolean getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Boolean owner) {
+		this.owner = owner;
+	}
+
+	public Boolean getClient() {
+		return client;
+	}
+
+	public void setClient(Boolean client) {
+		this.client = client;
 	}
 
 }

@@ -46,4 +46,12 @@ public class UsuarioService {
 		return usuarioDAO.verificarNombreUsuario(benutzer, idUsuario);
 	}
 
+	public Usuarios getClienteByOrganizacion(Organizacion organizacion) {
+		return usuarioDAO.getClienteByOrganizacion(organizacion);
+	}
+
+	public Usuarios getOwner(Organizacion organizacion) {
+		return usuarioDAO.getOwner(organizacion);
+	}
+
 }

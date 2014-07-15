@@ -25,4 +25,6 @@ public interface OrganizacionDAO {
 
 	List<Organizacion> getCompaniasByRFC(String rfc);
 
+	List<Organizacion> getAll();
+
 }
