@@ -19,12 +19,15 @@
 								zclass="panelInfoItemMenuTitle" />
 						</div>
 						<hlayout style="text-align:right">
+							<button image="/images/toolbar/newDoc.png"
+								sclass="web_button" onClick="@command('nevoUsuarioCliente')"
+								tooltiptext="Registrar nuevo usuario para esta organización" />
 							<button image="/images/toolbar/update.png"
 								sclass="web_button" onClick="@command('saveChanges')"
-								tooltiptext="@bind(cvm.selectTab.toolTipSave)" />
+								tooltiptext="Guardar cambios" />
 							<button image="/images/toolbar/delete.png"
 								sclass="web_button" onClick="@command('delete')"
-								tooltiptext="@bind(cvm.selectTab.toolTipDelete)" />
+								tooltiptext="Remover usuario" />
 						</hlayout>
 					</row>
 				</rows>
