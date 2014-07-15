@@ -50,9 +50,11 @@ public class StockConstants {
 		public static final String CONTROL_PANEL_USUARIOS_NEGOCIO = "/modulos/controlPanel/usuariosCliente.zul";
 	}
 
-	public static final String TOOL_TIP_SAVE_AREA = "Actualizar o salvar área";
+	public static final String TOOL_TIP_SAVE_AREA = "Actualizar/Guardar área";
+	public static final String TOOL_TIP_SAVE_BANCO = "Actualizar/Guardar banco";
+	public static final String TOOL_TIP_SAVE_CONFFYA = "Actualizar/Guardar catalogo conffya";
 	public static final String TOOL_TIP_SAVE_PUESTO = "Actualizar o salvar puesto";
-	public static final String TOOL_TIP_SAVE_BANCO = "Actualizar o salvar banco";
+	
 	public static final String TOOL_TIP_SAVE_MONEDA = "Actualizar o salvar moneda";
 	public static final String TOOL_TIP_SAVE_PRODUCTO = "Actualizar o salvar tipo de productos";
 

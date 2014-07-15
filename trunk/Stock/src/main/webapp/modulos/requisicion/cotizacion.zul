@@ -225,17 +225,17 @@
 								style="font-size:smaller;" />
 						</listcell>
 						<listcell
-							style="@bind(each.estatusRequisicion.color)">
+							>
 							<div>
-								<label
-									value="@bind(each.estatusRequisicion.nombre)" />
+								<hlayout style="vertical-align: middle;">
+									<button style="@bind(each.estatusRequisicion.color)"/>
+									<label style="font-size:smaller;"
+										value="@bind(each.estatusRequisicion.nombre)" />
+								</hlayout>
 							</div>
-
 						</listcell>
 					</listitem>
 				</template>
-
-
 			</listbox>
 
 

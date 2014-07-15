@@ -134,10 +134,20 @@ public class RequisicionProducto implements Serializable {
 	public Float getTotalProductoPorUnidad() {
 		if (cantidad != null
 				&& (producto != null && producto.getPrecio() != null)) {
-			totalProductoPorUnidad = cantidad * producto.getPrecio();
 			
 			DecimalFormat formato = new DecimalFormat("###.##");
-			totalProductoPorUnidad = Float.parseFloat(formato.format(totalProductoPorUnidad));
+			totalProductoPorUnidad = cantidad * producto.getPrecio();
+			
+			String flotante = formato.format(totalProductoPorUnidad);
+			String nuevoFlotante = "";
+			for (int i = 0; i < flotante.length(); i++) {
+				String caracter = flotante.substring(i, (i+1));
+				if(caracter.equals(","))
+					caracter = ".";
+				nuevoFlotante += caracter;
+			}
+			totalProductoPorUnidad = Float.parseFloat(nuevoFlotante);
+			
 		}
 		return totalProductoPorUnidad;
 	}

@@ -10,14 +10,16 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.UnidadDAO;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Unidad;
+import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author Carlos Palalía López
  */
 
 @Service
-public class UnidadService {
+public class  UnidadService{
 
 	@Autowired
 	private UnidadDAO unidadDAO;
@@ -39,6 +41,14 @@ public class UnidadService {
 	}
 	public Unidad getByNombre(final String nombre)throws DataAccessException{
 		return unidadDAO.getByNombre(nombre);
+	}
+	
+	public List<Unidad> getByOrganizacion(Organizacion organizacion){
+		return unidadDAO.getByOrganizacion(organizacion);
+	}
+	
+	public List<Unidad> getByUsuario(Usuarios usuarios){
+		return unidadDAO.getByUsuario(usuarios);
 	}
 
 }

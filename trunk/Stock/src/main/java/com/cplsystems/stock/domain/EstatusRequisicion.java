@@ -42,8 +42,7 @@ public class EstatusRequisicion {
 	public void setClave(String clave) {
 		this.clave = clave;
 	}
-	@Column(length=500)
-	@Length(max=500)
+	@Column(length=1500)
 	public String getColor() {
 		return color;
 	}

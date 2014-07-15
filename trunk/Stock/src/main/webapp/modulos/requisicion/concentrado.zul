@@ -24,8 +24,10 @@
 						</div>
 						<hlayout
 							style="text-align:right; margin:5px ">
-							<button image="/images/toolbar/generate32.png" orient="vertical" label="Gerarar cotizacion"
-								sclass="web_button" tooltiptext="Generar cotización"
+							<button
+								image="/images/toolbar/generate32.png" orient="vertical"
+								label="Gerarar cotizacion" sclass="web_button"
+								tooltiptext="Generar cotización"
 								onClick="@command('autorizar')" />
 
 							<button image="/images/toolbar/delete.png"
@@ -34,14 +36,12 @@
 
 							<button label="Generar cotizacion"
 								sclass="web_button" />
-								
+
 						</hlayout>
 					</row>
 				</rows>
 			</grid>
 
-
-<label value="Buscar por clave de producto, Área(UR), folio de la requicición o partida generica"></label>
 			<grid style="border: 0;">
 				<columns>
 					<column />
@@ -50,15 +50,12 @@
 				<rows>
 					<row
 						style="background-color:transparent; border: 0;">
-						<textbox
-							
-							id="buscadorConcentradoId"
+						<textbox id="buscadorConcentradoId"
 							value="@bind(rvm.requisicion.buscarRequisicion)" width="100%" />
 
 						<hlayout style="text-align:center">
 
 							<button
-								
 								image="/images/toolbar/find16x16.png" zclass="find_button"
 								onClick="@command('filtrarProductoPorRequisicion')"
 								tooltiptext="Buscar" />
@@ -67,36 +64,35 @@
 				</rows>
 			</grid>
 
-			
+
 
 			<listbox rows="5" model="@load(rvm.requisicionProductos)"
 				onSelect="@command('cargarProveedoresProducto')"
 				selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
 				emptyMessage="No hay elementos en la requisición">
 				<listhead>
-
+					<listheader label="Remover" width="8%"
+						style="text-align:center" />
 					<listheader label="Requisicion" width="11%"
 						tooltiptext="Foliio de la requisición" />
-						
-					<listheader label="Unidad responsable" width="17%"
+					<listheader label="Área(UR)" width="16%"
 						tooltiptext="Foliio de la requisición" />
-
 					<listheader label="Clave" width="10%"
 						tooltiptext="Clave del producto" />
-
 					<listheader label="Cantidad" width="10%" />
-
 					<listheader label="Descripcion" />
-
 					<listheader label="Proveedor" />
-
 					<listheader label="Importe" width="10%" />
-
 					<listheader label="Total" width="10%" />
 
 				</listhead>
 				<template name="model" var="requisicionProducto">
 					<listitem>
+						<listcell>
+							<button image="/images/toolbar/remove16.png"
+								onClick="@command('removerProductoDeListaGeneralDeProductos', index=requisicionProductoStatus.index)"
+								zclass="find_button" tooltiptext="Quitar producto de la lista" />
+						</listcell>
 						<listcell>
 							<label tooltiptext="Foliio de requisición"
 								style="font-size:smaller;"
@@ -125,30 +121,28 @@
 						</listcell>
 
 						<listcell>
-							<textbox
+							<label
 								value="@bind(requisicionProducto.proveedor.nombre)" width="100%"
-								style="font-size:smaller;" readonly="true" />
+								style="font-size:smaller;" />
 						</listcell>
 
 						<listcell>
-							<doublebox
+							<label
 								tooltiptext="precio unitario del producto"
-								style="font-size:smaller;" format="###,###,###.00"
-								readonly="true"
+								style="font-size:smaller;"
 								value="@bind(requisicionProducto.producto.precio)" />
 						</listcell>
 						<listcell>
-							<doublebox
+							<label
 								value="@bind(requisicionProducto.totalProductoPorUnidad)"
-								style="font-size:smaller;" format="###,###,###.00"
-								readonly="true" />
+								style="font-size:smaller;" />
 						</listcell>
 					</listitem>
 				</template>
 
 
-				<listfoot style="height:20px">
-					<listfooter style="text-align:right" span="7">
+				<listfoot style="height:20px" visible="false">
+					<listfooter style="text-align:right" span="8">
 
 						<grid style="border: 0;">
 							<columns>

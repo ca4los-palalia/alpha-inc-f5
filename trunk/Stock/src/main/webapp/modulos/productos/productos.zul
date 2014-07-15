@@ -15,11 +15,6 @@
 		<radiogroup id="sv1"
 			onCheck="choice1.value = self.selectedItem.label" />
 
-
-
-
-
-
 		<vlayout>
 			<grid>
 				<columns>
