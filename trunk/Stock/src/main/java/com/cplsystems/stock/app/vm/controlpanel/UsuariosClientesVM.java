@@ -12,8 +12,10 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
 
+import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.utils.UserPrivileges;
 import com.cplsystems.stock.app.vm.controlpanel.utils.UsuariosClientesVariables;
 import com.cplsystems.stock.domain.Privilegios;
@@ -30,6 +32,12 @@ public class UsuariosClientesVM extends UsuariosClientesVariables {
 
 	@Init
 	public void init() {
+		super.init();
+	}
+
+	@NotifyChange("*")
+	@Command
+	public void nevoUsuarioCliente() {
 		super.init();
 	}
 
@@ -85,20 +93,53 @@ public class UsuariosClientesVM extends UsuariosClientesVariables {
 				privilegioService.save(privilegios);
 			}
 		}
-		usuarioSeleccionado = new Usuarios();
+		super.init();
+		StockUtils.showSuccessmessage(
+				"La información se ha guardado correctamente",
+				Clients.NOTIFICATION_TYPE_INFO, 1000, null);
 	}
 
 	@Command
 	public void delete() {
 		if (usuarioSeleccionado != null) {
-
+			if (usuarioSeleccionado.getIdUsuario() != null) {
+				Messagebox.show("¿Está seguro de remover a "
+						+ usuarioSeleccionado.getPersona().getNombreCompleto()
+						+ "?. Esta acción es irreversible ", "Question",
+						Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+						new EventListener<Event>() {
+							public void onEvent(Event event) throws Exception {
+								if (((Integer) event.getData()).intValue() == Messagebox.OK) {
+									for (Privilegios privilegios : usuarioSeleccionado
+											.getPrivilegios()) {
+										privilegioService.delete(privilegios);
+									}
+									usuarioService.delete(usuarioSeleccionado);
+									personaService.delete(usuarioSeleccionado
+											.getPersona());
+									contactoService.delete(usuarioSeleccionado
+											.getPersona().getContacto());
+									emailService.delete(usuarioSeleccionado
+											.getPersona().getContacto()
+											.getEmail());
+									usuarios.remove(usuarioSeleccionado);
+									privilegioRequision = false;
+									privilegioConcentrado = false;
+									privilegioCotizacionAutorizacion = false;
+									privilegioOrdenCompra = false;
+									UsuariosClientesVM.this.init();
+									BindUtils.postGlobalCommand(null, null,
+											"refreshPrivilegios", null);
+								}
+							}
+						});
+			}
 		}
 	}
 
 	@NotifyChange({ "usuarioSeleccionado", "addConcentradosPrivilege" })
 	@Command
 	public void addRequisicionPrivilege() {
-
 		if (privilegioRequision) {
 			boolean agregarPrivilegio = true;
 			for (Privilegios privilegio : usuarioSeleccionado.getPrivilegios()) {
@@ -233,7 +274,8 @@ public class UsuariosClientesVM extends UsuariosClientesVariables {
 				privilegios.setUsuarios(usuarioSeleccionado);
 				privilegios.setUserPrivileges(UserPrivileges.COTIZAR_AUTORIZAR);
 				privilegios.setIcono(Privilegios.CTAT_ICON);
-				privilegios.setPathLocationModule(Privilegios.COTIZACION_AUTORIZACION);
+				privilegios
+						.setPathLocationModule(Privilegios.COTIZACION_AUTORIZACION);
 				usuarioSeleccionado.getPrivilegios().add(privilegios);
 			}
 		} else {
