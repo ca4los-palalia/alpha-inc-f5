@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
@@ -165,7 +166,10 @@ public class concentradoVM extends RequisicionVariables {
 	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
-	public void removerProductoDeListaGeneralDeProductos() {
+	public void removerProductoDeListaGeneralDeProductos(@BindingParam("index") Integer index) {
+		if(requisicionProductoSeleccionado == null)
+			requisicionProductoSeleccionado = requisicionProductos.get(index);
+		
 		requisicionProductoService.delete(requisicionProductoSeleccionado);
 		requisicionProductos.remove(requisicionProductoSeleccionado);
 
@@ -256,41 +260,9 @@ public class concentradoVM extends RequisicionVariables {
 	@SuppressWarnings("static-access")
 	@Command
 	public void autorizar() {
-		
 		generarFolioCotizacion();
-		/*
-		if (requisicionProductos != null) {
-			
-			List<Cotizacion> cotizacionesRequisicionPtoducto = salvarCotizacion();
-			if(cotizacionesRequisicionPtoducto != null){
-				
-				Integer count = 0;
-
-				for (RequisicionProducto item : requisicionProductos) {
-					if (item.getProveedor() != null) {
-						item.setCotizacion(obtenerCotizacion(item.getProveedor(), cotizacionesRequisicionPtoducto));
-						item.setEntregados(0L);
-						requisicionProductoService.save(item);
-						count++;
-					}
-				}
-				if (count > 0) {
-					String mensaje = "";
-					if (count == 1)
-						mensaje = "se ha actualizado el proveedor para " + count
-								+ " producto";
-					else
-						mensaje = "se han actualizado los proveedores para "
-								+ count + " productos";
-					stockUtils.showSuccessmessage(mensaje,
-							Clients.NOTIFICATION_TYPE_INFO, 0, null);
-				}
-			}
-		}else
-			stockUtils.showSuccessmessage("No se puede generar una cotización, asegurese de haber precargado una lista de productos.", Clients.NOTIFICATION_TYPE_WARNING, 0,
-					null);
-		*/
-			
 	}
+	
+	
 
 }

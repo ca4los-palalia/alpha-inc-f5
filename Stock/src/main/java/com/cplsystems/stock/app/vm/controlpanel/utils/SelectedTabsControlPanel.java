@@ -9,78 +9,83 @@ package com.cplsystems.stock.app.vm.controlpanel.utils;
  */
 public class SelectedTabsControlPanel {
 
-	private boolean tab01;
-	private boolean tab02;
-	private boolean tab03;
-	private boolean tab04;
-	private boolean tab05;
-	private boolean tab06;
-	private boolean tab07;
-	private boolean tab08;
-	private boolean tab09;
-	private boolean tab10;
+	private boolean tabAreas;
+	private boolean tabBancos;
+	private boolean tabConffya;
+	private boolean tabContratos;
+	private boolean tabDivisas;
+	private boolean tabProductos;
+	private boolean tabProveedores;
+	private boolean tabPuestos;
+	private boolean tabTipoProductos;
+	private boolean tabUnidades;
+	private boolean activarButtonSave;
+	private boolean activarButtonDelete;
+	
 	private String toolTipSave;
 	private String toolTipDelete;
 	
-	public boolean isTab01() {
-		return tab01;
+	
+	
+	public boolean isTabAreas() {
+		return tabAreas;
 	}
-	public void setTab01(boolean tab01) {
-		this.tab01 = tab01;
+	public void setTabAreas(boolean tabAreas) {
+		this.tabAreas = tabAreas;
 	}
-	public boolean isTab02() {
-		return tab02;
+	public boolean isTabBancos() {
+		return tabBancos;
 	}
-	public void setTab02(boolean tab02) {
-		this.tab02 = tab02;
+	public void setTabBancos(boolean tabBancos) {
+		this.tabBancos = tabBancos;
 	}
-	public boolean isTab03() {
-		return tab03;
+	public boolean isTabConffya() {
+		return tabConffya;
 	}
-	public void setTab03(boolean tab03) {
-		this.tab03 = tab03;
+	public void setTabConffya(boolean tabConffya) {
+		this.tabConffya = tabConffya;
 	}
-	public boolean isTab04() {
-		return tab04;
+	public boolean isTabContratos() {
+		return tabContratos;
 	}
-	public void setTab04(boolean tab04) {
-		this.tab04 = tab04;
+	public void setTabContratos(boolean tabContratos) {
+		this.tabContratos = tabContratos;
 	}
-	public boolean isTab05() {
-		return tab05;
+	public boolean isTabDivisas() {
+		return tabDivisas;
 	}
-	public void setTab05(boolean tab05) {
-		this.tab05 = tab05;
+	public void setTabDivisas(boolean tabDivisas) {
+		this.tabDivisas = tabDivisas;
 	}
-	public boolean isTab06() {
-		return tab06;
+	public boolean isTabProductos() {
+		return tabProductos;
 	}
-	public void setTab06(boolean tab06) {
-		this.tab06 = tab06;
+	public void setTabProductos(boolean tabProductos) {
+		this.tabProductos = tabProductos;
 	}
-	public boolean isTab07() {
-		return tab07;
+	public boolean isTabProveedores() {
+		return tabProveedores;
 	}
-	public void setTab07(boolean tab07) {
-		this.tab07 = tab07;
+	public void setTabProveedores(boolean tabProveedores) {
+		this.tabProveedores = tabProveedores;
 	}
-	public boolean isTab08() {
-		return tab08;
+	public boolean isTabPuestos() {
+		return tabPuestos;
 	}
-	public void setTab08(boolean tab08) {
-		this.tab08 = tab08;
+	public void setTabPuestos(boolean tabPuestos) {
+		this.tabPuestos = tabPuestos;
 	}
-	public boolean isTab09() {
-		return tab09;
+	public boolean isTabTipoProductos() {
+		return tabTipoProductos;
 	}
-	public void setTab09(boolean tab09) {
-		this.tab09 = tab09;
+	public void setTabTipoProductos(boolean tabTipoProductos) {
+		this.tabTipoProductos = tabTipoProductos;
 	}
-	public boolean isTab10() {
-		return tab10;
+	public boolean isTabUnidades() {
+		return tabUnidades;
 	}
-	public void setTab10(boolean tab10) {
-		this.tab10 = tab10;
+	public void setTabUnidades(boolean tabUnidades) {
+		this.tabUnidades = tabUnidades;
 	}
 	public String getToolTipSave() {
 		return toolTipSave;
@@ -93,6 +98,18 @@ public class SelectedTabsControlPanel {
 	}
 	public void setToolTipDelete(String toolTipDelete) {
 		this.toolTipDelete = toolTipDelete;
+	}
+	public boolean isActivarButtonSave() {
+		return activarButtonSave;
+	}
+	public void setActivarButtonSave(boolean activarButtonSave) {
+		this.activarButtonSave = activarButtonSave;
+	}
+	public boolean isActivarButtonDelete() {
+		return activarButtonDelete;
+	}
+	public void setActivarButtonDelete(boolean activarButtonDelete) {
+		this.activarButtonDelete = activarButtonDelete;
 	}
 	
 }

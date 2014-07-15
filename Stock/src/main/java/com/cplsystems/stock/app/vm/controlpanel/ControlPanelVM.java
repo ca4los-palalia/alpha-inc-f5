@@ -4,21 +4,27 @@
 package com.cplsystems.stock.app.vm.controlpanel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
 
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.controlpanel.utils.ControlPanelVariables;
 import com.cplsystems.stock.app.vm.controlpanel.utils.SelectedTabsControlPanel;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
 import com.cplsystems.stock.domain.Moneda;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Posicion;
 import com.cplsystems.stock.domain.ProductoTipo;
+import com.cplsystems.stock.domain.Unidad;
+import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -52,23 +58,34 @@ public class ControlPanelVM extends ControlPanelVariables{
 	@NotifyChange("*")
 	public void save(){
 		
-		if(selectTab.isTab01()){
+		if(selectTab.isTabAreas())
 			guardarArea();
-		}else if(selectTab.isTab02()){
-			guardarPuesto();
-		}else if(selectTab.isTab03()){
+		else if(selectTab.isTabBancos())
 			guardarBanco();
-		}else if(selectTab.isTab04()){
+		else if(selectTab.isTabConffya())
+			guardarConffya();
+		else if(selectTab.isTabContratos())
+			guardarContratos();
+		else if(selectTab.isTabDivisas())
 			guardarMoneda();
-		}else if(selectTab.isTab05()){
+		else if(selectTab.isTabProductos())
+			guardarProductos();
+		else if(selectTab.isTabProveedores())
+			guardarProveedores();
+		else if(selectTab.isTabPuestos())
+			guardarPuesto();
+		else if(selectTab.isTabTipoProductos())
 			guardarProductoTipo();
-		}
+		else if(selectTab.isTabUnidades())
+			guardarUnidades();
+		
+		
 	}
 	
 	@Command
 	@NotifyChange("*")
 	public void delete(){
-		if(selectTab.isTab01()){
+		/*if(selectTab.isTab01()){
 			eliminarArea();
 		}else if(selectTab.isTab02()){
 			eliminarPuesto();
@@ -78,7 +95,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 			eliminarMoneda();
 		}else if(selectTab.isTab05()){
 			eliminarTipoProducto();
-		}
+		}*/
 	}
 	
 	
@@ -114,6 +131,80 @@ public class ControlPanelVM extends ControlPanelVariables{
 	}
 	
 	@SuppressWarnings("static-access")
+	private void guardarBanco(){
+		
+		for (Banco bancoRecord : bancosDB) {
+			try {
+				bancoRecord.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_BANCO);
+				bancoRecord.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
+				
+				if(bancoRecord.isNuevoRegistro()){
+					bancoRecord.setNuevoRegistro(false);
+					bancoRecord.setIdBanco(null);
+					bancoService.save(bancoRecord);
+				}else{
+					if(!bancoRecord.getNombre().equals(""))
+						bancoService.update(bancoRecord);
+				}
+			} catch (Exception e) {}
+		}
+		bancosDB.clear();
+		bancosDB = bancoService.getAll();
+		
+		if(!bancosDB.get(bancosDB.size() - 1).getNombre().equals(""))
+			bancosDB.add(crearColumnaVaciaBanco());
+		
+		stockUtils.showSuccessmessage(
+				"Catalogo de bancos actualizados",
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+	}
+	
+	private void guardarConffya(){
+		
+	}
+	
+	private void guardarContratos(){
+		
+	}
+	
+	@SuppressWarnings("static-access")
+	private void guardarMoneda(){
+		
+		for (Moneda monedaRecord : monedasDB) {
+			try {
+				monedaRecord.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_MONEDA);
+				monedaRecord.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
+				
+				if(monedaRecord.isNuevoRegistro()){
+					monedaRecord.setNuevoRegistro(false);
+					monedaRecord.setIdMoneda(null);
+					monedaService.save(monedaRecord);
+				}else{
+					if(!monedaRecord.getNombre().equals(""))
+						monedaService.update(monedaRecord);
+				}
+			} catch (Exception e) {}
+		}
+		monedasDB.clear();
+		monedasDB = monedaService.getAll();
+		
+		if(!monedasDB.get(monedasDB.size() - 1).getNombre().equals(""))
+			monedasDB.add(crearColumnaVaciaMonedas());
+		
+		stockUtils.showSuccessmessage(
+				"Catalogo de monedas actualizados",
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+	}
+	
+	private void guardarProductos(){
+		
+	}
+	
+	private void guardarProveedores(){
+		
+	}
+
+	@SuppressWarnings("static-access")
 	private void guardarPuesto(){
 		
 		for (Posicion posicionRecord : posiciones) {
@@ -144,63 +235,6 @@ public class ControlPanelVM extends ControlPanelVariables{
 		
 	}
 	
-	@SuppressWarnings("static-access")
-	private void guardarBanco(){
-		
-		for (Banco bancoRecord : bancosDB) {
-			try {
-				bancoRecord.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_BANCO);
-				bancoRecord.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
-				
-				if(bancoRecord.isNuevoRegistro()){
-					bancoRecord.setNuevoRegistro(false);
-					bancoRecord.setIdBanco(null);
-					bancoService.save(bancoRecord);
-				}else{
-					if(!bancoRecord.getNombre().equals(""))
-						bancoService.update(bancoRecord);
-				}
-			} catch (Exception e) {}
-		}
-		bancosDB.clear();
-		bancosDB = bancoService.getAll();
-		
-		if(!bancosDB.get(bancosDB.size() - 1).getNombre().equals(""))
-			bancosDB.add(crearColumnaVaciaBanco());
-		
-		stockUtils.showSuccessmessage(
-				"Catalogo de bancos actualizados",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
-	}
-
-	@SuppressWarnings("static-access")
-	private void guardarMoneda(){
-		
-		for (Moneda monedaRecord : monedasDB) {
-			try {
-				monedaRecord.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_MONEDA);
-				monedaRecord.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
-				
-				if(monedaRecord.isNuevoRegistro()){
-					monedaRecord.setNuevoRegistro(false);
-					monedaRecord.setIdMoneda(null);
-					monedaService.save(monedaRecord);
-				}else{
-					if(!monedaRecord.getNombre().equals(""))
-						monedaService.update(monedaRecord);
-				}
-			} catch (Exception e) {}
-		}
-		monedasDB.clear();
-		monedasDB = monedaService.getAll();
-		
-		if(!monedasDB.get(monedasDB.size() - 1).getNombre().equals(""))
-			monedasDB.add(crearColumnaVaciaMonedas());
-		
-		stockUtils.showSuccessmessage(
-				"Catalogo de monedas actualizados",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
-	}
 	
 	@SuppressWarnings("static-access")
 	private void guardarProductoTipo(){
@@ -230,6 +264,33 @@ public class ControlPanelVM extends ControlPanelVariables{
 				"Catalogo de tipo de productos actualizado",
 				Clients.NOTIFICATION_TYPE_INFO, 0, null);
 	}
+	
+	@SuppressWarnings("static-access")
+	private void guardarUnidades(){
+		if(unidadesDB != null && unidadesDB.size() > 0){
+			for (Unidad item : unidadesDB) {
+				if(item.getNombre() != null && !item.getNombre().isEmpty()){
+					item.setFechaActualizacion(Calendar.getInstance());
+					item.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
+					item.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
+					unidadService.save(item);
+				}
+			}
+			stockUtils.showSuccessmessage(
+					"Se han realizado cambios en el catalogo de -Unidades de medida-",
+					Clients.NOTIFICATION_TYPE_INFO, 0, null);
+			mensajeDeCambios = "";
+		}else{
+			stockUtils.showSuccessmessage(
+					"No se puede llevar a cabo una actualizacion en el catalogo -Unidades de medida-, catalogo vacio",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+		}
+		
+	}
+	
+	
+	
+	
 	
 	@SuppressWarnings("static-access")
 	private void eliminarArea(){
@@ -549,14 +610,20 @@ public class ControlPanelVM extends ControlPanelVariables{
 	
 	@Command
 	@NotifyChange("*")
-	public void selectTabPuesto(){
-		activarBotonesPuestos();
+	public void selectTabBanco(){
+		activarBotonesBancos();
 	}
 	
 	@Command
 	@NotifyChange("*")
-	public void selectTabBanco(){
-		activarBotonesBancos();
+	public void selectTabConffya(){
+		activarBotonesConffya();
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void selectTabContratos(){
+		activarBotonesContrato();
 	}
 	
 	@Command
@@ -573,73 +640,218 @@ public class ControlPanelVM extends ControlPanelVariables{
 	
 	@Command
 	@NotifyChange("*")
-	public void selectTabContratos(){
-		activarBotonesContrato();
+	public void selectTabProveedores(){
+		activarBotonesProveedores();
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void selectTabPuesto(){
+		activarBotonesPuestos();
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void selectTabTiposProducto(){
+		activarBotonesTiposProductos();
+	}
+	
+	
+	
+	@Command
+	@NotifyChange("*")
+	public void selectTabUnidades(){
+		activarBotonesUnidades();
+		//SessionUtils.USUARIO, usuario
+		unidadesDB = unidadService.getAll();
 	}
 	
 	private void activarBotonesAreas(){
-		selectTab.setTab01(true);
-		selectTab.setTab02(false);
-		selectTab.setTab03(false);
-		selectTab.setTab04(false);
-		selectTab.setTab05(false);
-		selectTab.setTab06(false);
+		selectTab.setTabAreas(true);
+		selectTab.setTabBancos(false);
+		selectTab.setTabConffya(false);
+		selectTab.setTabContratos(false);
+		selectTab.setTabDivisas(false);
+		selectTab.setTabProductos(false);
+		selectTab.setTabProveedores(false);
+		selectTab.setTabPuestos(false);
+		selectTab.setTabTipoProductos(false);
+		selectTab.setTabUnidades(false);
+		selectTab.setActivarButtonDelete(false);
+		selectTab.setActivarButtonSave(false);
+		
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_AREA);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_AREA);
 	}
 	
-	private void activarBotonesPuestos(){
-		selectTab.setTab01(false);
-		selectTab.setTab02(true);
-		selectTab.setTab03(false);
-		selectTab.setTab04(false);
-		selectTab.setTab05(false);
-		selectTab.setTab06(false);
-		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_PUESTO);
-		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_PUESTO);
-	}
-	
 	private void activarBotonesBancos(){
-		selectTab.setTab01(false);
-		selectTab.setTab02(false);
-		selectTab.setTab03(true);
-		selectTab.setTab04(false);
-		selectTab.setTab05(false);
-		selectTab.setTab06(false);
+		selectTab.setTabAreas(false);
+		selectTab.setTabBancos(true);
+		selectTab.setTabConffya(false);
+		selectTab.setTabContratos(false);
+		selectTab.setTabDivisas(false);
+		selectTab.setTabProductos(false);
+		selectTab.setTabProveedores(false);
+		selectTab.setTabPuestos(false);
+		selectTab.setTabTipoProductos(false);
+		selectTab.setTabUnidades(false);
+		selectTab.setActivarButtonDelete(false);
+		selectTab.setActivarButtonSave(false);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_BANCO);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_BANCO);
 	}
 	
+	private void activarBotonesConffya(){
+		selectTab.setTabAreas(false);
+		selectTab.setTabBancos(false);
+		selectTab.setTabConffya(true);
+		selectTab.setTabContratos(false);
+		selectTab.setTabDivisas(false);
+		selectTab.setTabProductos(false);
+		selectTab.setTabProveedores(false);
+		selectTab.setTabPuestos(false);
+		selectTab.setTabTipoProductos(false);
+		selectTab.setTabUnidades(false);
+		selectTab.setActivarButtonDelete(true);
+		selectTab.setActivarButtonSave(true);
+		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_BANCO);
+		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_BANCO);
+	}
+	
+	private void activarBotonesContrato(){
+		selectTab.setTabAreas(false);
+		selectTab.setTabBancos(false);
+		selectTab.setTabConffya(false);
+		selectTab.setTabContratos(true);
+		selectTab.setTabDivisas(false);
+		selectTab.setTabProductos(false);
+		selectTab.setTabProveedores(false);
+		selectTab.setTabPuestos(false);
+		selectTab.setTabTipoProductos(false);
+		selectTab.setTabUnidades(false);
+		selectTab.setActivarButtonDelete(false);
+		selectTab.setActivarButtonSave(false);
+	}
+	
 	private void activarBotonesMonedas(){
-		selectTab.setTab01(false);
-		selectTab.setTab02(false);
-		selectTab.setTab03(false);
-		selectTab.setTab04(true);
-		selectTab.setTab05(false);
-		selectTab.setTab06(false);
+		selectTab.setTabAreas(false);
+		selectTab.setTabBancos(false);
+		selectTab.setTabConffya(false);
+		selectTab.setTabContratos(false);
+		selectTab.setTabDivisas(true);
+		selectTab.setTabProductos(false);
+		selectTab.setTabProveedores(false);
+		selectTab.setTabPuestos(false);
+		selectTab.setTabTipoProductos(false);
+		selectTab.setTabUnidades(false);
+		selectTab.setActivarButtonDelete(false);
+		selectTab.setActivarButtonSave(false);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_MONEDA);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_MONEDA);
 	}
 	
 	private void activarBotonesProductos(){
-		selectTab.setTab01(false);
-		selectTab.setTab02(false);
-		selectTab.setTab03(false);
-		selectTab.setTab04(false);
-		selectTab.setTab06(false);
-		selectTab.setTab05(true);
+		selectTab.setTabAreas(false);
+		selectTab.setTabBancos(false);
+		selectTab.setTabConffya(false);
+		selectTab.setTabContratos(false);
+		selectTab.setTabDivisas(false);
+		selectTab.setTabProductos(true);
+		selectTab.setTabProveedores(false);
+		selectTab.setTabPuestos(false);
+		selectTab.setTabTipoProductos(false);
+		selectTab.setTabUnidades(false);
+		selectTab.setActivarButtonDelete(false);
+		selectTab.setActivarButtonSave(false);
+		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_MONEDA);
+		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_MONEDA);
+	}
+	
+	private void activarBotonesProveedores(){
+		selectTab.setTabAreas(false);
+		selectTab.setTabBancos(false);
+		selectTab.setTabConffya(false);
+		selectTab.setTabContratos(false);
+		selectTab.setTabDivisas(false);
+		selectTab.setTabProductos(false);
+		selectTab.setTabProveedores(true);
+		selectTab.setTabPuestos(false);
+		selectTab.setTabTipoProductos(false);
+		selectTab.setTabUnidades(false);
+		selectTab.setActivarButtonDelete(false);
+		selectTab.setActivarButtonSave(false);
+		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_MONEDA);
+		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_MONEDA);
+	}
+	
+	private void activarBotonesPuestos(){
+		selectTab.setTabAreas(false);
+		selectTab.setTabBancos(false);
+		selectTab.setTabConffya(false);
+		selectTab.setTabContratos(false);
+		selectTab.setTabDivisas(false);
+		selectTab.setTabProductos(false);
+		selectTab.setTabProveedores(false);
+		selectTab.setTabPuestos(true);
+		selectTab.setTabTipoProductos(false);
+		selectTab.setTabUnidades(false);
+		selectTab.setActivarButtonDelete(false);
+		selectTab.setActivarButtonSave(false);
+		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_PUESTO);
+		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_PUESTO);
+	}
+	
+	private void activarBotonesTiposProductos(){
+		selectTab.setTabAreas(false);
+		selectTab.setTabBancos(false);
+		selectTab.setTabConffya(false);
+		selectTab.setTabContratos(false);
+		selectTab.setTabDivisas(false);
+		selectTab.setTabProductos(false);
+		selectTab.setTabProveedores(false);
+		selectTab.setTabPuestos(false);
+		selectTab.setTabTipoProductos(true);
+		selectTab.setTabUnidades(false);
+		selectTab.setActivarButtonDelete(false);
+		selectTab.setActivarButtonSave(false);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_PRODUCTO);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_PRODUCTO);
 	}
 	
-	private void activarBotonesContrato(){
-		selectTab.setTab01(false);
-		selectTab.setTab02(false);
-		selectTab.setTab03(false);
-		selectTab.setTab04(false);
-		selectTab.setTab05(false);
-		selectTab.setTab06(true);
-		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_PRODUCTO);
-		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_PRODUCTO);
+	private void activarBotonesUnidades(){
+		selectTab.setTabAreas(false);
+		selectTab.setTabBancos(false);
+		selectTab.setTabConffya(false);
+		selectTab.setTabContratos(false);
+		selectTab.setTabDivisas(false);
+		selectTab.setTabProductos(false);
+		selectTab.setTabProveedores(false);
+		selectTab.setTabPuestos(false);
+		selectTab.setTabTipoProductos(false);
+		selectTab.setTabUnidades(true);
+		selectTab.setActivarButtonDelete(true);
+		selectTab.setActivarButtonSave(false);
+		selectTab.setToolTipSave("Salvar cambios en catalogo de unidades");
 	}
+	
+	
+	
+	
+	@Command
+	@NotifyChange("*")
+	public void removerUnidad(@BindingParam("index") Integer index){
+		unidad = unidadesDB.get(index);
+		unidadService.save(unidad);
+		unidadesDB.remove(unidad);
+	}
+	
+	@Command
+	@NotifyChange("unidadesDB, mensajeDeCambios")
+	public void agregarNuevaUnidad(){
+		Unidad nuevaUnidad = new Unidad();
+		unidadesDB.add(nuevaUnidad);
+		mensajeDeCambios = "No olvide salvar sus cambios";
+	}
+	
+	
 }
