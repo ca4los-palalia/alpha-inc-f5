@@ -7,6 +7,7 @@ import org.zkoss.image.Image;
 
 import com.cplsystems.stock.app.vm.BasicStructure;
 import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -19,11 +20,14 @@ public class UsuarioVariables extends BasicStructure {
 	protected Image businessImage;
 	protected byte[] imageInBytes;
 	protected String imageFormat;
+	protected Usuarios usuario;
 
 	public void init() {
 		organizacion = new Organizacion();
+		usuario = new Usuarios();
+		usuario.setOrganizacion(organizacion);
 	}
-	
+
 	public Organizacion getOrganizacion() {
 		return organizacion;
 	}
@@ -38,6 +42,14 @@ public class UsuarioVariables extends BasicStructure {
 
 	public void setBusinessImage(Image businessImage) {
 		this.businessImage = businessImage;
+	}
+
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
 	}
 
 }

@@ -36,20 +36,30 @@ public class UsuariosClientesVariables extends BasicStructure {
 		organizacion = (Organizacion) sessionUtils
 				.getFromSession(SessionUtils.FIRMA);
 		usuarios = usuarioService.getUsuariosByOrganizacion(organizacion);
+
 		usuarioSeleccionado = new Usuarios();
+		Persona persona = new Persona();
+		Contacto contacto = new Contacto();
+		contacto.setEmail(new Email());
+		persona.setContacto(contacto);
+		usuarioSeleccionado.setPersona(persona);
+		usuarioSeleccionado.setOrganizacion(organizacion);
+
 		if (usuarios == null) {
 			usuarios = new ArrayList<Usuarios>();
-			usuarioSeleccionado = new Usuarios();
-			Persona persona = new Persona();
-			Contacto contacto = new Contacto();
-			contacto.setEmail(new Email());
-			persona.setContacto(contacto);
-			usuarioSeleccionado.setPersona(persona);
 		} else {
 			for (Usuarios usuario : usuarios) {
-				usuario.getPersona().setContacto(
-						contactoService.getContactoByEmail(usuario.getPersona()
-								.getContacto().getEmail()));
+				if (usuario.getPersona().getContacto() != null) {
+					usuario.getPersona().setContacto(
+							contactoService.getContactoByEmail(usuario
+									.getPersona().getContacto().getEmail()));
+				} else {
+					Email email = new Email();
+					contacto = new Contacto();
+					contacto.setEmail(email);
+					usuario.getPersona().setContacto(contacto);
+				}
+
 				usuario.setRetypeKennwort(usuario.getKennwort());
 				usuario.setPrivilegios(privilegioService
 						.getPrivilegiosByUsuario(usuario));
