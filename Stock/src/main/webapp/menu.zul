@@ -7,30 +7,34 @@
 		viewModel="@id('vm') @init('com.cplsystems.stock.app.vm.menu.MenuVM')">
 		<vlayout>
 			<tabbox id="menu" mold="accordion">
-				<tabs>
-					<tab label="Productos"
+				<tabs id="tabHeaders">
+					<tab id="productos" label="Productos"
+						visible="@load(vm.mostrarProductos)"
 						image="/images/toolbar/box32.png" sclass="tab-red menutabs" />
-					<tab label="Proveedores"
+					<tab id="proveedores" label="Proveedores"
+						visible="@load(vm.mostrarProveedores)"
 						image="/images/toolbar/users32.png" sclass="tab-red menutabs" />
-					<tab label="Requisiciones"
+					<tab id="requisiciones" label="Requisiciones"
+						visible="@load(vm.mostrarRequisiones)"
 						image="/images/toolbar/linedpapercheck32.png"
 						sclass="tab-red menutabs" />
-					<tab label="Cotizaciones"
-						image="/images/toolbar/article32.png"
-						sclass="tab-red menutabs" />
-						
-					<tab label="Ordenes de compra"
+					<tab id="cotizaciones" label="Cotizaciones"
+						visible="@load(vm.mostrarCotizacionesAutorizaciones)"
+						image="/images/toolbar/article32.png" sclass="tab-red menutabs" />
+					<tab id="ordenCompra" label="Ordenes de compra"
+						visible="@load(vm.mostrarOrdenesCompra)"
 						image="/images/toolbar/shoppingcart32.png"
 						sclass="tab-red menutabs" />
 					<tab label="Reportes"
 						image="/images/toolbar/risegraph32.png" sclass="tab-red menutabs" />
-					<tab label="Panel de control"
+					<tab id="panelControl" label="Panel de control"
+						visible="@load(vm.mostrarPanelControl)"
 						image="/images/toolbar/gear32.png" sclass="tab-red menutabs" />
 				</tabs>
-				<tabpanels>
+				<tabpanels id="tabContent">
 					<tabpanel sclass="tab-red">
 						<listbox style="border: 0; background: #B8D335;"
-							sclass="tab-red menutabs">
+							sclass="tab-red menutabs" visible="@load(vm.mostrarProductos)">
 							<listhead>
 								<listheader width="20%" />
 								<listheader />
@@ -56,9 +60,8 @@
 								</listcell>
 								<listcell
 									onClick="@command('showBuscadorProductos')">
-									<label
-										value="Buscador artículos" width="100%"
-										style="font-size: 10px;" />
+									<label value="Buscador artículos"
+										width="100%" style="font-size: 10px;" />
 								</listcell>
 							</listitem>
 							<listitem
@@ -105,9 +108,8 @@
 								</listcell>
 								<listcell
 									onClick="@command('showProductsReportesCosto')">
-									<label
-										value="Actualizar costos" width="100%"
-										style="font-size: 10px;" />
+									<label value="Actualizar costos"
+										width="100%" style="font-size: 10px;" />
 								</listcell>
 							</listitem>
 							<listitem
@@ -118,9 +120,8 @@
 								</listcell>
 								<listcell
 									onClick="@command('showProductsReportesPrecio')">
-									<label
-										value="Actualizar precios" width="100%"
-										style="font-size: 10px;" />
+									<label value="Actualizar precios"
+										width="100%" style="font-size: 10px;" />
 								</listcell>
 							</listitem>
 							<listitem
@@ -238,7 +239,8 @@
 										src="/images/toolbar/find16x16.png" />
 								</listcell>
 
-								<listcell onClick="@command('showProvidersSearch')">
+								<listcell
+									onClick="@command('showProvidersSearch')">
 									<label
 										value="Buscador de proveedores" width="100%"
 										style="font-size: 10px;" />
@@ -251,7 +253,8 @@
 										src="/images/toolbar/arrow.png" />
 								</listcell>
 
-								<listcell onClick="@command('showProvidersProduct')">
+								<listcell
+									onClick="@command('showProvidersProduct')">
 									<label
 										value="Relacionar productos con proveedor" width="100%"
 										style="font-size: 10px;" />
@@ -285,7 +288,8 @@
 									<image
 										src="/images/toolbar/gear32.png" />
 								</listcell>
-								<listcell onClick="@command('showRequsicionBuscador')">
+								<listcell
+									onClick="@command('showRequsicionBuscador')">
 									<label value="Buscar requisiciones"
 										width="100%" style="font-size: 10px;" />
 								</listcell>
@@ -296,10 +300,10 @@
 									<image
 										src="/images/toolbar/gear32.png" />
 								</listcell>
-								<listcell onClick="@command('showConcentrado')">
-									<label
-										value="Concentrado" width="100%"
-										style="font-size: 10px;" />
+								<listcell
+									onClick="@command('showConcentrado')">
+									<label value="Concentrado"
+										width="100%" style="font-size: 10px;" />
 								</listcell>
 							</listitem>
 						</listbox>
@@ -312,17 +316,17 @@
 								<listheader width="20%" />
 								<listheader />
 							</listhead>
-							
+
 							<listitem
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
 										src="/images/toolbar/gear32.png" />
 								</listcell>
-								<listcell onClick="@command('showCotizacion')">
-									<label
-										value="Cotización" width="100%"
-										style="font-size: 10px;" />
+								<listcell
+									onClick="@command('showCotizacion')">
+									<label value="Cotización"
+										width="100%" style="font-size: 10px;" />
 								</listcell>
 							</listitem>
 							<listitem
@@ -332,14 +336,15 @@
 										src="/images/toolbar/gear32.png" />
 								</listcell>
 
-								<listcell onClick="@command('showCotizacionBuscador')">
+								<listcell
+									onClick="@command('showCotizacionBuscador')">
 									<label value="Buscar Cotizaciones"
 										width="100%" style="font-size: 10px;" />
 								</listcell>
-							</listitem>							
+							</listitem>
 						</listbox>
 					</tabpanel>
-					
+
 					<tabpanel sclass="tab-red">
 						<grid style="border: 0;"
 							sclass="tab-red menutabs">
@@ -387,7 +392,7 @@
 								<listheader />
 							</listhead>
 
-							<listitem
+							<listitem visible="@load(vm.ownerOptions)"
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
@@ -400,19 +405,7 @@
 										width="100%" style="font-size: 10px;" />
 								</listcell>
 							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/gear32.png" />
-								</listcell>
-								<listcell>
-									<label
-										value="Configuración del sistema" width="100%"
-										style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
+							<listitem visible="@load(vm.ownerOptions)"
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
