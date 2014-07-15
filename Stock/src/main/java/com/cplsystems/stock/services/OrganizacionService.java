@@ -45,4 +45,8 @@ public class OrganizacionService {
 	public List<Organizacion> getCompaniasByRFC(String rfc) {
 		return organizacionDAO.getCompaniasByRFC(rfc);
 	}
+
+	public List<Organizacion> getAll() {
+		return organizacionDAO.getAll();
+	}
 }

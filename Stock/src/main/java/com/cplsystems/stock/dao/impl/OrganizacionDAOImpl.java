@@ -68,4 +68,10 @@ public class OrganizacionDAOImpl extends HibernateDAOSuportUtil implements
 		return criteria.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)	
+	public List<Organizacion> getAll() {
+		return getHibernateTemplate().find("FROM Organizacion as o");
+	}
+
 }

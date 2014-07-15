@@ -56,16 +56,38 @@ public class UsuarioDAOImpl extends HibernateDaoSupport implements UsuarioDAO {
 	public List<Usuarios> getUsuariosByOrganizacion(Organizacion organizacion) {
 		List<Usuarios> usuarios = getHibernateTemplate()
 				.find("FROM Usuarios as u "
-						+ "LEFT JOIN FETCH u.organizacion as o WHERE u.organizacion = ?",
-						organizacion);
+						+ "LEFT JOIN FETCH u.organizacion as o "
+						+ "LEFT JOIN FETCH u.privilegios as p "
+						+ "WHERE u.organizacion = ?"
+						+ "AND u.client = ? AND u.owner = ?", organizacion,
+						false, false);
 		return usuarios.size() > 0 ? usuarios : null;
 	}
 
+	@Transactional(readOnly = true)
 	public boolean verificarNombreUsuario(String benutzer, Long idUsuario) {
 		Criteria criteria = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Usuarios.class);
 		criteria.add(Restrictions.like("benutzer", "%" + benutzer + "%"));
 		criteria.add(Restrictions.ne("idUsuario", idUsuario));
 		return criteria.list().size() > 0 ? true : false;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Usuarios getClienteByOrganizacion(Organizacion organizacion) {
+		List<Usuarios> usuarios = getHibernateTemplate().find(
+				"FROM Usuarios as u WHERE u.organizacion = ? AND u.client = ?",
+				organizacion, true);
+		return usuarios.size() > 0 ? usuarios.get(0) : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Usuarios getOwner(Organizacion organizacion) {
+		List<Usuarios> usuarios = getHibernateTemplate().find(
+				"FROM Usuarios as u WHERE u.owner = ? ", true);
+		return usuarios.size() > 0 ? usuarios.get(0) : null;
+
 	}
 }
