@@ -56,9 +56,7 @@ public class BuscarOrganizacionesVM extends BuscarOrganizacionesVariables {
 			if (rfc != null && !rfc.isEmpty()) {
 				companias = organizacionService.getCompaniasByRFC(rfc);
 			} else {
-				StockUtils.showSuccessmessage(
-						"Por favor especifique un parámetro de búsqueda",
-						Clients.NOTIFICATION_TYPE_WARNING, 4500, null);
+				companias = organizacionService.getAll();
 			}
 		}
 	}
