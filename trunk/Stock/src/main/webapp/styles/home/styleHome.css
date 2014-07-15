@@ -23,7 +23,7 @@
 }
 
 * /
-	/*NOTA: contenedor de elementos del pie*/              
+	/*NOTA: contenedor de elementos del pie*/               
 	                              
 .footHome .z-south-body {
 	height: 100%;
@@ -337,14 +337,13 @@ div {
 
 .round-button {
 	display: block;
-	text-align: left;
 	width: 25px;
 	height: 25px;
 	border: 2px solid #f5f5f5;
 	border-radius: 50%;
 	color: #f5f5f5;
-	background: #f5f5f5;
 	font-size: 8px;
+	background-image: url(/images/home/logout.png);
 }
 
 .round-button:hover {
@@ -379,7 +378,7 @@ div {
 	/* IE10+ */
 	background: linear-gradient(to bottom, #a7c7dc 0%, #85b2d3 100%);
 	/* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient(    
+	filter: progid:DXImageTransform.Microsoft.gradient(     
 		startColorstr='#a7c7dc', endColorstr='#85b2d3', GradientType=0);
 	/* IE6-8 */
 }
