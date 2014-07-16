@@ -8,11 +8,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.ListModel;
 
 import com.cplsystems.stock.app.vm.BasicStructure;
+import com.cplsystems.stock.domain.RequisicionInbox;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
 /**
@@ -38,9 +37,10 @@ public class RequisicionVariables extends BasicStructure {
 	protected boolean checkBuscarCancelada;
 	protected boolean checkBuscarEnviada;
 	protected boolean checkBuscarAceptada;
-	
-	
-	
+	protected List<RequisicionInbox> requisicionesInbox;
+	protected RequisicionInbox requisicionInboxSeleccionada;
+	protected boolean readOnly = true;
+
 	public RequisicionVariables() {
 		requisicionProductos = new ArrayList<RequisicionProducto>();
 	}
@@ -96,12 +96,12 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public Date getFecha() {
-		Calendar cal=Calendar.getInstance();
+		Calendar cal = Calendar.getInstance();
 		return fecha = cal.getTime();
 	}
 
 	public void setFecha(Date fecha) {
-		if(fecha != null){
+		if (fecha != null) {
 			fechaCalendar = Calendar.getInstance();
 			fechaCalendar.setTime(fecha);
 		}
@@ -163,5 +163,30 @@ public class RequisicionVariables extends BasicStructure {
 	public void setCheckBuscarAceptada(boolean checkBuscarAceptada) {
 		this.checkBuscarAceptada = checkBuscarAceptada;
 	}
-	
+
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+	}
+
+	public List<RequisicionInbox> getRequisicionesInbox() {
+		return requisicionesInbox;
+	}
+
+	public void setRequisicionesInbox(List<RequisicionInbox> requisicionesInbox) {
+		this.requisicionesInbox = requisicionesInbox;
+	}
+
+	public RequisicionInbox getRequisicionInboxSeleccionada() {
+		return requisicionInboxSeleccionada;
+	}
+
+	public void setRequisicionInboxSeleccionada(
+			RequisicionInbox requisicionInboxSeleccionada) {
+		this.requisicionInboxSeleccionada = requisicionInboxSeleccionada;
+	}
+
 }
