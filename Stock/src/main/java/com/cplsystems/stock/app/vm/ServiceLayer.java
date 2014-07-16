@@ -17,6 +17,7 @@ import com.cplsystems.stock.services.CofiaPyService;
 import com.cplsystems.stock.services.ContactoService;
 import com.cplsystems.stock.services.ContratoService;
 import com.cplsystems.stock.services.CostosProductoService;
+import com.cplsystems.stock.services.CotizacionInboxService;
 import com.cplsystems.stock.services.CotizacionService;
 import com.cplsystems.stock.services.CuentasPagoService;
 import com.cplsystems.stock.services.DireccionService;
@@ -27,6 +28,7 @@ import com.cplsystems.stock.services.FamiliasProductoService;
 import com.cplsystems.stock.services.GiroService;
 import com.cplsystems.stock.services.MonedaService;
 import com.cplsystems.stock.services.MunicipioService;
+import com.cplsystems.stock.services.OrdenCompraInboxService;
 import com.cplsystems.stock.services.OrganizacionService;
 import com.cplsystems.stock.services.PaisService;
 import com.cplsystems.stock.services.PersonaService;
@@ -162,9 +164,15 @@ public abstract class ServiceLayer extends DataLayer {
 
 	@WireVariable
 	protected PrivilegioService privilegioService;
-	
+
 	@WireVariable
 	protected RequisicionInboxService requisicionInboxService;
+
+	@WireVariable
+	protected CotizacionInboxService cotizacionInboxService;
+
+	@WireVariable
+	protected OrdenCompraInboxService ordenCompraInboxService;
 
 	/**
 	 * REQUERIDO PARA OBTENER EL SERVICIO DESDE UNA CLASE QUE NO PUEDE SER
