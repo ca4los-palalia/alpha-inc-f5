@@ -5,6 +5,7 @@ package com.cplsystems.stock.dao;
 
 import java.util.List;
 
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.RequisicionInbox;
 
 /**
@@ -17,8 +18,8 @@ public interface RequisicionInboxDAO {
 
 	void delete(RequisicionInbox requisicionInbox);
 
-	List<RequisicionInbox> getAllNews();
+	List<RequisicionInbox> getAllNews(final Organizacion organizacion);
 
-	List<RequisicionInbox> getAll();
+	List<RequisicionInbox> getAll(final Organizacion organizacion);
 
 }
