@@ -11,6 +11,7 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 
 import com.cplsystems.stock.app.vm.BasicStructure;
+import com.cplsystems.stock.domain.CotizacionInbox;
 import com.cplsystems.stock.domain.RequisicionInbox;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
@@ -40,6 +41,9 @@ public class RequisicionVariables extends BasicStructure {
 	protected List<RequisicionInbox> requisicionesInbox;
 	protected RequisicionInbox requisicionInboxSeleccionada;
 	protected boolean readOnly = true;
+
+	protected List<CotizacionInbox> cotizacionesInbox;
+	protected CotizacionInbox cotizacionInboxSeleccionada;
 
 	public RequisicionVariables() {
 		requisicionProductos = new ArrayList<RequisicionProducto>();
@@ -187,6 +191,23 @@ public class RequisicionVariables extends BasicStructure {
 	public void setRequisicionInboxSeleccionada(
 			RequisicionInbox requisicionInboxSeleccionada) {
 		this.requisicionInboxSeleccionada = requisicionInboxSeleccionada;
+	}
+
+	public List<CotizacionInbox> getCotizacionesInbox() {
+		return cotizacionesInbox;
+	}
+
+	public void setCotizacionesInbox(List<CotizacionInbox> cotizacionesInbox) {
+		this.cotizacionesInbox = cotizacionesInbox;
+	}
+
+	public CotizacionInbox getCotizacionInboxSeleccionada() {
+		return cotizacionInboxSeleccionada;
+	}
+
+	public void setCotizacionInboxSeleccionada(
+			CotizacionInbox cotizacionInboxSeleccionada) {
+		this.cotizacionInboxSeleccionada = cotizacionInboxSeleccionada;
 	}
 
 }
