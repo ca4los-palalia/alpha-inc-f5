@@ -57,7 +57,6 @@ public class UsuarioDAOImpl extends HibernateDaoSupport implements UsuarioDAO {
 		List<Usuarios> usuarios = getHibernateTemplate()
 				.find("FROM Usuarios as u "
 						+ "LEFT JOIN FETCH u.organizacion as o "
-						+ "LEFT JOIN FETCH u.privilegios as p "
 						+ "WHERE u.organizacion = ?"
 						+ "AND u.client = ? AND u.owner = ?", organizacion,
 						false, false);
