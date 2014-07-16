@@ -7,9 +7,6 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockUtils;
-import com.cplsystems.stock.domain.CofiaPartidaGenerica;
-import com.cplsystems.stock.domain.CofiaProg;
-import com.cplsystems.stock.domain.CofiaPy;
 import com.cplsystems.stock.services.AreaService;
 import com.cplsystems.stock.services.BancoService;
 import com.cplsystems.stock.services.CodigoBarrasProductoService;
@@ -40,6 +37,7 @@ import com.cplsystems.stock.services.ProductoService;
 import com.cplsystems.stock.services.ProductoTipoService;
 import com.cplsystems.stock.services.ProveedorProductoService;
 import com.cplsystems.stock.services.ProveedorService;
+import com.cplsystems.stock.services.RequisicionInboxService;
 import com.cplsystems.stock.services.RequisicionProductoService;
 import com.cplsystems.stock.services.RequisicionService;
 import com.cplsystems.stock.services.TelefonoService;
@@ -164,7 +162,14 @@ public abstract class ServiceLayer extends DataLayer {
 
 	@WireVariable
 	protected PrivilegioService privilegioService;
+	
+	@WireVariable
+	protected RequisicionInboxService requisicionInboxService;
 
+	/**
+	 * REQUERIDO PARA OBTENER EL SERVICIO DESDE UNA CLASE QUE NO PUEDE SER
+	 * CABLEADA COMO REPOSITORIO Y NO DEBE EXTENDER DE LA CAPA BÁSICA
+	 */
 	public UsuarioService getUsuarioService() {
 		return usuarioService;
 	}
