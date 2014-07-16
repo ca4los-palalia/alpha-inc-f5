@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.RequisicionInboxDAO;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.RequisicionInbox;
 
 /**
@@ -29,12 +30,12 @@ public class RequisicionInboxService {
 		requisicionInboxDAO.delete(requisicionInbox);
 	}
 
-	public List<RequisicionInbox> getAllNews() {
-		return requisicionInboxDAO.getAllNews();
+	public List<RequisicionInbox> getAllNews(final Organizacion organizacion) {
+		return requisicionInboxDAO.getAllNews(organizacion);
 	}
 
-	public List<RequisicionInbox> getAll() {
-		return requisicionInboxDAO.getAll();
+	public List<RequisicionInbox> getAll(final Organizacion organizacion) {
+		return requisicionInboxDAO.getAll(organizacion);
 	}
 
 }
