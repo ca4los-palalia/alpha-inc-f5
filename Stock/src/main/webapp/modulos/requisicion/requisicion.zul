@@ -47,36 +47,40 @@
 				emptyMessage="No hay requisiciones" mold="paging" pageSize="6"
 				height="100%">
 				<auxhead>
-					<auxheader colspan="5" style="text-align:center"
+					<auxheader colspan="5"
+						style="text-align:center;font-size:smaller;"
 						label="Bandeja de requisiciones" />
 				</auxhead>
 				<listhead>
-					<listheader align="center" width="5%" />
-					<listheader label="Folio" align="center" width="7%" />
+					<listheader align="center" width="5%"
+						style="font-size:smaller;" />
+					<listheader label="Folio" align="center" width="7%"
+						style="font-size:smaller;" />
 					<listheader label="Adscripción" align="center"
-						width="25%" />
-					<listheader label="Área" align="center" />
+						width="25%" style="font-size:smaller;" />
+					<listheader label="Área" align="center"
+						style="font-size:smaller;" />
 					<listheader label="Comentarios" align="center"
-						width="20%" />
+						width="20%" style="font-size:smaller;" />
 					<listheader label="Estado" align="center"
-						width="23%" />
+						width="23%" style="font-size:smaller;" />
 				</listhead>
 				<template name="model" var="requisicion">
 					<listitem>
-						<listcell
+						<listcell style="font-size:smaller;"
 							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
 							<image src="@load(requisicion.icono)" />
 						</listcell>
-						<listcell
+						<listcell style="font-size:smaller;"
 							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
 							label="${requisicion.requisicion.folio}" />
-						<listcell
+						<listcell style="font-size:smaller;"
 							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
 							label="${requisicion.requisicion.adscripcion}" />
-						<listcell
+						<listcell style="font-size:smaller;"
 							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
 							label="${requisicion.requisicion.area.nombre}" />
-						<listcell
+						<listcell style="font-size:smaller;"
 							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
 							label="${requisicion.comentarios}" />
 						<listcell
@@ -84,7 +88,7 @@
 							<hlayout>
 								<button disabled="true"
 									style="${requisicion.requisicion.estatusRequisicion.color}" />
-								<label
+								<label style="font-size:smaller;"
 									value="${requisicion.requisicion.estatusRequisicion.nombre}" />
 							</hlayout>
 						</listcell>
@@ -128,7 +132,7 @@
 									onCheck="@command('seleccionarOpcionBuscarArea')"
 									radiogroup="sv1" />
 							</hlayout>
-							<label/>
+							<label />
 						</row>
 
 						<row
@@ -161,8 +165,8 @@
 								</rows>
 							</grid>
 						</row>
-						
-						
+
+
 						<row
 							style="background-color:transparent; border: 0;">
 							<hlayout width="100%">
@@ -184,22 +188,21 @@
 					</rows>
 				</grid>
 
-				
-				<listbox
-					model="@load(rvm.requisiciones)"
+
+				<listbox model="@load(rvm.requisiciones)"
 					selectedItem="@bind(rvm.requisicion)"
 					emptyMessage="resultados de requisiciones vacia">
 					<listhead>
-						<listheader label="Clave"/>
-						<listheader width="8%"/>
+						<listheader label="Clave" />
+						<listheader width="8%" />
 					</listhead>
-					<template name="model"
-						var="requisicionVar">
+					<template name="model" var="requisicionVar">
 						<listitem>
-							
+
 							<listcell>
-								<label value="@bind(requisicionVar.folio)" width="100%"/>
-								
+								<label
+									value="@bind(requisicionVar.folio)" width="100%" />
+
 							</listcell>
 							<listcell>
 								<button
@@ -208,17 +211,17 @@
 						</listitem>
 					</template>
 				</listbox>
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
+
+
+
+
+
+
+
+
+
+
+
 			</groupbox>
 
 
@@ -432,7 +435,7 @@
 							<textbox maxlength="120" width="100%"
 								value="@bind(rvm.requisicion.adscripcion)"
 								sclass="invoiceTextBox tBox" />
-							
+
 						</row>
 					</rows>
 				</grid>
