@@ -17,6 +17,7 @@ import org.zkoss.bind.annotation.Init;
 import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
+import com.cplsystems.stock.domain.RequisicionInbox;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
 /**
@@ -28,14 +29,27 @@ public abstract class RequisicionMetaClass extends RequisicionVariables {
 	private static final long serialVersionUID = -4078164796340868446L;
 
 	@Init
-	public void init(){
+	public void init() {
 		readJasper = generarUrlString("jasperTemplates/requisicionFormato.jasper");
+		loadRequisionesInbox();
 	}
-	
+
+	private void loadRequisionesInbox() {
+		requisicionesInbox = requisicionInboxService.getAllNews();
+		for (RequisicionInbox rqInbox : requisicionesInbox) {
+			if (rqInbox.getLeido() != null && rqInbox.getLeido()) {
+				rqInbox.setIcono(RequisicionInbox.LEIDO);
+			} else {
+				rqInbox.setIcono(RequisicionInbox.NUEVO);
+			}
+		}
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Command
 	public String generarRequisicionJasper(List<HashMap> listaHashsParametros,
-			List<AplicacionExterna> aplicaciones, List<RequisicionProducto> lista) {
+			List<AplicacionExterna> aplicaciones,
+			List<RequisicionProducto> lista) {
 		String mensaje = "";
 
 		HashMap hashParametros = construirHashMapParametros(listaHashsParametros);
@@ -44,7 +58,7 @@ public abstract class RequisicionMetaClass extends RequisicionVariables {
 
 			print = JasperFillManager.fillReport(readJasper, hashParametros,
 					new JRBeanCollectionDataSource(lista));
-			
+
 			JasperExportManager.exportReportToPdfFile(print,
 					StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE);
 			openPdf(StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE);
@@ -52,7 +66,6 @@ public abstract class RequisicionMetaClass extends RequisicionVariables {
 					+ StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE;
 
 		} catch (JRException e) {
-
 			e.printStackTrace();
 			for (AplicacionExterna aplicacion : aplicaciones)
 				closePdf(aplicacion.getNombre());
@@ -63,7 +76,9 @@ public abstract class RequisicionMetaClass extends RequisicionVariables {
 				openPdf(StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE);
 				mensaje = "Se ha generado un PDFPDF del reporte generado: "
 						+ StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE;
-			} catch (JRException e1) {}
+			} catch (JRException e1) {
+				e1.printStackTrace();
+			}
 		}
 		return mensaje;
 	}
