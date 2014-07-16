@@ -964,7 +964,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 	@NotifyChange("*")
 	public void agregarNuevoBanco(){
 		if(bancosDB == null)
-			bancosDB = new ArrayList<>();
+			bancosDB = new ArrayList<Banco>();
 			bancosDB.add(crearColumnaVaciaBanco());
 		mensajeDeCambios = "No olvide salvar sus cambios";
 	}
@@ -973,7 +973,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 	@NotifyChange("*")
 	public void agregarNuevoContrato(){
 		if(contratos == null)
-			contratos = new ArrayList<>();
+			contratos = new ArrayList<Contrato>();
 		contratos.add(crearColumnaVaciaContrato());
 		mensajeDeCambios = "No olvide salvar sus cambios";
 	}
