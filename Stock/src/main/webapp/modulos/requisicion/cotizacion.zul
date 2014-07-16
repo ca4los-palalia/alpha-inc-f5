@@ -32,6 +32,60 @@
 
 			<separator />
 
+			<listbox model="@load(rvm.cotizacionesInbox)"
+				selectedItem="@bind(rvm.cotizacionInboxSeleccionada)"
+				emptyMessage="No hay cotizaciones" mold="paging" pageSize="6"
+				height="100%">
+				<auxhead>
+					<auxheader colspan="5"
+						style="text-align:center;font-size:smaller;"
+						label="Bandeja de cotizaciones" />
+				</auxhead>
+				<listhead>
+					<listheader align="center" width="5%"
+						style="font-size:smaller;" />
+					<listheader label="Folio" align="center" width="7%"
+						style="font-size:smaller;" />
+					<listheader label="Comentarios" align="center"
+						width="30%" style="font-size:smaller;" />
+					<listheader label="Proveedor" align="center"
+						width="25%" style="font-size:smaller;" />
+					<listheader label="Total" align="center"
+						style="font-size:smaller;" />
+					<listheader label="Estado" align="center"
+						width="23%" style="font-size:smaller;" />
+				</listhead>
+				<template name="model" var="cotizacion">
+					<listitem>
+						<listcell style="font-size:smaller;"
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)">
+							<image src="@load(cotizacion.icono)" />
+						</listcell>
+						<listcell style="font-size:smaller;"
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+							label="${cotizacion.cotizacion.requisicion.folio}" />
+						<listcell style="font-size:smaller;"
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+							label="${cotizacion.comentarios}" />
+						<listcell style="font-size:smaller;"
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+							label="${cotizacion.cotizacion.proveedor.nombre}" />
+						<listcell style="font-size:smaller;"
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+							label="${cotizacion.cotizacion.total}" />
+						<listcell
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)">
+							<hlayout>
+								<button disabled="true"
+									style="${cotizacion.cotizacion.estatusRequisicion.color}" />
+								<label style="font-size:smaller;"
+									value="${cotizacion.cotizacion.estatusRequisicion.nombre}" />
+							</hlayout>
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+			<separator />
 
 			<groupbox><!-- BUSCADOR DE COTIZACIONES -->
 				<caption label="Buscar cotización:"></caption>
@@ -95,13 +149,15 @@
 				<rows>
 					<row
 						style="background-color: transparent; border: 0;">
-						<label value="Proveedor:" style="font-weight:bold;"/>
+						<label value="Proveedor:"
+							style="font-weight:bold;" />
 						<label style="font-size:smaller;"
 							value="@bind(rvm.cotizacionSelected.proveedor.nombre)" />
-						
-						<label value="Atención:" style="font-weight:bold;"/>
+
+						<label value="Atención:"
+							style="font-weight:bold;" />
 						<hlayout>
-							
+
 							<label style="font-size:smaller;"
 								value="@bind(rvm.cotizacionSelected.proveedor.representanteAteCliente.apellidoPaterno)" />
 							<label value=" " />
@@ -115,66 +171,69 @@
 					</row>
 				</rows>
 			</grid>
-			
+
 			<grid style="border: 0;">
 				<columns>
 					<column width="13%" />
 					<column />
-					
+
 				</columns>
 				<rows>
 					<row
 						style="background-color: transparent; border: 0;">
-						<label value="Dirección:" style="font-weight:bold;"/>
+						<label value="Dirección:"
+							style="font-weight:bold;" />
 						<div>
-						
+
 							<hlayout>
 								<label style="font-size:smaller;"
-								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.calle)" />
-								
+									value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.calle)" />
+
 								<label style="font-size:smaller;"
-								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.numExt)" />
-								
+									value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.numExt)" />
+
 								<label style="font-size:smaller;"
-								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.colonia)" />
-								
+									value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.colonia)" />
+
 								<label style="font-size:smaller;"
-								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.cp)" />
-								
+									value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.cp)" />
+
 								<label style="font-size:smaller;"
-								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.cuidad)" />
-								
+									value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.cuidad)" />
+
 								<label style="font-size:smaller;"
-								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.estado.nombre)" />
-								
+									value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.estado.nombre)" />
+
 								<label style="font-size:smaller;"
-								value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.pais.nombre)" />
-								
+									value="@bind(rvm.cotizacionSelected.proveedor.direccionFiscal.pais.nombre)" />
+
 							</hlayout>
 						</div>
 					</row>
 				</rows>
 			</grid>
-			
+
 			<grid style="border: 0;">
 				<columns>
 					<column width="13%" />
-					<column width="13%"/>
+					<column width="13%" />
 					<column width="7%" />
-					<column width="17%"/>
+					<column width="17%" />
 					<column width="13%" />
 					<column />
 				</columns>
 				<rows>
 					<row
 						style="background-color: transparent; border: 0;">
-						<label value="Telefono:" style="font-weight:bold;"/>
+						<label value="Telefono:"
+							style="font-weight:bold;" />
 						<label style="font-size:smaller;"
 							value="@bind(rvm.cotizacionSelected.proveedor.representanteAteCliente.contacto.telefono.numero)" />
-						<label value="E-mail:" style="font-weight:bold;"/>
+						<label value="E-mail:"
+							style="font-weight:bold;" />
 						<label style="font-size:smaller;"
 							value="@bind(rvm.cotizacionSelected.proveedor.representanteAteCliente.contacto.email.email)" />
-						<label value="Fecha:" style="font-weight:bold;"/>
+						<label value="Fecha:" style="font-weight:bold;" />
 						<textbox />
 					</row>
 				</rows>
@@ -226,8 +285,10 @@
 						</listcell>
 						<listcell>
 							<div>
-								<hlayout style="vertical-align: middle;">
-									<button style="@bind(each.estatusRequisicion.color)"/>
+								<hlayout
+									style="vertical-align: middle;">
+									<button
+										style="@bind(each.estatusRequisicion.color)" />
 									<label style="font-size:smaller;"
 										value="@bind(each.estatusRequisicion.nombre)" />
 								</hlayout>
@@ -294,7 +355,8 @@
 						</listcell>
 
 						<listcell>
-							<label value="@bind(each.totalProductoPorUnidad)" />
+							<label
+								value="@bind(each.totalProductoPorUnidad)" />
 						</listcell>
 
 					</listitem>
