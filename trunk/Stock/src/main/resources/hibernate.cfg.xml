@@ -9,24 +9,21 @@
 
 	<session-factory>
 		<!-- Configuration Data -->
-		
-		 
+
+
 		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
 		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/stock</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
 		<property name="connection.username">carlos</property>
 		<property name="connection.password">carlos</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
-		
-		<!-- 
-		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
-		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://184.168.69.15:1433/stock</property>
-		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
-		<property name="connection.username">USUARIOSTOCK</property>
-		<property name="connection.password">STOCK2014</property>
-		<property name="hibernate.hbm2ddl.auto">update</property>
-		-->
-		
+
+		<!-- <property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property> 
+			<property name="hibernate.connection.url">jdbc:jtds:sqlserver://184.168.69.15:1433/stock</property> 
+			<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property> 
+			<property name="connection.username">USUARIOSTOCK</property> <property name="connection.password">STOCK2014</property> 
+			<property name="hibernate.hbm2ddl.auto">update</property> -->
+
 		<!-- END Configuration Data -->
 
 		<!-- Mapping of Classes -->
@@ -41,6 +38,7 @@
 		<mapping class="com.cplsystems.stock.domain.Contrato" />
 		<mapping class="com.cplsystems.stock.domain.CostosProducto" />
 		<mapping class="com.cplsystems.stock.domain.Cotizacion" />
+		<mapping class="com.cplsystems.stock.domain.CotizacionInbox" />
 		<mapping class="com.cplsystems.stock.domain.CotizacionProducto" />
 		<mapping class="com.cplsystems.stock.domain.CuentaPago" />
 		<mapping class="com.cplsystems.stock.domain.Destino" />
@@ -56,8 +54,9 @@
 		<mapping class="com.cplsystems.stock.domain.Modulos" />
 		<mapping class="com.cplsystems.stock.domain.ModulosOrganizacion" />
 		<mapping class="com.cplsystems.stock.domain.Municipio" />
-		<mapping class="com.cplsystems.stock.domain.OrdenCompraProducto" />
 		<mapping class="com.cplsystems.stock.domain.OrdenCompra" />
+		<mapping class="com.cplsystems.stock.domain.OrdenCompraInbox" />
+		<mapping class="com.cplsystems.stock.domain.OrdenCompraProducto" />
 		<mapping class="com.cplsystems.stock.domain.Organizacion" />
 		<mapping class="com.cplsystems.stock.domain.Pais" />
 		<mapping class="com.cplsystems.stock.domain.Partida" />
@@ -72,6 +71,7 @@
 		<mapping class="com.cplsystems.stock.domain.ProveedorProducto" />
 		<mapping class="com.cplsystems.stock.domain.Proyecto" />
 		<mapping class="com.cplsystems.stock.domain.Requisicion" />
+		<mapping class="com.cplsystems.stock.domain.RequisicionInbox" />
 		<mapping class="com.cplsystems.stock.domain.RequisicionPartida" />
 		<mapping class="com.cplsystems.stock.domain.RequisicionProducto" />
 		<mapping class="com.cplsystems.stock.domain.Sexo" />
