@@ -32,7 +32,7 @@ public class StockConstants {
 		public static final String PRODUCTOS_REPORTE_REGISTRO_MOVIMIENTO = "/modulos/productos/reportesRegistroMovimiento.zul";
 		public static final String PRODUCTOS_REPORTE_KARDEX = "/modulos/productos/reportesKardex.zul";
 		public static final String PROVEEDORES = "/modulos/proveedores/proveedores.zul";
-		
+
 		public static final String PROVEEDORES_BUSCADOR = "/modulos/proveedores/proveedoresBuscador.zul";
 		public static final String PROVEEDORES_PRODUCTO = "/modulos/proveedores/proveedoresProducto.zul";
 
@@ -54,7 +54,7 @@ public class StockConstants {
 	public static final String TOOL_TIP_SAVE_BANCO = "Actualizar/Guardar banco";
 	public static final String TOOL_TIP_SAVE_CONFFYA = "Actualizar/Guardar catalogo conffya";
 	public static final String TOOL_TIP_SAVE_PUESTO = "Actualizar o salvar puesto";
-	
+
 	public static final String TOOL_TIP_SAVE_MONEDA = "Actualizar o salvar moneda";
 	public static final String TOOL_TIP_SAVE_PRODUCTO = "Actualizar o salvar tipo de productos";
 
@@ -70,7 +70,7 @@ public class StockConstants {
 	public static final String TOOL_TIP_ROW_SELECTED_MONEDA = "Seleccionar una moneda";
 	public static final String TOOL_TIP_ROW_SELECTED_TIPO_PRODUCTO = "Seleccionar un tipo de producto";
 	public static final String TOOL_TIP_ROW_EDICION_NOMBRE = "Clic sobre esta columna para editar nombre";
-	
+
 	public static final String ESTADO_REQUISICION_NUEVA = "RQN";
 	public static final String ESTADO_REQUISICION_PENDIENTE = "RQP";
 	public static final String ESTADO_REQUISICION_TERMINADA = "RQT";
@@ -82,7 +82,7 @@ public class StockConstants {
 	public static final String ESTADO_COTIZACION_ENVIADA = "COE";
 	public static final String ESTADO_COTIZACION_CANCELADA = "COC";
 	public static final String ESTADO_COTIZACION_ACEPTADA = "COA";
-	
+
 	public static final String BUSCAR_TODO = "*";
 
 	public static final String REPORT_PROVEEDOR_NAME_FILE = "C:\\reportProveedores.pdf";
