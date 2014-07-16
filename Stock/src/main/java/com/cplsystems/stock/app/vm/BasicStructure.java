@@ -13,17 +13,9 @@ import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.view.JasperViewer;
-
-import com.cplsystems.stock.app.utils.AplicacionExterna;
-import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.domain.Area;
+import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.Posicion;
-import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Requisicion;
 
 
@@ -40,6 +32,7 @@ public abstract class BasicStructure extends ServiceLayer {
 		posiciones = new ArrayList<Posicion>();
 		requisicion = new Requisicion();
 		libro = new HSSFWorkbook();
+		cotizacionesList = new ArrayList<Cotizacion>();
 	}
 	
 	public void newRecord() {
