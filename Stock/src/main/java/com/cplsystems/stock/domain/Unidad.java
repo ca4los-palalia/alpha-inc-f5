@@ -82,9 +82,9 @@ public class Unidad implements Serializable {
 	}
 	@Transient
 	public Date getFechaActualizacionDate() {
-		/*if(fechaActualizacion != null){
+		if(fechaActualizacion != null){
 			fechaActualizacionDate = new StockUtils().convertirCalendarToDate(fechaActualizacion);
-		}*/
+		}
 		return fechaActualizacionDate;
 	}
 	public void setFechaActualizacionDate(Date fechaActualizacionDate) {

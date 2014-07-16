@@ -25,9 +25,6 @@ public class ContratoService {
 	public void save(Contrato contrato) throws DataAccessException{
 		contratoDAO.save(contrato);
 	}
-	public void update(Contrato contrato) throws DataAccessException{
-		contratoDAO.save(contrato);
-	}
 	public void delete(Contrato contrato) throws DataAccessException{
 		contratoDAO.delete(contrato);
 	}

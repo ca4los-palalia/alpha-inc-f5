@@ -224,8 +224,7 @@
 							<label value="@bind(each.requisicion.folio)"
 								style="font-size:smaller;" />
 						</listcell>
-						<listcell
-							>
+						<listcell>
 							<div>
 								<hlayout style="vertical-align: middle;">
 									<button style="@bind(each.estatusRequisicion.color)"/>

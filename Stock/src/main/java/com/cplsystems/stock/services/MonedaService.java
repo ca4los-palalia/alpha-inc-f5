@@ -22,18 +22,10 @@ public class MonedaService {
 	@Autowired
 	private MonedaDAO monedaDAO;
 
-	public void saveOrUpdate(Moneda moneda) throws DataAccessException {
-		monedaDAO.saveOrUpdate(moneda);
-	}
-	
 	public void save(Moneda moneda) throws DataAccessException {
 		monedaDAO.save(moneda);
 	}
 	
-	public void update(Moneda moneda) throws DataAccessException {
-		monedaDAO.update(moneda);
-	}
-
 	public void delete(Moneda moneda) throws DataAccessException {
 		monedaDAO.delete(moneda);
 	}

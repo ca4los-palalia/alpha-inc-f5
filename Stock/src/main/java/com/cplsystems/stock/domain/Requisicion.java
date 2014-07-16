@@ -37,6 +37,9 @@ public class Requisicion {
 	private String folio;
 	private EstatusRequisicion estatusRequisicion;
 
+	private Organizacion organizacion;
+	private Usuarios usuario;
+	
 	private String buscarRequisicion;
 	
 	@Id
@@ -250,5 +253,25 @@ public class Requisicion {
 
 	public void setBuscarRequisicion(String buscarRequisicion) {
 		this.buscarRequisicion = buscarRequisicion;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "organizacion")
+	public Organizacion getOrganizacion() {
+		return organizacion;
+	}
+
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "usuario")
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
 	}
 }
