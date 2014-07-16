@@ -15,11 +15,8 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 
 import com.cplsystems.stock.app.utils.AplicacionExterna;
-import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
-import com.cplsystems.stock.domain.Organizacion;
-import com.cplsystems.stock.domain.RequisicionInbox;
 import com.cplsystems.stock.domain.RequisicionProducto;
 
 /**
@@ -33,18 +30,6 @@ public abstract class RequisicionMetaClass extends RequisicionVariables {
 	@Init
 	public void init() {
 		readJasper = generarUrlString("jasperTemplates/requisicionFormato.jasper");
-		loadRequisionesInbox();
-	}
-
-	private void loadRequisionesInbox() {
-		requisicionesInbox = requisicionInboxService
-				.getAllNews((Organizacion) sessionUtils
-						.getFromSession(SessionUtils.FIRMA));
-		for (RequisicionInbox rqInbox : requisicionesInbox) {
-			if (rqInbox.getLeido() != null && !rqInbox.getLeido()) {
-				rqInbox.setIcono(RequisicionInbox.NUEVO);
-			}
-		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
