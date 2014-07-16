@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.OrdenCompraInboxDAO;
 import com.cplsystems.stock.domain.OrdenCompraInbox;
+import com.cplsystems.stock.domain.Organizacion;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -29,11 +30,11 @@ public class OrdenCompraInboxService {
 		ordenCompraInboxDAO.delete(ordenCompraInbox);
 	}
 	
-	public List<OrdenCompraInbox> getAllNews() {
-		return ordenCompraInboxDAO.getAllNews();
+	public List<OrdenCompraInbox> getAllNews(final Organizacion organizacion) {
+		return ordenCompraInboxDAO.getAllNews(organizacion);
 	}
 	
-	public List<OrdenCompraInbox> getAll() {
-		return ordenCompraInboxDAO.getAll();
+	public List<OrdenCompraInbox> getAll(final Organizacion organizacion) {
+		return ordenCompraInboxDAO.getAll(organizacion);
 	}
 }
