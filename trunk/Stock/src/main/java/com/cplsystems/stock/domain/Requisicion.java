@@ -26,13 +26,13 @@ public class Requisicion {
 	private String emailPersonaRevisoRequisicion;
 	private String emailPersonaSolicitante;
 	private Area area;
-	private Posicion posicion; //Puesto
-	private Persona persona;//Solicitante
+	private Posicion posicion; // Puesto
+	private Persona persona;// Solicitante
 	private String adscripcion;
 	private String justificacion;
 	private CofiaProg cofiaProg;
 	private CofiaPy cofiaPy;
-	private CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento; 
+	private CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento;
 	private Long numeroInventario;
 	private String folio;
 	private EstatusRequisicion estatusRequisicion;
@@ -148,7 +148,8 @@ public class Requisicion {
 	 * **/
 	public void setPosicion(Posicion posicion) {
 		this.posicion = posicion;
-	}	
+	}
+
 	@Column
 	public String getAdscripcion() {
 		return adscripcion;
@@ -157,6 +158,7 @@ public class Requisicion {
 	public void setAdscripcion(String adscripcion) {
 		this.adscripcion = adscripcion;
 	}
+
 	@Column
 	public String getJustificacion() {
 		return justificacion;
@@ -165,6 +167,7 @@ public class Requisicion {
 	public void setJustificacion(String justificacion) {
 		this.justificacion = justificacion;
 	}
+
 	@Column
 	public Long getNumeroInventario() {
 		return numeroInventario;
@@ -189,6 +192,7 @@ public class Requisicion {
 	public void setPersona(Persona persona) {
 		this.persona = persona;
 	}
+
 	@Column
 	public String getFolio() {
 		return folio;
@@ -197,8 +201,6 @@ public class Requisicion {
 	public void setFolio(String folio) {
 		this.folio = folio;
 	}
-
-	
 
 	@OneToOne
 	@JoinColumn(name = "cofiaProg")
@@ -219,6 +221,7 @@ public class Requisicion {
 	public void setCofiaPy(CofiaPy cofiaPy) {
 		this.cofiaPy = cofiaPy;
 	}
+
 	@OneToOne
 	@JoinColumn(name = "cofiaFuenteFinanciamiento")
 	public CofiaFuenteFinanciamiento getCofiaFuenteFinanciamiento() {
@@ -248,5 +251,4 @@ public class Requisicion {
 	public void setBuscarRequisicion(String buscarRequisicion) {
 		this.buscarRequisicion = buscarRequisicion;
 	}
-	
 }
