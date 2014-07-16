@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.CotizacionInboxDAO;
 import com.cplsystems.stock.domain.CotizacionInbox;
+import com.cplsystems.stock.domain.Organizacion;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -29,12 +30,12 @@ public class CotizacionInboxService {
 		cotizacionInboxDAO.delete(cotizacionInbox);
 	}
 
-	public List<CotizacionInbox> getAllNews() {
-		return cotizacionInboxDAO.getAllNews();
+	public List<CotizacionInbox> getAllNews(final Organizacion organizacion) {
+		return cotizacionInboxDAO.getAllNews(organizacion);
 	}
 
-	public List<CotizacionInbox> getAll() {
-		return cotizacionInboxDAO.getAll();
+	public List<CotizacionInbox> getAll(final Organizacion organizacion) {
+		return cotizacionInboxDAO.getAll(organizacion);
 	}
 
 }
