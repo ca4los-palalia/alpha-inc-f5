@@ -12,12 +12,8 @@ import com.cplsystems.stock.domain.Moneda;
  * @author Carlos Palalía López
  */
 public interface MonedaDAO {
-
-	public void saveOrUpdate(Moneda moneda);
 	
 	public void save(Moneda moneda);
-	
-	public void update(Moneda moneda);
 
 	public void delete(Moneda moneda);
 

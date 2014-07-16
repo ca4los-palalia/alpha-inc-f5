@@ -21,6 +21,8 @@ public class SelectedTabsControlPanel {
 	private boolean tabUnidades;
 	private boolean activarButtonSave;
 	private boolean activarButtonDelete;
+	private boolean visibleButtonSave;
+	private boolean visibleButtonDelete;
 	
 	private String toolTipSave;
 	private String toolTipDelete;
@@ -110,6 +112,18 @@ public class SelectedTabsControlPanel {
 	}
 	public void setActivarButtonDelete(boolean activarButtonDelete) {
 		this.activarButtonDelete = activarButtonDelete;
+	}
+	public boolean isVisibleButtonSave() {
+		return visibleButtonSave;
+	}
+	public void setVisibleButtonSave(boolean visibleButtonSave) {
+		this.visibleButtonSave = visibleButtonSave;
+	}
+	public boolean isVisibleButtonDelete() {
+		return visibleButtonDelete;
+	}
+	public void setVisibleButtonDelete(boolean visibleButtonDelete) {
+		this.visibleButtonDelete = visibleButtonDelete;
 	}
 	
 }

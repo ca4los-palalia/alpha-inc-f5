@@ -3,6 +3,7 @@
  */
 package com.cplsystems.stock.app.vm.controlpanel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -19,6 +20,7 @@ import com.cplsystems.stock.app.vm.controlpanel.utils.ControlPanelVariables;
 import com.cplsystems.stock.app.vm.controlpanel.utils.SelectedTabsControlPanel;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
+import com.cplsystems.stock.domain.Contrato;
 import com.cplsystems.stock.domain.Moneda;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Posicion;
@@ -39,19 +41,18 @@ public class ControlPanelVM extends ControlPanelVariables{
 	@Init
 	public void init() {
 		selectTab = new SelectedTabsControlPanel();
+		selectTab.setVisibleButtonSave(true);
+		
 		activarBotonesAreas();
 		areas = areaService.getAll();
-		posiciones = posicionService.getAll();
-		bancosDB = bancoService.getAll();
-		monedasDB = monedaService.getAll();
-		productoTipoDB = productoTipoService.getAll();
-		recargarAreas();
+		
+		/*recargarAreas();
 		recargarPosiciones();
 		recargarBanco();
 		recargarMonedas();
-		recargarProductoTipo();
+		recargarProductoTipo();*/
 		
-		activarBotonesAreas();
+		
 	}
 	
 	@Command
@@ -78,8 +79,6 @@ public class ControlPanelVM extends ControlPanelVariables{
 			guardarProductoTipo();
 		else if(selectTab.isTabUnidades())
 			guardarUnidades();
-		
-		
 	}
 	
 	@Command
@@ -110,6 +109,13 @@ public class ControlPanelVM extends ControlPanelVariables{
 				if(areaRecord.isNuevoRegistro()){
 					areaRecord.setNuevoRegistro(false);
 					areaRecord.setIdArea(null);
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
+					String date = sdf.format(stockUtils.convertirCalendarToDate(Calendar.getInstance())); 
+					areaRecord.setFechaActualizacion(date);
+					areaRecord.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
+					areaRecord.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
+					
 					areaService.save(areaRecord);
 				}else{
 					if(!areaRecord.getNombre().equals(""))
@@ -138,13 +144,15 @@ public class ControlPanelVM extends ControlPanelVariables{
 				bancoRecord.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_BANCO);
 				bancoRecord.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
 				
-				if(bancoRecord.isNuevoRegistro()){
+				if(bancoRecord.getNombre() != null && !bancoRecord.getNombre().isEmpty()){
 					bancoRecord.setNuevoRegistro(false);
-					bancoRecord.setIdBanco(null);
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
+					String date = sdf.format(stockUtils.convertirCalendarToDate(Calendar.getInstance())); 
+					bancoRecord.setFechaActualizacion(date);
+					bancoRecord.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
+					bancoRecord.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
 					bancoService.save(bancoRecord);
-				}else{
-					if(!bancoRecord.getNombre().equals(""))
-						bancoService.update(bancoRecord);
 				}
 			} catch (Exception e) {}
 		}
@@ -163,8 +171,25 @@ public class ControlPanelVM extends ControlPanelVariables{
 		
 	}
 	
+	@SuppressWarnings("static-access")
 	private void guardarContratos(){
-		
+		for (Contrato contratoRecord : contratos) {
+			try {
+				if(contratoRecord.getNombre() != null && !contratoRecord.getNombre().equals("")){
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
+					String date = sdf.format(stockUtils.convertirCalendarToDate(Calendar.getInstance())); 
+					contratoRecord.setFechaActualizacion(date);
+					contratoRecord.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
+					contratoRecord.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
+					contratoService.save(contratoRecord);
+				}
+			} catch (Exception e) {}
+		}
+		contratos.clear();
+		contratos = contratoService.getAll();
+		stockUtils.showSuccessmessage(
+				"El catalogo de contratos ha sido actualizado",
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
 	}
 	
 	@SuppressWarnings("static-access")
@@ -175,24 +200,24 @@ public class ControlPanelVM extends ControlPanelVariables{
 				monedaRecord.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_MONEDA);
 				monedaRecord.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
 				
-				if(monedaRecord.isNuevoRegistro()){
+				if(monedaRecord.getNombre() != null && !monedaRecord.getNombre().equals("")){
 					monedaRecord.setNuevoRegistro(false);
-					monedaRecord.setIdMoneda(null);
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
+					String date = sdf.format(stockUtils.convertirCalendarToDate(Calendar.getInstance())); 
+					monedaRecord.setFechaActualizacion(date);
+					monedaRecord.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
+					monedaRecord.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
 					monedaService.save(monedaRecord);
-				}else{
-					if(!monedaRecord.getNombre().equals(""))
-						monedaService.update(monedaRecord);
 				}
+				
+				
 			} catch (Exception e) {}
 		}
 		monedasDB.clear();
 		monedasDB = monedaService.getAll();
-		
-		if(!monedasDB.get(monedasDB.size() - 1).getNombre().equals(""))
-			monedasDB.add(crearColumnaVaciaMonedas());
-		
 		stockUtils.showSuccessmessage(
-				"Catalogo de monedas actualizados",
+				"El catalogo de divisas ha sido actualizado",
 				Clients.NOTIFICATION_TYPE_INFO, 0, null);
 	}
 	
@@ -211,6 +236,12 @@ public class ControlPanelVM extends ControlPanelVariables{
 			try {
 				posicionRecord.setToolTipIndice("Seleccionar puesto");
 				posicionRecord.setToolTipNombre("Clic sobre esta columna para editar nombre");
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
+				String date = sdf.format(stockUtils.convertirCalendarToDate(Calendar.getInstance())); 
+				posicionRecord.setFechaActualizacion(date);
+				posicionRecord.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
+				posicionRecord.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
 				
 				if(posicionRecord.isNuevoRegistro()){
 					posicionRecord.setNuevoRegistro(false);
@@ -243,6 +274,14 @@ public class ControlPanelVM extends ControlPanelVariables{
 			try {
 				productoTipoRecord.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_TIPO_PRODUCTO);
 				productoTipoRecord.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
+				
+				
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
+				String date = sdf.format(stockUtils.convertirCalendarToDate(Calendar.getInstance())); 
+				productoTipoRecord.setFechaActualizacion(date);
+				productoTipoRecord.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
+				productoTipoRecord.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
 				
 				if(productoTipoRecord.isNuevoRegistro()){
 					productoTipoRecord.setNuevoRegistro(false);
@@ -288,10 +327,6 @@ public class ControlPanelVM extends ControlPanelVariables{
 		
 	}
 	
-	
-	
-	
-	
 	@SuppressWarnings("static-access")
 	private void eliminarArea(){
 		if(area != null){
@@ -328,47 +363,31 @@ public class ControlPanelVM extends ControlPanelVariables{
 		}
 	}
 	
+	@Command
+	@NotifyChange("*")
 	@SuppressWarnings("static-access")
-	private void eliminarPuesto(){
-		if(posicion != null){
-			
-			posicionService.delete(posicion);
-			
-			posiciones.clear();
-			posiciones = posicionService.getAll();
-			if(posiciones != null && !posiciones.get(posiciones.size() - 1).getNombre().equals(""))
-				posiciones.add(crearColumnaVaciaP());
-			else{
-				Posicion nuevo = crearColumnaVaciaP();
-				posiciones.add(nuevo);
-			}
-			stockUtils.showSuccessmessage(
-					posicion.getNombre() + " ha sido eliminado",
-					Clients.NOTIFICATION_TYPE_INFO, 0, null);
-		}else{
-			stockUtils.showSuccessmessage(
-					"Debe seleccionar un puesto para proceder con la eliminación",
-					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
-		}
-	}
-	
-	@SuppressWarnings("static-access")
-	private void eliminarBanco(){
+	public void eliminarBanco(@BindingParam("index") Integer index){
+		bancoSeleccionado = bancosDB.get(index);
+		boolean continuarEliminacion = true;
 		if(bancosDB != null){
-			
-			bancoService.delete(bancoSeleccionado);
-			
-			bancosDB.clear();
-			bancosDB = bancoService.getAll();
-			if(bancosDB != null && !bancosDB.get(bancosDB.size() - 1).getNombre().equals(""))
-				bancosDB.add(crearColumnaVaciaBanco());
-			else{
-				Banco nuevo = crearColumnaVaciaBanco();
-				bancosDB.add(nuevo);
+			try {
+				bancoService.delete(bancoSeleccionado);
+			} catch (Exception e) {
+				continuarEliminacion = false;
 			}
-			stockUtils.showSuccessmessage(
-					bancoSeleccionado.getNombre() + " ha sido eliminado",
-					Clients.NOTIFICATION_TYPE_INFO, 0, null);
+			
+			if(continuarEliminacion){
+				bancosDB.clear();
+				bancosDB = bancoService.getAll();
+				
+				stockUtils.showSuccessmessage(
+						"El Banco -" + bancoSeleccionado.getNombre() + "- ha sido eliminado",
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+			}else
+				stockUtils.showSuccessmessage(
+						"El Banco -" + bancoSeleccionado.getNombre() + "- esta siendo utilizado. No puede ser eliminado",
+						Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			
 		}else{
 			stockUtils.showSuccessmessage(
 					"Debe seleccionar un banco para proceder con la eliminación",
@@ -376,50 +395,151 @@ public class ControlPanelVM extends ControlPanelVariables{
 		}
 	}
 	
+	@Command
+	@NotifyChange("*")
 	@SuppressWarnings("static-access")
-	private void eliminarMoneda(){
-		if(monedasDB != null){
-			monedaService.delete(monedaSeleccionada);
-			monedasDB.clear();
-			monedasDB = monedaService.getAll();
-			if(monedasDB != null && !monedasDB.get(monedasDB.size() - 1).getNombre().equals(""))
-				monedasDB.add(crearColumnaVaciaMonedas());
-			else{
-				Moneda nuevo = crearColumnaVaciaMonedas();
-				monedasDB.add(nuevo);
+	public void eliminarContrato(@BindingParam("index") Integer index){
+		contrato = contratos.get(index);
+		boolean continuarEliminacion = true;
+		if(contratos != null){
+			
+			try {
+				contratoService.delete(contrato);
+			} catch (Exception e) {
+				continuarEliminacion = false;
 			}
-			stockUtils.showSuccessmessage(
-					bancoSeleccionado.getNombre() + " ha sido eliminado",
-					Clients.NOTIFICATION_TYPE_INFO, 0, null);
+			
+			if(continuarEliminacion){
+				contratos.clear();
+				contratos = contratoService.getAll();
+				
+				stockUtils.showSuccessmessage(
+						"El contrato -" + contrato.getNombre() + "- ha sido eliminado",
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+				
+			}else
+				stockUtils.showSuccessmessage(
+						"El Contrato -" + contrato.getNombre() + "- esta siendo utilizado. No puede ser eliminado",
+						Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 		}else{
 			stockUtils.showSuccessmessage(
-					"Debe seleccionar una moneda para proceder con la eliminación",
+					"Debe seleccionar un contrato para proceder con la eliminación",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+		}
+	}
+	
+	@Command
+	@NotifyChange("*")
+	@SuppressWarnings("static-access")
+	public void eliminarMoneda(@BindingParam("index") Integer index){
+		monedaSeleccionada = monedasDB.get(index);
+		boolean continuarEliminacion = true;
+		if(monedasDB != null){
+			
+			try {
+				monedaService.delete(monedaSeleccionada);
+			} catch (Exception e) {
+				continuarEliminacion = false;
+			}
+			
+			if(continuarEliminacion){
+				monedasDB.clear();
+				monedasDB = monedaService.getAll();
+				
+				stockUtils.showSuccessmessage(
+						"La divisa -" + monedaSeleccionada.getNombre() + "- ha sido eliminado",
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+				
+			}else
+				stockUtils.showSuccessmessage(
+						"La divisa -" + monedaSeleccionada.getSimbolo() + " " + monedaSeleccionada.getNombre() + "- esta siendo utilizado. No puede ser eliminado",
+						Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+		}else{
+			stockUtils.showSuccessmessage(
+					"Debe seleccionar una divisa para proceder con la eliminación",
 					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 
+	@Command
+	@NotifyChange("posiciones, mensajeDeCambios")
 	@SuppressWarnings("static-access")
-	private void eliminarTipoProducto(){
-		if(productoTipoDB != null){
-			
-			productoTipoService.delete(productoTipoSelected);
-			
-			productoTipoDB.clear();
-			productoTipoDB = productoTipoService.getAll();
-			if(productoTipoDB != null && !productoTipoDB.get(productoTipoDB.size() - 1).getNombre().equals(""))
-				productoTipoDB.add(crearColumnaVaciaTipoProducto());
-			else{
-				ProductoTipo nuevo = crearColumnaVaciaTipoProducto();
-				productoTipoDB.add(nuevo);
+	public void eliminarPuesto(@BindingParam("index") Integer index){
+		posicion = posiciones.get(index);
+		boolean continuarEliminacion = true;
+		if(posicion != null){
+			try {
+				posicionService.delete(posicion);
+			} catch (Exception e) {
+				continuarEliminacion = false;
 			}
+			
+			if(continuarEliminacion){
+				posiciones.clear();
+				posiciones = posicionService.getAll();
+				stockUtils.showSuccessmessage(
+						posicion.getNombre() + " ha sido eliminado",
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+			}else
+				stockUtils.showSuccessmessage(
+						"El puesto -" + posicion.getNombre() + "- esta siendo utilizado. No puede ser eliminado",
+						Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+		}else{
 			stockUtils.showSuccessmessage(
-					productoTipoSelected.getNombre() + " ha sido eliminado",
-					Clients.NOTIFICATION_TYPE_INFO, 0, null);
+					"Debe seleccionar un puesto para proceder con la eliminación",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+		}
+	}
+	
+	@Command
+	@NotifyChange("productoTipoDB, mensajeDeCambios")
+	@SuppressWarnings("static-access")
+	public void eliminarTipoProducto(@BindingParam("index") Integer index){
+		productoTipoSelected = productoTipoDB.get(index);
+		boolean continuarEliminacion = true;
+		if(productoTipoDB != null){
+			try {
+				productoTipoService.delete(productoTipoSelected);
+			} catch (Exception e) {
+				continuarEliminacion = false;
+			}
+			
+			if(continuarEliminacion){
+				productoTipoDB.clear();
+				productoTipoDB = productoTipoService.getAll();
+				
+				stockUtils.showSuccessmessage(
+						productoTipoSelected.getNombre() + " ha sido eliminado",
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+			}else
+				stockUtils.showSuccessmessage(
+						"La familia -" + productoTipoSelected.getNombre() + "- esta siendo utilizado. No puede ser eliminado",
+						Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			
 		}else{
 			stockUtils.showSuccessmessage(
 					"Debe seleccionar un tipo de producto para proceder con la eliminación",
 					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
+	}
+	
+	@SuppressWarnings("static-access")
+	@Command
+	@NotifyChange("*")
+	public void removerUnidad(@BindingParam("index") Integer index){
+		boolean continuarEliminacion = true;
+		unidad = unidadesDB.get(index);
+		try {
+			unidadService.delete(unidad);
+		} catch (Exception e) {
+			continuarEliminacion = false;
+		}
+		if(continuarEliminacion){
+			unidadesDB.remove(unidad);
+		}else
+			stockUtils.showSuccessmessage(
+					"La unidad de medida -" + unidad.getNombre() + "- esta siendo utilizado. No puede ser eliminado",
+					Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 	}
 	
 	private Area crearColumnaVaciaArea(){
@@ -459,13 +579,6 @@ public class ControlPanelVM extends ControlPanelVariables{
 	private Banco crearColumnaVaciaBanco(){
 		Banco objeto = new Banco();
 		
-		if(bancosDB != null)
-			objeto.setIdBanco(Long.valueOf(String.valueOf(bancosDB.size() + 1)));
-		else{
-			bancosDB = new ArrayList<Banco>();
-			objeto.setIdBanco(1L);
-		}
-			
 		objeto.setNuevoRegistro(true);
 		objeto.setNombre("");
 		objeto.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_BANCO);
@@ -473,15 +586,14 @@ public class ControlPanelVM extends ControlPanelVariables{
 		return objeto;
 	}
 	
+	
+	private Contrato crearColumnaVaciaContrato(){
+		Contrato objeto = new Contrato();
+		return objeto;
+	}
+	
 	private Moneda crearColumnaVaciaMonedas(){
 		Moneda objeto = new Moneda();
-		
-		if(monedasDB != null)
-			objeto.setIdMoneda(Long.valueOf(String.valueOf(monedasDB.size() + 1)));
-		else{
-			monedasDB = new ArrayList<Moneda>();
-			objeto.setIdMoneda(1L);
-		}
 		objeto.setNuevoRegistro(true);
 		objeto.setNombre("");
 		objeto.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_TIPO_PRODUCTO);
@@ -606,12 +718,14 @@ public class ControlPanelVM extends ControlPanelVariables{
 	@NotifyChange("*")
 	public void selectTabArea(){
 		activarBotonesAreas();	
+		areas = areaService.getAll();
 	}
 	
 	@Command
 	@NotifyChange("*")
 	public void selectTabBanco(){
 		activarBotonesBancos();
+		bancosDB = bancoService.getAll();
 	}
 	
 	@Command
@@ -624,12 +738,14 @@ public class ControlPanelVM extends ControlPanelVariables{
 	@NotifyChange("*")
 	public void selectTabContratos(){
 		activarBotonesContrato();
+		contratos = contratoService.getAll();
 	}
 	
 	@Command
 	@NotifyChange("*")
 	public void selectTabMoneda(){
 		activarBotonesMonedas();
+		monedasDB = monedaService.getAll();
 	}
 	
 	@Command
@@ -647,16 +763,16 @@ public class ControlPanelVM extends ControlPanelVariables{
 	@Command
 	@NotifyChange("*")
 	public void selectTabPuesto(){
+		posiciones = posicionService.getAll();
 		activarBotonesPuestos();
 	}
 	
 	@Command
-	@NotifyChange("*")
+	@NotifyChange("productoTipoDB")
 	public void selectTabTiposProducto(){
+		productoTipoDB = productoTipoService.getAll();
 		activarBotonesTiposProductos();
 	}
-	
-	
 	
 	@Command
 	@NotifyChange("*")
@@ -679,7 +795,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		selectTab.setTabUnidades(false);
 		selectTab.setActivarButtonDelete(false);
 		selectTab.setActivarButtonSave(false);
-		
+		selectTab.setVisibleButtonSave(true);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_AREA);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_AREA);
 	}
@@ -697,6 +813,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		selectTab.setTabUnidades(false);
 		selectTab.setActivarButtonDelete(false);
 		selectTab.setActivarButtonSave(false);
+		selectTab.setVisibleButtonSave(true);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_BANCO);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_BANCO);
 	}
@@ -714,6 +831,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		selectTab.setTabUnidades(false);
 		selectTab.setActivarButtonDelete(true);
 		selectTab.setActivarButtonSave(true);
+		selectTab.setVisibleButtonSave(false);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_BANCO);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_BANCO);
 	}
@@ -731,6 +849,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		selectTab.setTabUnidades(false);
 		selectTab.setActivarButtonDelete(false);
 		selectTab.setActivarButtonSave(false);
+		selectTab.setVisibleButtonSave(true);
 	}
 	
 	private void activarBotonesMonedas(){
@@ -746,6 +865,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		selectTab.setTabUnidades(false);
 		selectTab.setActivarButtonDelete(false);
 		selectTab.setActivarButtonSave(false);
+		selectTab.setVisibleButtonSave(true);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_MONEDA);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_MONEDA);
 	}
@@ -763,6 +883,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		selectTab.setTabUnidades(false);
 		selectTab.setActivarButtonDelete(false);
 		selectTab.setActivarButtonSave(false);
+		selectTab.setVisibleButtonSave(false);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_MONEDA);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_MONEDA);
 	}
@@ -780,6 +901,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		selectTab.setTabUnidades(false);
 		selectTab.setActivarButtonDelete(false);
 		selectTab.setActivarButtonSave(false);
+		selectTab.setVisibleButtonSave(false);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_MONEDA);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_MONEDA);
 	}
@@ -797,6 +919,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		selectTab.setTabUnidades(false);
 		selectTab.setActivarButtonDelete(false);
 		selectTab.setActivarButtonSave(false);
+		selectTab.setVisibleButtonSave(true);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_PUESTO);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_PUESTO);
 	}
@@ -814,6 +937,7 @@ public class ControlPanelVM extends ControlPanelVariables{
 		selectTab.setTabUnidades(false);
 		selectTab.setActivarButtonDelete(false);
 		selectTab.setActivarButtonSave(false);
+		selectTab.setVisibleButtonSave(true);
 		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_PRODUCTO);
 		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_PRODUCTO);
 	}
@@ -831,27 +955,59 @@ public class ControlPanelVM extends ControlPanelVariables{
 		selectTab.setTabUnidades(true);
 		selectTab.setActivarButtonDelete(true);
 		selectTab.setActivarButtonSave(false);
+		selectTab.setVisibleButtonSave(true);
 		selectTab.setToolTipSave("Salvar cambios en catalogo de unidades");
 	}
-	
-	
-	
+
 	
 	@Command
 	@NotifyChange("*")
-	public void removerUnidad(@BindingParam("index") Integer index){
-		unidad = unidadesDB.get(index);
-		unidadService.save(unidad);
-		unidadesDB.remove(unidad);
+	public void agregarNuevoBanco(){
+		if(bancosDB == null)
+			bancosDB = new ArrayList<>();
+			bancosDB.add(crearColumnaVaciaBanco());
+		mensajeDeCambios = "No olvide salvar sus cambios";
 	}
 	
 	@Command
-	@NotifyChange("unidadesDB, mensajeDeCambios")
+	@NotifyChange("*")
+	public void agregarNuevoContrato(){
+		if(contratos == null)
+			contratos = new ArrayList<>();
+		contratos.add(crearColumnaVaciaContrato());
+		mensajeDeCambios = "No olvide salvar sus cambios";
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void agregarNuevaDivisa(){
+		monedasDB.add(crearColumnaVaciaMonedas());
+		mensajeDeCambios = "No olvide salvar sus cambios";
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void agregarNuevoPuesto(){
+		posiciones.add(crearColumnaVaciaP());
+		mensajeDeCambios = "No olvide salvar sus cambios";
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void agregarNuevoTipoProducto(){
+		productoTipoDB.add(crearColumnaVaciaTipoProducto());
+		mensajeDeCambios = "No olvide salvar sus cambios";
+	}
+	
+	@Command
+	@NotifyChange("*")
 	public void agregarNuevaUnidad(){
 		Unidad nuevaUnidad = new Unidad();
 		unidadesDB.add(nuevaUnidad);
 		mensajeDeCambios = "No olvide salvar sus cambios";
 	}
+	
+	
 	
 	
 }

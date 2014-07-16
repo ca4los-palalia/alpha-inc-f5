@@ -121,8 +121,8 @@ public class concentradoVM extends RequisicionVariables {
 				.getByNombre(buscar);
 		if (areaBuscar != null){
 			Requisicion rq = requisicionService.getByFolio(buscar);
-			rq = requisicionService
-					.getByUnidadResponsable(areaBuscar);
+			//rq = requisicionService
+			//		.getByUnidadResponsable(areaBuscar);
 			requisicionProductos = requisicionProductoService
 					.getByRequisicion(rq);
 		}

@@ -11,13 +11,16 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.dao.ProductoDAO;
 import com.cplsystems.stock.domain.Moneda;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.ProductoNaturaleza;
 import com.cplsystems.stock.domain.ProductoTipo;
@@ -31,6 +34,13 @@ import com.cplsystems.stock.domain.Unidad;
 public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		ProductoDAO {
 
+	@Autowired
+	private SessionUtils sessionUtils;
+
+	private Organizacion getOrganizacion(){
+		return (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
+	}
+	
 	@Transactional
 	public void save(Producto producto) {
 		getHibernateTemplate().saveOrUpdate(producto);
@@ -49,6 +59,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 				createCriteria(Producto.class);
 		criteria.setFetchMode("unidad", FetchMode.JOIN);
 		criteria.add(Restrictions.eq("idProducto", idProducto));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		producto = criteria.list();
 		return producto.size() > 0 ? producto.get(0) : null;
 	}
@@ -56,7 +67,12 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<Producto> getAll() {
-		return getHibernateTemplate().find("FROM Producto as p");
+		List<Producto> producto = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Producto.class);
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		producto = criteria.list();
+		return producto.size() > 0 ? producto : null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -72,6 +88,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 			criteria.add(Restrictions
 					.like("nombre", "%" + nombreProducto + "%"));
 		}
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Producto> productos = criteria.list();
 		return productos.size() > 0 ? productos : null;
 	}
@@ -90,6 +107,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		Criteria criteria = getHibernateTemplate().getSessionFactory()
 				.openSession().createCriteria(Producto.class);
 		criteria.add(Restrictions.ilike("clave", "%" + buscarTexto + "%"));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.addOrder(Order.asc("idProducto"));
 
 		lista = criteria.list();
@@ -98,6 +116,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 			Criteria criteria2 = getHibernateTemplate().getSessionFactory()
 					.openSession().createCriteria(Producto.class);
 			criteria2.add(Restrictions.ilike("nombre", "%" + buscarTexto + "%"));
+			criteria2.add(Restrictions.eq("organizacion", getOrganizacion()));
 			criteria2.addOrder(Order.asc("idProducto"));
 			lista = criteria2.list();
 		}
@@ -106,7 +125,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<Producto> getPreciosMaximos() {
+	public List<Producto> getPreciosMaximos() {//sin restriccion de organizacion
 		List<Producto> lista = null;
 
 		Criteria crMax = getHibernateTemplate().getSessionFactory()
@@ -134,7 +153,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<Producto> getPreciosMinimos() {
+	public List<Producto> getPreciosMinimos() { // sin restriccion de organizacion
 		List<Producto> lista = null;
 
 		Criteria crMin = getHibernateTemplate().getSessionFactory()
@@ -162,7 +181,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<Producto> getPreciosPromedio() {
+	public List<Producto> getPreciosPromedio() {// sin restriccion de organizacion
 		List<Producto> lista = null;
 
 		Criteria crAvg = getHibernateTemplate().getSessionFactory()
@@ -181,7 +200,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		return lista.size() > 0 ? lista : null;
 	}
 
-	private Float recuperarPromedio(List<Double> listAvg) {
+	private Float recuperarPromedio(List<Double> listAvg) { //sin restriccion de organizacion
 		Float resultado = 0F;
 		if (listAvg != null && listAvg.size() > 0) {
 			DecimalFormat df = new DecimalFormat("###.###");
@@ -201,6 +220,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		criteria.addOrder(Order.asc("nombre"));
 		criteria.add(Restrictions.sqlRestriction(" precio LIKE '" + precio
 				+ "%'"));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Producto> tipo = criteria.list();
 		return tipo.size() > 0 ? tipo : null;
 	}
@@ -215,6 +235,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		criteria.setFetchMode("unidad", FetchMode.JOIN);
 		
 		criteria.add(Restrictions.ilike("clave", "%" + buscarTexto + "%"));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.addOrder(Order.asc("idProducto"));
 		criteria.setMaxResults(1);
 
@@ -223,8 +244,9 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 		if (lista.equals(null) || lista.size() < 1) {
 			Criteria criteria2 = getHibernateTemplate().getSessionFactory()
 					.openSession().createCriteria(Producto.class);
-			criteria.setFetchMode("unidad", FetchMode.JOIN);
-			criteria.add(Restrictions.ilike("nombre", "%" + buscarTexto + "%"));
+			criteria2.setFetchMode("unidad", FetchMode.JOIN);
+			criteria2.add(Restrictions.ilike("nombre", "%" + buscarTexto + "%"));
+			criteria2.add(Restrictions.eq("organizacion", getOrganizacion()));
 			criteria2.addOrder(Order.asc("idProducto"));
 			criteria2.setMaxResults(1);
 			lista = criteria2.list();
@@ -241,6 +263,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements
 				.openSession().createCriteria(Producto.class);
 		//criteria.setFetchMode("unidad", FetchMode.JOIN);
 		criteria.add(Restrictions.eq("clave", clave));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.setMaxResults(1);
 
 		lista = criteria.list();

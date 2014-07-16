@@ -13,10 +13,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.dao.RequisicionDAO;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.services.EstatusRequisicionService;
@@ -30,7 +32,14 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		RequisicionDAO {
 	@Autowired
 	EstatusRequisicionService estatusRequisicionService;
-		
+	
+	@Autowired
+	private SessionUtils sessionUtils;
+	
+	private Organizacion getOrganizacion(){
+		return (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
+	}
+	
 	@Transactional
 	public void save(Requisicion requisicion) {
 		getHibernateTemplate().saveOrUpdate(requisicion);
@@ -52,6 +61,7 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Requisicion.class);
 		criteria.add(Restrictions.eq("idRequisicion", idRequisicion));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Requisicion> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
@@ -62,6 +72,7 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Requisicion.class);
 		criteria.add(Restrictions.eq("persona", persona));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Requisicion> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
@@ -73,6 +84,7 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Requisicion.class);
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.addOrder(Order.desc("folio"));
 		criteria.setMaxResults(1);
 		List<Requisicion> lista = criteria.list();
@@ -102,6 +114,7 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 	public List<Requisicion> getAll() {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Requisicion.class);
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Requisicion> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista: null;
 	}
@@ -113,6 +126,7 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Requisicion.class);
 		criteria.add(Restrictions.eq("estatusRequisicion", estatusRequisicion));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Requisicion> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista: null;
 	}
@@ -128,6 +142,7 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 					createCriteria(Requisicion.class);
 			criteria.add(Restrictions.ilike("folio", "" + folio + "%"));
 			criteria.add(Restrictions.eq("estatusRequisicion", estatus));
+			criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 			criteria.setMaxResults(1);
 			lista = criteria.list();
 		}
@@ -138,7 +153,7 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public Requisicion getByUnidadResponsable(Area area) {
+	public List<Requisicion> getByUnidadResponsable(Area area) {
 		List<Requisicion> lista = null;
 		
 		EstatusRequisicion estatus = estatusRequisicionService.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
@@ -147,11 +162,12 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 					createCriteria(Requisicion.class);
 			criteria.add(Restrictions.eq("area", area));
 			criteria.add(Restrictions.eq("estatusRequisicion", estatus));
+			criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 			criteria.setMaxResults(1);
 			lista = criteria.list();
 		}
 		
-		return lista != null && !lista.isEmpty() ? lista.get(0): null;
+		return lista != null && !lista.isEmpty() ? lista: null;
 	}
 
 }

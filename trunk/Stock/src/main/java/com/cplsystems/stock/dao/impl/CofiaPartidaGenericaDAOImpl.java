@@ -7,12 +7,15 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.dao.CofiaPartidaGenericaDAO;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
+import com.cplsystems.stock.domain.Organizacion;
 
 /**
  * @author Carlos Palalía López
@@ -21,6 +24,13 @@ import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 @Repository
 public class CofiaPartidaGenericaDAOImpl extends HibernateDAOSuportUtil implements CofiaPartidaGenericaDAO{
 
+	@Autowired
+	private SessionUtils sessionUtils;
+
+	private Organizacion getOrganizacion(){
+		return (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
+	}
+	
 	@Transactional
 	public void save(CofiaPartidaGenerica cofiaPartidaGenerica) {
 		getHibernateTemplate().saveOrUpdate(cofiaPartidaGenerica);
@@ -37,6 +47,7 @@ public class CofiaPartidaGenericaDAOImpl extends HibernateDAOSuportUtil implemen
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(CofiaPartidaGenerica.class);
 		criteria.add(Restrictions.eq("idCofiaPartidaGenerica", idCofiaPartidaGenerica));
+		//criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<CofiaPartidaGenerica> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
@@ -46,6 +57,7 @@ public class CofiaPartidaGenericaDAOImpl extends HibernateDAOSuportUtil implemen
 	public List<CofiaPartidaGenerica> getAll() {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(CofiaPartidaGenerica.class);
+		//criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<CofiaPartidaGenerica> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
