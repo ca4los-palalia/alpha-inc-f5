@@ -25,10 +25,12 @@ import org.zkoss.zul.SimpleListModel;
 import org.zkoss.zul.Window;
 
 import com.cplsystems.stock.app.utils.AplicacionExterna;
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Requisicion;
@@ -61,7 +63,18 @@ public class RequisicionVM extends RequisicionMetaClass {
 
 		loadItemsKeys();
 		initDefaultValues();
+		loadRequisionesInbox();
+	}
 
+	private void loadRequisionesInbox() {
+		requisicionesInbox = requisicionInboxService
+				.getAllNews((Organizacion) sessionUtils
+						.getFromSession(SessionUtils.FIRMA));
+		for (RequisicionInbox rqInbox : requisicionesInbox) {
+			if (rqInbox.getLeido() != null && !rqInbox.getLeido()) {
+				rqInbox.setIcono(RequisicionInbox.NUEVO);
+			}
+		}
 	}
 
 	private void loadItemsKeys() {
@@ -427,7 +440,7 @@ public class RequisicionVM extends RequisicionMetaClass {
 				stockUtils.showSuccessmessage(
 						"Requisicion con folio -" + requisicion.getBuscarRequisicion() + "- ha sido encontrada",
 						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			}else
+			} else
 				stockUtils.showSuccessmessage(
 						"No se encontro alguna coincidencia con la busqueda -"
 								+ requisicion.getBuscarRequisicion() + "-",
@@ -464,17 +477,14 @@ public class RequisicionVM extends RequisicionMetaClass {
 	
 	@Command
 	@NotifyChange("*")
-	public void limpiarFormulario(){
+	public void limpiarFormulario() {
 		requisicionProductos = new ArrayList<RequisicionProducto>();
 		requisicion = new Requisicion();
 		loadItemsKeys();
 		initDefaultValues();
 		readOnly = false;
 	}
-	
-	
-	
-	
+
 	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
 	@Command
 	@NotifyChange("*")
