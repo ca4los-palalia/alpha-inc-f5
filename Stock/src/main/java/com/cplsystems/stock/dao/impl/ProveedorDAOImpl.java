@@ -15,10 +15,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.dao.ProveedorDAO;
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Contrato;
 import com.cplsystems.stock.domain.Direccion;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.ProveedorProducto;
@@ -33,7 +35,12 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 
 	@Autowired
 	private ProveedorProductoService proveedorProductoService;
-	
+	@Autowired
+	private SessionUtils sessionUtils;
+
+	private Organizacion getOrganizacion(){
+		return (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
+	}
 
 	@Transactional
 	public void save(Proveedor proveedor) {
@@ -57,6 +64,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.add(Restrictions.eq("idProveedor", idProveedor));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Proveedor> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
@@ -68,6 +76,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.add(Restrictions.eq("contacto", contacto));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Proveedor> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -79,6 +88,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.add(Restrictions.eq("contrato", contrato));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Proveedor> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -90,6 +100,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.add(Restrictions.eq("direccionDevolucion", direccion));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Proveedor> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -101,6 +112,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.add(Restrictions.eq("direccionFiscal", direccion));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Proveedor> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -112,6 +124,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.add(Restrictions.eq("gerenteFinanzas", persona));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Proveedor> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -123,6 +136,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.add(Restrictions.eq("gerenteVentas", persona));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Proveedor> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -134,6 +148,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.add(Restrictions.eq("representanteLegal", persona));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Proveedor> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -145,6 +160,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.add(Restrictions.eq("representanteAteCliente", persona));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Proveedor> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -156,6 +172,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.addOrder(Order.desc("idProveedor"));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		
 		List<Proveedor> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
@@ -172,6 +189,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 		
 		criteria.add(Restrictions.ilike("clave", "%" + buscarTexto + "%"));
 		criteria.add(Restrictions.eq("proveedorActivo", true));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.addOrder(Order.desc("fechaActualizacion"));
 		lista = criteria.list();
 		
@@ -180,6 +198,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 					createCriteria(Proveedor.class);
 			criteria2.add(Restrictions.ilike("nombre", "%" + buscarTexto + "%"));
 			criteria2.add(Restrictions.eq("proveedorActivo", true));
+			criteria2.add(Restrictions.eq("organizacion", getOrganizacion()));
 			criteria2.addOrder(Order.desc("fechaActualizacion"));
 			lista = criteria2.list();
 			
@@ -188,6 +207,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 						createCriteria(Proveedor.class);
 				criteria3.add(Restrictions.eq("proveedorActivo", true));
 				criteria3.add(Restrictions.ilike("rfc", "%" + buscarTexto + "%"));
+				criteria3.add(Restrictions.eq("organizacion", getOrganizacion()));
 				criteria3.addOrder(Order.desc("fechaActualizacion"));
 				lista = criteria3.list();
 			}
@@ -204,6 +224,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.eq("proveedorActivo", true));
 		criteria.add(Restrictions.ilike("nombre", "%" + nombre + "%"));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.addOrder(Order.desc("fechaActualizacion"));
 		lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
@@ -217,6 +238,7 @@ public class ProveedorDAOImpl extends HibernateDAOSuportUtil implements Proveedo
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Proveedor.class);
 		criteria.add(Restrictions.in("idProveedor", idsProveedores));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}

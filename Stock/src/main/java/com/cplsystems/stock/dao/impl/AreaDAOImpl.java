@@ -7,12 +7,15 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.dao.AreaDAO;
 import com.cplsystems.stock.domain.Area;
+import com.cplsystems.stock.domain.Organizacion;
 
 /**
  * @author Carlos Palalía López
@@ -21,9 +24,17 @@ import com.cplsystems.stock.domain.Area;
 @Repository
 public class AreaDAOImpl extends HibernateDAOSuportUtil implements AreaDAO{
 	
+	@Autowired
+	private SessionUtils sessionUtils;
+	
+
+	private Organizacion getOrganizacion(){
+		return (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
+	}
+	
 	@Transactional
 	public void save(Area area) {
-		getHibernateTemplate().save(area);
+		getHibernateTemplate().saveOrUpdate(area);
 	}
 
 	@Transactional
@@ -43,6 +54,7 @@ public class AreaDAOImpl extends HibernateDAOSuportUtil implements AreaDAO{
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Area.class);
 		criteria.add(Restrictions.eq("idArea", idArea));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.setMaxResults(1);
 		List<Area> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
@@ -53,6 +65,7 @@ public class AreaDAOImpl extends HibernateDAOSuportUtil implements AreaDAO{
 	public List<Area> getAll() {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Area.class);
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<Area> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -63,6 +76,7 @@ public class AreaDAOImpl extends HibernateDAOSuportUtil implements AreaDAO{
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Area.class);
 		criteria.add(Restrictions.eq("nombre", nombre));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.setMaxResults(1);
 		List<Area> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;

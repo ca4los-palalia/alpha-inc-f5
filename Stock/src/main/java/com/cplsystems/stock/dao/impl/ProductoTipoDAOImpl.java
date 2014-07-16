@@ -7,11 +7,14 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.dao.ProductoTipoDAO;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.ProductoTipo;
 
 /**
@@ -21,6 +24,13 @@ import com.cplsystems.stock.domain.ProductoTipo;
 @Repository
 public class ProductoTipoDAOImpl extends HibernateDAOSuportUtil implements ProductoTipoDAO{
 
+	@Autowired
+	private SessionUtils sessionUtils;
+
+	private Organizacion getOrganizacion(){
+		return (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
+	}
+	
 	@Transactional
 	public void saveOrUpdate(ProductoTipo productoTipo) {
 		getHibernateTemplate().saveOrUpdate(productoTipo);
@@ -47,6 +57,7 @@ public class ProductoTipoDAOImpl extends HibernateDAOSuportUtil implements Produ
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(ProductoTipo.class);
 		criteria.add(Restrictions.eq("idProductoTipo", idProductoTipo));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<ProductoTipo> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
@@ -56,6 +67,7 @@ public class ProductoTipoDAOImpl extends HibernateDAOSuportUtil implements Produ
 	public List<ProductoTipo> getAll() {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(ProductoTipo.class);
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<ProductoTipo> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
@@ -66,6 +78,7 @@ public class ProductoTipoDAOImpl extends HibernateDAOSuportUtil implements Produ
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(ProductoTipo.class);
 		criteria.add(Restrictions.eq("nombre", nombre));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<ProductoTipo> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}

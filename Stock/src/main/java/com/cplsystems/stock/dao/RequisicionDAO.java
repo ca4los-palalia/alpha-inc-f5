@@ -34,6 +34,6 @@ public interface RequisicionDAO {
 	
 	public Requisicion getByFolio(String folio);
 	
-	public Requisicion getByUnidadResponsable(Area area);
+	public List<Requisicion> getByUnidadResponsable(Area area);
 	
 }

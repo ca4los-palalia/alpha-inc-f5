@@ -13,11 +13,7 @@ import com.cplsystems.stock.domain.Banco;
  */
 public interface BancoDAO {
 
-	public void saveOrUpdate(Banco banco);
-	
 	public void save(Banco banco);
-	
-	public void update(Banco banco);
 
 	public void delete(Banco banco);
 

@@ -26,7 +26,6 @@ import org.zkoss.zul.Window;
 
 import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.StockConstants;
-import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.EstatusRequisicion;
@@ -99,7 +98,7 @@ public class RequisicionVM extends RequisicionMetaClass {
 	@Command
 	public void saveChanges() {
 		if (readOnly) {
-			StockUtils
+			stockUtils
 					.showSuccessmessage(
 							"Los controles han sido desactivados para evitar la edición de esta requisición"
 									+ "para activarlos cree una nueva requisición",
@@ -424,13 +423,15 @@ public class RequisicionVM extends RequisicionMetaClass {
 
 			if (buscarRequisicion != null) {
 				requisicion = buscarRequisicion;
-				requisicionProductos = requisicionProductoService
-						.getByRequisicion(buscarRequisicion);
-			} else
+				requisicionProductos = requisicionProductoService.getByRequisicion(buscarRequisicion);
+				stockUtils.showSuccessmessage(
+						"Requisicion con folio -" + requisicion.getBuscarRequisicion() + "- ha sido encontrada",
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+			}else
 				stockUtils.showSuccessmessage(
 						"No se encontro alguna coincidencia con la busqueda -"
 								+ requisicion.getBuscarRequisicion() + "-",
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		} else
 			stockUtils
 					.showSuccessmessage(
@@ -443,43 +444,37 @@ public class RequisicionVM extends RequisicionMetaClass {
 	@NotifyChange("*")
 	public void buscarRequisicionArea() {
 		if (areaBuscar != null) {
-			areaBuscar = areaService.getById(areaBuscar.getIdArea());
-
-			if (areaBuscar != null) {
-				if (requisicion == null)
-					requisicion = new Requisicion();
-
-				requisicion = requisicionService
-						.getByUnidadResponsable(areaBuscar);
-
-				if (requisicion != null)
-					requisicionProductos = requisicionProductoService
-							.getByRequisicion(requisicion);
+			requisiciones = requisicionService.getByUnidadResponsable(areaBuscar);
+			if(requisiciones != null){
+				String mensaje = "";
+				if(requisiciones.size() == 1)
+					mensaje = requisiciones.size() + " encontrada";
 				else
-					stockUtils.showSuccessmessage(
-							"No se encontró la requisición con búsqueda de área(UR) -"
-									+ areaBuscar.getNombre() + "-",
-							Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			}
-		} else {
-			stockUtils
-					.showSuccessmessage(
-							"No existen áreas(UR) para realizar la búsqueda sobre este tipo",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+					mensaje = requisiciones.size() + " encontradas";
+				
+				stockUtils.showSuccessmessage(
+						"Requisiciones del Area(UR) -" + areaBuscar.getNombre() + "-: " + mensaje,
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+			}else
+				stockUtils.showSuccessmessage(
+						"No se encontraron Requisiciones del Area(UR) -" + areaBuscar.getNombre() + "-",
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
-
 	}
-
+	
 	@Command
 	@NotifyChange("*")
-	public void limpiarFormulario() {
+	public void limpiarFormulario(){
 		requisicionProductos = new ArrayList<RequisicionProducto>();
 		requisicion = new Requisicion();
 		loadItemsKeys();
 		initDefaultValues();
 		readOnly = false;
 	}
-
+	
+	
+	
+	
 	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
 	@Command
 	@NotifyChange("*")

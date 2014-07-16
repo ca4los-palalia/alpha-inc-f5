@@ -11,14 +11,17 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.dao.CotizacionDAO;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
 
@@ -31,6 +34,13 @@ import com.cplsystems.stock.domain.Requisicion;
 @Repository
 public class CotizacionDAOImpl extends HibernateDAOSuportUtil  implements CotizacionDAO{
 
+	@Autowired
+	private SessionUtils sessionUtils;
+	
+	private Organizacion getOrganizacion(){
+		return (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
+	}
+	
 	@Transactional
 	public void save(Cotizacion cotizacion) {
 		getHibernateTemplate().saveOrUpdate(cotizacion);
@@ -55,6 +65,7 @@ public class CotizacionDAOImpl extends HibernateDAOSuportUtil  implements Cotiza
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Cotizacion.class);
 		criteria.add(Restrictions.eq("idCotizacion", idCotizacion));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		lista = criteria.list();
 		
 		return lista.size() > 0 ? lista.get(0) : null;
@@ -66,6 +77,7 @@ public class CotizacionDAOImpl extends HibernateDAOSuportUtil  implements Cotiza
 		List<Cotizacion> lista = null;
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Cotizacion.class);
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		lista = criteria.list();
 		
 		return lista.size() > 0 ? lista : null;
@@ -79,6 +91,7 @@ public class CotizacionDAOImpl extends HibernateDAOSuportUtil  implements Cotiza
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Cotizacion.class);
 		criteria.add(Restrictions.eq("fechaResolucion", fechaEnvioSolucion));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		lista = criteria.list();
 		
 		return lista.size() > 0 ? lista : null;
@@ -106,7 +119,9 @@ public class CotizacionDAOImpl extends HibernateDAOSuportUtil  implements Cotiza
 		List<Cotizacion> lista = null;
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Cotizacion.class);
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.addOrder(Order.desc("idCotizacion"));
+		
 		criteria.setMaxResults(50);
 		lista = criteria.list();
 		
@@ -119,6 +134,7 @@ public class CotizacionDAOImpl extends HibernateDAOSuportUtil  implements Cotiza
 		Long count = null;
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Cotizacion.class);
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.setProjection(Projections.rowCount());
 		count = (Long) criteria.list().get(0);
 		count = count + 1;
@@ -133,6 +149,7 @@ public class CotizacionDAOImpl extends HibernateDAOSuportUtil  implements Cotiza
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Cotizacion.class);
 		criteria.add(Restrictions.eq("folioCotizacion", folioCotizacion));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		lista = criteria.list();
 		
 		return lista.size() > 0 ? lista.get(0) : null;
@@ -167,7 +184,7 @@ public class CotizacionDAOImpl extends HibernateDAOSuportUtil  implements Cotiza
 		}
 			
 		//------------------------------------
-		
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		criteria.setMaxResults(100);
 		lista = criteria.list();
 		
