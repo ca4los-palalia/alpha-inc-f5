@@ -6,10 +6,10 @@
 	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('com.cplsystems.stock.app.vm.menu.MenuVM')">
 		<vlayout>
-			<tabbox id="menu" mold="accordion" >
+			<tabbox id="menu" mold="accordion">
 				<tabs id="tabHeaders">
-					<tab id="productos" label="Productos" selected="false"
-						visible="@load(vm.mostrarProductos)"
+					<tab id="productos" label="Productos"
+						selected="false" visible="@load(vm.mostrarProductos)"
 						image="/images/toolbar/box32.png" sclass="tab-red menutabs" />
 					<tab id="proveedores" label="Proveedores"
 						visible="@load(vm.mostrarProveedores)"
@@ -32,7 +32,7 @@
 						image="/images/toolbar/gear32.png" sclass="tab-red menutabs" />
 				</tabs>
 				<tabpanels id="tabContent">
-					<tabpanel sclass="tab-red" >
+					<tabpanel sclass="tab-red">
 						<listbox style="border: 0; background: #B8D335;"
 							sclass="tab-red menutabs" visible="@load(vm.mostrarProductos)">
 							<listhead>
@@ -281,7 +281,7 @@
 									<label value="Requisición"
 										width="100%" style="font-size: 10px;" />
 								</listcell>
-							</listitem>
+							</listitem>							
 							<listitem
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
