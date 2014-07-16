@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.OrdenCompraInboxDAO;
 import com.cplsystems.stock.domain.OrdenCompraInbox;
+import com.cplsystems.stock.domain.Organizacion;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -32,17 +33,19 @@ public class OrdenCompraInboxDAOImpl extends HibernateDAOSuportUtil implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<OrdenCompraInbox> getAllNews() {
+	public List<OrdenCompraInbox> getAllNews(final Organizacion organizacion) {
 		return getHibernateTemplate().find(
-				"FROM OrdenCompraInbox as o LEFT JOIN FETCH o.ordenCompra "
-						+ "WHERE o.leido = ?", false);
+				"FROM OrdenCompraInbox as o LEFT JOIN FETCH o.ordenCompra as c "
+						+ "WHERE o.leido = ? AND c.organizacion = ?", false,
+				organizacion);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<OrdenCompraInbox> getAll() {
+	public List<OrdenCompraInbox> getAll(final Organizacion organizacion) {
 		return getHibernateTemplate().find(
-				"FROM OrdenCompraInbox as o LEFT JOIN FETCH o.ordenCompra");
+				"FROM OrdenCompraInbox as o LEFT JOIN FETCH o.ordenCompra as c "
+						+ "WHERE c.organizacion = ?", organizacion);
 	}
 
 }
