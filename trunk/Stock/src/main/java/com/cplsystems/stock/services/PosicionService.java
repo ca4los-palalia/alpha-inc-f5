@@ -27,11 +27,11 @@ public class PosicionService {
 		posicionDAO.saveOrUpdate(posicion);
 	}
 	
-	public void update(Posicion posicion){
+	public void update(Posicion posicion) throws DataAccessException{
 		posicionDAO.update(posicion);
 	}
 	
-	public void save(Posicion posicion){
+	public void save(Posicion posicion) throws DataAccessException{
 		posicionDAO.save(posicion);
 	}
 

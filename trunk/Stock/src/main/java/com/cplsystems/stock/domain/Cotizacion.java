@@ -36,6 +36,9 @@ public class Cotizacion {
 	private String excelFile;
 	
 	private String folioCotizacion;
+	
+	private Organizacion organizacion;
+	private Usuarios usuario;
 
 	@Id
 	@Column(name = "idcotizacion", nullable = false)
@@ -173,6 +176,26 @@ public class Cotizacion {
 
 	public void setExcelFile(String excelFile) {
 		this.excelFile = excelFile;
+	}
+	
+	@OneToOne
+	@JoinColumn(name = "organizacion")
+	public Organizacion getOrganizacion() {
+		return organizacion;
+	}
+
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "usuario")
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
 	}
 	
 }

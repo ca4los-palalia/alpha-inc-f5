@@ -61,7 +61,7 @@ public class RequisicionService {
 		return requisicionDAO.getByFolio(folio);
 	}
 	
-	public Requisicion getByUnidadResponsable(Area area){
+	public List<Requisicion> getByUnidadResponsable(Area area){
 		return requisicionDAO.getByUnidadResponsable(area);
 	}
 }

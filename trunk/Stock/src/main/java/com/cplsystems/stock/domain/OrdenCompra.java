@@ -26,6 +26,8 @@ public class OrdenCompra implements Serializable {
 	private Calendar fechaOrden;
 	private Cotizacion cotizacion;
 
+	private Organizacion organizacion;
+	private Usuarios usuario;
 
 	@Id
 	@Column
@@ -63,36 +65,23 @@ public class OrdenCompra implements Serializable {
 		this.cotizacion = cotizacion;
 	}
 	
-	
-
-	/*
-	@Id
-	@Column(nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getIdOrdenCompra() {
-		return idOrdenCompra;
+	@OneToOne
+	@JoinColumn(name = "organizacion")
+	public Organizacion getOrganizacion() {
+		return organizacion;
 	}
 
-	public void setIdOrdenCompra(Long idOrdenCompra) {
-		this.idOrdenCompra = idOrdenCompra;
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
 	}
 
-	@Column(name = "codigo", length = 250)
-	public String getCodigo() {
-		return codigo;
+	@OneToOne
+	@JoinColumn(name = "usuario")
+	public Usuarios getUsuario() {
+		return usuario;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
 	}
-
-	@Column(name = "fechaOrden", length = 250)
-	public Calendar getFechaOrden() {
-		return fechaOrden;
-	}
-
-	public void setFechaOrden(Calendar fechaOrden) {
-		this.fechaOrden = fechaOrden;
-	}
-*/
 }

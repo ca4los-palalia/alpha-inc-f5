@@ -27,10 +27,10 @@
 					<hlayout style="text-align:right">
 
 						<button image="/images/toolbar/update.png"
-							disabled="@bind(cvm.selectTab.activarButtonSave)"
+							disabled="@bind(cvm.selectTab.activarButtonSave)" visible="@bind(cvm.selectTab.visibleButtonSave)"
 							sclass="web_button" onClick="@command('save')"
 							tooltiptext="@bind(cvm.selectTab.toolTipSave)" />
-						<button image="/images/toolbar/delete.png"
+						<button image="/images/toolbar/delete.png" visible="false"
 							disabled="@bind(cvm.selectTab.activarButtonSave)"
 							sclass="web_button" onClick="@command('delete')"
 							tooltiptext="@bind(cvm.selectTab.toolTipDelete)" />
@@ -113,23 +113,38 @@
 
 						<listhead>
 							<listheader label="Nombre" />
-							<listheader label="Seleccionar" width="15%"
+							<listheader label="Actualización"
+								width="12%" />
+							<listheader label="Eliminar" width="8%"
 								style="text-align:center" />
 						</listhead>
-						<template name="model" var="monedaVar">
+						<template name="model" var="bancoVar">
 							<listitem>
 								<listcell>
 									<textbox
-										value="@bind(monedaVar.nombre)" inplace="true" width="70%" />
+										value="@bind(bancoVar.nombre)" inplace="true" width="70%" />
 								</listcell>
 								<listcell>
-									<image
-										src="/images/toolbar/select.png"
-										tooltiptext="Clic para seleccionar la fila" />
+									<label
+										value="@bind(bancoVar.fechaActualizacion)" />
+								</listcell>
+								<listcell>
+									<button
+										image="/images/toolbar/remove16.png"
+										onClick="@command('eliminarBanco', index=bancoVarStatus.index)"
+										zclass="find_button" tooltiptext="Remover contrato" />
 								</listcell>
 							</listitem>
 						</template>
 					</listbox>
+					<separator/>
+					<hlayout>
+						<button image="/images/toolbar/add16.png"
+							onClick="@command('agregarNuevoBanco')"
+							zclass="find_button"
+							tooltiptext="Agregar nuevo banco" />
+
+					</hlayout>
 				</tabpanel>
 
 				<tabpanel>
@@ -185,7 +200,66 @@
 					</grid>
 				</tabpanel>
 
-				<tabpanel></tabpanel>
+				<tabpanel>
+					<listbox
+						emptyMessage="Por el momento no existen contratos en el catalogo"
+						rows="10" autopaging="true" model="@load(cvm.contratos)"
+						selectedItem="@bind(cvm.contrato)">
+
+						<listhead>
+							<listheader label="Nombre" />
+							<listheader label="descripción"/>
+							<listheader label="Vigencia inicio"/>
+							<listheader label="Vigencia fin"/>
+							<listheader label="Actualización"
+								width="12%" />
+							<listheader label="Eliminar" width="8%"
+								style="text-align:center" />
+						</listhead>
+						<template name="model" var="contratoVar">
+							<listitem>
+								<listcell>
+									<textbox
+										value="@bind(contratoVar.nombre)" inplace="true" width="100%" />
+								</listcell>
+								<listcell>
+									<textbox
+										value="@bind(contratoVar.descripcion)" inplace="true" width="100%" />
+								</listcell>
+								
+								
+								<listcell>
+									<datebox readonly="true" format="yyyy/MM/dd"
+										width="100%" value="@bind(contratoVar.fechaVigenciaInicioDate)"/>
+								</listcell>
+								
+								<listcell>
+									<datebox readonly="true" format="yyyy/MM/dd"
+										width="100%" value="@bind(contratoVar.fechaVigenciaFinDate)"/>
+								</listcell>
+								
+								<listcell>
+									<label
+										value="@bind(contratoVar.fechaActualizacion)" />
+								</listcell>
+								<listcell>
+									<button
+										image="/images/toolbar/remove16.png"
+										onClick="@command('eliminarContrato', index=contratoVarStatus.index)"
+										zclass="find_button" tooltiptext="Remover contrato" />
+								</listcell>
+							</listitem>
+						</template>
+					</listbox>
+					<separator/>
+					<hlayout>
+						<button image="/images/toolbar/add16.png"
+							onClick="@command('agregarNuevoContrato')"
+							zclass="find_button"
+							tooltiptext="Agregar nuevo contrato" />
+
+					</hlayout>
+				</tabpanel>
 
 				<tabpanel>
 					<listbox
@@ -195,8 +269,10 @@
 
 						<listhead>
 							<listheader label="Nombre" />
-							<listheader label="Simbolo" width="20%" />
-							<listheader label="Seleccionar" width="15%"
+							<listheader label="Simbolo" width="15%" />
+							<listheader label="Actualización"
+								width="12%" />
+							<listheader label="Eliminar" width="8%"
 								style="text-align:center" />
 						</listhead>
 						<template name="model" var="monedaVar">
@@ -210,18 +286,38 @@
 										value="@bind(monedaVar.simbolo)" inplace="true" width="100%" />
 								</listcell>
 								<listcell>
-									<image
-										src="/images/toolbar/select.png"
-										tooltiptext="Clic para seleccionar la fila" />
+									<label
+										value="@bind(monedaVar.fechaActualizacion)" />
+								</listcell>
+								<listcell>
+									<button
+										image="/images/toolbar/remove16.png"
+										onClick="@command('eliminarMoneda', index=monedaVarStatus.index)"
+										zclass="find_button" tooltiptext="Remover divisa" />
 								</listcell>
 							</listitem>
 						</template>
 					</listbox>
+					<separator/>
+					<hlayout>
+						<button image="/images/toolbar/add16.png"
+							onClick="@command('agregarNuevaDivisa')"
+							zclass="find_button"
+							tooltiptext="Agregar nueva divisa" />
+
+					</hlayout>
+					
 				</tabpanel>
 
-				<tabpanel></tabpanel>
+				<tabpanel>
+					<include
+						src="/modulos/productos/productosBuscador.zul" />
+				</tabpanel>
 
-				<tabpanel></tabpanel>
+				<tabpanel>
+					<include
+						src="/modulos/proveedores/proveedoresBuscador.zul" />
+				</tabpanel>
 
 				<tabpanel>
 					<listbox
@@ -231,7 +327,9 @@
 
 						<listhead>
 							<listheader label="Nombre" />
-							<listheader label="Seleccionar" width="15%"
+							<listheader label="Actualización"
+								width="12%" />
+							<listheader label="Eliminar" width="8%"
 								style="text-align:center" />
 						</listhead>
 						<template name="model" var="puestoV">
@@ -241,13 +339,34 @@
 										value="@bind(puestoV.nombre)" inplace="true" width="70%" />
 								</listcell>
 								<listcell>
-									<image
-										src="/images/toolbar/select.png"
-										tooltiptext="Clic para seleccionar la fila" />
+									<label
+										value="@bind(productoTipoVar.fechaActualizacion)" />
+								</listcell>
+								<listcell>
+									<button
+										image="/images/toolbar/remove16.png"
+										onClick="@command('eliminarPuesto', index=puestoVStatus.index)"
+										zclass="find_button" tooltiptext="Remover puesto" />
 								</listcell>
 							</listitem>
 						</template>
 					</listbox>
+					
+					<separator />
+
+					<hlayout>
+						<button image="/images/toolbar/add16.png"
+							onClick="@command('agregarNuevoPuesto')"
+							zclass="find_button"
+							tooltiptext="Agregar nuevo puesto" />
+
+						<hlayout style="text-align:right; color:red"
+							width="100%">
+							<label
+								value="@bind(unidad.mensajeDeCambios)" />
+						</hlayout>
+					</hlayout>
+					
 				</tabpanel>
 
 
@@ -260,7 +379,9 @@
 						<listhead>
 							<listheader label="Nombre" width="25%" />
 							<listheader label="Descripción" />
-							<listheader label="Seleccionar" width="15%"
+							<listheader label="Actualización"
+								width="12%" />
+							<listheader label="Eliminar" width="8%"
 								style="text-align:center" />
 						</listhead>
 						<template name="model" var="productoTipoVar">
@@ -276,17 +397,37 @@
 										width="100%" />
 								</listcell>
 								<listcell>
-									<image
-										src="/images/toolbar/select.png"
-										tooltiptext="Clic para seleccionar la fila" />
+									<label
+										value="@bind(productoTipoVar.fechaActualizacion)" />
+								</listcell>
+								<listcell>
+									<button
+										image="/images/toolbar/remove16.png"
+										onClick="@command('eliminarTipoProducto', index=productoTipoVarStatus.index)"
+										zclass="find_button" tooltiptext="Remover familia" />
 								</listcell>
 							</listitem>
 						</template>
 					</listbox>
+
+					<separator />
+
+					<hlayout>
+						<button image="/images/toolbar/add16.png"
+							onClick="@command('agregarNuevoTipoProducto')"
+							zclass="find_button"
+							tooltiptext="Agregar nueva familia" />
+
+						<hlayout style="text-align:right; color:red"
+							width="100%">
+							<label
+								value="@bind(unidad.mensajeDeCambios)" />
+						</hlayout>
+					</hlayout>
+
 				</tabpanel>
 
-				<tabpanel>
-
+				<tabpanel>					
 					<listbox
 						emptyMessage="Por el momento no se encuentran unidades de medida registradas"
 						rows="10" autopaging="true" model="@load(cvm.unidadesDB)"
@@ -295,8 +436,8 @@
 
 							<listheader label="Nombre" />
 							<listheader label="Abreviatura" width="15%" />
-							<listheader label="Ultima actualización"
-								width="20%" />
+							<listheader label="Actualización"
+								width="12%" />
 							<listheader label="Eliminar"
 								style="text-align:center" width="8%" />
 						</listhead>
@@ -326,50 +467,26 @@
 							</listitem>
 						</template>
 					</listbox>
-					
-					<separator/>
-					
+
+					<separator />
+
 					<hlayout>
 						<button image="/images/toolbar/add16.png"
 							onClick="@command('agregarNuevaUnidad')" zclass="find_button"
 							tooltiptext="Agregar nueva unidad de medida" />
-							
-							<hlayout style="text-align:right; color:red" width="100%">
-								<label value="@bind(unidad.mensajeDeCambios)"></label>	
-							</hlayout>
+
+						<hlayout style="text-align:right; color:red"
+							width="100%">
+							<label
+								value="@bind(unidad.mensajeDeCambios)">
+							</label>
+						</hlayout>
 					</hlayout>
 				</tabpanel>
 
 			</tabpanels>
 
 		</tabbox>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

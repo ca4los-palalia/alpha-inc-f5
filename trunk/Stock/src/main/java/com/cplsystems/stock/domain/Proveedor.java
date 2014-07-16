@@ -43,6 +43,9 @@ public class Proveedor implements Serializable {
 	private Persona representanteAteCliente;
 	private Giro giro;
 
+	private Organizacion organizacion;
+	private Usuarios usuario;
+	
 	@Id
 	@Column(name = "idProveedor", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -258,5 +261,27 @@ public class Proveedor implements Serializable {
 	public void setGiro(Giro giro) {
 		this.giro = giro;
 	}
-
+	
+	
+	
+	
+	@OneToOne
+	@JoinColumn(name = "organizacion")
+	public Organizacion getOrganizacion() {
+		return organizacion;
+	}
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
+	}
+	
+	@OneToOne
+	@JoinColumn(name = "usuario")
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
+	}
+	
+	
 }

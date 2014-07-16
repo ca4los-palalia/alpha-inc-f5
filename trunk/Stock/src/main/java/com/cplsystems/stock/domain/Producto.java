@@ -76,6 +76,10 @@ public class Producto implements Serializable {
 	private Moneda moneda;
 	private Long minimo;
 	private Long maximo;
+	
+	private Organizacion organizacion;
+	private Usuarios usuario;
+	private String fechaActualizacion;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -586,4 +590,29 @@ public class Producto implements Serializable {
 		this.maximo = maximo;
 	}
 
+	@OneToOne
+	@JoinColumn(name = "organizacion")
+	public Organizacion getOrganizacion() {
+		return organizacion;
+	}
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
+	}
+	
+	@OneToOne
+	@JoinColumn(name = "usuario")
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
+	}
+	
+	@Column
+	public String getFechaActualizacion() {
+		return fechaActualizacion;
+	}
+	public void setFechaActualizacion(String fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
 }

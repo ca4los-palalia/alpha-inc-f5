@@ -1,12 +1,15 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -23,6 +26,10 @@ public class Area implements Serializable {
 	private String toolTipIndice;
 	private String toolTipNombre;
 	private boolean nuevoRegistro;
+	
+	private Organizacion organizacion;
+	private Usuarios usuario;
+	private String fechaActualizacion;
 	
 	
 	@Id
@@ -68,5 +75,33 @@ public class Area implements Serializable {
 	}
 	public void setNuevoRegistro(boolean nuevoRegistro) {
 		this.nuevoRegistro = nuevoRegistro;
-	}	
+	}
+	
+	@OneToOne
+	@JoinColumn(name = "organizacion")
+	public Organizacion getOrganizacion() {
+		return organizacion;
+	}
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
+	}
+	
+	@OneToOne
+	@JoinColumn(name = "usuario")
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
+	}
+	
+	@Column
+	public String getFechaActualizacion() {
+		return fechaActualizacion;
+	}
+	public void setFechaActualizacion(String fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+	
+	
 }

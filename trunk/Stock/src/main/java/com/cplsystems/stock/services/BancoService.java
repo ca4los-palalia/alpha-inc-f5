@@ -22,18 +22,9 @@ public class BancoService {
 	@Autowired
 	private BancoDAO bancoDAO;
 
-	public void saveOrUpdate(Banco banco) throws DataAccessException {
-		bancoDAO.saveOrUpdate(banco);
-	}
-	
 	public void save(Banco banco) throws DataAccessException {
 		bancoDAO.save(banco);
 	}
-	
-	public void update(Banco banco) throws DataAccessException {
-		bancoDAO.update(banco);
-	}
-	
 
 	public void delete(Banco banco) throws DataAccessException {
 		bancoDAO.delete(banco);
