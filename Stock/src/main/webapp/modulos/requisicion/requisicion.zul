@@ -28,25 +28,69 @@
 							<button image="/images/toolbar/newDoc.png"
 								sclass="web_button" onClick="@command('limpiarFormulario')"
 								tooltiptext="Capturar nueva requisición" />
-							
-							<button image="/images/toolbar/saveOff.png"
-								sclass="web_button" tooltiptext="Guardar/Actualizar requisición"
-								onClick="@command('saveChanges')" />
-							
 
-								
-								
+							<button image="/images/toolbar/saveOff.png"
+								disabled="@load(rvm.readOnly)" sclass="web_button"
+								tooltiptext="Guardar/Actualizar requisición"
+								onClick="@command('saveChanges')" />
 
 							<button image="/images/toolbar/update.png"
 								sclass="web_button" visible="false"
 								tooltiptext="Actualizar requisición"
 								onClick="@command('imprimirRequisicion')" />
-
-
 						</hlayout>
 					</row>
 				</rows>
 			</grid>
+			<listbox model="@load(rvm.requisicionesInbox)"
+				selectedItem="@bind(rvm.requisicionInboxSeleccionada)"
+				emptyMessage="No hay requisiciones" mold="paging" pageSize="6"
+				height="100%">
+				<auxhead>
+					<auxheader colspan="5" style="text-align:center"
+						label="Bandeja de requisiciones" />
+				</auxhead>
+				<listhead>
+					<listheader align="center" width="5%" />
+					<listheader label="Folio" align="center" width="7%" />
+					<listheader label="Adscripción" align="center"
+						width="25%" />
+					<listheader label="Área" align="center" />
+					<listheader label="Comentarios" align="center"
+						width="20%" />
+					<listheader label="Estado" align="center"
+						width="23%" />
+				</listhead>
+				<template name="model" var="requisicion">
+					<listitem>
+						<listcell
+							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
+							<image src="@load(requisicion.icono)" />
+						</listcell>
+						<listcell
+							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+							label="${requisicion.requisicion.folio}" />
+						<listcell
+							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+							label="${requisicion.requisicion.adscripcion}" />
+						<listcell
+							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+							label="${requisicion.requisicion.area.nombre}" />
+						<listcell
+							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+							label="${requisicion.comentarios}" />
+						<listcell
+							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
+							<hlayout>
+								<button disabled="true"
+									style="${requisicion.requisicion.estatusRequisicion.color}" />
+								<label
+									value="${requisicion.requisicion.estatusRequisicion.nombre}" />
+							</hlayout>
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
 
 			<groupbox mold="3d" open="false"
 				tooltiptext="Clic para ver u ocultar formulario de busqueda">
@@ -455,10 +499,12 @@
 											style="text-align:left">
 											<hlayout>
 												<button
+													disabled="@load(rvm.readOnly)"
 													image="/images/toolbar/add16.png" zclass="find_button"
 													tooltiptext="Agregar producto a la lista"
 													onClick="@command('addNewItemToBill')" />
 												<button
+													disabled="@load(rvm.readOnly)"
 													image="/images/toolbar/remove16.png" zclass="find_button"
 													tooltiptext="Quitar producto de la lista"
 													onClick="@command('removeElementFromBill')" />
