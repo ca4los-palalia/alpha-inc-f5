@@ -26,6 +26,7 @@ import com.cplsystems.stock.services.EstadoService;
 import com.cplsystems.stock.services.EstatusRequisicionService;
 import com.cplsystems.stock.services.FamiliasProductoService;
 import com.cplsystems.stock.services.GiroService;
+import com.cplsystems.stock.services.MailService;
 import com.cplsystems.stock.services.MonedaService;
 import com.cplsystems.stock.services.MunicipioService;
 import com.cplsystems.stock.services.OrdenCompraInboxService;
@@ -173,6 +174,9 @@ public abstract class ServiceLayer extends DataLayer {
 
 	@WireVariable
 	protected OrdenCompraInboxService ordenCompraInboxService;
+
+	@WireVariable
+	protected MailService mailService;
 
 	/**
 	 * REQUERIDO PARA OBTENER EL SERVICIO DESDE UNA CLASE QUE NO PUEDE SER
