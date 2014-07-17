@@ -22,7 +22,7 @@
 
 						<hlayout style="text-align:right">
 							<button image="/images/toolbar/saveOff.png"
-								sclass="web_button" tooltiptext="Guardar nueva requisición"
+								sclass="web_button" tooltiptext="Guardar cotización"
 								onClick="@command('exportarExcel')" />
 						</hlayout>
 					</row>
