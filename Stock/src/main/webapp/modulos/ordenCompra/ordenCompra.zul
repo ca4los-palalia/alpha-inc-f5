@@ -1,237 +1,325 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
-	<style src="/styles/home/styleGlobal.css"/>
+	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
 	<script src="/scripts/watermarks.js" type="text/javascript" />
 	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('ovm') @init('com.cplsystems.stock.app.vm.ordencompra.OrdenCompraVM')">
-		
+
 		<vlayout>
 			<grid>
-		       <columns>
-		           <column width="22%" />
-		           <column/>
-		           <column width="35%" zclass="shadowMenuActions"/>
-		       </columns>
-		       <rows>
+				<columns>
+					<column width="22%" />
+					<column />
+					<column width="35%" zclass="shadowMenuActions" />
+				</columns>
+				<rows>
 					<row zclass="shadowMenuActions">
 						<div style="margin:5px">
-							<label zclass="panelInfoItemMenuTitle" 
-								width="100%" 
-								value="ÓRDENES DE COMPRA:"/>
+							<label zclass="panelInfoItemMenuTitle"
+								width="100%" value="ÓRDENES DE COMPRA:" />
 						</div>
 						<div style="margin:5px">
-							<label zclass="panelInfoItemMenuContent" 
-								width="100%" 
-								value="Autorización, cancelación de ordenes de compra"/>
-						</div>	
+							<label zclass="panelInfoItemMenuContent"
+								width="100%"
+								value="Autorización, cancelación de ordenes de compra" />
+						</div>
 						<hlayout style="text-align:right">
-							<button image="/images/toolbar/update.png" sclass="web_button"/>
-							<button image="/images/toolbar/saveOff.png" sclass="web_button"/>
-							<button image="/images/toolbar/delete.png" sclass="web_button"/>
-							<button image="/images/toolbar/find.png" sclass="web_button"/>
+							<button image="/images/toolbar/update.png"
+								sclass="web_button" />
+							<button image="/images/toolbar/saveOff.png"
+								sclass="web_button" />
+							<button image="/images/toolbar/delete.png"
+								sclass="web_button" />
+							<button image="/images/toolbar/find.png"
+								sclass="web_button" />
 						</hlayout>
 					</row>
 				</rows>
 			</grid>
 		</vlayout>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+		<separator />
+
+		<listbox model="@load(ovm.ordenesCompraInbox)"
+			selectedItem="@bind(ovm.ordenCompraInboxSeleccionada)"
+			emptyMessage="No hay ordenes de compra" mold="paging" pageSize="6"
+			height="100%">
+			<auxhead>
+				<auxheader colspan="5"
+					style="text-align:center;font-size:smaller;"
+					label="Bandeja de órdenes de compra" />
+			</auxhead>
+			<listhead>
+				<listheader align="center" width="5%"
+					style="font-size:smaller;" />
+				<listheader label="Folio" align="center" width="7%"
+					style="font-size:smaller;" />
+				<listheader label="Comentarios" align="center"
+					width="30%" style="font-size:smaller;" />
+				<listheader label="Proveedor" align="center" width="25%"
+					style="font-size:smaller;" />
+				<listheader label="Total" align="center"
+					style="font-size:smaller;" />
+				<listheader label="Estado" align="center" width="23%"
+					style="font-size:smaller;" />
+			</listhead>
+			<template name="model" var="ordenCompra">
+				<listitem>
+					<listcell style="font-size:smaller;"
+						onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)">
+						<image src="@load(ordenCompra.icono)" />
+					</listcell>
+					<listcell style="font-size:smaller;"
+						onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)"
+						label="${ordenCompra.cotizacion.requisicion.folio}" />
+					<listcell style="font-size:smaller;"
+						onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)"
+						label="${ordenCompra.comentarios}" />
+					<listcell style="font-size:smaller;"
+						onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)"
+						label="${ordenCompra.cotizacion.proveedor.nombre}" />
+					<listcell style="font-size:smaller;"
+						onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)"
+						label="${ordenCompra.cotizacion.total}" />
+					<listcell
+						onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)">
+						<hlayout>
+							<button disabled="true"
+								style="${ordenCompra.cotizacion.estatusRequisicion.color}" />
+							<label style="font-size:smaller;"
+								value="${ordenCompra.cotizacion.estatusRequisicion.nombre}" />
+						</hlayout>
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+		<separator />
+
 		<tabbox id="tb">
 			<tabs id="tabs">
-				<tab label="Requisiciones" image="/images/toolbar/Graphique16.png"/>
-				<tab label="Ordenes de compra" image="/images/toolbar/sorting.png" />
-				
+				<tab label="Requisiciones"
+					image="/images/toolbar/Graphique16.png" />
+				<tab label="Ordenes de compra"
+					image="/images/toolbar/sorting.png" />
+
 			</tabs>
 			<tabpanels>
-				
+
 				<tabpanel>
 					<vlayout>
-		            	<listbox emptyMessage="No se encontraron requisiciones" rows="5" sclass="heightGrid"
-				            model="@load(ovm.requisiciones)" selectedItem="@bind(ovm.requisicion)" >
-				            <auxhead>
-				                <auxheader colspan="5" class="topic" >
-				                	<grid style="border: 0;" visible="false">
-								        <columns>
-								            <column width="15%"/>
-								            <column/>
-								            <column width="13%"/>
-								        </columns>
-								        <rows>
-								            <row style="background-color:transparent; border: 0;">
-								            	<label value="Buscar" sclass="fontSizeContentGrid" tooltiptext="nombre o clave"/>
-								            	<textbox id="buscadorProducto" value="@bind(ovm.buscarProducto.nombre)" width="100%" sclass="fontSizeContentGrid" />
-								            	<hlayout style="text-align:center">
-									            	<button image="/images/toolbar/find16x16.png" zclass="find_button"
-														onClick="@command('findProductos')" tooltiptext="Buscar Productos"/>
-													<button image="/images/toolbar/pdf.png" sclass="web_button" zclass="find_button"
-														onClick="@command('reporteProductos')"  tooltiptext="Exportar a un archivo PDF"/>
+						<listbox
+							emptyMessage="No se encontraron requisiciones" rows="5"
+							sclass="heightGrid" model="@load(ovm.requisiciones)"
+							selectedItem="@bind(ovm.requisicion)">
+							<auxhead>
+								<auxheader colspan="5" class="topic">
+									<grid style="border: 0;"
+										visible="false">
+										<columns>
+											<column width="15%" />
+											<column />
+											<column width="13%" />
+										</columns>
+										<rows>
+											<row
+												style="background-color:transparent; border: 0;">
+												<label value="Buscar"
+													sclass="fontSizeContentGrid" tooltiptext="nombre o clave" />
+												<textbox
+													id="buscadorProducto"
+													value="@bind(ovm.buscarProducto.nombre)" width="100%"
+													sclass="fontSizeContentGrid" />
+												<hlayout
+													style="text-align:center">
+													<button
+														image="/images/toolbar/find16x16.png" zclass="find_button"
+														onClick="@command('findProductos')"
+														tooltiptext="Buscar Productos" />
+													<button
+														image="/images/toolbar/pdf.png" sclass="web_button"
+														zclass="find_button"
+														onClick="@command('reporteProductos')"
+														tooltiptext="Exportar a un archivo PDF" />
 												</hlayout>
-								            </row>
-								        </rows>
+											</row>
+										</rows>
 									</grid>
-				                </auxheader>
-				            </auxhead>
-				            <listhead>
-				            	<listheader label="Folio" width="20%"/>
-				                <listheader label="Estatus"/>
-				                <listheader label="No de inventario" width="15%"/>
-				                <listheader label="Persona que elaboró" width="25%"/>
-				            </listhead>
-				            <template name="model" var="rpVar">
-				                <listitem>
-				                	<listcell>
-				                    	<label value="@bind(rpVar.folio)" width="100%" sclass="heightGrid"/>
-				                    </listcell>
-				                    <listcell>
-				                    	<label value="@bind(rpVar.status)" width="100%" sclass="heightGrid"/>
-				                    </listcell>
-				                    <listcell>
-				                    	<label value="@bind(rpVar.numeroInventario)" width="100%" sclass="heightGrid"/>
-				                    </listcell>
-				                    <listcell>
-				                    	<label value="@bind(rpVar.persona.nombre)" width="100%" sclass="heightGrid"/>
-				                    </listcell>
-				                </listitem>
-				            </template>
-				        </listbox>										        
-			        </vlayout>
-			        
-			        
-			        <grid style="border: 0;">
-				        <columns>
-				            <column width="20%"/>
-				            <column/>
-				            <column width="10%"/>
-				            <column/>
-				            <column width="10%"/>
-				            <column/>
-				        </columns>
-				        <rows>
-				            <row style="background-color:transparent; border: 0;">
-				            	<label value="Área Solicitante (UR):"
-									sclass="invoiceLabel" />
-								<label value="@bind(ovm.requisicion.area.nombre)" width="100%" sclass="invoiceLabel"/>
-				            									
-								<label value="Prog" />
-								<textbox sclass="invoiceTextBox tBox" width="100%" value="@bind(ovm.requisicion.prog)"/>
-								
-								<label value="Py:"/>	
-								<textbox sclass="invoiceTextBox tBox" width="100%"  value="@bind(ovm.requisicion.py)"/>
-								
-				            </row>
-				        </rows>
-				    </grid>
-				    
-				    <grid style="border: 0;">
-				        <columns>
-				            <column width="20%"/>
-				            <column/>
-				            <column/>
-				            <column/>
-				        </columns>
-				        <rows>
-				            <row style="background-color:transparent; border: 0;">
-				            	<label value="Partida genérica:"
-									sclass="invoiceLabel" />
-								<textbox sclass="invoiceTextBox tBox" width="100%"
-									maxlength="40" value="@bind(ovm.requisicion.partidaGenerica)"/>
-								<label value="Fuente de financiamiento:" sclass="invoiceLabel" />
-								<textbox sclass="invoiceTextBox tBox" width="100%" value="@bind(ovm.requisicion.fuenteFinanciamiento)"
-									maxlength="40" />
-				            </row>
-				        </rows>
-				    </grid>
-				    
-				    <grid style="border: 0;">
-				        <columns>
-				            <column width="20%"/>
-				            <column/>
-				            <column width="10%"/>
-				            <column/>
-				        </columns>
-				        <rows>
-				            <row style="background-color:transparent; border: 0;">
-				            	<label value="Solicitante:"
-									sclass="invoiceLabel" />
-								<textbox sclass="invoiceTextBox tBox" width="100%"
-									maxlength="40" value="@bind(ovm.requisicion.persona.nombre)"/>
-								<label value="Puesto:" sclass="invoiceLabel" />
-								<label width="100%" value="@bind(ovm.requisicion.posicion.nombre)" sclass="invoiceLabel"/>
-				            </row>
-				        </rows>
-				    </grid>
-				    
-				    <grid style="border: 0;">
-				        <columns>
-				            <column width="20%"/>
-				            <column/>
-				        </columns>
-				        <rows>
-				            <row style="background-color:transparent; border: 0;">
-				            	<label value="Adscripción:"
-									sclass="invoiceLabel" />
-								<textbox maxlength="120" width="100%" value="@bind(ovm.requisicion.adscripcion)"
-									sclass="invoiceTextBox tBox" />
-				            </row>
-				        </rows>
-				    </grid>
-				    
-				    <grid style="border: 0;">
-				        <columns>
-				            <column width="20%"/>
-				            <column/>
-				        </columns>
-				        <rows>
-				            <row style="background-color:transparent; border: 0;">
-				            	<label value="Justificación"
-									sclass="invoiceLabel" />
-								<textbox multiline="true" width="100%" value="@bind(ovm.requisicion.justificacion)"
-									style="height:50px" sclass="tBox" />
-				            </row>
-				        </rows>
-				    </grid>
-					
+								</auxheader>
+							</auxhead>
+							<listhead>
+								<listheader label="Folio" width="20%" />
+								<listheader label="Estatus" />
+								<listheader label="No de inventario"
+									width="15%" />
+								<listheader label="Persona que elaboró"
+									width="25%" />
+							</listhead>
+							<template name="model" var="rpVar">
+								<listitem>
+									<listcell>
+										<label
+											value="@bind(rpVar.folio)" width="100%" sclass="heightGrid" />
+									</listcell>
+									<listcell>
+										<label
+											value="@bind(rpVar.status)" width="100%" sclass="heightGrid" />
+									</listcell>
+									<listcell>
+										<label
+											value="@bind(rpVar.numeroInventario)" width="100%"
+											sclass="heightGrid" />
+									</listcell>
+									<listcell>
+										<label
+											value="@bind(rpVar.persona.nombre)" width="100%"
+											sclass="heightGrid" />
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+					</vlayout>
+
+
 					<grid style="border: 0;">
-				        <columns>
-				            <column width="20%"/>
-				            <column/>
-				        </columns>
-				        <rows>
-				            <row style="background-color:transparent; border: 0;">
-				            	<label value="Número de inventario:"
+						<columns>
+							<column width="20%" />
+							<column />
+							<column width="10%" />
+							<column />
+							<column width="10%" />
+							<column />
+						</columns>
+						<rows>
+							<row
+								style="background-color:transparent; border: 0;">
+								<label value="Área Solicitante (UR):"
 									sclass="invoiceLabel" />
-								<longbox sclass="invoiceTextBox tBox" width="100%" value="@bind(ovm.requisicion.numeroInventario)"/>
-				            </row>
-				        </rows>
-				    </grid>
-			        <button label="Mover a orden de compra"/>
-			        
+								<label
+									value="@bind(ovm.requisicion.area.nombre)" width="100%"
+									sclass="invoiceLabel" />
+
+								<label value="Prog" />
+								<textbox sclass="invoiceTextBox tBox"
+									width="100%" value="@bind(ovm.requisicion.prog)" />
+
+								<label value="Py:" />
+								<textbox sclass="invoiceTextBox tBox"
+									width="100%" value="@bind(ovm.requisicion.py)" />
+
+							</row>
+						</rows>
+					</grid>
+
+					<grid style="border: 0;">
+						<columns>
+							<column width="20%" />
+							<column />
+							<column />
+							<column />
+						</columns>
+						<rows>
+							<row
+								style="background-color:transparent; border: 0;">
+								<label value="Partida genérica:"
+									sclass="invoiceLabel" />
+								<textbox sclass="invoiceTextBox tBox"
+									width="100%" maxlength="40"
+									value="@bind(ovm.requisicion.partidaGenerica)" />
+								<label value="Fuente de financiamiento:"
+									sclass="invoiceLabel" />
+								<textbox sclass="invoiceTextBox tBox"
+									width="100%"
+									value="@bind(ovm.requisicion.fuenteFinanciamiento)"
+									maxlength="40" />
+							</row>
+						</rows>
+					</grid>
+
+					<grid style="border: 0;">
+						<columns>
+							<column width="20%" />
+							<column />
+							<column width="10%" />
+							<column />
+						</columns>
+						<rows>
+							<row
+								style="background-color:transparent; border: 0;">
+								<label value="Solicitante:"
+									sclass="invoiceLabel" />
+								<textbox sclass="invoiceTextBox tBox"
+									width="100%" maxlength="40"
+									value="@bind(ovm.requisicion.persona.nombre)" />
+								<label value="Puesto:"
+									sclass="invoiceLabel" />
+								<label width="100%"
+									value="@bind(ovm.requisicion.posicion.nombre)"
+									sclass="invoiceLabel" />
+							</row>
+						</rows>
+					</grid>
+
+					<grid style="border: 0;">
+						<columns>
+							<column width="20%" />
+							<column />
+						</columns>
+						<rows>
+							<row
+								style="background-color:transparent; border: 0;">
+								<label value="Adscripción:"
+									sclass="invoiceLabel" />
+								<textbox maxlength="120" width="100%"
+									value="@bind(ovm.requisicion.adscripcion)"
+									sclass="invoiceTextBox tBox" />
+							</row>
+						</rows>
+					</grid>
+
+					<grid style="border: 0;">
+						<columns>
+							<column width="20%" />
+							<column />
+						</columns>
+						<rows>
+							<row
+								style="background-color:transparent; border: 0;">
+								<label value="Justificación"
+									sclass="invoiceLabel" />
+								<textbox multiline="true" width="100%"
+									value="@bind(ovm.requisicion.justificacion)"
+									style="height:50px" sclass="tBox" />
+							</row>
+						</rows>
+					</grid>
+
+					<grid style="border: 0;">
+						<columns>
+							<column width="20%" />
+							<column />
+						</columns>
+						<rows>
+							<row
+								style="background-color:transparent; border: 0;">
+								<label value="Número de inventario:"
+									sclass="invoiceLabel" />
+								<longbox sclass="invoiceTextBox tBox"
+									width="100%" value="@bind(ovm.requisicion.numeroInventario)" />
+							</row>
+						</rows>
+					</grid>
+					<button label="Mover a orden de compra" />
+
 				</tabpanel>
-				
+
 				<tabpanel>
-					
+
 				</tabpanel>
-				
+
 			</tabpanels>
 		</tabbox>
-		
-		
+
+
 	</window>
 </zk>
