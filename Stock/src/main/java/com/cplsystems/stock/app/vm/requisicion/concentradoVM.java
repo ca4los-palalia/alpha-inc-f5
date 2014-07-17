@@ -16,16 +16,19 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
 
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
+import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -41,26 +44,6 @@ public class concentradoVM extends RequisicionVariables {
 	public void init() {
 		super.init();
 		requisicion = new Requisicion();
-		/*
-		EstatusRequisicion estado = estatusRequisicionService.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
-		requisiciones = requisicionService.getByEstatusRequisicion(estado);
-
-		requisicionProductos = requisicionProductoService
-				.getRequisicionesConEstadoEspecifico(estado);
-		Float subtotal = new Float(0.0);
-
-		if (requisicionProductos != null) {
-			desgloceTotal = new DesgloceTotal();
-
-			for (RequisicionProducto sumar : requisicionProductos) {
-				subtotal += sumar.getTotalProductoPorUnidad();
-			}
-
-			desgloceTotal.setSubtotal(subtotal);
-			desgloceTotal.setIva(subtotal * new Float(0.16));
-			desgloceTotal.setTotal((subtotal) + (subtotal * new Float(0.16)));
-		}*/
-
 	}
 
 	@Command
@@ -121,8 +104,8 @@ public class concentradoVM extends RequisicionVariables {
 				.getByNombre(buscar);
 		if (areaBuscar != null){
 			Requisicion rq = requisicionService.getByFolio(buscar);
-			//rq = requisicionService
-			//		.getByUnidadResponsable(areaBuscar);
+			rq = requisicionService
+					.getByUnidadResponsable(areaBuscar).get(0);
 			requisicionProductos = requisicionProductoService
 					.getByRequisicion(rq);
 		}
@@ -199,16 +182,18 @@ public class concentradoVM extends RequisicionVariables {
 				.getRequisicionesConEstadoEspecifico(estado);
 	}
 	
+	@SuppressWarnings("static-access")
 	private List<Cotizacion> salvarCotizacion(){
 		Map<Proveedor,Requisicion> mapa = 
 			    new HashMap<Proveedor, Requisicion>();
-		
+		String mensaje = "";
 		List<Cotizacion> cotizacionReturn = null;
 		if (requisicionProductos != null && requisicionProductos.size() > 0) {
 			cotizacionReturn = new ArrayList<Cotizacion>();
 			for (RequisicionProducto item : requisicionProductos) {
 				if(!mapa.containsKey(item.getProveedor()))
-					mapa.put(item.getProveedor(), item.getRequisicion());
+					if(item.getProveedor() != null)
+						mapa.put(item.getProveedor(), item.getRequisicion());
 			}
 			if(mapa.size() > 0){
 				EstatusRequisicion estado = estatusRequisicionService.getByClave(StockConstants.ESTADO_COTIZACION_NUEVA);
@@ -217,14 +202,24 @@ public class concentradoVM extends RequisicionVariables {
 					Requisicion rq = elemento.getValue();
 					System.out.println(pr.getNombre() + " _ " + rq.getFolio());
 					
-					Cotizacion cotizacion = new Cotizacion();
-					cotizacion.setProveedor(pr);
-					cotizacion.setRequisicion(rq);
-					cotizacion.setFolioCotizacion(generarFolioCotizacion());
-					cotizacionService.save(cotizacion);
-					cotizacion.setEstatusRequisicion(estado);
-					cotizacionReturn.add(cotizacion);
+					if(cotizacionService.getByRequisicion(rq) == null && cotizacionService.getByProveedor(pr) == null){
+						Cotizacion cotizacion = new Cotizacion();
+						cotizacion.setProveedor(pr);
+						cotizacion.setRequisicion(rq);
+						cotizacion.setFolioCotizacion(generarFolioCotizacion());
+						cotizacion.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
+						cotizacion.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
+						cotizacion.setEstatusRequisicion(estado);
+						cotizacionService.save(cotizacion);
+						cotizacionReturn.add(cotizacion);
+					}else
+						mensaje = "-" + pr.getNombre() + ":" + rq.getFolio() + "-";
 				}
+				if(!mensaje.isEmpty())
+					stockUtils.showSuccessmessage("No se pudieron generar las cotizaciones de los proveedores: " 
+							+ mensaje + " anteriormente ya han sido generadas", Clients.NOTIFICATION_TYPE_WARNING, 0,
+							null);
+					
 			}
 		}
 		return cotizacionReturn;
@@ -245,7 +240,7 @@ public class concentradoVM extends RequisicionVariables {
 		String folio = null;
 		Long countRows = cotizacionService.getCountRowsCotizacion();
 		if(countRows != null){
-			folio = "FCO";
+			folio = StockConstants.CLAVE_FOLIO_COTIZACION;
 			if(String.valueOf(countRows.toString().length()).equals("1"))
 				folio += "00" + countRows;
 			else if(String.valueOf(countRows.toString().length()).equals("2"))
@@ -257,10 +252,9 @@ public class concentradoVM extends RequisicionVariables {
 		return folio;
 	}
 	
-	@SuppressWarnings("static-access")
 	@Command
 	public void autorizar() {
-		generarFolioCotizacion();
+		salvarCotizacion();
 	}
 	
 	

@@ -84,6 +84,9 @@ public class StockConstants {
 	public static final String ESTADO_COTIZACION_ACEPTADA = "COA";
 
 	public static final String BUSCAR_TODO = "*";
+	
+	public static final String CLAVE_FOLIO_REQUISICION = "FRQ";
+	public static final String CLAVE_FOLIO_COTIZACION = "FCO";
 
 	public static final String REPORT_PROVEEDOR_NAME_FILE = "C:\\reportProveedores.pdf";
 	public static final String REPORT_PROVEEDOR_PARAM1 = "parameter1";

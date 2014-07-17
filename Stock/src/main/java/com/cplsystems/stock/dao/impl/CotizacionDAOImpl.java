@@ -105,12 +105,28 @@ public class CotizacionDAOImpl extends HibernateDAOSuportUtil  implements Cotiza
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<Cotizacion> getByProveedor(Proveedor proveedor) {
-		return null;
+		List<Cotizacion> lista = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Cotizacion.class);
+		criteria.add(Restrictions.eq("proveedor", proveedor));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		lista = criteria.list();
+		return lista.size() > 0 ? lista : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<Cotizacion> getByRequisicion(Requisicion requisicion) {
-		return null;
+		List<Cotizacion> lista = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Cotizacion.class);
+		criteria.add(Restrictions.eq("requisicion", requisicion));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		lista = criteria.list();
+		return lista.size() > 0 ? lista : null;
 	}
 
 	@SuppressWarnings("unchecked")

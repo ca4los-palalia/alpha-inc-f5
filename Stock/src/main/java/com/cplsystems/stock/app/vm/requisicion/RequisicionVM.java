@@ -36,6 +36,7 @@ import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionInbox;
 import com.cplsystems.stock.domain.RequisicionProducto;
+import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -126,8 +127,10 @@ public class RequisicionVM extends RequisicionMetaClass {
 
 				if (requisicion.getIdRequisicion() == null) {// NUEVO REGISTRO
 					estatusRequisicion = estatusRequisicionService
-							.getByClave("RQ");
+							.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
 					requisicion.setEstatusRequisicion(estatusRequisicion);
+					requisicion.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
+					requisicion.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
 					requisicion.setFecha(Calendar.getInstance());
 					personaService.save(requisicion.getPersona());
 					requisicionService.save(requisicion);
@@ -306,8 +309,7 @@ public class RequisicionVM extends RequisicionMetaClass {
 		// requisiciones = requisicionService.getByEstatusRequisicion(estatus);
 
 		addNewItemToBill();
-		String folio = "F" + requisicionService.getUltimoFolio();
-		requisicion.setFolio(folio);
+		requisicion.setFolio(StockConstants.CLAVE_FOLIO_REQUISICION + requisicionService.getUltimoFolio());
 
 	}
 
@@ -436,6 +438,7 @@ public class RequisicionVM extends RequisicionMetaClass {
 
 			if (buscarRequisicion != null) {
 				requisicion = buscarRequisicion;
+				readOnly = false;
 				requisicionProductos = requisicionProductoService.getByRequisicion(buscarRequisicion);
 				stockUtils.showSuccessmessage(
 						"Requisicion con folio -" + requisicion.getBuscarRequisicion() + "- ha sido encontrada",
@@ -465,6 +468,7 @@ public class RequisicionVM extends RequisicionMetaClass {
 				else
 					mensaje = requisiciones.size() + " encontradas";
 				
+				readOnly = false;
 				stockUtils.showSuccessmessage(
 						"Requisiciones del Area(UR) -" + areaBuscar.getNombre() + "-: " + mensaje,
 						Clients.NOTIFICATION_TYPE_INFO, 0, null);
@@ -483,6 +487,9 @@ public class RequisicionVM extends RequisicionMetaClass {
 		loadItemsKeys();
 		initDefaultValues();
 		readOnly = false;
+		requisiciones = new ArrayList<>();
+		requisicion = new Requisicion();
+		requisicion.setFolio(StockConstants.CLAVE_FOLIO_REQUISICION + requisicionService.getUltimoFolio());
 	}
 
 	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
@@ -550,4 +557,11 @@ public class RequisicionVM extends RequisicionMetaClass {
 		disabledBuscadorArea = true;
 	}
 
+	@Command
+	@NotifyChange("*")
+	public void selectedResultadoRequisiciones(){
+		if(requisicionProductos == null)
+			requisicionProductos = new ArrayList<RequisicionProducto>();
+		requisicionProductos = requisicionProductoService.getByRequisicion(requisicion);
+	}
 }

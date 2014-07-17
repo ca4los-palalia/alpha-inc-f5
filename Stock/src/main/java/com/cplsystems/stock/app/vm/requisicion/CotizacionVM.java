@@ -187,11 +187,18 @@ public class CotizacionVM extends RequisicionVariables {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	@Command
 	@NotifyChange("*")
-	public void exportarExcel() {
+	public void enviarCotizacion() {
 		crearArchivoExcel();
+	}
+
+
+	@Command
+	@NotifyChange("*")
+	public void aceptarCotizacion() {
+		
 	}
 
 	@SuppressWarnings({ "deprecation", "unused", "static-access" })

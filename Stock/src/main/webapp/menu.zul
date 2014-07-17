@@ -39,31 +39,8 @@
 								<listheader width="20%" />
 								<listheader />
 							</listhead>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/catalogs.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProducts')">
-									<label
-										value="Altas de artículos y servicios" width="100%"
-										style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/find16x16.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showBuscadorProductos')">
-									<label value="Buscador artículos"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
+							
+							
 							<listitem
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
@@ -212,40 +189,14 @@
 						</listbox>
 					</tabpanel>
 					<tabpanel sclass="tab-red">
-						<listbox rows="3"
+						<listbox rows="1"
 							style="border: 0; background: #B8D335;"
 							sclass="tab-red menutabs">
 							<listhead>
 								<listheader width="20%" />
 								<listheader />
 							</listhead>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/nuevoDocumento.png" />
-								</listcell>
-
-								<listcell
-									onClick="@command('showProviders')">
-									<label value="Nuevo proveedor"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/find16x16.png" />
-								</listcell>
-
-								<listcell
-									onClick="@command('showProvidersSearch')">
-									<label
-										value="Buscador de proveedores" width="100%"
-										style="font-size: 10px;" />
-								</listcell>
-							</listitem>
+							
 							<listitem
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
@@ -263,7 +214,7 @@
 						</listbox>
 					</tabpanel>
 					<tabpanel sclass="tab-red">
-						<listbox rows="3"
+						<listbox rows="2"
 							style="border: 0; background: #B8D335;"
 							sclass="tab-red menutabs">
 							<listhead>
@@ -274,23 +225,11 @@
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
-										src="/images/toolbar/gear32.png" />
+										src="/images/toolbar/vineta12.png" />
 								</listcell>
 								<listcell
 									onClick="@command('showRequisitions')">
 									<label value="Requisición"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>							
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/gear32.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showRequsicionBuscador')">
-									<label value="Buscar requisiciones"
 										width="100%" style="font-size: 10px;" />
 								</listcell>
 							</listitem>
@@ -298,7 +237,7 @@
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
-										src="/images/toolbar/gear32.png" />
+										src="/images/toolbar/vineta12.png" />
 								</listcell>
 								<listcell
 									onClick="@command('showConcentrado')">

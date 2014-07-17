@@ -105,6 +105,27 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 				}
 				folio = String.valueOf(Integer.parseInt(numero) + 1);
 			}
+			
+			if(folio.length() > 0){
+				switch (folio.length()) {
+					case 1:
+						folio = "00000" + folio;
+						break;
+					case 2:
+						folio = "0000" + folio;
+						break;
+						
+					case 3:
+						folio = "000" + folio;
+						break;
+					case 4:
+						folio = "00" + folio;
+						break;
+					case 5:
+						folio = "0" + folio;
+						break;
+				}
+			}
 		}
 		return folio != null && !folio.isEmpty() ? folio : null;
 	}

@@ -30,12 +30,10 @@
 								tooltiptext="Generar cotización"
 								onClick="@command('autorizar')" />
 
-							<button image="/images/toolbar/delete.png"
+							<button image="/images/toolbar/delete.png" visible="false"
 								sclass="web_button" tooltiptext="Cancelar requisición"
 								onClick="@command('cancelarRequisicion')" />
-
-							<button label="Generar cotizacion"
-								sclass="web_button" />
+							
 
 						</hlayout>
 					</row>
@@ -50,9 +48,8 @@
 				<rows>
 					<row
 						style="background-color:transparent; border: 0;">
-						<textbox id="buscadorConcentradoId"
+						<textbox id="buscadorConcentradoId" onOK="@command('filtrarProductoPorRequisicion')"
 							value="@bind(rvm.requisicion.buscarRequisicion)" width="100%" />
-
 						<hlayout style="text-align:center">
 
 							<button
