@@ -487,7 +487,7 @@ public class RequisicionVM extends RequisicionMetaClass {
 		loadItemsKeys();
 		initDefaultValues();
 		readOnly = false;
-		requisiciones = new ArrayList<>();
+		requisiciones = new ArrayList<Requisicion>();
 		requisicion = new Requisicion();
 		requisicion.setFolio(StockConstants.CLAVE_FOLIO_REQUISICION + requisicionService.getUltimoFolio());
 	}
