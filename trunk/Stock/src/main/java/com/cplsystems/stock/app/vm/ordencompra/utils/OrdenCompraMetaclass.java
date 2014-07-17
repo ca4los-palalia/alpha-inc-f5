@@ -3,12 +3,12 @@
  */
 package com.cplsystems.stock.app.vm.ordencompra.utils;
 
-import java.util.Calendar;
-
 import org.zkoss.bind.annotation.Init;
-import org.zkoss.zul.SimpleListModel;
 
-import com.cplsystems.stock.domain.Persona;
+import com.cplsystems.stock.app.utils.SessionUtils;
+import com.cplsystems.stock.domain.OrdenCompraInbox;
+import com.cplsystems.stock.domain.Organizacion;
+
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
  * 
@@ -17,20 +17,31 @@ public class OrdenCompraMetaclass extends OrdenCompraVariables {
 
 	private static final long serialVersionUID = 5093877120990395398L;
 
-	//protected List<RequisicionProducto> requisicionProductos;
+	// protected List<RequisicionProducto> requisicionProductos;
 	@Init
 	public void init() {
 		initObjects();
 		initProperties();
 	}
 
-	public void initObjects(){
+	public void initObjects() {
+		loadOrdenesCompraInbox();
+	}
+
+	public void initProperties() {
 		
 	}
-	
-	public void initProperties(){
-		
+
+	private void loadOrdenesCompraInbox() {
+		ordenesCompraInbox = ordenCompraInboxService
+				.getAll((Organizacion) sessionUtils
+						.getFromSession(SessionUtils.FIRMA));
+		ordenCompraInboxSeleccionada = new OrdenCompraInbox();
+		for (OrdenCompraInbox compraInbox : ordenesCompraInbox) {
+			if (compraInbox.getLeido() != null && !compraInbox.getLeido()) {
+				compraInbox.setIcono(OrdenCompraInbox.NUEVO);
+			}
+		}
 	}
-	
-	
+
 }
