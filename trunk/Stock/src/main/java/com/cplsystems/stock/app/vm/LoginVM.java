@@ -39,8 +39,6 @@ public class LoginVM extends BasicStructure {
 				password = "";
 				return;
 			} else {
-				mailService.sendHTMLMail("csr.plz@gmail.com",
-						"csr.plz@gmail.com", "DEMO", "KEINE AHNUNG");
 				sessionUtils.addToSession(SessionUtils.USUARIO, usuario);
 				sessionUtils.addToSession(SessionUtils.FIRMA,
 						usuario.getOrganizacion());
