@@ -25,9 +25,10 @@ public class OrdenCompra implements Serializable {
 	private String codigo;
 	private Calendar fechaOrden;
 	private Cotizacion cotizacion;
-
+	private EstatusRequisicion estatusRequisicion;
 	private Organizacion organizacion;
 	private Usuarios usuario;
+	private String cancelarDescripcion;
 
 	@Id
 	@Column
@@ -84,4 +85,24 @@ public class OrdenCompra implements Serializable {
 	public void setUsuario(Usuarios usuario) {
 		this.usuario = usuario;
 	}
+	
+	@OneToOne
+	@JoinColumn(name = "estatusRequisicion")
+	public EstatusRequisicion getEstatusRequisicion() {
+		return estatusRequisicion;
+	}
+
+	public void setEstatusRequisicion(EstatusRequisicion estatusRequisicion) {
+		this.estatusRequisicion = estatusRequisicion;
+	}
+	
+	@Column
+	public String getCancelarDescripcion() {
+		return cancelarDescripcion;
+	}
+	
+	public void setCancelarDescripcion(String cancelarDescripcion) {
+		this.cancelarDescripcion = cancelarDescripcion;
+	}
+	
 }

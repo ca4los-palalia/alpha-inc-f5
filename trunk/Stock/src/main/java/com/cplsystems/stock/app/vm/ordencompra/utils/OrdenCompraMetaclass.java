@@ -3,6 +3,7 @@
  */
 package com.cplsystems.stock.app.vm.ordencompra.utils;
 
+import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
@@ -42,6 +43,31 @@ public class OrdenCompraMetaclass extends OrdenCompraVariables {
 				compraInbox.setIcono(OrdenCompraInbox.NUEVO);
 			}
 		}
+	}
+	
+	@Command
+	public void checkNueva() {
+		if (!checkBuscarNueva)
+			checkBuscarNueva = true;
+		else
+			checkBuscarNueva = false;
+	}
+
+	@Command
+	public void checkCancelada() {
+		if (!checkBuscarCancelada)
+			checkBuscarCancelada = true;
+		else
+			checkBuscarCancelada = false;
+	}
+
+	@Command
+	public void checkAceptada() {
+		if (!checkBuscarAceptada)
+			checkBuscarAceptada = true;
+		else
+			checkBuscarAceptada = false;
+
 	}
 
 }

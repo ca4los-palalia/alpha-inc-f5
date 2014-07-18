@@ -149,7 +149,7 @@ public class DataLayer implements Serializable {
 	protected List<Posicion> posiciones;
 	protected List<ProductoNaturaleza> productosNaturalezas;
 	protected List<Giro> giros;
-	protected List<OrdenCompra> OrdenesCompras;
+	protected List<OrdenCompra> ordenesCompras;
 	
 	public Producto getProducto() {
 		return producto;
@@ -726,11 +726,13 @@ public class DataLayer implements Serializable {
 	}
 
 	public List<OrdenCompra> getOrdenesCompras() {
-		return OrdenesCompras;
+		return ordenesCompras;
 	}
 
 	public void setOrdenesCompras(List<OrdenCompra> ordenesCompras) {
-		OrdenesCompras = ordenesCompras;
+		this.ordenesCompras = ordenesCompras;
 	}
+
+	
 	
 }

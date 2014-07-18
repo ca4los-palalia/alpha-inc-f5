@@ -15,8 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.app.utils.SessionUtils;
+import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.dao.OrdenCompraDAO;
 import com.cplsystems.stock.domain.Cotizacion;
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.OrdenCompra;
 import com.cplsystems.stock.domain.Organizacion;
 
@@ -138,6 +140,37 @@ public class OrdenCompraDAOImpl extends HibernateDAOSuportUtil implements OrdenC
 		}
 		return folio != null && !folio.isEmpty() ? folio : null;
 	
+	}
+
+	@Override
+	public List<OrdenCompra> getOrdenesByEstatusAndFolioOr(
+			String folioOrdenCompra, List<EstatusRequisicion> estatus) {
+		
+		
+		boolean realizarConsulta = true;
+		
+		List<OrdenCompra> lista = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(OrdenCompra.class);
+		
+		//------------------------------------
+		if(folioOrdenCompra != null && !folioOrdenCompra.isEmpty()){
+			if(!folioOrdenCompra.equals(StockConstants.BUSCAR_TODO))
+				criteria.add(Restrictions.like("codigo", "%" + folioOrdenCompra + "%"));
+			else
+				realizarConsulta = false;
+		}	
+		if(estatus != null && estatus.size() > 0){
+			if(realizarConsulta)
+				criteria.add(Restrictions.in("estatusRequisicion", estatus));
+		}
+			
+		//------------------------------------
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		criteria.setMaxResults(100);
+		lista = criteria.list();
+		
+		return lista.size() > 0 ? lista : null;
 	}
 
 }

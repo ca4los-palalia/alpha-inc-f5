@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.OrdenCompraDAO;
 import com.cplsystems.stock.domain.Cotizacion;
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.OrdenCompra;
 
 /**
@@ -55,6 +56,10 @@ public class OrdenCompraService {
 	
 	public String getCodigoDeOrden(){
 		return ordenCompraDAO.getCodigoDeOrden();
+	}
+	
+	public List<OrdenCompra> getOrdenesByEstatusAndFolioOr(String folioOrdenCompra, List<EstatusRequisicion> estatus){
+		return ordenCompraDAO.getOrdenesByEstatusAndFolioOr(folioOrdenCompra, estatus);
 	}
 
 }
