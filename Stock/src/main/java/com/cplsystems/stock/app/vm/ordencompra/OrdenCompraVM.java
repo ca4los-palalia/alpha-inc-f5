@@ -37,7 +37,19 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 	@Init
 	public void init() {
 		super.init();
+		loadInbox();
 		requisicion = new Requisicion();
+	}
+
+	private void loadInbox() {
+		requisicionProductos = requisicionProductoService.getAllRequisiciones();
+		if (requisicionProductos == null) {
+			requisicionProductos = new ArrayList<RequisicionProducto>();
+		}
+		requisiciones = requisicionService.getAll();
+		if (requisiciones == null) {
+			requisiciones = new ArrayList<Requisicion>();
+		}
 	}
 
 	@Command
