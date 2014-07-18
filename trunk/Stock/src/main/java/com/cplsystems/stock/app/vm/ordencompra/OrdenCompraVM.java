@@ -16,18 +16,13 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
 
-import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.ordencompra.utils.OrdenCompraMetaclass;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
-import com.cplsystems.stock.domain.OrdenCompra;
 import com.cplsystems.stock.domain.OrdenCompraInbox;
-import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Requisicion;
-import com.cplsystems.stock.domain.RequisicionProducto;
-import com.cplsystems.stock.domain.Usuarios;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class OrdenCompraVM extends OrdenCompraMetaclass {
@@ -37,19 +32,7 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 	@Init
 	public void init() {
 		super.init();
-		loadInbox();
 		requisicion = new Requisicion();
-	}
-
-	private void loadInbox() {
-		requisicionProductos = requisicionProductoService.getAllRequisiciones();
-		if (requisicionProductos == null) {
-			requisicionProductos = new ArrayList<RequisicionProducto>();
-		}
-		requisiciones = requisicionService.getAll();
-		if (requisiciones == null) {
-			requisiciones = new ArrayList<Requisicion>();
-		}
 	}
 
 	@Command
@@ -152,7 +135,7 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 					"Es necesario seleccionar primero una orden de compra",
 					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 	}
-	
+
 	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
@@ -160,14 +143,12 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 		if (ordenCompra != null) {
 			if (ordenCompra.getEstatusRequisicion().getClave()
 					.equals(StockConstants.ESTADO_ORDEN_COMPRA_NUEVA)) {
-				
+
 				EstatusRequisicion estado = estatusRequisicionService
 						.getByClave(StockConstants.ESTADO_ORDEN_COMPRA_TERMINADA);
 
 				ordenCompra.setEstatusRequisicion(estado);
 				ordenCompraService.save(ordenCompra);
-
-				
 
 				OrdenCompraInbox inbox = new OrdenCompraInbox();
 				inbox.setOrdenCompra(ordenCompra);
@@ -176,16 +157,16 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 						.convertirCalendarToDate(Calendar.getInstance()));
 				ordenCompraInboxService.save(inbox);
 
-				stockUtils.showSuccessmessage("La orden de compra -"
-						+ ordenCompra.getCodigo()
-						+ "- ha sido Aceptada", Clients.NOTIFICATION_TYPE_INFO,
-						0, null);
+				stockUtils.showSuccessmessage("La orden de compra ["
+						+ ordenCompra.getCodigo() + "] ha sido Aceptada",
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
 			} else
-				stockUtils.showSuccessmessage("La orden de compra -"
-						+ ordenCompra.getCodigo()
-						+ "- no puede ser aceptada bajo este estatus ("
-						+ ordenCompra.getEstatusRequisicion()
-								.getNombre() + ")",
+				stockUtils.showSuccessmessage(
+						"La orden de compra ["
+								+ ordenCompra.getCodigo()
+								+ "] no puede ser aceptada bajo este estatus ("
+								+ ordenCompra.getEstatusRequisicion()
+										.getNombre() + ")",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 
 		} else
@@ -193,6 +174,5 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 					"Es necesario seleccionar primero una orden de compra",
 					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 	}
-	
 
 }
