@@ -52,7 +52,7 @@
 				<listhead>
 					<listheader align="center" width="5%"
 						style="font-size:smaller;" />
-					<listheader label="Folio" align="center" width="7%"
+					<listheader label="Código" align="center" width="7%"
 						style="font-size:smaller;" />
 					<listheader label="Comentarios" align="center"
 						width="30%" style="font-size:smaller;" />
@@ -71,23 +71,23 @@
 						</listcell>
 						<listcell style="font-size:smaller;"
 							onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)"
-							label="${ordenCompra.cotizacion.requisicion.folio}" />
+							label="${ordenCompra.ordenCompra.codigo}" />
 						<listcell style="font-size:smaller;"
 							onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)"
 							label="${ordenCompra.comentarios}" />
 						<listcell style="font-size:smaller;"
 							onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)"
-							label="${ordenCompra.cotizacion.proveedor.nombre}" />
+							label="${ordenCompra.ordenCompra.cotizacion.proveedor.nombre}" />
 						<listcell style="font-size:smaller;"
 							onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)"
-							label="${ordenCompra.cotizacion.total}" />
+							label="${ordenCompra.ordenCompra.cotizacion.total}" />
 						<listcell
 							onClick="@command('transferirOrdenCompraToFormulario', index=ordenCompraStatus.index)">
 							<hlayout>
 								<button disabled="true"
-									style="${ordenCompra.cotizacion.estatusRequisicion.color}" />
+									style="${ordenCompra.ordenCompra.cotizacion.estatusRequisicion.color}" />
 								<label style="font-size:smaller;"
-									value="${ordenCompra.cotizacion.estatusRequisicion.nombre}" />
+									value="${ordenCompra.ordenCompra.cotizacion.estatusRequisicion.nombre}" />
 							</hlayout>
 						</listcell>
 					</listitem>
@@ -99,6 +99,7 @@
 		<groupbox mold="3d" open="false"
 			tooltiptext="Clic para ver formulario de busqueda">
 			<caption label="Buscar"
+			
 				image="/images/toolbar/find16x16.png" />
 
 
