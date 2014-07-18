@@ -142,7 +142,8 @@ public class OrdenCompraDAOImpl extends HibernateDAOSuportUtil implements OrdenC
 	
 	}
 
-	@Override
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<OrdenCompra> getOrdenesByEstatusAndFolioOr(
 			String folioOrdenCompra, List<EstatusRequisicion> estatus) {
 		
