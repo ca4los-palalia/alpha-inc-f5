@@ -34,7 +34,7 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 	}
 
 	@Command
-	public void transferirOrdenCompraToFormuarlio(
+	public void transferirOrdenCompraToFormulario(
 			@BindingParam("index") Integer index) {
 		if (index != null) {
 			OrdenCompraInbox toLoad = ordenesCompraInbox.get(index);
