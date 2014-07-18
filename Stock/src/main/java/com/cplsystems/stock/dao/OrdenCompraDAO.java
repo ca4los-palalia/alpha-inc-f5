@@ -7,7 +7,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.cplsystems.stock.domain.Cotizacion;
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.OrdenCompra;
+import com.cplsystems.stock.domain.Proveedor;
 
 /**
  * @author Carlos Palalía López
@@ -29,4 +31,7 @@ public interface OrdenCompraDAO {
 	public List<OrdenCompra> getByFechaOrden(Calendar fechaOrden);
 
 	public String getCodigoDeOrden();
+	
+	public List<OrdenCompra> getOrdenesByEstatusAndFolioOr(
+			String folioOrdenCompra, List<EstatusRequisicion> estatus);
 }

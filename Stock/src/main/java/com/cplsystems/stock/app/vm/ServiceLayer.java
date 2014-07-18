@@ -174,6 +174,9 @@ public abstract class ServiceLayer extends DataLayer {
 	protected CotizacionInboxService cotizacionInboxService;
 
 	@WireVariable
+	protected OrdenCompraService compraService; 
+	
+	@WireVariable
 	protected OrdenCompraInboxService ordenCompraInboxService;
 
 	@WireVariable

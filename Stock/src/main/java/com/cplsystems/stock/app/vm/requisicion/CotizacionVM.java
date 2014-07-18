@@ -246,8 +246,10 @@ public class CotizacionVM extends RequisicionVariables {
 				cotizacionService.save(cotizacionSelected);
 
 				OrdenCompra compra = new OrdenCompra();
+				
 				estado = estatusRequisicionService
 						.getByClave(StockConstants.ESTADO_ORDEN_COMPRA_NUEVA);
+				compra.setEstatusRequisicion(estado);
 				compra.setOrganizacion((Organizacion) sessionUtils
 						.getFromSession(SessionUtils.FIRMA));
 				compra.setUsuario((Usuarios) sessionUtils
@@ -314,7 +316,7 @@ public class CotizacionVM extends RequisicionVariables {
 
 	}
 
-	@SuppressWarnings({ "deprecation", "unused", "static-access" })
+	@SuppressWarnings({ "deprecation", "unused" })
 	private void crearArchivoExcel() {
 		boolean excelGenerado = false;
 		HSSFSheet hoja;
