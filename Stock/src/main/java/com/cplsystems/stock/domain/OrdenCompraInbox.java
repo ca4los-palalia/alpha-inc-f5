@@ -36,7 +36,6 @@ public class OrdenCompraInbox implements Serializable {
 	private Date fechaCreacion;
 	private String comentarios;
 	private String icono;
-	//private Cotizacion cotizacion;
 
 	@Id
 	@Column
@@ -45,7 +44,6 @@ public class OrdenCompraInbox implements Serializable {
 		return idOrdenCompraInbox;
 	}
 
-	
 	public void setIdOrdenCompraInbox(Long idOrdenCompraInbox) {
 		this.idOrdenCompraInbox = idOrdenCompraInbox;
 	}
@@ -96,14 +94,4 @@ public class OrdenCompraInbox implements Serializable {
 	public void setComentarios(String comentarios) {
 		this.comentarios = comentarios;
 	}
-	/*
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cotizacion")
-	public Cotizacion getCotizacion() {
-		return cotizacion;
-	}
-
-	public void setCotizacion(Cotizacion cotizacion) {
-		this.cotizacion = cotizacion;
-	}*/
 }

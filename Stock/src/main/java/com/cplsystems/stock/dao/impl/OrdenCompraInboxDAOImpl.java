@@ -36,6 +36,8 @@ public class OrdenCompraInboxDAOImpl extends HibernateDAOSuportUtil implements
 	public List<OrdenCompraInbox> getAllNews(final Organizacion organizacion) {
 		return getHibernateTemplate().find(
 				"FROM OrdenCompraInbox as o LEFT JOIN FETCH o.ordenCompra as c "
+						+ "LEFT JOIN FETCH c.cotizacion as k "
+						+ "LEFT JOIN FETCH k.proveedor as p "
 						+ "WHERE o.leido = ? AND c.organizacion = ?", false,
 				organizacion);
 	}
@@ -45,6 +47,8 @@ public class OrdenCompraInboxDAOImpl extends HibernateDAOSuportUtil implements
 	public List<OrdenCompraInbox> getAll(final Organizacion organizacion) {
 		return getHibernateTemplate().find(
 				"FROM OrdenCompraInbox as o LEFT JOIN FETCH o.ordenCompra as c "
+						+ "LEFT JOIN FETCH c.cotizacion as k "
+						+ "LEFT JOIN FETCH k.proveedor as p "
 						+ "WHERE c.organizacion = ?", organizacion);
 	}
 
