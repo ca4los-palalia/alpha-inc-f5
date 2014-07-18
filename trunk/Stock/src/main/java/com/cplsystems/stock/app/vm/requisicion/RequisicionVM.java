@@ -134,6 +134,12 @@ public class RequisicionVM extends RequisicionMetaClass {
 					requisicion.setFecha(Calendar.getInstance());
 					personaService.save(requisicion.getPersona());
 					requisicionService.save(requisicion);
+					
+					RequisicionInbox inbox = new RequisicionInbox();
+					inbox.setRequisicion(requisicion);
+					inbox.setLeido(false);
+					inbox.setFechaRegistro(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+					requisicionInboxService.save(inbox);
 
 					String productosNoGuardados = "";
 					for (int i = 0; i < requisicionProductos.size(); i++) {
@@ -143,15 +149,17 @@ public class RequisicionVM extends RequisicionMetaClass {
 
 						if (requisicionProducto.getProducto() != null
 								&& requisicionProducto.getProducto()
-										.getIdProducto() != null)
+										.getIdProducto() != null){
+							requisicionProducto.setEntregados(0L);
 							requisicionProductoService
-									.save(requisicionProducto);
-						else {// INTENTAR SALVAR
+							.save(requisicionProducto);
+						} else {// INTENTAR SALVAR
 							List<Producto> p = productoService
 									.getByClaveNombre(requisicionProducto
 											.getProducto().getClave());
 							if (p != null) {
 								requisicionProducto.setProducto(p.get(0));
+								requisicionProducto.setEntregados(0L);
 								requisicionProductoService
 										.save(requisicionProducto);
 							} else
@@ -172,22 +180,12 @@ public class RequisicionVM extends RequisicionMetaClass {
 							+ requisicion.getFolio() + "- ha sído creada. "
 							+ mensajeError, Clients.NOTIFICATION_TYPE_INFO, 0,
 							null);
-					requisicion = new Requisicion();
-					requisicionProductos = new ArrayList<RequisicionProducto>();
-					addNewItemToBill();
+					limpiarFormulario();
 				} else {// ACTUALIZACIOND E REQUISICION
 					requisicion.setFecha(Calendar.getInstance());
 					requisicionService.save(requisicion);
 
 					String productosNoGuardados = "";
-
-					// ELIMINAR ANTERIORES PRODUCTOS DE ESTA REQUISICION
-					/*
-					 * List<RequisicionProducto> rpl =
-					 * requisicionProductoService.getByRequisicion(requisicion);
-					 * if(rpl != null){ for (RequisicionProducto item : rpl) {
-					 * requisicionProductoService.delete(item); } }
-					 */// ------------------------------
 
 					for (int i = 0; i < requisicionProductos.size(); i++) {
 						RequisicionProducto requisicionProducto = requisicionProductos
@@ -488,7 +486,6 @@ public class RequisicionVM extends RequisicionMetaClass {
 		initDefaultValues();
 		readOnly = false;
 		requisiciones = new ArrayList<Requisicion>();
-		requisicion = new Requisicion();
 		requisicion.setFolio(StockConstants.CLAVE_FOLIO_REQUISICION + requisicionService.getUltimoFolio());
 	}
 

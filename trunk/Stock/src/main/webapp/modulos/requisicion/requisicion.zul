@@ -47,56 +47,56 @@
 				tooltiptext="Clic para ver bandeja de requisiciones">
 				<caption label="Bandeja de requisiciones"
 					image="/images/toolbar/mailColor16.png" />
-			
-			
-			<listbox model="@load(rvm.requisicionesInbox)"
-				selectedItem="@bind(rvm.requisicionInboxSeleccionada)"
-				emptyMessage="No hay requisiciones" mold="paging" pageSize="6"
-				height="100%">
-				<listhead>
-					<listheader align="center" width="5%"
-						style="font-size:smaller;" />
-					<listheader label="Folio" align="center" width="7%"
-						style="font-size:smaller;" />
-					<listheader label="Adscripción" align="center"
-						width="25%" style="font-size:smaller;" />
-					<listheader label="Área" align="center"
-						style="font-size:smaller;" />
-					<listheader label="Comentarios" align="center"
-						width="20%" style="font-size:smaller;" />
-					<listheader label="Estado" align="center"
-						width="23%" style="font-size:smaller;" />
-				</listhead>
-				<template name="model" var="requisicion">
-					<listitem>
-						<listcell style="font-size:smaller;"
-							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
-							<image src="@load(requisicion.icono)" />
-						</listcell>
-						<listcell style="font-size:smaller;"
-							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-							label="${requisicion.requisicion.folio}" />
-						<listcell style="font-size:smaller;"
-							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-							label="${requisicion.requisicion.adscripcion}" />
-						<listcell style="font-size:smaller;"
-							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-							label="${requisicion.requisicion.area.nombre}" />
-						<listcell style="font-size:smaller;"
-							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-							label="${requisicion.comentarios}" />
-						<listcell
-							onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
-							<hlayout>
-								<button disabled="true"
-									style="${requisicion.requisicion.estatusRequisicion.color}" />
-								<label style="font-size:smaller;"
-									value="${requisicion.requisicion.estatusRequisicion.nombre}" />
-							</hlayout>
-						</listcell>
-					</listitem>
-				</template>
-			</listbox>
+
+
+				<listbox model="@load(rvm.requisicionesInbox)"
+					selectedItem="@bind(rvm.requisicionInboxSeleccionada)"
+					emptyMessage="No hay requisiciones" mold="paging" pageSize="6"
+					height="100%">
+					<listhead>
+						<listheader align="center" width="5%"
+							style="font-size:smaller;" />
+						<listheader label="Folio" align="center"
+							width="7%" style="font-size:smaller;" />
+						<listheader label="Adscripción" align="center"
+							width="25%" style="font-size:smaller;" />
+						<listheader label="Área" align="center"
+							style="font-size:smaller;" />
+						<listheader label="Comentarios" align="center"
+							width="20%" style="font-size:smaller;" />
+						<listheader label="Estado" align="center"
+							width="23%" style="font-size:smaller;" />
+					</listhead>
+					<template name="model" var="requisicion">
+						<listitem>
+							<listcell style="font-size:smaller;"
+								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
+								<image src="@load(requisicion.icono)" />
+							</listcell>
+							<listcell style="font-size:smaller;"
+								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+								label="${requisicion.requisicion.folio}" />
+							<listcell style="font-size:smaller;"
+								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+								label="${requisicion.requisicion.adscripcion}" />
+							<listcell style="font-size:smaller;"
+								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+								label="${requisicion.requisicion.area.nombre}" />
+							<listcell style="font-size:smaller;"
+								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+								label="${requisicion.comentarios}" />
+							<listcell
+								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
+								<hlayout>
+									<button disabled="true"
+										style="${requisicion.requisicion.estatusRequisicion.color}" />
+									<label style="font-size:smaller;"
+										value="${requisicion.requisicion.estatusRequisicion.nombre}" />
+								</hlayout>
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
 			</groupbox>
 
 			<groupbox mold="3d" open="false"

@@ -34,12 +34,12 @@ public class Cotizacion {
 	private Requisicion requisicion;
 	private EstatusRequisicion estatusRequisicion;
 	private String excelFile;
-	
+	private String cancelarDescripcion;
 	private String folioCotizacion;
 	
 	private Organizacion organizacion;
 	private Usuarios usuario;
-
+	
 	@Id
 	@Column(name = "idcotizacion", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -196,6 +196,15 @@ public class Cotizacion {
 
 	public void setUsuario(Usuarios usuario) {
 		this.usuario = usuario;
+	}
+
+	@Column
+	public String getCancelarDescripcion() {
+		return cancelarDescripcion;
+	}
+
+	public void setCancelarDescripcion(String cancelarDescripcion) {
+		this.cancelarDescripcion = cancelarDescripcion;
 	}
 	
 }

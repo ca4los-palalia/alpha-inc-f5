@@ -13,7 +13,7 @@
 			<grid>
 				<columns>
 					<column />
-					<column width="50%" zclass="shadowMenuActions" />
+					<column width="15%" zclass="shadowMenuActions" />
 				</columns>
 				<rows>
 					<row zclass="shadowMenuActions">
@@ -23,17 +23,16 @@
 								zclass="panelInfoItemMenuTitle" />
 						</div>
 						<hlayout
-							style="text-align:right; margin:5px ">
-							<button
-								image="/images/toolbar/generate32.png" orient="vertical"
-								label="Gerarar cotizacion" sclass="web_button"
-								tooltiptext="Generar cotización"
-								onClick="@command('autorizar')" />
-
-							<button image="/images/toolbar/delete.png" visible="false"
-								sclass="web_button" tooltiptext="Cancelar requisición"
-								onClick="@command('cancelarRequisicion')" />
+							style="margin:5px ">
 							
+							<button image="/images/toolbar/saveOff.png"
+								sclass="web_button" tooltiptext="Guardar cambios"
+								onClick="@command('guardarCambios')" />
+								
+							<button
+								image="/images/toolbar/generate32.png" sclass="web_button"
+								tooltiptext="Generar cotización"
+								onClick="@command('autorizar')" />							
 
 						</hlayout>
 					</row>
@@ -63,7 +62,7 @@
 
 
 
-			<listbox rows="5" model="@load(rvm.requisicionProductos)"
+			<listbox rows="8" model="@load(rvm.requisicionProductos)"
 				onSelect="@command('cargarProveedoresProducto')"
 				selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
 				emptyMessage="No hay elementos en la requisición">

@@ -3,6 +3,7 @@
  */
 package com.cplsystems.stock.services;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,18 @@ public class OrdenCompraService {
 	public List<OrdenCompra> getByCotizacion(Cotizacion cotizacion)
 			throws DataAccessException {
 		return ordenCompraDAO.getByCotizacion(cotizacion);
+	}
+	
+	public OrdenCompra getByCodigo(String codigo){
+		return ordenCompraDAO.getByCodigo(codigo);
+	}
+	
+	public List<OrdenCompra> getByFechaOrden(Calendar fechaOrden){
+		return ordenCompraDAO.getByFechaOrden(fechaOrden);
+	}
+	
+	public String getCodigoDeOrden(){
+		return ordenCompraDAO.getCodigoDeOrden();
 	}
 
 }

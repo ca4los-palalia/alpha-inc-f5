@@ -9,7 +9,6 @@ import java.util.List;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.AImage;
@@ -35,6 +34,7 @@ import com.cplsystems.stock.domain.FamiliasProducto;
 import com.cplsystems.stock.domain.Giro;
 import com.cplsystems.stock.domain.Moneda;
 import com.cplsystems.stock.domain.Municipio;
+import com.cplsystems.stock.domain.OrdenCompra;
 import com.cplsystems.stock.domain.Pais;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Posicion;
@@ -102,6 +102,7 @@ public class DataLayer implements Serializable {
 	protected Area area;
 	protected Area areaBuscar;
 	protected Unidad unidad;
+	protected OrdenCompra ordenCompra;
 	protected Posicion posicion;
 	protected FamiliasProducto familiasProducto;
 	protected ProductoNaturaleza productoNaturaleza;
@@ -148,6 +149,7 @@ public class DataLayer implements Serializable {
 	protected List<Posicion> posiciones;
 	protected List<ProductoNaturaleza> productosNaturalezas;
 	protected List<Giro> giros;
+	protected List<OrdenCompra> OrdenesCompras;
 	
 	public Producto getProducto() {
 		return producto;
@@ -713,6 +715,22 @@ public class DataLayer implements Serializable {
 
 	public void setCotizacionesList(List<Cotizacion> cotizacionesList) {
 		this.cotizacionesList = cotizacionesList;
+	}
+
+	public OrdenCompra getOrdenCompra() {
+		return ordenCompra;
+	}
+
+	public void setOrdenCompra(OrdenCompra ordenCompra) {
+		this.ordenCompra = ordenCompra;
+	}
+
+	public List<OrdenCompra> getOrdenesCompras() {
+		return OrdenesCompras;
+	}
+
+	public void setOrdenesCompras(List<OrdenCompra> ordenesCompras) {
+		OrdenesCompras = ordenesCompras;
 	}
 	
 }

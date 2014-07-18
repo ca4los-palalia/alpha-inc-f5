@@ -758,11 +758,8 @@
 						</tabpanel>
 
 						<tabpanel>
-
-
-
 							<listbox
-								emptyMessage="Aun no existen productos vendidos" rows="5"
+								emptyMessage="No existen productos comprados" rows="5"
 								width="100%" model="@load(pvm.cotizacionDB)">
 
 								<listhead>

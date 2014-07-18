@@ -30,7 +30,7 @@ public class RequisicionProducto implements Serializable {
 	private Requisicion requisicion;
 	private Producto producto;
 	private Float importe;
-	private String partida;
+	//private String partida;
 	private CofiaPartidaGenerica cofiaPartidaGenerica;
 	private Float totalProductoPorUnidad;
 	private Cotizacion cotizacion;
@@ -120,7 +120,7 @@ public class RequisicionProducto implements Serializable {
 	public void setImporte(Float importe) {
 		this.importe = importe;
 	}
-
+/*
 	@Column
 	public String getPartida() {
 		return partida;
@@ -128,7 +128,7 @@ public class RequisicionProducto implements Serializable {
 
 	public void setPartida(String partida) {
 		this.partida = partida;
-	}
+	}*/
 
 	@Transient
 	public Float getTotalProductoPorUnidad() {

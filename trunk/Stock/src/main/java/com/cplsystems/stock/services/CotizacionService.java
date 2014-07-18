@@ -82,4 +82,8 @@ public class CotizacionService {
 	public List<Cotizacion> getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(String folioCotizacion, List<Proveedor> proveedores, List<EstatusRequisicion> estatus){
 		return cotizacionDAO.getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(folioCotizacion, proveedores, estatus);
 	}
+	
+	public Cotizacion getCotizacionByRequisicionAndProveedor(Requisicion requisicion, Proveedor proveedor){
+		return cotizacionDAO.getCotizacionByRequisicionAndProveedor(requisicion, proveedor);
+	}
 }
