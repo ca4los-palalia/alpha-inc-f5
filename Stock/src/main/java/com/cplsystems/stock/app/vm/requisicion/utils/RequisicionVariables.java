@@ -40,7 +40,7 @@ public class RequisicionVariables extends BasicStructure {
 	protected boolean checkBuscarAceptada;
 	protected List<RequisicionInbox> requisicionesInbox;
 	protected RequisicionInbox requisicionInboxSeleccionada;
-	protected boolean readOnly = true;
+	protected boolean readOnly = false;
 
 	protected List<CotizacionInbox> cotizacionesInbox;
 	protected CotizacionInbox cotizacionInboxSeleccionada;
