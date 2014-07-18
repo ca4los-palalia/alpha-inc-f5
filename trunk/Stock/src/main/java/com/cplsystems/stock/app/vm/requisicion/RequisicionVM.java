@@ -27,11 +27,13 @@ import org.zkoss.zul.Window;
 import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
+import com.cplsystems.stock.app.utils.UserPrivileges;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Persona;
+import com.cplsystems.stock.domain.Privilegios;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionInbox;
@@ -51,11 +53,10 @@ public class RequisicionVM extends RequisicionMetaClass {
 	@Init
 	public void init() {
 		super.init();
-
 		disabledBuscadorFolio = true;
 		disabledBuscadorArea = true;
 		areaBuscar = new Area();
-		areas = areaService.getAll();
+
 		if (requisicion == null)
 			requisicion = new Requisicion();
 
@@ -109,6 +110,7 @@ public class RequisicionVM extends RequisicionMetaClass {
 	}
 
 	@SuppressWarnings("static-access")
+	@NotifyChange("*")
 	@Command
 	public void saveChanges() {
 		if (readOnly) {
@@ -129,16 +131,19 @@ public class RequisicionVM extends RequisicionMetaClass {
 					estatusRequisicion = estatusRequisicionService
 							.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
 					requisicion.setEstatusRequisicion(estatusRequisicion);
-					requisicion.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
-					requisicion.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
+					requisicion.setOrganizacion((Organizacion) sessionUtils
+							.getFromSession(SessionUtils.FIRMA));
+					requisicion.setUsuario((Usuarios) sessionUtils
+							.getFromSession(SessionUtils.USUARIO));
 					requisicion.setFecha(Calendar.getInstance());
 					personaService.save(requisicion.getPersona());
 					requisicionService.save(requisicion);
-					
+
 					RequisicionInbox inbox = new RequisicionInbox();
 					inbox.setRequisicion(requisicion);
 					inbox.setLeido(false);
-					inbox.setFechaRegistro(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+					inbox.setFechaRegistro(stockUtils
+							.convertirCalendarToDate(Calendar.getInstance()));
 					requisicionInboxService.save(inbox);
 
 					String productosNoGuardados = "";
@@ -149,10 +154,10 @@ public class RequisicionVM extends RequisicionMetaClass {
 
 						if (requisicionProducto.getProducto() != null
 								&& requisicionProducto.getProducto()
-										.getIdProducto() != null){
+										.getIdProducto() != null) {
 							requisicionProducto.setEntregados(0L);
 							requisicionProductoService
-							.save(requisicionProducto);
+									.save(requisicionProducto);
 						} else {// INTENTAR SALVAR
 							List<Producto> p = productoService
 									.getByClaveNombre(requisicionProducto
@@ -176,10 +181,26 @@ public class RequisicionVM extends RequisicionMetaClass {
 								+ ". Posible causa, la clave del producto que se ingreso no es la correcta";
 					}
 
-					stockUtils.showSuccessmessage("La requisición con fólio -"
-							+ requisicion.getFolio() + "- ha sído creada. "
-							+ mensajeError, Clients.NOTIFICATION_TYPE_INFO, 0,
-							null);
+					stockUtils.showSuccessmessage(
+									"La requisición con fólio ["
+											+ requisicion.getFolio()
+											+ "] ha sído creada y se ha enviado un email para su notificación "
+											+ mensajeError,
+									Clients.NOTIFICATION_TYPE_INFO, 0, null);
+					List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
+					for (Privilegios privilegio : privilegios) {
+						if (privilegio.getUsuarios().getPersona().getContacto() != null) {
+							mailService.sendMail(
+									privilegio.getUsuarios().getPersona()
+											.getContacto().getEmail()
+											.getEmail(),
+									"csr.plz@gmail.com",
+									"Nueva requisición",
+									"La requisición con fólio ["
+											+ requisicion.getFolio()
+											+ "] ha sído creada. ");
+						}
+					}
 					limpiarFormulario();
 				} else {// ACTUALIZACIOND E REQUISICION
 					requisicion.setFecha(Calendar.getInstance());
@@ -219,9 +240,9 @@ public class RequisicionVM extends RequisicionMetaClass {
 								+ ". Posible causa, la clave del producto que se ingreso no es la correcta";
 					}
 
-					stockUtils.showSuccessmessage("La requisición con fólio -"
+					stockUtils.showSuccessmessage("La requisición con fólio ["
 							+ requisicion.getFolio()
-							+ "- ha sído actualizada. " + mensajeError,
+							+ "] ha sído actualizada. " + mensajeError,
 							Clients.NOTIFICATION_TYPE_INFO, 0, null);
 					requisicion = new Requisicion();
 					requisicionProductos = new ArrayList<RequisicionProducto>();
@@ -293,21 +314,45 @@ public class RequisicionVM extends RequisicionMetaClass {
 		return mensaje;
 	}
 
+	@NotifyChange("*")
 	private void initDefaultValues() {
 		cofiaPartidaGenericas = cofiaPartidaGenericaService.getAll();
 		cofiaPartidaGenericas = cofiaPartidaGenericaService.getAll();
 		cofiaProgs = cofiaProgService.getAll();
 		cofiaPys = cofiaPyService.getAll();
 		cofiaFuenteFinanciamientos = cofiaFuenteFinanciamientoService.getAll();
-
+		areas = areaService.getAll();
 		requisicion.setPersona(new Persona());
+
+		if (areas != null && areas.size() > 0) {
+			requisicion.setArea(areas.get(0));
+		}
+
+		if (cofiaProgs != null && cofiaProgs.size() > 0) {
+			requisicion.setCofiaProg(cofiaProgs.get(0));
+		}
+
+		if (cofiaPys != null && cofiaPys.size() > 0) {
+			requisicion.setCofiaPy(cofiaPys.get(0));
+		}
+
+		if (cofiaFuenteFinanciamientos != null
+				&& cofiaFuenteFinanciamientos.size() > 0) {
+			requisicion.setCofiaFuenteFinanciamiento(cofiaFuenteFinanciamientos
+					.get(0));
+		}
+
+		if (posiciones != null && posiciones.size() > 0) {
+			requisicion.setPosicion(posiciones.get(0));
+		}
 
 		// EstatusRequisicion estatus =
 		// estatusRequisicionService.getByClave("RQ");
 		// requisiciones = requisicionService.getByEstatusRequisicion(estatus);
 
 		addNewItemToBill();
-		requisicion.setFolio(StockConstants.CLAVE_FOLIO_REQUISICION + requisicionService.getUltimoFolio());
+		requisicion.setFolio(StockConstants.CLAVE_FOLIO_REQUISICION
+				+ requisicionService.getUltimoFolio());
 
 	}
 
@@ -439,12 +484,12 @@ public class RequisicionVM extends RequisicionMetaClass {
 				readOnly = false;
 				requisicionProductos = requisicionProductoService.getByRequisicion(buscarRequisicion);
 				stockUtils.showSuccessmessage(
-						"Requisicion con folio -" + requisicion.getBuscarRequisicion() + "- ha sido encontrada",
+						"Requisicion con folio [" + requisicion.getBuscarRequisicion() + "] ha sido encontrada",
 						Clients.NOTIFICATION_TYPE_INFO, 0, null);
 			} else
 				stockUtils.showSuccessmessage(
-						"No se encontro alguna coincidencia con la busqueda -"
-								+ requisicion.getBuscarRequisicion() + "-",
+						"No se encontro alguna coincidencia con la busqueda ["
+								+ requisicion.getBuscarRequisicion() + "]",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		} else
 			stockUtils
@@ -458,25 +503,27 @@ public class RequisicionVM extends RequisicionMetaClass {
 	@NotifyChange("*")
 	public void buscarRequisicionArea() {
 		if (areaBuscar != null) {
-			requisiciones = requisicionService.getByUnidadResponsable(areaBuscar);
-			if(requisiciones != null){
+			requisiciones = requisicionService
+					.getByUnidadResponsable(areaBuscar);
+			if (requisiciones != null) {
 				String mensaje = "";
-				if(requisiciones.size() == 1)
+				if (requisiciones.size() == 1)
 					mensaje = requisiciones.size() + " encontrada";
 				else
 					mensaje = requisiciones.size() + " encontradas";
-				
+
 				readOnly = false;
-				stockUtils.showSuccessmessage(
-						"Requisiciones del Area(UR) -" + areaBuscar.getNombre() + "-: " + mensaje,
+				stockUtils.showSuccessmessage("Requisiciones del Area(UR) ["
+						+ areaBuscar.getNombre() + "]: " + mensaje,
 						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			}else
+			} else
 				stockUtils.showSuccessmessage(
-						"No se encontraron Requisiciones del Area(UR) -" + areaBuscar.getNombre() + "-",
+						"No se encontraron Requisiciones del Area(UR) ["
+								+ areaBuscar.getNombre() + "]",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
-	
+
 	@Command
 	@NotifyChange("*")
 	public void limpiarFormulario() {
@@ -486,7 +533,8 @@ public class RequisicionVM extends RequisicionMetaClass {
 		initDefaultValues();
 		readOnly = false;
 		requisiciones = new ArrayList<Requisicion>();
-		requisicion.setFolio(StockConstants.CLAVE_FOLIO_REQUISICION + requisicionService.getUltimoFolio());
+		requisicion.setFolio(StockConstants.CLAVE_FOLIO_REQUISICION
+				+ requisicionService.getUltimoFolio());
 	}
 
 	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
@@ -513,9 +561,7 @@ public class RequisicionVM extends RequisicionMetaClass {
 				mapa.put("descripcion",requisicion.getAdscripcion());
 				mapa.put("justificacion",requisicion.getJustificacion());
 				mapa.put("NoInventario",requisicion.getNumeroInventario());
-				
-				
-				
+								
 				List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
 				listaHashsParametros.add(mapa);
 
@@ -556,9 +602,16 @@ public class RequisicionVM extends RequisicionMetaClass {
 
 	@Command
 	@NotifyChange("*")
-	public void selectedResultadoRequisiciones(){
-		if(requisicionProductos == null)
+	public void selectedResultadoRequisiciones() {
+		if (requisicionProductos == null)
 			requisicionProductos = new ArrayList<RequisicionProducto>();
-		requisicionProductos = requisicionProductoService.getByRequisicion(requisicion);
+		requisicionProductos = requisicionProductoService
+				.getByRequisicion(requisicion);
+	}
+
+	private List<Privilegios> getEmailsUsuariosCotizacion() {
+		List<Privilegios> usuarios = privilegioService
+				.getUsuariosByPrivilegio(UserPrivileges.COTIZAR_AUTORIZAR);
+		return usuarios;
 	}
 }
