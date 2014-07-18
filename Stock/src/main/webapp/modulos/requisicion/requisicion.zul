@@ -6,7 +6,6 @@
 	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('rvm') @init('com.cplsystems.stock.app.vm.requisicion.RequisicionVM')">
 
-
 		<vlayout>
 			<radiogroup id="sv1" />
 			<grid>
@@ -42,7 +41,7 @@
 					</row>
 				</rows>
 			</grid>
-			
+
 			<groupbox mold="3d" open="false"
 				tooltiptext="Clic para ver bandeja de requisiciones">
 				<caption label="Bandeja de requisiciones"
@@ -103,9 +102,6 @@
 				tooltiptext="Clic para ver formulario de busqueda">
 				<caption label="Buscar"
 					image="/images/toolbar/find16x16.png" />
-
-
-
 
 				<grid style="border: 0;">
 					<columns>
@@ -180,13 +176,14 @@
 								</rows>
 							</grid>
 
-
-							<listbox model="@load(rvm.requisiciones)" onSelect="@command('selectedResultadoRequisiciones')"
+							<listbox model="@load(rvm.requisiciones)"
+								onSelect="@command('selectedResultadoRequisiciones')"
 								selectedItem="@bind(rvm.requisicion)" rows="3"
 								emptyMessage="resultados de requisiciones vacia">
 								<listhead>
 									<listheader label="Clave" />
-									<listheader width="10%" align="center"/>
+									<listheader width="10%"
+										align="center" />
 								</listhead>
 								<template name="model"
 									var="requisicionVar">
@@ -196,8 +193,9 @@
 												value="@bind(requisicionVar.folio)" width="100%" />
 										</listcell>
 										<listcell>
-											<button tooltiptext="@bind(requisicionVar.estatusRequisicion.nombre)"
-												style="@bind(requisicionVar.estatusRequisicion.color)"/>
+											<button
+												tooltiptext="@bind(requisicionVar.estatusRequisicion.nombre)"
+												style="@bind(requisicionVar.estatusRequisicion.color)" />
 										</listcell>
 									</listitem>
 								</template>
@@ -205,24 +203,12 @@
 						</row>
 					</rows>
 				</grid>
-
-
-
-
-
 			</groupbox>
-
-
-
-
-
 
 			<groupbox mold="3d" open="false"
 				tooltiptext="Clic para ver Información de la requisición">
 				<caption label="Información de la requisición"
 					image="/images/toolbar/note32.png" />
-
-
 
 				<grid style="border: 0;">
 					<columns>
@@ -303,7 +289,6 @@
 										label="@load(each.nombre)" />
 								</template>
 							</combobox>
-
 						</row>
 					</rows>
 				</grid>
@@ -355,27 +340,23 @@
 								width="100%" maxlength="40"
 								value="@bind(rvm.requisicion.persona.nombre)" />
 
-
-
 							<hlayout>
 								<label value="*" style="color:red" />
-								<label value="Ap. paterno:"
+								<label value="A. paterno:"
 									sclass="invoiceLabel" />
 							</hlayout>
 							<textbox sclass="invoiceTextBox tBox"
 								width="100%" maxlength="40"
 								value="@bind(rvm.requisicion.persona.apellidoPaterno)" />
 
-
 							<hlayout>
 								<label value="*" style="color:red" />
-								<label value="Ap. materno:"
+								<label value="A. materno:"
 									sclass="invoiceLabel" />
 							</hlayout>
 							<textbox sclass="invoiceTextBox tBox"
 								width="100%" maxlength="40"
 								value="@bind(rvm.requisicion.persona.apellidoMaterno)" />
-
 						</row>
 					</rows>
 				</grid>
@@ -402,13 +383,9 @@
 										label="@load(each.nombre)" />
 								</template>
 							</combobox>
-
 						</row>
 					</rows>
 				</grid>
-
-
-
 
 				<grid style="border: 0;">
 					<columns>
@@ -423,7 +400,6 @@
 							<textbox maxlength="120" width="100%"
 								value="@bind(rvm.requisicion.adscripcion)"
 								sclass="invoiceTextBox tBox" />
-
 						</row>
 					</rows>
 				</grid>
@@ -480,8 +456,6 @@
 						<rows>
 							<row
 								style="background-color:transparent; border: 0;">
-
-
 								<listbox sclass="invoiceTable"
 									height="250px" model="@load(rvm.requisicionProductos)"
 									selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
@@ -490,15 +464,15 @@
 										<listheader label="Clave"
 											width="120px" sclass="invoiceLabel" />
 										<listheader label="Cantidad"
-											width="75px" sclass="invoiceLabel" />
+											width="95px" sclass="invoiceLabel" />
 										<listheader label="Descripción"
-											sclass="invoiceLabel" />
+											sclass="invoiceLabel" width="200px" />
 										<listheader
 											label="Partida genérica" sclass="invoiceLabel" />
 										<listheader label="Importe"
-											width="120px" sclass="invoiceLabel" />
-										<listheader label=""
-											width="5%" sclass="invoiceLabel" />
+											width="80px" sclass="invoiceLabel" />
+										<listheader label="" width="5%"
+											sclass="invoiceLabel" />
 									</listhead>
 									<template name="model"
 										var="requisicionProducto">
@@ -510,7 +484,7 @@
 														image="/images/toolbar/wand32.png"
 														onClick="@command('search', index=requisicionProductoStatus.index)"
 														tooltiptext="Asistente para busqueda de producto" />
-													<textbox
+													<textbox cols="6"
 														zclass="tBox"
 														tooltiptext="@bind(requisicionProducto.producto.nombre)"
 														width="100%"
@@ -520,13 +494,13 @@
 											</listcell>
 											<listcell>
 												<doublebox zclass="tBox"
-													cols="5"
+													cols="8"
 													constraint="no empty: Debe especificar la cantidad del producto"
-													value="@bind(requisicionProducto.cantidad)" width="100%" />
+													value="@bind(requisicionProducto.cantidad)" />
 											</listcell>
 											<listcell>
 												<textbox zclass="tBox"
-													width="100%"
+													cols="25"
 													constraint="no empty: Especifique la descripción del producto solicitado"
 													maxlength="60"
 													value="@bind(requisicionProducto.descripcion)" />
@@ -548,16 +522,18 @@
 
 											<listcell>
 												<doublebox zclass="tBox"
-													width="100%"
+													cols="6"
 													constraint="no empty: El importe del producto es un valor requerido"
 													onChange="@command('updateTotal')" format="###,###,###.00"
 													value="@bind(requisicionProducto.importe)" />
 											</listcell>
-											
+
 											<listcell>
-												<button tooltiptext="Productos entregados" label="@bind(requisicionProducto.entregados)"/>
+												<button
+													tooltiptext="Productos entregados"
+													label="@bind(requisicionProducto.entregados)" />
 											</listcell>
-											
+
 										</listitem>
 									</template>
 									<listfoot style="height:40px">
@@ -647,12 +623,7 @@
 						</row>
 					</rows>
 				</grid>
-
 			</groupbox>
-
-
-
-
 		</vlayout>
 
 	</window>
