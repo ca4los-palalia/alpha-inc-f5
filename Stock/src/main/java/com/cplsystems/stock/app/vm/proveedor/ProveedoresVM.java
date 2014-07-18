@@ -204,7 +204,7 @@ public class ProveedoresVM extends ProveedorMetaClass {
 
 			} else
 				stockUtils.showSuccessmessage(
-						"Tu búsqueda -" + buscarProveedor.getNombre()
+						"Tu búsqueda -" + buscarProveedorAsociar.getNombre()
 								+ "- no obtuvo ningún resultado",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 

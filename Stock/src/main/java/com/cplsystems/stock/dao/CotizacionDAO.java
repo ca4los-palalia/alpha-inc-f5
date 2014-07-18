@@ -42,6 +42,7 @@ public interface CotizacionDAO {
 	
 	public Cotizacion getCotizacionByFolio(String folioCotizacion);
 	
-	
 	public List<Cotizacion> getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(String folioCotizacion, List<Proveedor> proveedores, List<EstatusRequisicion> estatus);
+	
+	public Cotizacion getCotizacionByRequisicionAndProveedor(Requisicion requisicion, Proveedor proveedor);
 }

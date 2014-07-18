@@ -30,6 +30,7 @@ import com.cplsystems.stock.services.MailService;
 import com.cplsystems.stock.services.MonedaService;
 import com.cplsystems.stock.services.MunicipioService;
 import com.cplsystems.stock.services.OrdenCompraInboxService;
+import com.cplsystems.stock.services.OrdenCompraService;
 import com.cplsystems.stock.services.OrganizacionService;
 import com.cplsystems.stock.services.PaisService;
 import com.cplsystems.stock.services.PersonaService;
@@ -177,6 +178,9 @@ public abstract class ServiceLayer extends DataLayer {
 
 	@WireVariable
 	protected MailService mailService;
+	
+	@WireVariable
+	protected OrdenCompraService ordenCompraService;
 
 	/**
 	 * REQUERIDO PARA OBTENER EL SERVICIO DESDE UNA CLASE QUE NO PUEDE SER
@@ -189,5 +193,6 @@ public abstract class ServiceLayer extends DataLayer {
 	public void setUsuarioService(UsuarioService usuarioService) {
 		this.usuarioService = usuarioService;
 	}
+	
 
 }

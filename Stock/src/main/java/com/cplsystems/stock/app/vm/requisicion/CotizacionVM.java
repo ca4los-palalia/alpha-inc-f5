@@ -6,6 +6,8 @@ package com.cplsystems.stock.app.vm.requisicion;
 import java.io.FileOutputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -17,6 +19,7 @@ import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
@@ -24,13 +27,17 @@ import org.zkoss.zul.Checkbox;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
+import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.CotizacionInbox;
 import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.OrdenCompra;
+import com.cplsystems.stock.domain.OrdenCompraInbox;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.RequisicionInbox;
 import com.cplsystems.stock.domain.RequisicionProducto;
+import com.cplsystems.stock.domain.Usuarios;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -187,18 +194,124 @@ public class CotizacionVM extends RequisicionVariables {
 		}
 	}
 
-	
+	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
 	public void enviarCotizacion() {
-		crearArchivoExcel();
+		EstatusRequisicion estado = null;
+		if (cotizacionSelected != null) {
+			if (cotizacionSelected.getEstatusRequisicion().getClave()
+					.equals(StockConstants.ESTADO_COTIZACION_NUEVA)) {
+				estado = estatusRequisicionService
+						.getByClave(StockConstants.ESTADO_COTIZACION_ENVIADA);
+				crearArchivoExcel();
+				cotizacionSelected.setEstatusRequisicion(estado);
+				cotizacionService.save(cotizacionSelected);
+				CotizacionInbox inbox = new CotizacionInbox();
+				inbox.setCotizacion(cotizacionSelected);
+				inbox.setLeido(false);
+				inbox.setFechaRegistro(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+				cotizacionInboxService.save(inbox);
+				
+				// GENERAR PDF
+				// ENVIAR CORREO
+
+				stockUtils.showSuccessmessage("La cotizacion con folio -"
+						+ cotizacionSelected.getFolioCotizacion()
+						+ "- ha sido enviada", Clients.NOTIFICATION_TYPE_INFO,
+						0, null);
+			} else
+				stockUtils.showSuccessmessage("La cotizacion con folio -"
+						+ cotizacionSelected.getFolioCotizacion()
+						+ "- no puede ser reenviada nuevamente",
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+		} else
+			stockUtils.showSuccessmessage(
+					"Es necesario seleccionar primero una cotización",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+
 	}
 
-
+	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
 	public void aceptarCotizacion() {
-		
+		if (cotizacionSelected != null) {
+			if (cotizacionSelected.getEstatusRequisicion().getClave()
+					.equals(StockConstants.ESTADO_COTIZACION_ENVIADA)) {
+				EstatusRequisicion estado = estatusRequisicionService
+						.getByClave(StockConstants.ESTADO_COTIZACION_ACEPTADA);
+
+				cotizacionSelected.setEstatusRequisicion(estado);
+				cotizacionService.save(cotizacionSelected);
+
+				OrdenCompra compra = new OrdenCompra();
+				estado = estatusRequisicionService
+						.getByClave(StockConstants.ESTADO_ORDEN_COMPRA_NUEVA);
+				compra.setOrganizacion((Organizacion) sessionUtils
+						.getFromSession(SessionUtils.FIRMA));
+				compra.setUsuario((Usuarios) sessionUtils
+						.getFromSession(SessionUtils.USUARIO));
+				compra.setCodigo(StockConstants.CLAVE_FOLIO_ORDEN_COMPRA
+						+ ordenCompraService.getCodigoDeOrden());
+				compra.setCotizacion(cotizacionSelected);
+				ordenCompraService.save(compra);
+
+				OrdenCompraInbox inbox = new OrdenCompraInbox();
+				inbox.setOrdenCompra(compra);
+				inbox.setLeido(false);
+				inbox.setFechaCreacion(new StockUtils()
+						.convertirCalendarToDate(Calendar.getInstance()));
+				ordenCompraInboxService.save(inbox);
+
+				stockUtils.showSuccessmessage("La cotizacion con folio -"
+						+ cotizacionSelected.getFolioCotizacion()
+						+ "- ha sido Aceptada", Clients.NOTIFICATION_TYPE_INFO,
+						0, null);
+			} else
+				stockUtils.showSuccessmessage("La cotizacion con folio -"
+						+ cotizacionSelected.getFolioCotizacion()
+						+ "- nu puede ser aceptada bajo este estatus ("
+						+ cotizacionSelected.getEstatusRequisicion()
+								.getNombre() + ")",
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+
+		} else
+			stockUtils.showSuccessmessage(
+					"Es necesario seleccionar primero una cotización",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+	}
+
+	@SuppressWarnings("static-access")
+	@Command
+	@NotifyChange("*")
+	public void abrirVentanaCancelacion() {
+		if (cotizacionSelected != null) {
+			if (cotizacionSelected.getEstatusRequisicion().getClave()
+					.equals(StockConstants.ESTADO_COTIZACION_ENVIADA)
+					|| cotizacionSelected.getEstatusRequisicion().getClave()
+							.equals(StockConstants.ESTADO_COTIZACION_NUEVA)) {
+				
+				final HashMap<String, Object> map = new HashMap<String, Object>();
+				map.put("cotizacion", cotizacionSelected);
+				Executions
+						.createComponents(
+								"/modulos/requisicion/cancelacionCotizacion.zul",
+								null, map);
+
+			} else
+				stockUtils.showSuccessmessage("La cotizacion con folio -"
+						+ cotizacionSelected.getFolioCotizacion()
+						+ "- nu puede ser cancelada bajo este estatus ("
+						+ cotizacionSelected.getEstatusRequisicion()
+								.getNombre() + ")",
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			
+		} else
+			stockUtils.showSuccessmessage(
+					"Es necesario seleccionar primero una cotización",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+
 	}
 
 	@SuppressWarnings({ "deprecation", "unused", "static-access" })
@@ -322,4 +435,5 @@ public class CotizacionVM extends RequisicionVariables {
 			e.printStackTrace();
 		}
 	}
+
 }

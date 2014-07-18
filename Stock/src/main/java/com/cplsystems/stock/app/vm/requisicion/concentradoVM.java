@@ -4,6 +4,7 @@
 package com.cplsystems.stock.app.vm.requisicion;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +19,12 @@ import org.zkoss.zk.ui.util.Clients;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
+import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.Cotizacion;
+import com.cplsystems.stock.domain.CotizacionInbox;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Producto;
@@ -81,9 +84,8 @@ public class concentradoVM extends RequisicionVariables {
 	private List<RequisicionProducto> buscarPorFolioRequisicion(String buscar) {
 		List<RequisicionProducto> rp = null;
 		Requisicion rq = requisicionService.getByFolio(buscar);
-		if (rq != null) 
-			rp = requisicionProductoService
-					.getByRequisicion(rq);
+		if (rq != null)
+			rp = requisicionProductoService.getByRequisicion(rq);
 		return rp;
 	}
 
@@ -91,29 +93,25 @@ public class concentradoVM extends RequisicionVariables {
 		List<RequisicionProducto> rp = null;
 		CofiaPartidaGenerica cpg = cofiaPartidaGenericaService
 				.getByNombre(buscar);
-		if (cpg != null) 
+		if (cpg != null)
 			rp = requisicionProductoService
-			
-					.getByConfiaPartidaGenerica(cpg);
+
+			.getByConfiaPartidaGenerica(cpg);
 		return rp;
 	}
-	
-	private List<RequisicionProducto> buscarPorAreaUr(String buscar){
+
+	private List<RequisicionProducto> buscarPorAreaUr(String buscar) {
 		List<RequisicionProducto> rp = null;
-		Area areaBuscar = areaService
-				.getByNombre(buscar);
-		if (areaBuscar != null){
+		Area areaBuscar = areaService.getByNombre(buscar);
+		if (areaBuscar != null) {
 			Requisicion rq = requisicionService.getByFolio(buscar);
-			rq = requisicionService
-					.getByUnidadResponsable(areaBuscar).get(0);
+			rq = requisicionService.getByUnidadResponsable(areaBuscar).get(0);
 			requisicionProductos = requisicionProductoService
 					.getByRequisicion(rq);
 		}
-		return rp;	
+		return rp;
 	}
-	
-	
-	
+
 	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("requisicionProductos")
@@ -124,35 +122,44 @@ public class concentradoVM extends RequisicionVariables {
 
 		if (requisicion.getBuscarRequisicion() != null
 				&& !requisicion.getBuscarRequisicion().isEmpty()) {
-			
-			requisicionProductos = buscarPorClaveProducto(requisicion.getBuscarRequisicion());
-			
-			if(requisicionProductos == null){
-				requisicionProductos = buscarPorFolioRequisicion(requisicion.getBuscarRequisicion());
-				
-				if(requisicionProductos == null){
-					requisicionProductos = buscarPorPartidaGenerica(requisicion.getBuscarRequisicion());
-					if(requisicionProductos == null){
-						requisicionProductos = buscarPorAreaUr(requisicion.getBuscarRequisicion());
+
+			requisicionProductos = buscarPorClaveProducto(requisicion
+					.getBuscarRequisicion());
+
+			if (requisicionProductos == null) {
+				requisicionProductos = buscarPorFolioRequisicion(requisicion
+						.getBuscarRequisicion());
+
+				if (requisicionProductos == null) {
+					requisicionProductos = buscarPorPartidaGenerica(requisicion
+							.getBuscarRequisicion());
+					if (requisicionProductos == null) {
+						requisicionProductos = buscarPorAreaUr(requisicion
+								.getBuscarRequisicion());
 					}
 				}
 			}
-			if(requisicionProductos == null)
-				stockUtils.showSuccessmessage("Tu busqueda -" + requisicion.getBuscarRequisicion() + "- no encontro algun resultado",
+			if (requisicionProductos == null)
+				stockUtils.showSuccessmessage(
+						"Tu busqueda -" + requisicion.getBuscarRequisicion()
+								+ "- no encontro algun resultado",
 						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-		}else
-			stockUtils.showSuccessmessage("No se ingreso algun parametro de busque, asegurese de escribir alguna de las formas de busqueda recomendadas",
-					Clients.NOTIFICATION_TYPE_INFO, 0, null);
-		
+		} else
+			stockUtils
+					.showSuccessmessage(
+							"No se ingreso algun parametro de busque, asegurese de escribir alguna de las formas de busqueda recomendadas",
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
+
 	}
 
 	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
-	public void removerProductoDeListaGeneralDeProductos(@BindingParam("index") Integer index) {
-		if(requisicionProductoSeleccionado == null)
+	public void removerProductoDeListaGeneralDeProductos(
+			@BindingParam("index") Integer index) {
+		if (requisicionProductoSeleccionado == null)
 			requisicionProductoSeleccionado = requisicionProductos.get(index);
-		
+
 		requisicionProductoService.delete(requisicionProductoSeleccionado);
 		requisicionProductos.remove(requisicionProductoSeleccionado);
 
@@ -167,7 +174,8 @@ public class concentradoVM extends RequisicionVariables {
 	@Command
 	@NotifyChange("*")
 	public void cancelarRequisicion() {
-		EstatusRequisicion estado = estatusRequisicionService.getByClave(StockConstants.ESTADO_REQUISICION_CANCELADA);
+		EstatusRequisicion estado = estatusRequisicionService
+				.getByClave(StockConstants.ESTADO_REQUISICION_CANCELADA);
 		Requisicion rq = requisicionProductoSeleccionado.getRequisicion();
 		rq.setEstatusRequisicion(estado);
 		requisicionService.save(rq);
@@ -176,87 +184,127 @@ public class concentradoVM extends RequisicionVariables {
 				+ requisicionProductoSeleccionado.getRequisicion().getFolio()
 				+ "- ha sido cancelada", Clients.NOTIFICATION_TYPE_INFO, 0,
 				null);
-		estado = estatusRequisicionService.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
+		estado = estatusRequisicionService
+				.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
 		requisiciones = requisicionService.getByEstatusRequisicion(estado);
 		requisicionProductos = requisicionProductoService
 				.getRequisicionesConEstadoEspecifico(estado);
 	}
-	
+
 	@SuppressWarnings("static-access")
-	private List<Cotizacion> salvarCotizacion(){
-		Map<Proveedor,Requisicion> mapa = 
-			    new HashMap<Proveedor, Requisicion>();
+	private List<Cotizacion> salvarCotizacion() {
+		Map<Proveedor, Requisicion> mapa = new HashMap<Proveedor, Requisicion>();
 		String mensaje = "";
 		List<Cotizacion> cotizacionReturn = null;
 		if (requisicionProductos != null && requisicionProductos.size() > 0) {
 			cotizacionReturn = new ArrayList<Cotizacion>();
 			for (RequisicionProducto item : requisicionProductos) {
-				if(!mapa.containsKey(item.getProveedor()))
-					if(item.getProveedor() != null)
+				requisicionProductoService.save(item);
+				if (!mapa.containsKey(item.getProveedor()))
+					if (item.getProveedor() != null)
 						mapa.put(item.getProveedor(), item.getRequisicion());
 			}
-			if(mapa.size() > 0){
-				EstatusRequisicion estado = estatusRequisicionService.getByClave(StockConstants.ESTADO_COTIZACION_NUEVA);
+			if (mapa.size() > 0) {
+				EstatusRequisicion estado = estatusRequisicionService
+						.getByClave(StockConstants.ESTADO_COTIZACION_NUEVA);
 				for (Entry<Proveedor, Requisicion> elemento : mapa.entrySet()) {
 					Proveedor pr = elemento.getKey();
 					Requisicion rq = elemento.getValue();
 					System.out.println(pr.getNombre() + " _ " + rq.getFolio());
-					
-					if(cotizacionService.getByRequisicion(rq) == null && cotizacionService.getByProveedor(pr) == null){
+
+					if (cotizacionService
+							.getCotizacionByRequisicionAndProveedor(rq, pr) == null) {
 						Cotizacion cotizacion = new Cotizacion();
 						cotizacion.setProveedor(pr);
 						cotizacion.setRequisicion(rq);
 						cotizacion.setFolioCotizacion(generarFolioCotizacion());
-						cotizacion.setOrganizacion((Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA));
-						cotizacion.setUsuario((Usuarios)sessionUtils.getFromSession(SessionUtils.USUARIO));
+						cotizacion.setOrganizacion((Organizacion) sessionUtils
+								.getFromSession(SessionUtils.FIRMA));
+						cotizacion.setUsuario((Usuarios) sessionUtils
+								.getFromSession(SessionUtils.USUARIO));
 						cotizacion.setEstatusRequisicion(estado);
 						cotizacionService.save(cotizacion);
 						cotizacionReturn.add(cotizacion);
-					}else
-						mensaje = "-" + pr.getNombre() + ":" + rq.getFolio() + "-";
+						CotizacionInbox inbox = new CotizacionInbox();
+						inbox.setLeido(false);
+						inbox.setCotizacion(cotizacion);
+						inbox.setFechaRegistro(new StockUtils()
+								.convertirCalendarToDate(Calendar.getInstance()));
+						cotizacionInboxService.save(inbox);
+
+					} else
+						mensaje = "-" + pr.getNombre() + ":" + rq.getFolio()
+								+ "-";
 				}
-				if(!mensaje.isEmpty())
-					stockUtils.showSuccessmessage("No se pudieron generar las cotizaciones de los proveedores: " 
-							+ mensaje + " anteriormente ya han sido generadas", Clients.NOTIFICATION_TYPE_WARNING, 0,
-							null);
-					
+				
+				for (RequisicionProducto item : requisicionProductos) {
+					for (Cotizacion cotizacion : cotizacionReturn) {
+						if (item.getProveedor().getIdProveedor().equals(
+								cotizacion.getProveedor().getIdProveedor())
+								&& item.getRequisicion().getIdRequisicion().equals(
+										cotizacion.getRequisicion().getIdRequisicion())) {
+							item.setCotizacion(cotizacion);
+							break;
+						}
+					}
+					requisicionProductoService.save(item);
+				}
+				
+				if (!mensaje.isEmpty())
+					stockUtils.showSuccessmessage(
+							"No se pudieron generar las cotizaciones de los proveedores: "
+									+ mensaje
+									+ " anteriormente ya han sido generadas",
+							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+
+				
+
 			}
 		}
 		return cotizacionReturn;
 	}
-	
-	private Cotizacion obtenerCotizacion(Proveedor proRequisicion, List<Cotizacion> prosCotizaciones){
+
+	private Cotizacion obtenerCotizacion(Proveedor proRequisicion,
+			List<Cotizacion> prosCotizaciones) {
 		Cotizacion resultado = null;
 		for (Cotizacion cotizacion : prosCotizaciones) {
-			if(cotizacion.getProveedor().equals(proRequisicion)){
+			if (cotizacion.getProveedor().equals(proRequisicion)) {
 				resultado = cotizacion;
 				break;
-			}	
+			}
 		}
 		return resultado;
 	}
 
-	private String generarFolioCotizacion(){
+	private String generarFolioCotizacion() {
 		String folio = null;
 		Long countRows = cotizacionService.getCountRowsCotizacion();
-		if(countRows != null){
+		if (countRows != null) {
 			folio = StockConstants.CLAVE_FOLIO_COTIZACION;
-			if(String.valueOf(countRows.toString().length()).equals("1"))
+			if (String.valueOf(countRows.toString().length()).equals("1"))
 				folio += "00" + countRows;
-			else if(String.valueOf(countRows.toString().length()).equals("2"))
+			else if (String.valueOf(countRows.toString().length()).equals("2"))
 				folio += "0" + countRows;
-			else if(String.valueOf(countRows.toString().length()).equals("3"))
+			else if (String.valueOf(countRows.toString().length()).equals("3"))
 				folio += countRows;
 		}
-		
+
 		return folio;
 	}
-	
+
 	@Command
 	public void autorizar() {
 		salvarCotizacion();
 	}
-	
-	
+
+	@SuppressWarnings("static-access")
+	@Command
+	public void guardarCambios() {
+		for (RequisicionProducto item : requisicionProductos) {
+			requisicionProductoService.save(item);
+		}
+		stockUtils.showSuccessmessage("Los cambios han sido guardados",
+				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+	}
 
 }

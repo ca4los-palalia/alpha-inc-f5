@@ -3,10 +3,15 @@
  */
 package com.cplsystems.stock.dao.impl;
 
+import java.util.Calendar;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.app.utils.SessionUtils;
@@ -29,34 +34,110 @@ public class OrdenCompraDAOImpl extends HibernateDAOSuportUtil implements OrdenC
 		return (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
 	}
 	
+	@Transactional
 	public void save(OrdenCompra ordenCompra) {
-		// TODO Auto-generated method stub
-		
+		getHibernateTemplate().saveOrUpdate(ordenCompra);
 	}
-
-	public void update(OrdenCompra ordenCompra) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
+	@Transactional
 	public void delete(OrdenCompra ordenCompra) {
-		// TODO Auto-generated method stub
-		
+		getHibernateTemplate().delete(ordenCompra);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public OrdenCompra getById(Long idOrdenCompra) {
-		// TODO Auto-generated method stub
-		return null;
+		List<OrdenCompra> lista = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(OrdenCompra.class);
+		criteria.add(Restrictions.eq("idOrdenCompra", idOrdenCompra));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		lista = criteria.list();
+		return lista.size() > 0 ? lista.get(0) : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<OrdenCompra> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<OrdenCompra> lista = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(OrdenCompra.class);
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		lista = criteria.list();
+		return lista.size() > 0 ? lista : null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<OrdenCompra> getByCotizacion(Cotizacion cotizacion) {
-		// TODO Auto-generated method stub
-		return null;
+		List<OrdenCompra> lista = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(OrdenCompra.class);
+		criteria.add(Restrictions.eq("cotizacion", cotizacion));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		lista = criteria.list();
+		return lista.size() > 0 ? lista : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public OrdenCompra getByCodigo(String codigo) {
+		List<OrdenCompra> lista = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(OrdenCompra.class);
+		criteria.add(Restrictions.eq("codigo", codigo));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		lista = criteria.list();
+		return lista.size() > 0 ? lista.get(0) : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public List<OrdenCompra> getByFechaOrden(Calendar fechaOrden) {
+		List<OrdenCompra> lista = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(OrdenCompra.class);
+		criteria.add(Restrictions.eq("fechaOrden", fechaOrden));
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		lista = criteria.list();
+		return lista.size() > 0 ? lista : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public String getCodigoDeOrden() {
+
+		String folio = null;
+		
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(OrdenCompra.class);
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		criteria.setProjection(Projections.rowCount());
+		List<OrdenCompra> lista = criteria.list();
+		
+		if(lista != null){
+			String numeroLista = String.valueOf(Integer.parseInt(String.valueOf(lista.get(0))) + 1);
+			
+				switch (numeroLista.length()) {
+					case 1:
+						folio = "00000" + numeroLista;
+						break;
+					case 2:
+						folio = "0000" + numeroLista;
+						break;
+					case 3:
+						folio = "000" + numeroLista;
+						break;
+					case 4:
+						folio = "00" + numeroLista;
+						break;
+					case 5:
+						folio = "0" + numeroLista;
+						break;
+				}
+		}
+		return folio != null && !folio.isEmpty() ? folio : null;
+	
 	}
 
 }
