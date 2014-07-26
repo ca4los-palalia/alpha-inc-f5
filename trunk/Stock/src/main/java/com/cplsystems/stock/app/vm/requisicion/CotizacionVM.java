@@ -3,17 +3,25 @@
  */
 package com.cplsystems.stock.app.vm.requisicion;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.bouncycastle.util.encoders.Hex;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -28,6 +36,7 @@ import org.zkoss.zul.Checkbox;
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.app.vm.requisicion.utils.CotizacionListaExcelFile;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.CotizacionInbox;
@@ -35,6 +44,7 @@ import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.OrdenCompra;
 import com.cplsystems.stock.domain.OrdenCompraInbox;
 import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.RequisicionInbox;
 import com.cplsystems.stock.domain.RequisicionProducto;
 import com.cplsystems.stock.domain.Usuarios;
@@ -173,7 +183,7 @@ public class CotizacionVM extends RequisicionVariables {
 							listaEstatus);
 
 			if (cotizacionesList != null) {
-
+				requisicionProductos.clear();
 			}
 
 		} else
@@ -210,9 +220,10 @@ public class CotizacionVM extends RequisicionVariables {
 				CotizacionInbox inbox = new CotizacionInbox();
 				inbox.setCotizacion(cotizacionSelected);
 				inbox.setLeido(false);
-				inbox.setFechaRegistro(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+				inbox.setFechaRegistro(stockUtils
+						.convertirCalendarToDate(Calendar.getInstance()));
 				cotizacionInboxService.save(inbox);
-				
+
 				// GENERAR PDF
 				// ENVIAR CORREO
 
@@ -246,7 +257,7 @@ public class CotizacionVM extends RequisicionVariables {
 				cotizacionService.save(cotizacionSelected);
 
 				OrdenCompra compra = new OrdenCompra();
-				
+
 				estado = estatusRequisicionService
 						.getByClave(StockConstants.ESTADO_ORDEN_COMPRA_NUEVA);
 				compra.setEstatusRequisicion(estado);
@@ -293,13 +304,12 @@ public class CotizacionVM extends RequisicionVariables {
 					.equals(StockConstants.ESTADO_COTIZACION_ENVIADA)
 					|| cotizacionSelected.getEstatusRequisicion().getClave()
 							.equals(StockConstants.ESTADO_COTIZACION_NUEVA)) {
-				
+
 				final HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("cotizacion", cotizacionSelected);
-				Executions
-						.createComponents(
-								"/modulos/requisicion/cancelacionCotizacion.zul",
-								null, map);
+				Executions.createComponents(
+						"/modulos/requisicion/cancelacionCotizacion.zul", null,
+						map);
 
 			} else
 				stockUtils.showSuccessmessage("La cotizacion con folio -"
@@ -308,7 +318,7 @@ public class CotizacionVM extends RequisicionVariables {
 						+ cotizacionSelected.getEstatusRequisicion()
 								.getNombre() + ")",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
-			
+
 		} else
 			stockUtils.showSuccessmessage(
 					"Es necesario seleccionar primero una cotización",
@@ -425,11 +435,10 @@ public class CotizacionVM extends RequisicionVariables {
 			byte[] mb = md.digest();
 
 			String hash = String.valueOf(Hex.encode(mb));
-			FileOutputStream elFichero = new FileOutputStream("C://" + hash
-					+ ".xls");
-			libro.write(elFichero);
+			fileOutputStream = new FileOutputStream("C://" + hash + ".xls");
+			libro.write(fileOutputStream);
 
-			elFichero.close();
+			fileOutputStream.close();
 			excelGenerado = true;
 			cotizacionSelected.setExcelFile(hash);
 			cotizacionService.save(cotizacionSelected);
@@ -438,4 +447,119 @@ public class CotizacionVM extends RequisicionVariables {
 		}
 	}
 
+	@SuppressWarnings({ "static-access" })
+	@Command
+	@NotifyChange("requisicionProductos")
+	public void abrirExcel(@BindingParam("index") Integer index) {
+		cotizacionSelected = cotizacionesList.get(index);
+		List<CotizacionListaExcelFile> listaExcel = new ArrayList<CotizacionListaExcelFile>();
+		boolean lecturaCorrecta = true;
+		if (cotizacionSelected != null
+				&& (cotizacionSelected.getExcelFile() != null && !cotizacionSelected
+						.getExcelFile().isEmpty())) {
+			File fileNameExcel = new File("C://"
+					+ cotizacionSelected.getExcelFile() + ".xls");
+
+			if (fileNameExcel.exists()) {
+				try {
+					fileInputStream = new FileInputStream(fileNameExcel);
+					libro = new HSSFWorkbook(fileInputStream);
+
+					HSSFSheet my_worksheet = libro.getSheetAt(0);
+					Iterator<Row> rowIterator = my_worksheet.iterator();
+
+					while (rowIterator.hasNext()) {
+						Row row = rowIterator.next();
+
+						if (row.getRowNum() > 0) {
+							Iterator<Cell> cellIterator = row.cellIterator();
+							CotizacionListaExcelFile filaRecuperacion = new CotizacionListaExcelFile();
+							Integer columna = 0;
+							while (cellIterator.hasNext()) {
+								Cell cell = cellIterator.next(); // Fetch CELL
+
+								switch (columna) {
+								case 0:
+									filaRecuperacion
+											.setNo(obtenerVAlorDeCeldaDeExcel(cell));
+									break;
+								case 1:
+									filaRecuperacion
+											.setClave(obtenerVAlorDeCeldaDeExcel(cell));
+									break;
+								case 2:
+									filaRecuperacion
+											.setNombreProducto(obtenerVAlorDeCeldaDeExcel(cell));
+									break;
+								case 3:
+									filaRecuperacion
+											.setPartidaGenericaNombre(obtenerVAlorDeCeldaDeExcel(cell));
+									break;
+								case 4:
+									filaRecuperacion
+											.setCantidad(obtenerVAlorDeCeldaDeExcel(cell));
+									break;
+								case 5:
+									filaRecuperacion
+											.setUnidadMedida(obtenerVAlorDeCeldaDeExcel(cell));
+									break;
+								case 6:
+									filaRecuperacion
+											.setPrecioUnitario(obtenerVAlorDeCeldaDeExcel(cell));
+									break;
+								case 7:
+									filaRecuperacion
+											.setTotal(obtenerVAlorDeCeldaDeExcel(cell));
+									break;
+								}
+								columna++;
+							}
+							listaExcel.add(filaRecuperacion);
+						}
+					}
+					fileInputStream.close();
+				} catch (FileNotFoundException e) {
+					lecturaCorrecta = false;
+				} catch (IOException e) {
+					lecturaCorrecta = false;
+				}
+
+				if (lecturaCorrecta) {
+					actualizarPreciosProductosLeidos(listaExcel);
+					stockUtils
+							.showSuccessmessage(
+									"se ha leido correctamente la información de un archivo de excel",
+									Clients.NOTIFICATION_TYPE_INFO, 0, null);
+				} else
+					stockUtils
+							.showSuccessmessage(
+									"Ocurrio un error en la lectura del archivo de excel",
+									Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			}
+		}
+	}
+
+	private void actualizarPreciosProductosLeidos(
+			List<CotizacionListaExcelFile> listaExcel) {
+
+		Integer i = 0;
+		for (RequisicionProducto item : requisicionProductos) {
+			CotizacionListaExcelFile rowExcel = listaExcel.get(i);
+
+			item.setCantidad(Float.parseFloat(rowExcel.getCantidad()));
+			item.setTotalProductoPorUnidad(Float.parseFloat(rowExcel.getTotal()));
+			Producto producto = item.getProducto();
+			producto.setPrecio(Float.parseFloat(rowExcel.getPrecioUnitario()));
+			productoService.save(producto);
+			requisicionProductoService.save(item);
+			
+			i++;
+		}
+
+	}
+
+	@Command
+	public void abrirPDF(@BindingParam("index") Integer index) {
+
+	}
 }

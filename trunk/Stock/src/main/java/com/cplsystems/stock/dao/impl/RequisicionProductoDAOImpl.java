@@ -126,8 +126,7 @@ public class RequisicionProductoDAOImpl extends HibernateDAOSuportUtil implement
 	public List<RequisicionProducto> getAllRequisiciones() {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(RequisicionProducto.class);
-		criteria.setProjection(Projections.countDistinct("requisicion"));
-		
+		//criteria.setProjection(Projections.countDistinct("requisicion"));
 		List<RequisicionProducto> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}

@@ -3,6 +3,8 @@
  */
 package com.cplsystems.stock.app.vm;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -114,7 +116,8 @@ public class DataLayer implements Serializable {
 	
 	
 	protected HSSFWorkbook libro;
-	
+	protected FileInputStream fileInputStream;
+	protected FileOutputStream fileOutputStream;
 	
 	protected String readJasper;
 	protected JasperPrint print;

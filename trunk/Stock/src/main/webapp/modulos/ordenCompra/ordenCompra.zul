@@ -283,7 +283,7 @@
 					<listheader label="U/M" width="10%"
 						sort="auto(producto.unidad.nombre)" />
 
-					<listheader label="Precio unitario" width="10%"
+					<listheader label="Precio unitario" width="12%"
 						sort="auto(producto.precio)" />
 
 					<listheader label="Total" width="10%" />
@@ -295,7 +295,6 @@
 							<label style="font-size:smaller;"
 								value="${forEachStatus.index + 1}" />
 						</listcell>
-
 						<listcell>
 							<label style="font-size:smaller;"
 								value="@bind(each.producto.clave)" />
