@@ -29,7 +29,7 @@
 								image="/images/toolbar/home32.png"
 								zclass="panelInfoItemMenuTitle" />
 						</div>
-
+						FORMULARIO DESHABILITADO
 						<hlayout
 							style="text-align:right; margin:5px ">
 							<button image="/images/toolbar/newDoc.png"

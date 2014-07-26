@@ -47,7 +47,7 @@
 				<row style="border:0">
 					<div>
 					</div>
-
+					
 					<hlayout style="text-align:right; margin:1px ">
 						<button image="/images/toolbar/newDoc.png" tooltiptext="Nuevo producto"
 								sclass="web_button" onClick="@command('nuevaCaptura')" />
@@ -61,6 +61,10 @@
 						<button image="/images/toolbar/pdf32.png"
 							sclass="web_button" onClick="@command('reporteProductos')"
 							tooltiptext="Exportar a un archivo PDF" />
+							
+						<button image="/images/toolbar/excel32.png" upload="true" 
+							onClick="@command('upload2')"
+							sclass="web_button"/>
 					</hlayout>
 				</row>
 			</rows>
@@ -221,23 +225,37 @@
 									<rows>
 										<row
 											style="background-color:transparent; border: 0;">
-											<label value="* Clave:"
-												width="100%" />
+											<hlayout>
+												<label value="*" style="color:red" />
+												<label value="Clave:"
+													width="100%" />
+											</hlayout>
 											<textbox id="clave"
 												zclass="tBox" maxlength="24" width="100%"
 												value="@bind(pvm.producto.clave)" />
-											<label value="* Nombre:" />
+											
+											<hlayout>
+												<label value="*" style="color:red" />
+												<label value="Nombre:" />
+											</hlayout>
 											<textbox zclass="tBox"
 												width="100%" value="@bind(pvm.producto.nombre)"
 												maxlength="60" />
 										</row>
 										<row
 											style="background-color:transparent; border: 0;">
-											<label value="*Marca:" />
+											<hlayout>
+												<label value="*" style="color:red" />
+												<label value="Marca:" />
+											</hlayout>
 											<textbox zclass="tBox"
 												width="100%" maxlength="22"
 												value="@bind(pvm.producto.marca)" />
-											<label value="*Modelo :" />
+											
+											<hlayout>
+												<label value="*" style="color:red" />
+												<label value="Modelo :" />
+											</hlayout>
 											<textbox zclass="tBox"
 												width="100%" maxlength="24"
 												value="@bind(pvm.producto.modelo)" />
@@ -261,8 +279,10 @@
 											<textbox width="100%"
 												value="@bind(pvm.producto.codigoBarras)" zclass="tBox"
 												maxlength="12" />
-
-											<label value="* Unidad :" />
+											<hlayout>
+												<label value="*" style="color:red" />
+												<label value="Unidad :" />
+											</hlayout>
 											<textbox
 												value="@bind(pvm.producto.unidad.nombre)" width="100%"
 												readonly="true" />
@@ -335,13 +355,18 @@
 									<rows>
 										<row
 											style="background-color:transparent; border: 0;">
-
-											<label value="Activo:"
-												width="100%" />
+											
+											<hlayout>
+												<label value="*" style="color:red" />
+												<label value="Activo:"
+													width="100%" />
+											</hlayout>
 											<checkbox
 												checked="@bind(pvm.producto.activo)" />
-
-											<label value="Naturaleza:" />
+											<hlayout>
+												<label value="*" style="color:red" />
+												<label value="Naturaleza:" />
+											</hlayout>
 											<combobox width="100%"
 												readonly="true" model="@bind(pvm.productosNaturalezas)"
 												onSelect="@command('seleccionNaturalezaProducto')"
@@ -365,11 +390,16 @@
 
 											<label />
 											<label />
-											<label value="Máximo" />
+											<hlayout>
+												<label value="*" style="color:red" />
+												<label value="Máximo" />
+											</hlayout>
 											<longbox width="100%"
 												maxlength="5" value="@bind(pvm.producto.maximo)" />
-
+											<hlayout>
+												<label value="*" style="color:red" />
 											<label value="Mínimo" />
+											</hlayout>
 											<longbox width="100%"
 												maxlength="5" value="@bind(pvm.producto.minimo)" />
 										</row>

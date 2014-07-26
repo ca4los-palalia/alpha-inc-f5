@@ -67,6 +67,40 @@ public class ProductosVM extends ProductoMetaClass {
 		processImageUpload(ctx.getTriggerEvent());
 	}
 	
+	@Command("upload2")
+	public void onExcelUpload(
+			@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) {
+		System.err.println("Importar excel");
+		
+		UploadEvent upEvent = null;
+		Object objUploadEvent = ctx.getTriggerEvent();
+		
+		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent))
+			upEvent = (UploadEvent) objUploadEvent;
+		
+		if (upEvent != null) {
+			Media media = upEvent.getMedia();
+			int lengthofImage = media.getByteData().length;
+			if (media instanceof Image) {
+				/*
+				 * if (lengthofSignature > 500 * 1024) {
+				 * showInfo("Please Select a Image of size less than 500Kb.");
+				 * return; } else {
+				 */
+				File file = new File(media.getName());
+				System.out.println("The full path is: "+file.getAbsolutePath());
+				imagenProducto = (AImage) media;// Initialize the bind object to
+				// show image in zul page and
+				// Notify it also
+
+				// }
+			}
+		}
+		
+		
+		
+	}
+	
 	@Command
 	@NotifyChange("imagenProducto")
 	public void generarBar() {

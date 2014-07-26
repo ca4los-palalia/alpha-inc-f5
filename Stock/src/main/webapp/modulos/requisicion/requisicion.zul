@@ -98,8 +98,7 @@
 				</listbox>
 			</groupbox>
 
-			<groupbox mold="3d" open="false"
-				tooltiptext="Clic para ver formulario de busqueda">
+			<groupbox mold="3d" open="false">
 				<caption label="Buscar"
 					image="/images/toolbar/find16x16.png" />
 

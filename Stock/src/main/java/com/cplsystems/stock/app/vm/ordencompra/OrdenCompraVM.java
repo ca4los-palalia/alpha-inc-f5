@@ -34,7 +34,7 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 		super.init();
 		requisicion = new Requisicion();
 	}
-
+	
 	@Command
 	public void transferirOrdenCompraToFormulario(
 			@BindingParam("index") Integer index) {
@@ -46,16 +46,13 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 				toLoad.setIcono(OrdenCompraInbox.LEIDO);
 			}
 		}
-
 	}
 
 	private List<EstatusRequisicion> generarListaEstatusIN() {
 		List<EstatusRequisicion> lista = null;
-
 		if (checkBuscarNueva || checkBuscarCancelada || checkBuscarEnviada
 				|| checkBuscarAceptada) {
 			lista = new ArrayList<EstatusRequisicion>();
-
 			if (checkBuscarNueva)
 				lista.add(estatusRequisicionService
 						.getByClave(StockConstants.ESTADO_ORDEN_COMPRA_NUEVA));
@@ -66,7 +63,6 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 				lista.add(estatusRequisicionService
 						.getByClave(StockConstants.ESTADO_ORDEN_COMPRA_TERMINADA));
 		}
-
 		return lista;
 	}
 
@@ -82,11 +78,9 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 			List<EstatusRequisicion> listaEstatus = generarListaEstatusIN();
 			ordenesCompras = ordenCompraService.getOrdenesByEstatusAndFolioOr(
 					requisicion.getBuscarRequisicion(), listaEstatus);
-
 			if (cotizacionesList != null) {
 
 			}
-
 		} else
 			stockUtils
 					.showSuccessmessage(
@@ -110,7 +104,6 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 	@Command
 	@NotifyChange("*")
 	public void abrirVentanaCancelacion() {
-
 		if (ordenCompra != null) {
 			if (ordenCompra.getEstatusRequisicion().getClave()
 					.equals(StockConstants.ESTADO_ORDEN_COMPRA_NUEVA)) {
@@ -174,5 +167,4 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 					"Es necesario seleccionar primero una orden de compra",
 					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 	}
-
 }

@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Cotizacion;
@@ -112,6 +114,23 @@ public abstract class BasicStructure extends ServiceLayer {
 		return parametrosGenerados;
 	}
 	
+	public String obtenerVAlorDeCeldaDeExcel(Cell cell) {
+		String valor = "";
+		
+		switch (cell.getCellType()) { // Identify CELL type
+		case Cell.CELL_TYPE_NUMERIC:
+			Integer entero = (int) cell.getNumericCellValue();
+			valor = String.valueOf(entero);
+			break;
+		case Cell.CELL_TYPE_STRING:
+			valor = cell.getStringCellValue();
+			break;
+		case Cell.CELL_TYPE_FORMULA:
+			valor = String.valueOf(cell.getCachedFormulaResultType());
+			break;
+		}
+		return valor;
+	}
 	
 	public void generarArbolDirectorios(){
 		

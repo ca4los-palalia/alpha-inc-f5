@@ -317,7 +317,6 @@ public class RequisicionVM extends RequisicionMetaClass {
 	@NotifyChange("*")
 	private void initDefaultValues() {
 		cofiaPartidaGenericas = cofiaPartidaGenericaService.getAll();
-		cofiaPartidaGenericas = cofiaPartidaGenericaService.getAll();
 		cofiaProgs = cofiaProgService.getAll();
 		cofiaPys = cofiaPyService.getAll();
 		cofiaFuenteFinanciamientos = cofiaFuenteFinanciamientoService.getAll();
@@ -345,10 +344,6 @@ public class RequisicionVM extends RequisicionMetaClass {
 		if (posiciones != null && posiciones.size() > 0) {
 			requisicion.setPosicion(posiciones.get(0));
 		}
-
-		// EstatusRequisicion estatus =
-		// estatusRequisicionService.getByClave("RQ");
-		// requisiciones = requisicionService.getByEstatusRequisicion(estatus);
 
 		addNewItemToBill();
 		requisicion.setFolio(StockConstants.CLAVE_FOLIO_REQUISICION
