@@ -29,8 +29,7 @@
 								tooltiptext="Cancelar orden de compra" sclass="web_button"
 								onClick="@command('abrirVentanaCancelacion')" />
 							<button image="/images/toolbar/pdf32.png"
-								sclass="web_button" 
-								tooltiptext="Exportar PDF" />
+								sclass="web_button" tooltiptext="Exportar PDF" />
 						</hlayout>
 					</row>
 				</rows>
@@ -87,7 +86,7 @@
 			<listbox rows="4" model="@load(ovm.ordenesCompras)"
 				selectedItem="@bind(ovm.ordenCompra)"
 				onSelect="@command('mostrarProductosOrdenCompra')"
-				emptyMessage="No hay cotizaciones">
+				emptyMessage="Sin ordenes de compra">
 				<listhead>
 
 					<listheader label="No" width="5%" />
@@ -161,18 +160,20 @@
 						style="background-color: transparent; border: 0;">
 						<label value="Proveedor:"
 							style="font-weight:bold;" />
-						
-						<div style="border-bottom-style: solid; border-bottom-width: 1px;">
+
+						<div
+							style="border-bottom-style: solid; border-bottom-width: 1px;">
 							<label style="font-size:smaller;"
-							value="@bind(ovm.ordenCompra.cotizacion.proveedor.nombre)" />
+								value="@bind(ovm.ordenCompra.cotizacion.proveedor.nombre)" />
 						</div>
-						
+
 						<label value="Atención:"
 							style="font-weight:bold;" />
-					
-						<div style="border-bottom-style: solid; border-bottom-width: 1px;">
+
+						<div
+							style="border-bottom-style: solid; border-bottom-width: 1px;">
 							<hlayout>
-	
+
 								<label style="font-size:smaller;"
 									value="@bind(ovm.ordenCompra.cotizacion.proveedor.representanteAteCliente.apellidoPaterno)" />
 								<label value=" " />
@@ -197,10 +198,11 @@
 				<rows>
 					<row
 						style="background-color: transparent; border: 0;">
-						
+
 						<label value="Dirección:"
 							style="font-weight:bold;" />
-						<div style="border-bottom-style: solid; border-bottom-width: 1px;">
+						<div
+							style="border-bottom-style: solid; border-bottom-width: 1px;">
 							<hlayout>
 								<label style="font-size:smaller;"
 									value="@bind(ovm.ordenCompra.cotizacion.proveedor.direccionFiscal.calle)" />
@@ -243,18 +245,21 @@
 						style="background-color: transparent; border: 0;">
 						<label value="Telefono:"
 							style="font-weight:bold;" />
-						<div style="border-bottom-style: solid; border-bottom-width: 1px;">
+						<div
+							style="border-bottom-style: solid; border-bottom-width: 1px;">
 							<label style="font-size:smaller;"
 								value="@bind(ovm.ordenCompra.cotizacion.proveedor.representanteAteCliente.contacto.telefono.numero)" />
 						</div>
 						<label value="E-mail:"
 							style="font-weight:bold;" />
-						<div style="border-bottom-style: solid; border-bottom-width: 1px;">
+						<div
+							style="border-bottom-style: solid; border-bottom-width: 1px;">
 							<label style="font-size:smaller;"
 								value="@bind(ovm.ordenCompra.cotizacion.proveedor.representanteAteCliente.contacto.email.email)" />
 						</div>
 						<label value="Fecha:" style="font-weight:bold;" />
-						<div style="border-bottom-style: solid; border-bottom-width: 1px;">
+						<div
+							style="border-bottom-style: solid; border-bottom-width: 1px;">
 							<datebox value="@bind(ovm.fecha)"
 								buttonVisible="false" readonly="true" />
 						</div>
@@ -264,30 +269,26 @@
 
 			<separator />
 
-			<listbox rows="7" model="@load(ovm.requisicionProductos)"
+			<listbox rows="7"
+				model="@load(ovm.cotizacionesConProductos)"
 				emptyMessage="No hay productos para esta cotización">
 				<listhead>
-					<listheader label="No" width="5%" />
-
+					<listheader label="No" width="5%" visible="false"/>
 					<listheader label="Clave" width="10%"
 						sort="auto(producto.clave)" />
-
 					<listheader label="Producto"
 						sort="auto(proveedor.nombre)" />
-
 					<listheader label="Partida generica" width="20%"
-						sort="auto(cofiaPartidaGenerica.nombre)" />
+						sort="auto(requisicionProducto.cofiaPartidaGenerica.nombre)" />
 
 					<listheader label="Cantidad" width="10%"
 						sort="auto(cantidad)" />
 					<listheader label="U/M" width="10%"
 						sort="auto(producto.unidad.nombre)" />
-
-					<listheader label="Precio unitario" width="12%"
+					<listheader label="Precio U." width="10%"
 						sort="auto(producto.precio)" />
-
-					<listheader label="Total" width="10%" />
-
+					<listheader label="Total." width="10%"
+						sort="auto(requisicionProducto.totalProductoPorUnidad)" />
 				</listhead>
 				<template name="model">
 					<listitem>
@@ -295,36 +296,84 @@
 							<label style="font-size:smaller;"
 								value="${forEachStatus.index + 1}" />
 						</listcell>
+
 						<listcell>
 							<label style="font-size:smaller;"
 								value="@bind(each.producto.clave)" />
 						</listcell>
 						<listcell>
-							<label value="@bind(each.producto.nombre)" />
-						</listcell>
-						<listcell>
-							<label
-								value="@bind(each.cofiaPartidaGenerica.nombre)"
+							<label value="@bind(each.producto.nombre)"
 								style="font-size:smaller;" />
 						</listcell>
 						<listcell>
-							<label value="@bind(each.cantidad)" />
+							<label
+								value="@bind(each.requisicionProducto.cofiaPartidaGenerica.nombre)"
+								style="font-size:smaller;" />
 						</listcell>
 						<listcell>
 							<label
-								value="@bind(each.producto.unidad.nombre)" />
+								value="@bind(each.requisicionProducto.cantidad)"
+								style="font-size:smaller;" />
 						</listcell>
 						<listcell>
-							<label value="@bind(each.producto.precio)" />
+							<label
+								value="@bind(each.producto.unidad.nombre)"
+								style="font-size:smaller;" />
 						</listcell>
+						<listcell>
+							<doublebox
+								style="font-size:smaller; border:0px" width="100%"
+								readonly="true" format="###,###,###.00"
+								value="@bind(each.producto.precio)" />
 
+						</listcell>
 						<listcell>
-							<label
-								value="@bind(each.totalProductoPorUnidad)" />
+							<doublebox
+								style="font-size:smaller; border:0px" width="100%"
+								readonly="true" format="###,###,###"
+								value="@bind(each.requisicionProducto.totalProductoPorUnidad)" />
+
 						</listcell>
 
 					</listitem>
 				</template>
+
+
+
+
+
+
+				<listfoot style="height:40px">
+					<listfooter span="5" style="text-align:right">
+						<hlayout>
+							<image src="/images/toolbar/products.png" />
+							<label value="Productos: " />
+							<label value="@bind(ovm.numeroProductos)" />
+						</hlayout>
+					</listfooter>
+					<listfooter span="2" style="text-align:right">
+						<hlayout>
+							<image src="/images/toolbar/currency.png" />
+							<doublebox
+								style="font-size:smaller; border:0px" width="100%"
+								readonly="true" format="###,###,###"
+								value="@bind(ovm.precioTotal)" />
+						</hlayout>
+					</listfooter>
+				</listfoot>
+
+
+
+
+
+
+
+
+
+
+
+
+
 			</listbox>
 		</groupbox>
 

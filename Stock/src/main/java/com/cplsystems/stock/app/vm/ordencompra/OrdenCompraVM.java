@@ -34,7 +34,7 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 		super.init();
 		requisicion = new Requisicion();
 	}
-	
+
 	@Command
 	public void transferirOrdenCompraToFormulario(
 			@BindingParam("index") Integer index) {
@@ -93,10 +93,23 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 	public void mostrarProductosOrdenCompra() {
 		cotizacionSelected = ordenCompra.getCotizacion();
 		if (cotizacionSelected != null) {
-			Cotizacion cotizacion = cotizacionService
-					.getById(cotizacionSelected.getIdCotizacion());
-			requisicionProductos = requisicionProductoService
-					.getByCotizacion(cotizacion);
+
+			cotizacionesConProductos = cotizacionService
+					.getByProveedorFolioCotizacionNueva(
+							cotizacionSelected.getProveedor(),
+							cotizacionSelected.getFolioCotizacion(),
+							cotizacionSelected.getEstatusRequisicion());
+
+			numeroProductos = cotizacionesConProductos.size();
+			precioTotal = 0F;
+			for (Cotizacion item : cotizacionesConProductos) {
+				item.getRequisicionProducto().setTotalProductoPorUnidad(
+						item.getRequisicionProducto().getCantidad()
+								* item.getProducto().getPrecio());
+				precioTotal += item.getRequisicionProducto()
+						.getTotalProductoPorUnidad();
+			}
+
 		}
 	}
 

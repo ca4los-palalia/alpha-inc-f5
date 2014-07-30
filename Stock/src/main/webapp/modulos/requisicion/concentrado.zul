@@ -67,19 +67,19 @@
 				selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
 				emptyMessage="No hay elementos en la requisición">
 				<listhead>
-					<listheader label="Remover" width="8%"
+					<listheader label="Remover" width="9%"
 						style="text-align:center" />
 					<listheader label="Requisicion" width="11%"
 						tooltiptext="Foliio de la requisición" />
-					<listheader label="Área(UR)" width="16%"
+					<listheader label="Área(UR)" width="20%"
 						tooltiptext="Foliio de la requisición" />
 					<listheader label="Clave" width="10%"
 						tooltiptext="Clave del producto" />
 					<listheader label="Cantidad" width="10%" />
 					<listheader label="Descripcion" />
-					<listheader label="Proveedor" />
-					<listheader label="Importe" width="10%" />
-					<listheader label="Total" width="10%" />
+					<listheader label="Proveedor" visible="false"/>
+					<listheader label="Importe" visible="false" width="10%" />
+					<listheader label="Total" visible="false" width="10%" />
 
 				</listhead>
 				<template name="model" var="requisicionProducto">
@@ -196,6 +196,8 @@
 				selectedItem="@bind(rvm.proveedorProducto)"
 				onSelect="@command('seleccionarProveedor')">
 				<listhead>
+					<listheader width="40px"
+						label=""/>
 					<listheader
 						label="Proveedores que surten este artículo"
 						sclass="invoiceLabel" />
@@ -209,6 +211,9 @@
 				</listhead>
 				<template name="model" var="proveedor">
 					<listitem>
+						<listcell>
+							<checkbox checked="@bind(proveedor.seleccionar)" onCheck="@command('proveedorCheckBox', index=proveedorStatus.index)"/>
+						</listcell>
 						<listcell>
 							<label width="100%"
 								style="font-size:smaller;"

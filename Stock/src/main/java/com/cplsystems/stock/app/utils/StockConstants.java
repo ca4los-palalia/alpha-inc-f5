@@ -98,4 +98,7 @@ public class StockConstants {
 	public static final String NOMBRE_TEMPORAL_USUARIO_SYSTEMA = "NOMBRE TEMPORAL DE LA EMPRESA";
 	public static final Object BENUTZER = "BENUTZER";
 	public static final String FIRMA = "FIRMA";
+	
+	public static final String RUTA_ARCHIVOS_EXCEL_COTIZACION = "C://Stock//Cotizaciones//";
+	public static final String EXTENCION_EXCEL = ".xls";
 }

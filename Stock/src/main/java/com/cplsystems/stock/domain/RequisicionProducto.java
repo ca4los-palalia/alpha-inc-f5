@@ -35,6 +35,9 @@ public class RequisicionProducto implements Serializable {
 	private Float totalProductoPorUnidad;
 	private Cotizacion cotizacion;
 
+	private Organizacion organizacion;
+	private Usuarios usuario;
+	
 	public RequisicionProducto() {
 		producto = new Producto();
 	}
@@ -186,5 +189,23 @@ public class RequisicionProducto implements Serializable {
 		this.cotizacion = cotizacion;
 	}
 	
-	
+	@OneToOne
+	@JoinColumn(name = "organizacion")
+	public Organizacion getOrganizacion() {
+		return organizacion;
+	}
+
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "usuario")
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
+	}
 }

@@ -25,6 +25,8 @@ public class OrdenCompraVariables extends BasicStructure {
 	protected boolean checkBuscarCancelada;
 	protected boolean checkBuscarEnviada;
 	protected boolean checkBuscarAceptada;
+	protected Float precioTotal;
+	protected Integer numeroProductos;
 
 	public List<OrdenCompraInbox> getOrdenesCompraInbox() {
 		return ordenesCompraInbox;
@@ -94,6 +96,22 @@ public class OrdenCompraVariables extends BasicStructure {
 
 	public void setCheckBuscarAceptada(boolean checkBuscarAceptada) {
 		this.checkBuscarAceptada = checkBuscarAceptada;
+	}
+
+	public Float getPrecioTotal() {
+		return precioTotal;
+	}
+
+	public void setPrecioTotal(Float precioTotal) {
+		this.precioTotal = precioTotal;
+	}
+
+	public Integer getNumeroProductos() {
+		return numeroProductos;
+	}
+
+	public void setNumeroProductos(Integer numeroProductos) {
+		this.numeroProductos = numeroProductos;
 	}
 	
 }
