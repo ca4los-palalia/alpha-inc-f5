@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.cplsystems.stock.dao.CotizacionDAO;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
 
@@ -67,23 +68,36 @@ public class CotizacionService {
 		return cotizacionDAO.getByRequisicion(requisicion);
 	}
 
-	public List<Cotizacion> getTopCompras(){
-		return cotizacionDAO.getTopCompras();	
+	public List<Cotizacion> getTopCompras() {
+		return cotizacionDAO.getTopCompras();
 	}
-	
-	public Long getCountRowsCotizacion(){
-		return  cotizacionDAO.getCountRowsCotizacion();
+
+	public Long getCountRowsCotizacion() {
+		return cotizacionDAO.getCountRowsCotizacion();
 	}
-	
-	public Cotizacion getCotizacionByFolio(String folioCotizacion){
-		return  cotizacionDAO.getCotizacionByFolio(folioCotizacion);
+
+	public Cotizacion getCotizacionByFolio(String folioCotizacion) {
+		return cotizacionDAO.getCotizacionByFolio(folioCotizacion);
 	}
-	
-	public List<Cotizacion> getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(String folioCotizacion, List<Proveedor> proveedores, List<EstatusRequisicion> estatus){
-		return cotizacionDAO.getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(folioCotizacion, proveedores, estatus);
+
+	public List<Cotizacion> getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(
+			String folioCotizacion, List<Proveedor> proveedores,
+			List<EstatusRequisicion> estatus) {
+		return cotizacionDAO
+				.getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(
+						folioCotizacion, proveedores, estatus);
 	}
-	
-	public Cotizacion getCotizacionByRequisicionAndProveedor(Requisicion requisicion, Proveedor proveedor){
-		return cotizacionDAO.getCotizacionByRequisicionAndProveedor(requisicion, proveedor);
+
+	public Cotizacion getCotizacionByRequisicionProveedorAndProducto(
+			Requisicion requisicion, Proveedor proveedor, Producto producto) {
+		return cotizacionDAO.getCotizacionByRequisicionProveedorAndProducto(
+				requisicion, proveedor, producto);
+	}
+
+	public List<Cotizacion> getByProveedorFolioCotizacionNueva(
+			Proveedor proveedor, String folio,
+			EstatusRequisicion estatusRequisicion) {
+		return cotizacionDAO.getByProveedorFolioCotizacionNueva(proveedor,
+				folio, estatusRequisicion);
 	}
 }

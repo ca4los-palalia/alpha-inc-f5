@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "proveedorProducto")
@@ -23,6 +24,7 @@ public class ProveedorProducto implements Serializable {
 	private String precioFinal;
 	private Proveedor proveedor;
 	private Producto producto;
+	private boolean seleccionar;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -93,4 +95,14 @@ public class ProveedorProducto implements Serializable {
 		this.producto = producto;
 	}
 
+	@Transient
+	public boolean isSeleccionar() {
+		return seleccionar;
+	}
+
+	public void setSeleccionar(boolean seleccionar) {
+		this.seleccionar = seleccionar;
+	}
+	
+	
 }

@@ -156,6 +156,10 @@ public class RequisicionVM extends RequisicionMetaClass {
 								&& requisicionProducto.getProducto()
 										.getIdProducto() != null) {
 							requisicionProducto.setEntregados(0L);
+							requisicionProducto.setOrganizacion((Organizacion) sessionUtils
+									.getFromSession(SessionUtils.FIRMA));
+							requisicionProducto.setUsuario((Usuarios) sessionUtils
+									.getFromSession(SessionUtils.USUARIO));
 							requisicionProductoService
 									.save(requisicionProducto);
 						} else {// INTENTAR SALVAR
@@ -165,6 +169,10 @@ public class RequisicionVM extends RequisicionMetaClass {
 							if (p != null) {
 								requisicionProducto.setProducto(p.get(0));
 								requisicionProducto.setEntregados(0L);
+								requisicionProducto.setOrganizacion((Organizacion) sessionUtils
+										.getFromSession(SessionUtils.FIRMA));
+								requisicionProducto.setUsuario((Usuarios) sessionUtils
+										.getFromSession(SessionUtils.USUARIO));
 								requisicionProductoService
 										.save(requisicionProducto);
 							} else

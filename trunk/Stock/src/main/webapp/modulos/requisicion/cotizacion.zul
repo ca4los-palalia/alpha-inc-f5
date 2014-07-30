@@ -337,7 +337,7 @@
 				<separator />
 
 				<listbox rows="7"
-					model="@load(rvm.requisicionProductos)"
+					model="@load(rvm.cotizacionesConProductos)"
 					emptyMessage="No hay productos para esta cotización">
 					<listhead>
 						<listheader label="No" width="5%" />
@@ -352,12 +352,6 @@
 							sort="auto(cantidad)" />
 						<listheader label="U/M" width="10%"
 							sort="auto(producto.unidad.nombre)" />
-
-						<listheader label="Precio unitario" width="10%"
-							sort="auto(producto.precio)" />
-
-						<listheader label="Total" width="10%" />
-
 					</listhead>
 					<template name="model">
 						<listitem>
@@ -376,24 +370,15 @@
 							</listcell>
 							<listcell>
 								<label
-									value="@bind(each.cofiaPartidaGenerica.nombre)"
+									value="@bind(each.requisicionProducto.cofiaPartidaGenerica.nombre)"
 									style="font-size:smaller;" />
 							</listcell>
 							<listcell>
-								<label value="@bind(each.cantidad)" />
+								<label value="@bind(each.requisicionProducto.cantidad)" />
 							</listcell>
 							<listcell>
 								<label
 									value="@bind(each.producto.unidad.nombre)" />
-							</listcell>
-							<listcell>
-								<label
-									value="@bind(each.producto.precio)" />
-							</listcell>
-
-							<listcell>
-								<label
-									value="@bind(each.totalProductoPorUnidad)" />
 							</listcell>
 
 						</listitem>

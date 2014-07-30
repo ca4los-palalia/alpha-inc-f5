@@ -129,6 +129,7 @@ public class DataLayer implements Serializable {
 	protected List<CofiaProg> cofiaProgs;
 	protected List<CofiaPy> cofiaPys;
 	protected List<Cotizacion> cotizacionesList;
+	protected List<Cotizacion> cotizacionesConProductos;
 	protected List<CostosProducto> costosProductos;
 	protected List<CodigoBarrasProducto> codigosBarrasProductos;
 	protected List<FamiliasProducto> familiasProductos;
@@ -736,6 +737,15 @@ public class DataLayer implements Serializable {
 		this.ordenesCompras = ordenesCompras;
 	}
 
+	public List<Cotizacion> getCotizacionesConProductos() {
+		return cotizacionesConProductos;
+	}
+
+	public void setCotizacionesConProductos(
+			List<Cotizacion> cotizacionesConProductos) {
+		this.cotizacionesConProductos = cotizacionesConProductos;
+	}
+	
 	
 	
 }

@@ -44,7 +44,8 @@ public abstract class ProductoVariables extends BasicStructure {
 	private Date costoUltimoFechaDate;
 	protected boolean enableComboBoxUnidades;
 	protected ModoDeBusqueda modoDeBusqueda;
-	
+	protected Integer progressValue;
+	protected String progressValueLabel;
 	
 	//protected List<TabInfo> tabListClasificacionProductos;
 	protected TabInfo tabSelected;
@@ -250,6 +251,22 @@ public abstract class ProductoVariables extends BasicStructure {
 
 	public void setModoDeBusqueda(ModoDeBusqueda modoDeBusqueda) {
 		this.modoDeBusqueda = modoDeBusqueda;
+	}
+
+	public Integer getProgressValue() {
+		return progressValue;
+	}
+
+	public void setProgressValue(Integer progressValue) {
+		this.progressValue = progressValue;
+	}
+
+	public String getProgressValueLabel() {
+		return progressValueLabel;
+	}
+
+	public void setProgressValueLabel(String progressValueLabel) {
+		this.progressValueLabel = progressValueLabel;
 	}
 	
 	

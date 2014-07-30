@@ -3,15 +3,23 @@
  */
 package com.cplsystems.stock.app.vm.proveedor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.zkoss.bind.BindContext;
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.ContextParam;
+import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.image.AImage;
+import org.zkoss.image.Image;
+import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
@@ -302,4 +310,5 @@ public class ProveedoresVM extends ProveedorMetaClass {
 							Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 		}
 	}
+	
 }

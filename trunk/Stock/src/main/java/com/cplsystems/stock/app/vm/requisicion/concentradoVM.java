@@ -29,6 +29,7 @@ import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
+import com.cplsystems.stock.domain.ProveedorProducto;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
 import com.cplsystems.stock.domain.Usuarios;
@@ -57,6 +58,30 @@ public class concentradoVM extends RequisicionVariables {
 				proveedorProductos = proveedorProductoService
 						.getByProducto(requisicionProductoSeleccionado
 								.getProducto());
+
+			if (proveedorProductos != null) {// nuevo codigo
+				for (ProveedorProducto item : proveedorProductos) {
+					Cotizacion itemCotizacion = cotizacionService
+							.getCotizacionByRequisicionProveedorAndProducto(
+									requisicionProductoSeleccionado
+											.getRequisicion(), item
+											.getProveedor(), item.getProducto());
+					if (itemCotizacion != null)
+						item.setSeleccionar(true);
+
+					for (Cotizacion item2 : cotizacionesList) {
+						if (item.getProducto().getClave()
+								.equals(item2.getProducto().getClave())
+								&& item.getProveedor()
+										.getNombre()
+										.equals(item2.getProveedor()
+												.getNombre())) {
+							item.setSeleccionar(true);
+							break;
+						}
+					}
+				}
+			}// END nuevo codigo
 		}
 	}
 
@@ -142,7 +167,7 @@ public class concentradoVM extends RequisicionVariables {
 			if (requisicionProductos == null)
 				stockUtils.showSuccessmessage(
 						"Tu busqueda -" + requisicion.getBuscarRequisicion()
-								+ "- no encontro algun resultado",
+								+ "- no encontro resultados",
 						Clients.NOTIFICATION_TYPE_INFO, 0, null);
 		} else
 			stockUtils
@@ -191,79 +216,150 @@ public class concentradoVM extends RequisicionVariables {
 				.getRequisicionesConEstadoEspecifico(estado);
 	}
 
-	@SuppressWarnings("static-access")
+	@NotifyChange("proveedorProducto")
+	@Command
+	public void proveedorCheckBox(@BindingParam("index") Integer index) {
+		ProveedorProducto pp = proveedorProductos.get(index);
+		if (cotizacionesList == null)
+			cotizacionesList = new ArrayList<Cotizacion>();
+
+		Cotizacion nuevaCotizacion = new Cotizacion();
+		nuevaCotizacion.setRequisicion(requisicionProductoSeleccionado
+				.getRequisicion());
+		nuevaCotizacion.setProveedor(pp.getProveedor());
+		nuevaCotizacion.setProducto(requisicionProductoSeleccionado
+				.getProducto());
+		nuevaCotizacion.setRequisicionProducto(requisicionProductoSeleccionado);
+		
+		boolean agregar = true;
+		if (pp.isSeleccionar()) {
+			for (Cotizacion item : cotizacionesList) {
+				if (item.getProveedor().equals(nuevaCotizacion.getProveedor())
+						&& item.getRequisicion().equals(
+								nuevaCotizacion.getRequisicion())
+						&& nuevaCotizacion.getProducto().equals(
+								requisicionProductoSeleccionado.getProducto())) {
+					agregar = false;
+					break;
+				}
+			}
+		}
+
+		if (agregar && pp.isSeleccionar())
+			cotizacionesList.add(nuevaCotizacion);
+		if (!pp.isSeleccionar()) {
+			for (Cotizacion item : cotizacionesList) {
+				if (item.getProveedor().getNombre()
+						.equals(nuevaCotizacion.getProveedor().getNombre())
+						&& item.getRequisicion()
+								.getFolio()
+								.equals(nuevaCotizacion.getRequisicion()
+										.getFolio())
+						&& nuevaCotizacion
+								.getProducto()
+								.getNombre()
+								.equals(requisicionProductoSeleccionado
+										.getProducto().getNombre())) {
+					cotizacionesList.remove(item);
+					break;
+				}
+			}
+		}
+
+	}
+
 	private List<Cotizacion> salvarCotizacion() {
-		Map<Proveedor, Requisicion> mapa = new HashMap<Proveedor, Requisicion>();
-		String mensaje = "";
 		List<Cotizacion> cotizacionReturn = null;
 		if (requisicionProductos != null && requisicionProductos.size() > 0) {
 			cotizacionReturn = new ArrayList<Cotizacion>();
-			for (RequisicionProducto item : requisicionProductos) {
-				requisicionProductoService.save(item);
-				if (!mapa.containsKey(item.getProveedor()))
-					if (item.getProveedor() != null)
-						mapa.put(item.getProveedor(), item.getRequisicion());
-			}
-			if (mapa.size() > 0) {
-				EstatusRequisicion estado = estatusRequisicionService
-						.getByClave(StockConstants.ESTADO_COTIZACION_NUEVA);
-				for (Entry<Proveedor, Requisicion> elemento : mapa.entrySet()) {
-					Proveedor pr = elemento.getKey();
-					Requisicion rq = elemento.getValue();
-					System.out.println(pr.getNombre() + " _ " + rq.getFolio());
+			for (RequisicionProducto item : requisicionProductos)//SALVAR CANTIDAD DE PRODUCTO
+					requisicionProductoService.save(item);
 
-					if (cotizacionService
-							.getCotizacionByRequisicionAndProveedor(rq, pr) == null) {
-						Cotizacion cotizacion = new Cotizacion();
-						cotizacion.setProveedor(pr);
-						cotizacion.setRequisicion(rq);
-						cotizacion.setFolioCotizacion(generarFolioCotizacion());
-						cotizacion.setOrganizacion((Organizacion) sessionUtils
-								.getFromSession(SessionUtils.FIRMA));
-						cotizacion.setUsuario((Usuarios) sessionUtils
-								.getFromSession(SessionUtils.USUARIO));
-						cotizacion.setEstatusRequisicion(estado);
-						cotizacionService.save(cotizacion);
-						cotizacionReturn.add(cotizacion);
-						CotizacionInbox inbox = new CotizacionInbox();
-						inbox.setLeido(false);
-						inbox.setCotizacion(cotizacion);
-						inbox.setFechaRegistro(new StockUtils()
-								.convertirCalendarToDate(Calendar.getInstance()));
-						cotizacionInboxService.save(inbox);
-
-					} else
-						mensaje = "-" + pr.getNombre() + ":" + rq.getFolio()
-								+ "-";
-				}
+			if (cotizacionesList != null && cotizacionesList.size() > 0) {
+				List<Cotizacion> cotizacionesInbox = new ArrayList<Cotizacion>();
 				
-				for (RequisicionProducto item : requisicionProductos) {
-					for (Cotizacion cotizacion : cotizacionReturn) {
-						if (item.getProveedor().getIdProveedor().equals(
-								cotizacion.getProveedor().getIdProveedor())
-								&& item.getRequisicion().getIdRequisicion().equals(
-										cotizacion.getRequisicion().getIdRequisicion())) {
-							item.setCotizacion(cotizacion);
+				//GENERAR COTIZACIONES (PROVEDORES NO DUPLICADOS) + FOLIO
+				List<Cotizacion> preCotizacionConFolio = new  ArrayList<Cotizacion>();
+				String folio = generarFolioCotizacion(cotizacionService.getCountRowsCotizacion());
+				Long i = 1L;
+				for (Cotizacion item : cotizacionesList) {
+					boolean agregar = true;
+					for (Cotizacion ctzConFolio : preCotizacionConFolio) {
+						if(item.getProveedor().getNombre().equals(ctzConFolio.getProveedor().getNombre())){
+							agregar = false;
 							break;
 						}
 					}
-					requisicionProductoService.save(item);
-				}
+					if(agregar){
+						item.setFolioCotizacion(folio);
+						preCotizacionConFolio.add(item);
+						folio = generarFolioCotizacion(i+1);
+						i ++;
+					}
+				}//FIN GENERAR COTIZACIONES (PROVEDORES NO DUPLICADOS) + FOLIO
 				
-				if (!mensaje.isEmpty())
-					stockUtils.showSuccessmessage(
-							"No se pudieron generar las cotizaciones de los proveedores: "
-									+ mensaje
-									+ " anteriormente ya han sido generadas",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+				//SALVAR COTIZACIONES
+				for (Cotizacion item : cotizacionesList) {
+					Cotizacion verificarCotizacion = cotizacionService
+							.getCotizacionByRequisicionProveedorAndProducto(
+									item.getRequisicion(), 
+									item.getProveedor(),
+									item.getProducto());
 
+					System.err.println(item.getRequisicion().getFolio() + "\t"
+							+ item.getProducto().getClave() + "\t\t"
+							+ item.getProveedor().getNombre());
+
+					if (verificarCotizacion == null) {
+						EstatusRequisicion estado = estatusRequisicionService
+								.getByClave(StockConstants.ESTADO_COTIZACION_NUEVA);
+
+						item.setFolioCotizacion(obtenerFolio(preCotizacionConFolio, item));
+						item.setOrganizacion((Organizacion) sessionUtils
+								.getFromSession(SessionUtils.FIRMA));
+						item.setUsuario((Usuarios) sessionUtils
+								.getFromSession(SessionUtils.USUARIO));
+						item.setEstatusRequisicion(estado);
+						cotizacionService.save(item);
+						cotizacionesInbox.add(item);
+					}
+				}//FIN SALVAR COTIZACIONES
 				
-
+				//GENERAR INBOX DE COTIZACIONES
+				for (Cotizacion cotizacion2 : cotizacionesInbox) {
+					boolean salvar = true;
+					for (Cotizacion cotizacionInbox : cotizacionReturn) {
+						if(cotizacion2.getProveedor().getNombre().equals(cotizacionInbox.getProveedor().getNombre())){
+							salvar = false;
+							break;
+						}
+					}
+					if(salvar){
+						CotizacionInbox inbox = new CotizacionInbox();
+						inbox.setLeido(false);
+						inbox.setCotizacion(cotizacion2);
+						inbox.setFechaRegistro(new StockUtils()
+								.convertirCalendarToDate(Calendar.getInstance()));
+						cotizacionInboxService.save(inbox);
+						cotizacionReturn.add(cotizacion2);
+					}
+				}//FIN GENERAR INBOX DE COTIZACIONES
 			}
 		}
 		return cotizacionReturn;
 	}
 
+	private String obtenerFolio(List<Cotizacion> listaCotizacionesFolio, Cotizacion cotizacionEntrada){
+		String folio = ""; 
+		for (Cotizacion item : listaCotizacionesFolio) {
+			if(item.getProveedor().getNombre().equals(cotizacionEntrada.getProveedor().getNombre())){
+				folio =item.getFolioCotizacion();
+				break;
+			}
+		}
+		return folio;
+	}
+	
 	private Cotizacion obtenerCotizacion(Proveedor proRequisicion,
 			List<Cotizacion> prosCotizaciones) {
 		Cotizacion resultado = null;
@@ -276,9 +372,8 @@ public class concentradoVM extends RequisicionVariables {
 		return resultado;
 	}
 
-	private String generarFolioCotizacion() {
+	private String generarFolioCotizacion(Long countRows) {
 		String folio = null;
-		Long countRows = cotizacionService.getCountRowsCotizacion();
 		if (countRows != null) {
 			folio = StockConstants.CLAVE_FOLIO_COTIZACION;
 			if (String.valueOf(countRows.toString().length()).equals("1"))

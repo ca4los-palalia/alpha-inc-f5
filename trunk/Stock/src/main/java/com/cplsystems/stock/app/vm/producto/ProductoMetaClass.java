@@ -290,7 +290,7 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 		}
 	}
 
-	private void copiarArchivo(Media media, String destino) {
+	public void copiarArchivo(Media media, String destino) {
 
 		try {
 			File dst = new File(destino);

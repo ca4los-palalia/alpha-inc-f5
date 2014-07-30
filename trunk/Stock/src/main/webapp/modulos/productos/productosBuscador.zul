@@ -62,17 +62,17 @@
 							sclass="web_button" onClick="@command('reporteProductos')"
 							tooltiptext="Exportar a un archivo PDF" />
 							
-						<button image="/images/toolbar/excel32.png" upload="true" 
-							onClick="@command('upload2')"
-							sclass="web_button"/>
+						<button label="Upload" upload="true"
+			            	onUpload="@command('onUploadPDF',upEvent=event)">
+			            </button>
 					</hlayout>
 				</row>
 			</rows>
 		</grid>
 
 		<separator />
-
-
+<progressmeter id="curr_met" value="@bind(pvm.progressValue)" width="100%"  />
+<label value="@bind(pvm.progressValueLabel)"/>
 
 		<groupbox mold="3d" open="false"
 			tooltiptext="Clic para ver formulario de busqueda">

@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
 
@@ -35,14 +36,21 @@ public interface CotizacionDAO {
 	public List<Cotizacion> getByProveedor(Proveedor proveedor);
 
 	public List<Cotizacion> getByRequisicion(Requisicion requisicion);
-	
+
 	public List<Cotizacion> getTopCompras();
-	
+
 	public Long getCountRowsCotizacion();
-	
+
 	public Cotizacion getCotizacionByFolio(String folioCotizacion);
-	
-	public List<Cotizacion> getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(String folioCotizacion, List<Proveedor> proveedores, List<EstatusRequisicion> estatus);
-	
-	public Cotizacion getCotizacionByRequisicionAndProveedor(Requisicion requisicion, Proveedor proveedor);
+
+	public List<Cotizacion> getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(
+			String folioCotizacion, List<Proveedor> proveedores,
+			List<EstatusRequisicion> estatus);
+
+	public Cotizacion getCotizacionByRequisicionProveedorAndProducto(
+			Requisicion requisicion, Proveedor proveedor, Producto producto);
+
+	public List<Cotizacion> getByProveedorFolioCotizacionNueva(
+			Proveedor proveedor, String folio,
+			EstatusRequisicion estatusRequisicion);
 }

@@ -31,8 +31,10 @@ public class Cotizacion {
 	private Float total;
 	private Float extras;
 	private Proveedor proveedor;
+	private Producto producto;
 	private Requisicion requisicion;
 	private EstatusRequisicion estatusRequisicion;
+	private RequisicionProducto requisicionProducto;
 	private String excelFile;
 	private String cancelarDescripcion;
 	private String folioCotizacion;
@@ -123,7 +125,7 @@ public class Cotizacion {
 		this.extras = extras;
 	}
 
-	@ManyToOne (fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name = "proveedor")
 	public Proveedor getProveedor() {
 		return proveedor;
@@ -133,7 +135,7 @@ public class Cotizacion {
 		this.proveedor = proveedor;
 	}
 
-	@ManyToOne (fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name = "requisicion")
 	public Requisicion getRequisicion() {
 		return requisicion;
@@ -206,5 +208,26 @@ public class Cotizacion {
 	public void setCancelarDescripcion(String cancelarDescripcion) {
 		this.cancelarDescripcion = cancelarDescripcion;
 	}
+
+	@OneToOne
+	@JoinColumn(name = "producto")
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "requisicionProducto")
+	public RequisicionProducto getRequisicionProducto() {
+		return requisicionProducto;
+	}
+
+	public void setRequisicionProducto(RequisicionProducto requisicionProducto) {
+		this.requisicionProducto = requisicionProducto;
+	}
+	
 	
 }
