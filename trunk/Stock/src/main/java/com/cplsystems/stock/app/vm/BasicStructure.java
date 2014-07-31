@@ -13,8 +13,8 @@ import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
+import com.cplsystems.stock.app.utils.SistemaOperativo;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.Posicion;
@@ -35,6 +35,7 @@ public abstract class BasicStructure extends ServiceLayer {
 		requisicion = new Requisicion();
 		libro = new HSSFWorkbook();
 		cotizacionesList = new ArrayList<Cotizacion>();
+		sistemaOperativo = new SistemaOperativo();
 	}
 	
 	public void newRecord() {

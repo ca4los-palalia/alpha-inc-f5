@@ -33,9 +33,9 @@
 								tooltiptext="Guardar/Actualizar requisición"
 								onClick="@command('saveChanges')" />
 
-							<button image="/images/toolbar/update.png"
-								sclass="web_button" visible="false"
-								tooltiptext="Actualizar requisición"
+							<button image="/images/toolbar/pdf32.png"
+								sclass="web_button"
+								tooltiptext="Imprimir requisición requisición"
 								onClick="@command('imprimirRequisicion')" />
 						</hlayout>
 					</row>

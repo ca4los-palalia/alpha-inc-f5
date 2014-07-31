@@ -3,8 +3,13 @@
  */
 package com.cplsystems.stock.app.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.security.MessageDigest;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -95,6 +100,12 @@ public class StockUtils {
 		Date date = calendar.getTime();
 		return date;
 	}
+	
+	public String convertirCalendarToString(Calendar calendar){
+		Date date = convertirCalendarToDate(calendar);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(date);
+	}
 
 	/* Encryption Method */
 	public static String encrypt(String message) {
@@ -149,4 +160,22 @@ public class StockUtils {
 		return null;
 	}
 
+	public static String getFechaActualConHora(){
+		Date date = new Date();
+		DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH+mm+ss");
+		return hourdateFormat.format(date);
+	}
+	
+	public FileInputStream getLogotipoDeOrganizacionParaJasper(String nombreAtchivo){
+		File archivoLogotipo = new File(StockConstants.CARPETA_ARCHIVOS_LOGOTIPOS + nombreAtchivo);
+		FileInputStream streamLogotipo =  null;
+		if(archivoLogotipo.exists()){
+			try {
+				streamLogotipo = new FileInputStream(archivoLogotipo);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return streamLogotipo;
+	}
 }

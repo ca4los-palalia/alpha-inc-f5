@@ -29,28 +29,26 @@ public abstract class RequisicionMetaClass extends RequisicionVariables {
 
 	@Init
 	public void init() {
-		readJasper = generarUrlString("jasperTemplates/requisicionFormato.jasper");
+		readJasper = generarUrlString(StockConstants.ARCHIVO_JASPER_REQUISICION_FORMATO);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "static-access" })
 	@Command
 	public String generarRequisicionJasper(List<HashMap> listaHashsParametros,
 			List<AplicacionExterna> aplicaciones,
 			List<RequisicionProducto> lista) {
 		String mensaje = "";
-
 		HashMap hashParametros = construirHashMapParametros(listaHashsParametros);
 
 		try {
-
 			print = JasperFillManager.fillReport(readJasper, hashParametros,
 					new JRBeanCollectionDataSource(lista));
 
 			JasperExportManager.exportReportToPdfFile(print,
-					StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE);
-			openPdf(StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE);
+					StockConstants.CARPETA_ARCHIVOS_REQUISICIONES + hashParametros.get("folio") + stockUtils.getFechaActualConHora() +  StockConstants.EXTENCION_PDF);
+			openPdf(StockConstants.CARPETA_ARCHIVOS_REQUISICIONES);
 			mensaje = "REQUISICIÓN GENERADA EN PDF"
-					+ StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE;
+					+ StockConstants.CARPETA_ARCHIVOS_REQUISICIONES;
 
 		} catch (JRException e) {
 			e.printStackTrace();
@@ -59,10 +57,10 @@ public abstract class RequisicionMetaClass extends RequisicionVariables {
 
 			try {
 				JasperExportManager.exportReportToPdfFile(print,
-						StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE);
-				openPdf(StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE);
-				mensaje = "Se ha generado un PDFPDF del reporte generado: "
-						+ StockConstants.REPORT_VARIABLE_REQUISICION_NAME_FILE;
+						StockConstants.CARPETA_ARCHIVOS_REQUISICIONES);
+				openPdf(StockConstants.CARPETA_ARCHIVOS_REQUISICIONES);
+				mensaje = "Se ha generado un PDF: "
+						+ StockConstants.CARPETA_ARCHIVOS_REQUISICIONES;
 			} catch (JRException e1) {
 				e1.printStackTrace();
 			}
