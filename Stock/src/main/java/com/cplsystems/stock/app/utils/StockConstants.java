@@ -89,16 +89,26 @@ public class StockConstants {
 	public static final String CLAVE_FOLIO_COTIZACION = "FCO";
 	public static final String CLAVE_FOLIO_ORDEN_COMPRA = "FOC";
 
-	public static final String REPORT_PROVEEDOR_NAME_FILE = "C:\\reportProveedores.pdf";
+	public static final String ARCHIVO_JASPER_REQUISICION_FORMATO = "jasperTemplates/requisicionFormato.jasper";
+	public static final String ARCHIVO_JASPER_ORDEN_COMPRA_FORMATO = "jasperTemplates/ordenCompraFormato.jasper";
+	public static final String REPORT_PROVEEDOR_NAME_FILE = "C:\\Stock\\Proveedores\\reportProveedores.pdf";
 	public static final String REPORT_PROVEEDOR_PARAM1 = "parameter1";
 	public static final String REPORT_PROVEEDOR_NOMBRE_EMPRESA = "empresaTitle";
-	public static final String REPORT_VARIABLE_PRODUCTO_NAME_FILE = "C:\\reportProductos.pdf";
-	public static final String REPORT_VARIABLE_REQUISICION_NAME_FILE = "C:\\requisicion.pdf";
+	public static final String REPORT_VARIABLE_PRODUCTO_NAME_FILE = "C:\\Stock\\Productos\\reportProductos.pdf";
+	
 
 	public static final String NOMBRE_TEMPORAL_USUARIO_SYSTEMA = "NOMBRE TEMPORAL DE LA EMPRESA";
 	public static final Object BENUTZER = "BENUTZER";
 	public static final String FIRMA = "FIRMA";
 	
-	public static final String RUTA_ARCHIVOS_EXCEL_COTIZACION = "C://Stock//Cotizaciones//";
+	
+	public static final String CARPETA_ARCHIVOS_REQUISICIONES = "C:\\Stock\\Requisiciones\\";
+	public static final String CARPETA_ARCHIVOS_COTIZACIONES = "C://Stock//Cotizaciones//";
+	public static final String CARPETA_ARCHIVOS_ORDEN_COMPRA = "C:\\Stock\\OrdenCompra\\";
+	public static final String CARPETA_ARCHIVOS_LOGOTIPOS = "C://Stock//Logotipos//";
 	public static final String EXTENCION_EXCEL = ".xls";
+	public static final String EXTENCION_PDF = ".pdf";
+	public static final String OS_WIN = "WIN";
+	public static final String OS_LIN = "*";
+	public static final String OS_MAC = "MAC";
 }

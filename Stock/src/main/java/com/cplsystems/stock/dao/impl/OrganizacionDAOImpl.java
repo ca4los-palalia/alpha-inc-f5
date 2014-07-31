@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.OrganizacionDAO;
 import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Requisicion;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -72,6 +73,15 @@ public class OrganizacionDAOImpl extends HibernateDAOSuportUtil implements
 	@Transactional(readOnly = true)	
 	public List<Organizacion> getAll() {
 		return getHibernateTemplate().find("FROM Organizacion as o");
+	}
+
+	@Override
+	public Organizacion getById(Long idOrganizacion) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
+				createCriteria(Organizacion.class);
+		criteria.add(Restrictions.eq("idOrganizacion", idOrganizacion));
+		List<Organizacion> lista = criteria.list();
+		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
 	}
 
 }

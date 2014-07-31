@@ -32,9 +32,9 @@
 								sclass="web_button" onClick="@command('limpiarFormulario')"
 								tooltiptext="limpia formulario para nueva captura" />
 
-							<button image="/images/toolbar/update.png"
-								sclass="web_button" visible="false"
-								tooltiptext="Actualizar requisición"
+							<button image="/images/toolbar/pdf32.png"
+								sclass="web_button"
+								tooltiptext="Imprimir requisición requisición"
 								onClick="@command('imprimirRequisicion')" />
 
 						</hlayout>

@@ -3,6 +3,10 @@
  */
 package com.cplsystems.stock.app.vm.requisicion;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -550,7 +554,18 @@ public class RequisicionVM extends RequisicionMetaClass {
 				requisicionProductos = new ArrayList<RequisicionProducto>();
 
 			if (requisicionProductos != null) {
-
+				
+				Organizacion org = (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
+				File archivoLogotipo = new File(StockConstants.CARPETA_ARCHIVOS_LOGOTIPOS + org.getLogotipo());
+				FileInputStream streamLogotipo =  null;
+				if(archivoLogotipo.exists()){
+					try {
+						streamLogotipo = new FileInputStream(archivoLogotipo);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+				
 				HashMap mapa = new HashMap();
 				mapa.put("folio",requisicion.getFolio());
 				mapa.put("area",requisicion.getArea().getNombre());
@@ -564,6 +579,8 @@ public class RequisicionVM extends RequisicionMetaClass {
 				mapa.put("descripcion",requisicion.getAdscripcion());
 				mapa.put("justificacion",requisicion.getJustificacion());
 				mapa.put("NoInventario",requisicion.getNumeroInventario());
+				mapa.put("logotipo", streamLogotipo);
+				mapa.put("nombreEmpresa",org.getNombre());
 								
 				List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
 				listaHashsParametros.add(mapa);
@@ -572,7 +589,6 @@ public class RequisicionVM extends RequisicionMetaClass {
 				AplicacionExterna aplicacion = new AplicacionExterna();
 				aplicacion.setNombre("PDFXCview");
 				aplicaciones.add(aplicacion);
-
 				stockUtils.showSuccessmessage(
 						generarRequisicionJasper(listaHashsParametros,
 								aplicaciones, requisicionProductos),

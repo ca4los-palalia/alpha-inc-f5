@@ -291,6 +291,7 @@ public class CotizacionVM extends RequisicionVariables {
 				compra.setCodigo(StockConstants.CLAVE_FOLIO_ORDEN_COMPRA
 						+ ordenCompraService.getCodigoDeOrden());
 				compra.setCotizacion(cotizacionSelected);
+				compra.setFechaOrden(Calendar.getInstance());
 				ordenCompraService.save(compra);
 
 				OrdenCompraInbox inbox = new OrdenCompraInbox();
@@ -458,7 +459,7 @@ public class CotizacionVM extends RequisicionVariables {
 
 			String hash = String.valueOf(Hex.encode(mb));
 			fileOutputStream = new FileOutputStream(
-					StockConstants.RUTA_ARCHIVOS_EXCEL_COTIZACION + hash
+					StockConstants.CARPETA_ARCHIVOS_COTIZACIONES + hash
 							+ StockConstants.EXTENCION_EXCEL);
 			libro.write(fileOutputStream);
 
@@ -491,7 +492,7 @@ public class CotizacionVM extends RequisicionVariables {
 		if (cotizacionSelected != null
 				&& (cotizacionSelected.getExcelFile() != null && !cotizacionSelected
 						.getExcelFile().isEmpty())) {
-			File fileNameExcel = new File(StockConstants.RUTA_ARCHIVOS_EXCEL_COTIZACION
+			File fileNameExcel = new File(StockConstants.CARPETA_ARCHIVOS_COTIZACIONES
 					+ cotizacionSelected.getExcelFile() + StockConstants.EXTENCION_EXCEL);
 
 			if (fileNameExcel.exists()) {
@@ -601,7 +602,47 @@ public class CotizacionVM extends RequisicionVariables {
 		}
 
 	}
+	
+	@SuppressWarnings("rawtypes")
+	@Command
+	public void imprimirCotizacion (){
+		if(cotizacionSelected != null){
+			if(cotizacionesConProductos != null && cotizacionesConProductos.size() > 0){
+				Organizacion org = (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
 
+				
+				
+				HashMap mapa = new HashMap();
+				mapa.put("logotipo", stockUtils.getLogotipoDeOrganizacionParaJasper(org.getLogotipo()));
+				mapa.put("nombreEmpresa",org.getNombre());
+				
+				mapa.put("proveedor", cotizacionSelected.getProveedor().getNombre());
+				mapa.put("ur", cotizacionSelected.getRequisicion().getArea().getNombre());
+				
+				mapa.put("entregarEn", "");
+				mapa.put("dependencia",requisicion.getCofiaProg().getNombre());
+				
+				mapa.put("comentarios", cotizacionSelected.getDetallesExtras());
+				mapa.put("ordenCompra",requisicion.getPersona().getApellidoPaterno()
+						+ " " + requisicion.getPersona().getApellidoMaterno()
+						+ " " + requisicion.getPersona().getNombre());
+				
+				
+				mapa.put("fechaOC",requisicion.getPosicion().getNombre());
+				mapa.put("claveCotizacion",requisicion.getAdscripcion());
+				mapa.put("tiempoEntrega",requisicion.getJustificacion());
+				
+				
+				
+				
+				
+				
+			}
+			
+		}
+	}
+	
+	
 	@Command
 	public void abrirPDF(@BindingParam("index") Integer index) {
 

@@ -49,4 +49,8 @@ public class OrganizacionService {
 	public List<Organizacion> getAll() {
 		return organizacionDAO.getAll();
 	}
+	
+	public Organizacion getById(Long idOrganizacion){
+		return organizacionDAO.getById(idOrganizacion);
+	}
 }

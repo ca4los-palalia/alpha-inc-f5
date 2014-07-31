@@ -16,12 +16,15 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
 
+import com.cplsystems.stock.app.utils.AplicacionExterna;
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.ordencompra.utils.OrdenCompraMetaclass;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.OrdenCompraInbox;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Requisicion;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -175,6 +178,79 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 										.getNombre() + ")",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 
+		} else
+			stockUtils.showSuccessmessage(
+					"Es necesario seleccionar primero una orden de compra",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+	}
+
+	@SuppressWarnings({ "rawtypes", "static-access", "unchecked" })
+	@Command
+	public void imprimirOrdenCompra() {
+		if (ordenCompra != null) {
+
+			cotizacionSelected = ordenCompra.getCotizacion();
+			if (cotizacionSelected != null) {
+				if (cotizacionesConProductos != null
+						&& cotizacionesConProductos.size() > 0) {
+					Organizacion org = (Organizacion) sessionUtils
+							.getFromSession(SessionUtils.FIRMA);
+
+					HashMap mapa = new HashMap();
+					mapa.put("logotipo", stockUtils
+							.getLogotipoDeOrganizacionParaJasper(org
+									.getLogotipo()));
+					mapa.put("nombreEmpresa", org.getNombre());
+					mapa.put("proveedor", cotizacionSelected.getProveedor()
+							.getNombre());
+					mapa.put("ur", cotizacionSelected.getRequisicion()
+							.getArea().getNombre());
+					mapa.put("comentarios",
+							cotizacionSelected.getDetallesExtras());
+					mapa.put("ordenCompra", ordenCompra.getCodigo());
+					mapa.put("fechaOC", stockUtils
+							.convertirCalendarToString(ordenCompra
+									.getFechaOrden()));
+					mapa.put("claveCotizacion",
+							cotizacionSelected.getFolioCotizacion());
+
+					Float total = 0F;
+
+					for (Cotizacion item : cotizacionesConProductos) {
+						total += item.getRequisicionProducto()
+								.getTotalProductoPorUnidad();
+					}
+					mapa.put("total", String.valueOf(total));
+
+					mapa.put("entregarEn", "");
+					mapa.put("dependencia", "");
+					mapa.put("tiempoEntrega", "");
+
+					List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
+					listaHashsParametros.add(mapa);
+
+					List<AplicacionExterna> aplicaciones = new ArrayList<AplicacionExterna>();
+					AplicacionExterna aplicacion = new AplicacionExterna();
+					aplicacion.setNombre("PDFXCview");
+					aplicaciones.add(aplicacion);
+					stockUtils.showSuccessmessage(
+							generarOrdenCompraJasper(listaHashsParametros,
+									aplicaciones, cotizacionesConProductos),
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
+					cotizacionesConProductos.get(0).getProducto().getClave();
+					cotizacionesConProductos.get(0).getProducto().getNombre();
+					cotizacionesConProductos.get(0).getProducto().getUnidad()
+							.getNombre();
+					cotizacionesConProductos.get(0).getProducto().getPrecio();
+					cotizacionesConProductos.get(0).getRequisicionProducto()
+							.getCofiaPartidaGenerica().getNombre();
+					cotizacionesConProductos.get(0).getRequisicionProducto()
+							.getCantidad();
+					cotizacionesConProductos.get(0).getRequisicionProducto()
+							.getTotalProductoPorUnidad();
+				}
+
+			}
 		} else
 			stockUtils.showSuccessmessage(
 					"Es necesario seleccionar primero una orden de compra",

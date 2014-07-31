@@ -320,6 +320,7 @@ public class concentradoVM extends RequisicionVariables {
 						item.setUsuario((Usuarios) sessionUtils
 								.getFromSession(SessionUtils.USUARIO));
 						item.setEstatusRequisicion(estado);
+						item.setFechaEnvioCotizacion(Calendar.getInstance());
 						cotizacionService.save(item);
 						cotizacionesInbox.add(item);
 					}

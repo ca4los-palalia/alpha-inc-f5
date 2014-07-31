@@ -17,6 +17,8 @@ public interface OrganizacionDAO {
 
 	void delete(Organizacion organizacion);
 
+	Organizacion getById(Long idOrganizacion);
+	
 	List<Organizacion> getOrganizaciones();
 
 	List<Organizacion> getCompaniasByNombreRFC(String compania, String rfc);

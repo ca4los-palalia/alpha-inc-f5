@@ -15,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.AImage;
 
+import com.cplsystems.stock.app.utils.SistemaOperativo;
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
@@ -113,6 +114,7 @@ public class DataLayer implements Serializable {
 	protected CostosProducto costosProductoNuevo;
 	protected Giro giro;
 	protected EstatusRequisicion estatusRequisicion;
+	protected SistemaOperativo sistemaOperativo;
 	
 	
 	protected HSSFWorkbook libro;
