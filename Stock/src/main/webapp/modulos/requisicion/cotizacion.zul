@@ -10,7 +10,7 @@
 			<grid><!-- MENU DE ACCIONES-->
 				<columns>
 					<column />
-					<column width="20%" zclass="shadowMenuActions" />
+					<column width="30%" zclass="shadowMenuActions" />
 				</columns>
 				<rows>
 					<row zclass="shadowMenuActions">
@@ -31,6 +31,10 @@
 							<button image="/images/toolbar/delete.png"
 								tooltiptext="Cancelar cotización" sclass="web_button"
 								onClick="@command('abrirVentanaCancelacion')" />
+							<button image="/images/toolbar/pdf32.png"
+								sclass="web_button"
+								tooltiptext="Exportar PDF"
+								onClick="@command('imprimirCotizacion')" />
 						</hlayout>
 					</row>
 				</rows>
@@ -39,8 +43,7 @@
 
 			<separator />
 			
-			<groupbox mold="3d" open="false"
-				tooltiptext="Clic para ver bandeja de requisiciones">
+			<groupbox mold="3d" open="false">
 				<caption label="Bandeja de cotizaciones"
 					image="/images/toolbar/mailColor16.png" />
 				<listbox model="@load(rvm.cotizacionesInbox)"

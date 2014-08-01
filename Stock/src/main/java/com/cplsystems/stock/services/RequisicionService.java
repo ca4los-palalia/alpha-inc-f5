@@ -13,6 +13,7 @@ import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
+import com.cplsystems.stock.domain.RequisicionProducto;
 
 /**
  * @author César Palalía López (csr.plz@aisa-automation.com)
@@ -63,5 +64,13 @@ public class RequisicionService {
 	
 	public List<Requisicion> getByUnidadResponsable(Area area){
 		return requisicionDAO.getByUnidadResponsable(area);
+	}
+	
+	public List<Requisicion> getRequisicionesConListaDeEstatusFolioArea(
+			List<EstatusRequisicion> estatusRequisiciones, String folio,
+			Area area) {
+		return requisicionDAO
+				.getRequisicionesConListaDeEstatusFolioArea(
+						estatusRequisiciones, folio, area);
 	}
 }

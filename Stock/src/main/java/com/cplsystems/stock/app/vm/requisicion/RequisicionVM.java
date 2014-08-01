@@ -34,6 +34,7 @@ import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.UserPrivileges;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
+import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Persona;
@@ -57,8 +58,6 @@ public class RequisicionVM extends RequisicionMetaClass {
 	@Init
 	public void init() {
 		super.init();
-		disabledBuscadorFolio = true;
-		disabledBuscadorArea = true;
 		areaBuscar = new Area();
 
 		if (requisicion == null)
@@ -160,10 +159,12 @@ public class RequisicionVM extends RequisicionMetaClass {
 								&& requisicionProducto.getProducto()
 										.getIdProducto() != null) {
 							requisicionProducto.setEntregados(0L);
-							requisicionProducto.setOrganizacion((Organizacion) sessionUtils
-									.getFromSession(SessionUtils.FIRMA));
-							requisicionProducto.setUsuario((Usuarios) sessionUtils
-									.getFromSession(SessionUtils.USUARIO));
+							requisicionProducto
+									.setOrganizacion((Organizacion) sessionUtils
+											.getFromSession(SessionUtils.FIRMA));
+							requisicionProducto
+									.setUsuario((Usuarios) sessionUtils
+											.getFromSession(SessionUtils.USUARIO));
 							requisicionProductoService
 									.save(requisicionProducto);
 						} else {// INTENTAR SALVAR
@@ -173,10 +174,12 @@ public class RequisicionVM extends RequisicionMetaClass {
 							if (p != null) {
 								requisicionProducto.setProducto(p.get(0));
 								requisicionProducto.setEntregados(0L);
-								requisicionProducto.setOrganizacion((Organizacion) sessionUtils
-										.getFromSession(SessionUtils.FIRMA));
-								requisicionProducto.setUsuario((Usuarios) sessionUtils
-										.getFromSession(SessionUtils.USUARIO));
+								requisicionProducto
+										.setOrganizacion((Organizacion) sessionUtils
+												.getFromSession(SessionUtils.FIRMA));
+								requisicionProducto
+										.setUsuario((Usuarios) sessionUtils
+												.getFromSession(SessionUtils.USUARIO));
 								requisicionProductoService
 										.save(requisicionProducto);
 							} else
@@ -193,7 +196,8 @@ public class RequisicionVM extends RequisicionMetaClass {
 								+ ". Posible causa, la clave del producto que se ingreso no es la correcta";
 					}
 
-					stockUtils.showSuccessmessage(
+					stockUtils
+							.showSuccessmessage(
 									"La requisición con fólio ["
 											+ requisicion.getFolio()
 											+ "] ha sído creada y se ha enviado un email para su notificación "
@@ -309,11 +313,16 @@ public class RequisicionVM extends RequisicionMetaClass {
 								} else
 									mensaje = "Es requerido ingresar una justificación para la requisición";
 							} else
-								mensaje = "Es requerido ingresar el puesto que ocupa " +requisicion.getPersona()
-										.getNombre() + " "+ requisicion.getPersona()
-										.getApellidoPaterno() + " " +requisicion.getPersona()
-										.getApellidoMaterno() + " dentro de la organización";
-						} else 
+								mensaje = "Es requerido ingresar el puesto que ocupa "
+										+ requisicion.getPersona().getNombre()
+										+ " "
+										+ requisicion.getPersona()
+												.getApellidoPaterno()
+										+ " "
+										+ requisicion.getPersona()
+												.getApellidoMaterno()
+										+ " dentro de la organización";
+						} else
 							mensaje = "Es requerido el nombre completo del solicitante (Nombre, apellido paterno-materno)";
 					} else
 						mensaje = "Es requerido seleccionar una fuente de financiamiento";
@@ -387,11 +396,13 @@ public class RequisicionVM extends RequisicionMetaClass {
 			if (requisicionProductoSeleccionado != null) {
 				if (requisicionProductos
 						.contains(requisicionProductoSeleccionado)) {
-					
-					if(requisicion.getIdRequisicion() != null)
-						requisicionProductoService.delete(requisicionProductoSeleccionado);
-					
-					requisicionProductos.remove(requisicionProductoSeleccionado);
+
+					if (requisicion.getIdRequisicion() != null)
+						requisicionProductoService
+								.delete(requisicionProductoSeleccionado);
+
+					requisicionProductos
+							.remove(requisicionProductoSeleccionado);
 					itemsOnList = requisicionProductos.size();
 					updateTotal();
 				}
@@ -475,62 +486,6 @@ public class RequisicionVM extends RequisicionMetaClass {
 		return false;
 	}
 
-	@SuppressWarnings("static-access")
-	@Command
-	@NotifyChange("*")
-	public void buscarRequisicionFolio() {
-
-		if (requisicion != null
-				&& (requisicion.getBuscarRequisicion() != null && !requisicion
-						.getBuscarRequisicion().isEmpty())) {
-			Requisicion buscarRequisicion = requisicionService
-					.getByFolio(requisicion.getBuscarRequisicion());
-
-			if (buscarRequisicion != null) {
-				requisicion = buscarRequisicion;
-				readOnly = false;
-				requisicionProductos = requisicionProductoService.getByRequisicion(buscarRequisicion);
-				stockUtils.showSuccessmessage(
-						"Requisicion con folio [" + requisicion.getBuscarRequisicion() + "] ha sido encontrada",
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			} else
-				stockUtils.showSuccessmessage(
-						"No se encontro alguna coincidencia con la busqueda ["
-								+ requisicion.getBuscarRequisicion() + "]",
-						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
-		} else
-			stockUtils
-					.showSuccessmessage(
-							"el campo de busqueda es requerido. asegurece de ingresar alguna palabra",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
-	}
-
-	@SuppressWarnings("static-access")
-	@Command
-	@NotifyChange("*")
-	public void buscarRequisicionArea() {
-		if (areaBuscar != null) {
-			requisiciones = requisicionService
-					.getByUnidadResponsable(areaBuscar);
-			if (requisiciones != null) {
-				String mensaje = "";
-				if (requisiciones.size() == 1)
-					mensaje = requisiciones.size() + " encontrada";
-				else
-					mensaje = requisiciones.size() + " encontradas";
-
-				readOnly = false;
-				stockUtils.showSuccessmessage("Requisiciones del Area(UR) ["
-						+ areaBuscar.getNombre() + "]: " + mensaje,
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			} else
-				stockUtils.showSuccessmessage(
-						"No se encontraron Requisiciones del Area(UR) ["
-								+ areaBuscar.getNombre() + "]",
-						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
-		}
-	}
-
 	@Command
 	@NotifyChange("*")
 	public void limpiarFormulario() {
@@ -554,34 +509,41 @@ public class RequisicionVM extends RequisicionMetaClass {
 				requisicionProductos = new ArrayList<RequisicionProducto>();
 
 			if (requisicionProductos != null) {
-				
-				Organizacion org = (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
-				File archivoLogotipo = new File(StockConstants.CARPETA_ARCHIVOS_LOGOTIPOS + org.getLogotipo());
-				FileInputStream streamLogotipo =  null;
-				if(archivoLogotipo.exists()){
+
+				Organizacion org = (Organizacion) sessionUtils
+						.getFromSession(SessionUtils.FIRMA);
+				File archivoLogotipo = new File(
+						StockConstants.CARPETA_ARCHIVOS_LOGOTIPOS
+								+ org.getLogotipo());
+				FileInputStream streamLogotipo = null;
+				if (archivoLogotipo.exists()) {
 					try {
 						streamLogotipo = new FileInputStream(archivoLogotipo);
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
 				}
-				
+
 				HashMap mapa = new HashMap();
-				mapa.put("folio",requisicion.getFolio());
-				mapa.put("area",requisicion.getArea().getNombre());
-				mapa.put("prog",requisicion.getCofiaProg().getNombre());
-				mapa.put("py",requisicion.getCofiaPy().getNombre());
-				mapa.put("fuente",requisicion.getCofiaFuenteFinanciamiento().getNombre());
-				mapa.put("solicitante",requisicion.getPersona().getApellidoPaterno()
-						+ " " + requisicion.getPersona().getApellidoMaterno()
-						+ " " + requisicion.getPersona().getNombre());
-				mapa.put("puesto",requisicion.getPosicion().getNombre());
-				mapa.put("descripcion",requisicion.getAdscripcion());
-				mapa.put("justificacion",requisicion.getJustificacion());
-				mapa.put("NoInventario",requisicion.getNumeroInventario());
+				mapa.put("folio", requisicion.getFolio());
+				mapa.put("area", requisicion.getArea().getNombre());
+				mapa.put("prog", requisicion.getCofiaProg().getNombre());
+				mapa.put("py", requisicion.getCofiaPy().getNombre());
+				mapa.put("fuente", requisicion.getCofiaFuenteFinanciamiento()
+						.getNombre());
+				mapa.put("solicitante", requisicion.getPersona()
+						.getApellidoPaterno()
+						+ " "
+						+ requisicion.getPersona().getApellidoMaterno()
+						+ " "
+						+ requisicion.getPersona().getNombre());
+				mapa.put("puesto", requisicion.getPosicion().getNombre());
+				mapa.put("descripcion", requisicion.getAdscripcion());
+				mapa.put("justificacion", requisicion.getJustificacion());
+				mapa.put("NoInventario", requisicion.getNumeroInventario());
 				mapa.put("logotipo", streamLogotipo);
-				mapa.put("nombreEmpresa",org.getNombre());
-								
+				mapa.put("nombreEmpresa", org.getNombre());
+
 				List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
 				listaHashsParametros.add(mapa);
 
@@ -605,18 +567,7 @@ public class RequisicionVM extends RequisicionMetaClass {
 	@Command
 	@NotifyChange("*")
 	public void seleccionarOpcionBuscarArea() {
-		disabledBuscadorFolio = true;
-		disabledBuscadorArea = false;
 		requisicion.setBuscarRequisicion("");
-		;
-	}
-
-	@Command
-	@NotifyChange("*")
-	public void seleccionarOpcionBuscarFolio() {
-		areaBuscar = new Area();
-		disabledBuscadorFolio = false;
-		disabledBuscadorArea = true;
 	}
 
 	@Command
@@ -632,5 +583,36 @@ public class RequisicionVM extends RequisicionMetaClass {
 		List<Privilegios> usuarios = privilegioService
 				.getUsuariosByPrivilegio(UserPrivileges.COTIZAR_AUTORIZAR);
 		return usuarios;
+	}
+
+
+	@SuppressWarnings("static-access")
+	@Command
+	@NotifyChange("*")
+	public void buscadorRequisicion() {
+		if ((checkBuscarNueva || checkBuscarCancelada || checkBuscarEnviada || checkBuscarAceptada)
+				|| (requisicion != null && (requisicion.getBuscarRequisicion() != null
+						&& !requisicion.getBuscarRequisicion().isEmpty() || (areaBuscar != null
+						&& areaBuscar.getNombre() != null && !areaBuscar
+						.getNombre().isEmpty())))) {
+
+			List<EstatusRequisicion> listaEstatus = generarListaEstatusIN();
+			requisiciones = requisicionService
+					.getRequisicionesConListaDeEstatusFolioArea(listaEstatus,
+							requisicion.getBuscarRequisicion(), areaBuscar);
+
+			if (requisiciones == null) {
+				limpiarFormulario();
+				stockUtils.showSuccessmessage("Ningun resultado encontrado",
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			}
+
+		} else
+			stockUtils
+					.showSuccessmessage(
+							"Debe elegir algun criterio para realizar la "
+							+ "busqueda de requisiciones (nueva, cancelada "
+							+ "o aceptada) o (ingresar palabra en el buscador)",
+							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 	}
 }

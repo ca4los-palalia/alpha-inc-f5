@@ -25,11 +25,10 @@ public class Area implements Serializable {
 	private String descripcion;
 	private String toolTipIndice;
 	private String toolTipNombre;
-	private boolean nuevoRegistro;
-	
 	private Organizacion organizacion;
 	private Usuarios usuario;
 	private String fechaActualizacion;
+	private boolean nuevoRegistro;
 	
 	
 	@Id

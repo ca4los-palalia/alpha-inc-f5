@@ -128,8 +128,8 @@ public class Persona {
 
 	@Transient
 	public String getNombreCompleto() {
-		return nombreCompleto = nombre + " " + apellidoPaterno + " "
-				+ apellidoMaterno;
+		return nombreCompleto = apellidoPaterno + " " + apellidoMaterno + " "
+				+ nombre;
 	}
 
 }

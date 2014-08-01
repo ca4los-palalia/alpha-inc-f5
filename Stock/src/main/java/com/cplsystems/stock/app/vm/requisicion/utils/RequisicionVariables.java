@@ -32,8 +32,6 @@ public class RequisicionVariables extends BasicStructure {
 	protected Date fecha;
 	protected Calendar fechaCalendar;
 	protected DesgloceTotal desgloceTotal;
-	protected boolean disabledBuscadorFolio;
-	protected boolean disabledBuscadorArea;
 	protected boolean checkBuscarNueva;
 	protected boolean checkBuscarCancelada;
 	protected boolean checkBuscarEnviada;
@@ -119,23 +117,7 @@ public class RequisicionVariables extends BasicStructure {
 	public void setDesgloceTotal(DesgloceTotal desgloceTotal) {
 		this.desgloceTotal = desgloceTotal;
 	}
-
-	public boolean isDisabledBuscadorFolio() {
-		return disabledBuscadorFolio;
-	}
-
-	public void setDisabledBuscadorFolio(boolean disabledBuscadorFolio) {
-		this.disabledBuscadorFolio = disabledBuscadorFolio;
-	}
-
-	public boolean isDisabledBuscadorArea() {
-		return disabledBuscadorArea;
-	}
-
-	public void setDisabledBuscadorArea(boolean disabledBuscadorArea) {
-		this.disabledBuscadorArea = disabledBuscadorArea;
-	}
-
+	
 	public boolean isCheckBuscarNueva() {
 		return checkBuscarNueva;
 	}

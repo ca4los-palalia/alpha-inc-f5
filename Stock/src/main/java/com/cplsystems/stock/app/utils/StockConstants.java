@@ -90,6 +90,7 @@ public class StockConstants {
 	public static final String CLAVE_FOLIO_ORDEN_COMPRA = "FOC";
 
 	public static final String ARCHIVO_JASPER_REQUISICION_FORMATO = "jasperTemplates/requisicionFormato.jasper";
+	public static final String ARCHIVO_JASPER_COTIZACION_FORMATO = "jasperTemplates/cotizacionFormato.jasper";
 	public static final String ARCHIVO_JASPER_ORDEN_COMPRA_FORMATO = "jasperTemplates/ordenCompraFormato.jasper";
 	public static final String REPORT_PROVEEDOR_NAME_FILE = "C:\\Stock\\Proveedores\\reportProveedores.pdf";
 	public static final String REPORT_PROVEEDOR_PARAM1 = "parameter1";
@@ -103,7 +104,7 @@ public class StockConstants {
 	
 	
 	public static final String CARPETA_ARCHIVOS_REQUISICIONES = "C:\\Stock\\Requisiciones\\";
-	public static final String CARPETA_ARCHIVOS_COTIZACIONES = "C://Stock//Cotizaciones//";
+	public static final String CARPETA_ARCHIVOS_COTIZACIONES = "C:\\Stock\\Cotizaciones\\";
 	public static final String CARPETA_ARCHIVOS_ORDEN_COMPRA = "C:\\Stock\\OrdenCompra\\";
 	public static final String CARPETA_ARCHIVOS_LOGOTIPOS = "C://Stock//Logotipos//";
 	public static final String EXTENCION_EXCEL = ".xls";

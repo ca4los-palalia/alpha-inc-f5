@@ -5,6 +5,7 @@ package com.cplsystems.stock.dao;
 
 import java.util.List;
 
+import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
@@ -29,21 +30,23 @@ public interface RequisicionProductoDAO {
 	public List<RequisicionProducto> getByProducto(Producto producto);
 
 	public List<RequisicionProducto> getByRequisicion(Requisicion requisicion);
-	
-	public List<RequisicionProducto> getRequisicionesConEstadoEspecifico(EstatusRequisicion estatusRequisicion);
 
+	public List<RequisicionProducto> getRequisicionesConEstadoEspecifico(
+			EstatusRequisicion estatusRequisicion);
+	
 	public List<RequisicionProducto> getByProveedor(Proveedor proveedor);
 
 	public List<RequisicionProducto> getByLugar(Lugar lugar);
 
 	public List<RequisicionProducto> getAll();
-	
+
 	public List<RequisicionProducto> getAllRequisiciones();
-	
+
 	public List<Proveedor> getAllDistinctByProveedor();
-	
-	public List<RequisicionProducto> getByConfiaPartidaGenerica(CofiaPartidaGenerica cofiaPartidaGenerica);
-	
+
+	public List<RequisicionProducto> getByConfiaPartidaGenerica(
+			CofiaPartidaGenerica cofiaPartidaGenerica);
+
 	public List<RequisicionProducto> getByCotizacion(Cotizacion cotizacion);
-	
+
 }
