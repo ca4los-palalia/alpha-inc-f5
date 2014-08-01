@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.RequisicionProductoDAO;
+import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
@@ -29,55 +30,68 @@ public class RequisicionProductoService {
 	@Autowired
 	private RequisicionProductoDAO requisicionProductoDAO;
 
-	public void save(RequisicionProducto requisicionProducto)throws DataAccessException {
+	public void save(RequisicionProducto requisicionProducto)
+			throws DataAccessException {
 		requisicionProductoDAO.save(requisicionProducto);
 	}
 
-	public void delete(RequisicionProducto requisicionProducto)throws DataAccessException {
+	public void delete(RequisicionProducto requisicionProducto)
+			throws DataAccessException {
 		requisicionProductoDAO.delete(requisicionProducto);
 	}
 
-	public RequisicionProducto getById(Long idRequisicionProducto)throws DataAccessException {
+	public RequisicionProducto getById(Long idRequisicionProducto)
+			throws DataAccessException {
 		return requisicionProductoDAO.getById(idRequisicionProducto);
 	}
 
-	public List<RequisicionProducto> getByProducto(Producto producto)throws DataAccessException {
+	public List<RequisicionProducto> getByProducto(Producto producto)
+			throws DataAccessException {
 		return requisicionProductoDAO.getByProducto(producto);
 	}
 
-	public List<RequisicionProducto> getByRequisicion(Requisicion requisicion)throws DataAccessException {
+	public List<RequisicionProducto> getByRequisicion(Requisicion requisicion)
+			throws DataAccessException {
 		return requisicionProductoDAO.getByRequisicion(requisicion);
 	}
 
-	public List<RequisicionProducto> getByProveedor(Proveedor proveedor)throws DataAccessException {
+	public List<RequisicionProducto> getByProveedor(Proveedor proveedor)
+			throws DataAccessException {
 		return requisicionProductoDAO.getByProveedor(proveedor);
 	}
 
-	public List<RequisicionProducto> getByLugar(Lugar lugar) throws DataAccessException{
+	public List<RequisicionProducto> getByLugar(Lugar lugar)
+			throws DataAccessException {
 		return requisicionProductoDAO.getByLugar(lugar);
 	}
 
-	public List<RequisicionProducto> getAll()throws DataAccessException {
+	public List<RequisicionProducto> getAll() throws DataAccessException {
 		return requisicionProductoDAO.getAll();
 	}
-	
-	public List<RequisicionProducto> getAllRequisiciones()throws DataAccessException {
+
+	public List<RequisicionProducto> getAllRequisiciones()
+			throws DataAccessException {
 		return requisicionProductoDAO.getAllRequisiciones();
 	}
-	
-	public List<RequisicionProducto> getRequisicionesConEstadoEspecifico(EstatusRequisicion estatusRequisicion)throws DataAccessException {
-		return requisicionProductoDAO.getRequisicionesConEstadoEspecifico(estatusRequisicion);
+
+	public List<RequisicionProducto> getRequisicionesConEstadoEspecifico(
+			EstatusRequisicion estatusRequisicion) throws DataAccessException {
+		return requisicionProductoDAO
+				.getRequisicionesConEstadoEspecifico(estatusRequisicion);
 	}
-	
-	public List<Proveedor> getAllDistinctByProveedor(){
+
+	public List<Proveedor> getAllDistinctByProveedor() {
 		return requisicionProductoDAO.getAllDistinctByProveedor();
 	}
-	
-	public List<RequisicionProducto> getByConfiaPartidaGenerica(CofiaPartidaGenerica cofiaPartidaGenerica){
-		return requisicionProductoDAO.getByConfiaPartidaGenerica(cofiaPartidaGenerica);
+
+	public List<RequisicionProducto> getByConfiaPartidaGenerica(
+			CofiaPartidaGenerica cofiaPartidaGenerica) {
+		return requisicionProductoDAO
+				.getByConfiaPartidaGenerica(cofiaPartidaGenerica);
 	}
-	
-	public List<RequisicionProducto> getByCotizacion(Cotizacion cotizacion){
+
+	public List<RequisicionProducto> getByCotizacion(Cotizacion cotizacion) {
 		return requisicionProductoDAO.getByCotizacion(cotizacion);
 	}
+
 }

@@ -21,6 +21,7 @@ import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
+import com.cplsystems.stock.domain.RequisicionProducto;
 import com.cplsystems.stock.services.EstatusRequisicionService;
 
 /**
@@ -189,6 +190,33 @@ public class RequisicionDAOImpl extends HibernateDAOSuportUtil implements
 		}
 		
 		return lista != null && !lista.isEmpty() ? lista: null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public List<Requisicion> getRequisicionesConListaDeEstatusFolioArea(
+			List<EstatusRequisicion> estatusRequisiciones, String folio,
+			Area area) {
+
+		List<Requisicion> lista = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory()
+				.openSession().createCriteria(Requisicion.class);
+		
+		// ------------------------------------
+		if (folio != null && !folio.isEmpty())
+			criteria.add(Restrictions.eq("folio", folio));
+		
+		if (area != null && (area.getNombre() != null && !area.getNombre().isEmpty()))
+			criteria.add(Restrictions.eq("area", area));
+		if (estatusRequisiciones != null && estatusRequisiciones.size() > 0)
+			criteria.add(Restrictions.in("estatusRequisicion", estatusRequisiciones));
+
+		// ------------------------------------
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		criteria.setMaxResults(100);
+		lista = criteria.list();
+
+		return lista.size() > 0 ? lista : null;
 	}
 
 }

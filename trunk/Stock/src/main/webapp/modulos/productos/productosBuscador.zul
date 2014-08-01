@@ -22,12 +22,6 @@
 		startColorstr='#599bb3', endColorstr='#408c99', GradientType=0
 		); border-width: 0px; border-radius: 5px; box-shadow: 0px 10px
 		14px -7px #276873; text-shadow: 0px 1px 0px #3d768a; }
-
-
-
-
-
-
 	</style>
 
 
@@ -41,7 +35,7 @@
 		<grid style="border:0">
 			<columns>
 				<column />
-				<column width="35%" />
+				<column width="40%" />
 			</columns>
 			<rows>
 				<row style="border:0">
@@ -62,8 +56,9 @@
 							sclass="web_button" onClick="@command('reporteProductos')"
 							tooltiptext="Exportar a un archivo PDF" />
 							
-						<button label="Upload" upload="true"
-			            	onUpload="@command('onUploadPDF',upEvent=event)">
+						<button upload="true"
+							image="/images/toolbar/uploadColor32.png"
+			            	onUpload="@command('onUploadPDF',upEvent=event)" tooltiptext="Importar productos">
 			            </button>
 					</hlayout>
 				</row>
@@ -71,9 +66,6 @@
 		</grid>
 
 		<separator />
-<progressmeter id="curr_met" value="@bind(pvm.progressValue)" width="100%"  />
-<label value="@bind(pvm.progressValueLabel)"/>
-
 		<groupbox mold="3d" open="false"
 			tooltiptext="Clic para ver formulario de busqueda">
 			<caption label="Buscar"

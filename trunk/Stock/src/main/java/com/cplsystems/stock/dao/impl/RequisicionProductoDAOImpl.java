@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.dao.RequisicionProductoDAO;
+import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
@@ -29,9 +30,7 @@ import com.cplsystems.stock.services.EstatusRequisicionService;
 import com.cplsystems.stock.services.ProveedorService;
 
 
-/**
- * @author Carlos Palalía López
- */
+
 
 @Repository
 public class RequisicionProductoDAOImpl extends HibernateDAOSuportUtil implements RequisicionProductoDAO{
@@ -200,6 +199,5 @@ public class RequisicionProductoDAOImpl extends HibernateDAOSuportUtil implement
 		List<RequisicionProducto> lista = criteria.list();
 		return lista != null && !lista.isEmpty() ? lista : null;
 	}
-	
 	
 }

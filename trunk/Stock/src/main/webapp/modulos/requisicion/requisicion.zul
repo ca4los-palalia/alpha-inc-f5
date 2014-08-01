@@ -42,8 +42,7 @@
 				</rows>
 			</grid>
 
-			<groupbox mold="3d" open="false"
-				tooltiptext="Clic para ver bandeja de requisiciones">
+			<groupbox mold="3d" open="false">
 				<caption label="Bandeja de requisiciones"
 					image="/images/toolbar/mailColor16.png" />
 
@@ -98,116 +97,118 @@
 				</listbox>
 			</groupbox>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			<groupbox mold="3d" open="false">
 				<caption label="Buscar"
 					image="/images/toolbar/find16x16.png" />
-
 				<grid style="border: 0;">
 					<columns>
 						<column />
 						<column />
+						<column />
+						<column />
 					</columns>
 					<rows>
-						<row valign="top"
-							style="background-color:transparent; border: 0;">
+						<row
+							style="background-color: transparent; border: 0;">
+							<checkbox onCheck="@command('checkNueva')"
+								label="Nueva" width="100%" />
+							<checkbox
+								onCheck="@command('checkCancelada')" label="Cancelada"
+								width="100%" />
+							<checkbox
+								onCheck="@command('checkAceptada')" label="Aceptada"
+								width="100%" />
 
-							<grid style="border: 0;">
-								<columns>
-									<column />
-									<column width="10%" />
-								</columns>
-								<rows>
-									<row
-										style="background-color:transparent; border: 0;">
-										<hlayout>
-											<radio label="Fólio"
-												onCheck="@command('seleccionarOpcionBuscarFolio')"
-												radiogroup="sv1" />
-											<radio label="Area (UR)"
-												onCheck="@command('seleccionarOpcionBuscarArea')"
-												radiogroup="sv1" />
-										</hlayout>
-										<label />
-									</row>
-
-									<row
-										style="background-color:transparent; border: 0;">
-										<textbox
-											disabled="@bind(rvm.disabledBuscadorFolio)"
-											id="buscarRequisicionId"
-											onOK="@command('buscarRequisicionFolio')"
-											value="@bind(rvm.requisicion.buscarRequisicion)"
-											width="100%" />
-
-										<hlayout
-											style="text-align:center">
-
-											<button
-												disabled="@bind(rvm.disabledBuscadorFolio)"
-												image="/images/toolbar/find16x16.png" zclass="find_button"
-												onClick="@command('buscarRequisicionFolio')"
-												tooltiptext="Buscar requisición" />
-										</hlayout>
-									</row>
-
-
-									<row
-										style="background-color:transparent; border: 0;">
-
-										<hlayout width="100%">
-
-
-											<label
-												value="Seleccionar Area(UR): " />
-											<combobox readonly="true"
-												disabled="@bind(rvm.disabledBuscadorArea)"
-												model="@load(rvm.areas)" width="100%"
-												onSelect="@command('buscarRequisicionArea')"
-												selectedItem="@bind(rvm.areaBuscar)">
-												<template name="model"
-													var="area">
-													<comboitem
-														width="100%" label="@bind(area.nombre)" />
-												</template>
-											</combobox>
-										</hlayout>
-									</row>
-								</rows>
-							</grid>
-
-							<listbox model="@load(rvm.requisiciones)"
-								onSelect="@command('selectedResultadoRequisiciones')"
-								selectedItem="@bind(rvm.requisicion)" rows="3"
-								emptyMessage="resultados de requisiciones vacia">
-								<listhead>
-									<listheader label="Clave" />
-									<listheader width="10%"
-										align="center" />
-								</listhead>
-								<template name="model"
-									var="requisicionVar">
-									<listitem>
-										<listcell>
-											<label
-												value="@bind(requisicionVar.folio)" width="100%" />
-										</listcell>
-										<listcell>
-											<button
-												tooltiptext="@bind(requisicionVar.estatusRequisicion.nombre)"
-												style="@bind(requisicionVar.estatusRequisicion.color)" />
-										</listcell>
-									</listitem>
-								</template>
-							</listbox>
+							<hlayout>
+								<label value="Area(UR): " />
+								<combobox readonly="true"
+									model="@load(rvm.areas)" width="100%"
+									selectedItem="@bind(rvm.areaBuscar)">
+									<template name="model" var="area">
+										<comboitem width="100%"
+											label="@bind(area.nombre)" />
+									</template>
+								</combobox>
+							</hlayout>
 						</row>
 					</rows>
 				</grid>
-			</groupbox>
+				<grid style="border: 0;">
+					<columns>
+						<column />
+						<column width="8%" />
+					</columns>
+					<rows>
+						<row
+							style="background-color:transparent; border: 0;">
+							<textbox
+								onOK="@command('buscadorRequisicion')"
+								value="@bind(rvm.requisicion.buscarRequisicion)" width="100%" />
 
-			<groupbox mold="3d" open="false"
-				tooltiptext="Clic para ver Información de la requisición">
+							<hlayout style="text-align:center">
+
+								<button
+									image="/images/toolbar/find16x16.png" zclass="find_button"
+									onClick="@command('buscadorRequisicion')" tooltiptext="Buscar" />
+							</hlayout>
+						</row>
+					</rows>
+				</grid>
+				<listbox model="@load(rvm.requisiciones)"
+					onSelect="@command('selectedResultadoRequisiciones')"
+					selectedItem="@bind(rvm.requisicion)" rows="3"
+					emptyMessage="resultados de requisiciones vacia">
+					<listhead>
+						<listheader label="Clave" width="15%"/>
+						<listheader label="Área" />
+						<listheader width="10%" align="center" />
+					</listhead>
+					<template name="model" var="requisicionVar">
+						<listitem>
+							<listcell>
+								<label
+									value="@bind(requisicionVar.folio)" width="100%" />
+							</listcell>
+							<listcell>
+								<label
+									value="@bind(requisicionVar.area.nombre)" width="100%" />
+							</listcell>
+							<listcell>
+								<button
+									tooltiptext="@bind(requisicionVar.estatusRequisicion.nombre)"
+									style="@bind(requisicionVar.estatusRequisicion.color)" />
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
+			</groupbox>
+			
+			<groupbox mold="3d" open="false">
 				<caption label="Información de la requisición"
-					image="/images/toolbar/note32.png" />
+					image="/images/toolbar/info16.png"  />
 
 				<grid style="border: 0;">
 					<columns>

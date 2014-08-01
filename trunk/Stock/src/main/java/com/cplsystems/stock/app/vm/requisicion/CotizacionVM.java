@@ -15,6 +15,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -33,6 +38,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Checkbox;
 
+import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
@@ -46,7 +52,6 @@ import com.cplsystems.stock.domain.OrdenCompraInbox;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.RequisicionInbox;
-import com.cplsystems.stock.domain.RequisicionProducto;
 import com.cplsystems.stock.domain.Usuarios;
 
 /**
@@ -66,6 +71,7 @@ public class CotizacionVM extends RequisicionVariables {
 	public void init() {
 		super.init();
 		loadCotizacionesInbox();
+		readJasper = generarUrlString(StockConstants.ARCHIVO_JASPER_COTIZACION_FORMATO);
 	}
 
 	private void loadCotizacionesInbox() {
@@ -492,8 +498,10 @@ public class CotizacionVM extends RequisicionVariables {
 		if (cotizacionSelected != null
 				&& (cotizacionSelected.getExcelFile() != null && !cotizacionSelected
 						.getExcelFile().isEmpty())) {
-			File fileNameExcel = new File(StockConstants.CARPETA_ARCHIVOS_COTIZACIONES
-					+ cotizacionSelected.getExcelFile() + StockConstants.EXTENCION_EXCEL);
+			File fileNameExcel = new File(
+					StockConstants.CARPETA_ARCHIVOS_COTIZACIONES
+							+ cotizacionSelected.getExcelFile()
+							+ StockConstants.EXTENCION_EXCEL);
 
 			if (fileNameExcel.exists()) {
 				try {
@@ -566,14 +574,13 @@ public class CotizacionVM extends RequisicionVariables {
 									"se ha leido correctamente la información de un archivo de excel",
 									Clients.NOTIFICATION_TYPE_INFO, 0, null);
 				} else
-					stockUtils
-							.showSuccessmessage(
-									"Ocurrio un error en la lectura sobre el archivo [" + cotizacionSelected.getExcelFile() + "]",
-									Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+					stockUtils.showSuccessmessage(
+							"Ocurrio un error en la lectura sobre el archivo ["
+									+ cotizacionSelected.getExcelFile() + "]",
+							Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 			} else
-				stockUtils
-				.showSuccessmessage(
-						"El archivo [" + cotizacionSelected.getExcelFile() + "] NO existe",
+				stockUtils.showSuccessmessage("El archivo ["
+						+ cotizacionSelected.getExcelFile() + "] NO existe",
 						Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 		}
 	}
@@ -584,15 +591,19 @@ public class CotizacionVM extends RequisicionVariables {
 		Integer i = 0;
 		for (Cotizacion item : cotizacionesConProductos) {
 			CotizacionListaExcelFile rowExcel = listaExcel.get(i);
-			item.getRequisicionProducto().setCantidad(Float.parseFloat(rowExcel.getCantidad()));
-			if(rowExcel.getTotal() != null && !rowExcel.getTotal().isEmpty())
-				item.getRequisicionProducto().setTotalProductoPorUnidad(Float.parseFloat(rowExcel.getTotal()));
+			item.getRequisicionProducto().setCantidad(
+					Float.parseFloat(rowExcel.getCantidad()));
+			if (rowExcel.getTotal() != null && !rowExcel.getTotal().isEmpty())
+				item.getRequisicionProducto().setTotalProductoPorUnidad(
+						Float.parseFloat(rowExcel.getTotal()));
 			else
 				item.getRequisicionProducto().setTotalProductoPorUnidad(0F);
 			Producto producto = item.getProducto();
-			
-			if(rowExcel.getPrecioUnitario() != null && !rowExcel.getPrecioUnitario().isEmpty())
-				producto.setPrecio(Float.parseFloat(rowExcel.getPrecioUnitario()));
+
+			if (rowExcel.getPrecioUnitario() != null
+					&& !rowExcel.getPrecioUnitario().isEmpty())
+				producto.setPrecio(Float.parseFloat(rowExcel
+						.getPrecioUnitario()));
 			else
 				producto.setPrecio(0F);
 			productoService.save(producto);
@@ -602,47 +613,120 @@ public class CotizacionVM extends RequisicionVariables {
 		}
 
 	}
-	
-	@SuppressWarnings("rawtypes")
-	@Command
-	public void imprimirCotizacion (){
-		if(cotizacionSelected != null){
-			if(cotizacionesConProductos != null && cotizacionesConProductos.size() > 0){
-				Organizacion org = (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
 
-				
-				
+	@SuppressWarnings({ "rawtypes", "unchecked", "static-access" })
+	@Command
+	public void imprimirCotizacion() {
+
+		if (cotizacionSelected != null) {
+			if (cotizacionesConProductos != null
+					&& cotizacionesConProductos.size() > 0) {
+				Organizacion org = (Organizacion) sessionUtils
+						.getFromSession(SessionUtils.FIRMA);
+
 				HashMap mapa = new HashMap();
-				mapa.put("logotipo", stockUtils.getLogotipoDeOrganizacionParaJasper(org.getLogotipo()));
-				mapa.put("nombreEmpresa",org.getNombre());
+				mapa.put("logotipo", stockUtils
+						.getLogotipoDeOrganizacionParaJasper(org.getLogotipo()));
+				mapa.put("nombreEmpresa", org.getNombre());
+				mapa.put("proveedor", cotizacionSelected.getProveedor()
+						.getNombre());
+				mapa.put("direccion", cotizacionSelected.getProveedor().getDireccionFiscal().getCalle()
+					+ "|" + cotizacionSelected.getProveedor().getDireccionFiscal().getNumExt()
+					+ "|" + cotizacionSelected.getProveedor().getDireccionFiscal().getColonia()
+					+ "|" + cotizacionSelected.getProveedor().getDireccionFiscal().getCuidad()
+					+ "|" + cotizacionSelected.getProveedor().getDireccionFiscal().getEstado().getNombre()
+					+ "|" + cotizacionSelected.getProveedor().getDireccionFiscal().getPais().getNombre());
 				
-				mapa.put("proveedor", cotizacionSelected.getProveedor().getNombre());
-				mapa.put("ur", cotizacionSelected.getRequisicion().getArea().getNombre());
+				String telefonoMap = "";
 				
-				mapa.put("entregarEn", "");
-				mapa.put("dependencia",requisicion.getCofiaProg().getNombre());
+				if(cotizacionSelected.getProveedor().getContacto()!= null && cotizacionSelected.getProveedor().getContacto().getTelefono() != null)
+					telefonoMap = cotizacionSelected.getProveedor().getContacto().getTelefono().getNumero();
+				mapa.put("telefono", telefonoMap);
 				
-				mapa.put("comentarios", cotizacionSelected.getDetallesExtras());
-				mapa.put("ordenCompra",requisicion.getPersona().getApellidoPaterno()
-						+ " " + requisicion.getPersona().getApellidoMaterno()
-						+ " " + requisicion.getPersona().getNombre());
+				String representanteLegal = "";
+					if(cotizacionSelected.getProveedor().getRepresentanteLegal() != null)
+						representanteLegal = cotizacionSelected.getProveedor().getRepresentanteLegal().getNombreCompleto();
+				mapa.put("atencion", representanteLegal);
+				mapa.put("folio",
+						cotizacionSelected.getFolioCotizacion());
 				
+				Calendar fechaMap = Calendar.getInstance();
+				if(cotizacionSelected.getFechaEnvioCotizacion() != null)
+					fechaMap = cotizacionSelected.getFechaEnvioCotizacion();
+				mapa.put("fecha", stockUtils
+						.convertirCalendarToString(fechaMap));
 				
-				mapa.put("fechaOC",requisicion.getPosicion().getNombre());
-				mapa.put("claveCotizacion",requisicion.getAdscripcion());
-				mapa.put("tiempoEntrega",requisicion.getJustificacion());
+				String emailMap = "";
+				if(cotizacionSelected.getProveedor().getContacto() != null && cotizacionSelected.getProveedor().getContacto().getEmail() != null)
+					emailMap = cotizacionSelected.getProveedor().getContacto().getEmail().getEmail();
+				mapa.put("email", emailMap);
 				
+
+				Float total = 0F;
+
+				for (Cotizacion item : cotizacionesConProductos) {
+					total += item.getRequisicionProducto()
+							.getTotalProductoPorUnidad();
+				}
+				mapa.put("total", String.valueOf(total));
 				
-				
-				
-				
-				
+				List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
+				listaHashsParametros.add(mapa);
+
+				List<AplicacionExterna> aplicaciones = new ArrayList<AplicacionExterna>();
+				AplicacionExterna aplicacion = new AplicacionExterna();
+				aplicacion.setNombre("PDFXCview");
+				aplicaciones.add(aplicacion);
+				stockUtils.showSuccessmessage(
+						generarCotizacionJasper(listaHashsParametros,
+								aplicaciones, cotizacionesConProductos),
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
 			}
-			
-		}
+
+		} else
+			stockUtils.showSuccessmessage(
+					"Es necesario seleccionar primero una cotización",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 	}
-	
-	
+
+	@SuppressWarnings({ "rawtypes", "unchecked", "static-access" })
+	@Command
+	public String generarCotizacionJasper(List<HashMap> listaHashsParametros,
+			List<AplicacionExterna> aplicaciones, List<Cotizacion> lista) {
+		String mensaje = "";
+		HashMap hashParametros = construirHashMapParametros(listaHashsParametros);
+
+		try {
+			print = JasperFillManager.fillReport(readJasper, hashParametros,
+					new JRBeanCollectionDataSource(lista));
+
+			JasperExportManager.exportReportToPdfFile(
+					print,
+					StockConstants.CARPETA_ARCHIVOS_COTIZACIONES
+							+ hashParametros.get("folio")
+							+ stockUtils.getFechaActualConHora()
+							+ StockConstants.EXTENCION_PDF);
+			openPdf(StockConstants.CARPETA_ARCHIVOS_COTIZACIONES);
+			mensaje = "Cotizacion rxportado a PDF "
+					+ StockConstants.CARPETA_ARCHIVOS_COTIZACIONES;
+
+		} catch (JRException e) {
+			e.printStackTrace();
+			for (AplicacionExterna aplicacion : aplicaciones)
+				closePdf(aplicacion.getNombre());
+
+			try {
+				JasperExportManager.exportReportToPdfFile(print,
+						StockConstants.CARPETA_ARCHIVOS_COTIZACIONES);
+				openPdf(StockConstants.CARPETA_ARCHIVOS_COTIZACIONES);
+				mensaje = "Se ha generado un PDF: "
+						+ StockConstants.CARPETA_ARCHIVOS_COTIZACIONES;
+			} catch (JRException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return mensaje;
+	}
 	@Command
 	public void abrirPDF(@BindingParam("index") Integer index) {
 
