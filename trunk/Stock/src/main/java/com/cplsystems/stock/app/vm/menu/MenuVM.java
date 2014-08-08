@@ -36,9 +36,6 @@ public class MenuVM extends BasicStructure {
 	private boolean mostrarOrdenesCompra;
 
 	private boolean mostrarPanelControl;
-	private boolean mostrarProductos;
-	private boolean mostrarProveedores;
-
 	private boolean ownerOptions;
 
 	@Init
@@ -47,8 +44,7 @@ public class MenuVM extends BasicStructure {
 		loadPrivileges();
 	}
 
-	@NotifyChange({ "mostrarPanelControl", "mostrarProveedores",
-			"mostrarProductos", "mostrarConcentrados",
+	@NotifyChange({ "mostrarPanelControl", "mostrarConcentrados",
 			"mostrarCotizacionesAutorizaciones", "mostrarOrdenesCompra",
 			"mostrarRequisiones" })
 	public void loadPrivileges() {
@@ -59,8 +55,6 @@ public class MenuVM extends BasicStructure {
 				mostrarCotizacionesAutorizaciones = true;
 				mostrarOrdenesCompra = true;
 				mostrarRequisiones = true;
-				mostrarProductos = true;
-				mostrarProveedores = true;
 				mostrarPanelControl = true;
 				ownerOptions = false;
 				return;
@@ -70,8 +64,6 @@ public class MenuVM extends BasicStructure {
 				mostrarCotizacionesAutorizaciones = true;
 				mostrarOrdenesCompra = true;
 				mostrarRequisiones = true;
-				mostrarProductos = true;
-				mostrarProveedores = true;
 				mostrarPanelControl = true;
 				ownerOptions = true;
 				return;
@@ -92,12 +84,6 @@ public class MenuVM extends BasicStructure {
 						break;
 					case REQUISION:
 						mostrarRequisiones = true;
-						break;
-					case PRODUCTOS:
-						mostrarProductos = true;
-						break;
-					case PROVEEDORES:
-						mostrarProveedores = true;
 						break;
 					case PANEL_CONTROL:
 						mostrarPanelControl = true;
@@ -120,95 +106,14 @@ public class MenuVM extends BasicStructure {
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
 	}
 
-	@Command
-	public void showProductsReportesArticulos() {
-		args.put(PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_ARTICULOS);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
+	
+	
+	
 
-	@Command
-	public void showProductsReportesClasificacion() {
-		args.put(PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_CLASIFICACION);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
 
-	@Command
-	public void showProductsReportesCodigos() {
-		args.put(PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_MULTIPLES_CODIGOS);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
+	
 
-	@Command
-	public void showProductsReportesCosto() {
-		args.put(PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_COSTO);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
-	@Command
-	public void showProductsReportesPrecio() {
-		args.put(PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_PRECIO);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
-	@Command
-	public void showProductsReportesPrecioCostoMasiva() {
-		args.put(
-				PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_PRECIO_COSTO_MASIVA);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
-	@Command
-	public void showProductsReportesActualizacionRapida() {
-		args.put(
-				PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_ACTUALIZACION_RAPIDA);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
-	@Command
-	public void showProductsReportesAjusteExistencia() {
-		args.put(PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_AJUSTE_EXISTENCIA);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
-	@Command
-	public void showProductsReportesArticuloSustituto() {
-		args.put(
-				PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_ARTICULO_SUSTITUTO);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
-	@Command
-	public void showProductsReportesTipoMovimiento() {
-		args.put(PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_TIPO_MOVIMIENTO);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
-	@Command
-	public void showProductsReportesRregistroMovimiento() {
-		args.put(
-				PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_REGISTRO_MOVIMIENTO);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
-	@Command
-	public void showProductsReportesKardex() {
-		args.put(PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PRODUCTOS_REPORTE_KARDEX);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
-	@Command
+	/*@Command
 	public void showProviders() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.PROVEEDORES);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
@@ -219,15 +124,8 @@ public class MenuVM extends BasicStructure {
 		args.put(PAGE_TO_RENDER,
 				StockConstants.GLOBAL_PAGES.PROVEEDORES_BUSCADOR);
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
-	@Command
-	public void showProvidersProduct() {
-		args.put(PAGE_TO_RENDER,
-				StockConstants.GLOBAL_PAGES.PROVEEDORES_PRODUCTO);
-		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	}
-
+	}*/
+	
 	@Command
 	public void showRequisitions() {
 		args.put(PAGE_TO_RENDER, StockConstants.GLOBAL_PAGES.REQUISICION);
@@ -331,22 +229,6 @@ public class MenuVM extends BasicStructure {
 
 	public void setMostrarPanelControl(boolean mostrarPanelControl) {
 		this.mostrarPanelControl = mostrarPanelControl;
-	}
-
-	public boolean isMostrarProductos() {
-		return mostrarProductos;
-	}
-
-	public void setMostrarProductos(boolean mostrarProductos) {
-		this.mostrarProductos = mostrarProductos;
-	}
-
-	public boolean isMostrarProveedores() {
-		return mostrarProveedores;
-	}
-
-	public void setMostrarProveedores(boolean mostrarProveedores) {
-		this.mostrarProveedores = mostrarProveedores;
 	}
 
 	public boolean isOwnerOptions() {

@@ -39,6 +39,7 @@ public class RequisicionVariables extends BasicStructure {
 	protected List<RequisicionInbox> requisicionesInbox;
 	protected RequisicionInbox requisicionInboxSeleccionada;
 	protected boolean readOnly = false;
+	protected String rutaPdfGenerado;
 
 	protected List<CotizacionInbox> cotizacionesInbox;
 	protected CotizacionInbox cotizacionInboxSeleccionada;

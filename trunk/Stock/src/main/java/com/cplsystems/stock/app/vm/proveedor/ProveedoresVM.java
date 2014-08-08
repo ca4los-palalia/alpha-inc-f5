@@ -4,6 +4,7 @@
 package com.cplsystems.stock.app.vm.proveedor;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.AImage;
 import org.zkoss.image.Image;
+import org.zkoss.io.Files;
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -43,7 +45,6 @@ public class ProveedoresVM extends ProveedorMetaClass {
 		readJasper = generarUrlString("jasperTemplates/reportProductos.jasper");
 	}
 
-	
 	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
@@ -161,14 +162,13 @@ public class ProveedoresVM extends ProveedorMetaClass {
 				buscarProveedor.setComentario(proveedoresLista.size() + " "
 						+ mensaje);
 
-			} else{
+			} else {
 				stockUtils.showSuccessmessage(
 						"Tu búsqueda -" + buscarProveedor.getNombre()
 								+ "- no obtuvo ningún resultado",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 				proveedorSelected = new Proveedor();
 			}
-				
 
 		} else {
 			stockUtils.showSuccessmessage(
@@ -211,9 +211,9 @@ public class ProveedoresVM extends ProveedorMetaClass {
 						.valueOf(proveedoresAsociacion.size()));
 
 			} else
-				stockUtils.showSuccessmessage(
-						"Tu búsqueda -" + buscarProveedorAsociar.getNombre()
-								+ "- no obtuvo ningún resultado",
+				stockUtils.showSuccessmessage("Tu búsqueda -"
+						+ buscarProveedorAsociar.getNombre()
+						+ "- no obtuvo ningún resultado",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 
 		} else {
@@ -284,20 +284,20 @@ public class ProveedoresVM extends ProveedorMetaClass {
 	@NotifyChange("*")
 	public void reporteProveedores() {
 		if (proveedoresLista != null) {
-			
+
 			HashMap mapa = new HashMap();
 			mapa.put(StockConstants.REPORT_PROVEEDOR_PARAM1,
 					"REPORTE DE PROVEEDORES");
-			mapa.put(StockConstants.REPORT_PROVEEDOR_NOMBRE_EMPRESA, "PROVEEDORA DE MATERIAL ELECTRICO Y PLOMERIA S.A. de C.V.");
+			mapa.put(StockConstants.REPORT_PROVEEDOR_NOMBRE_EMPRESA,
+					"PROVEEDORA DE MATERIAL ELECTRICO Y PLOMERIA S.A. de C.V.");
 			List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
 			listaHashsParametros.add(mapa);
-			
-			
+
 			List<AplicacionExterna> aplicaciones = new ArrayList<AplicacionExterna>();
 			AplicacionExterna aplicacion = new AplicacionExterna();
 			aplicacion.setNombre("PDFXCview");
 			aplicaciones.add(aplicacion);
-			
+
 			stockUtils
 					.showSuccessmessage(
 							generarReporteProveedor(listaHashsParametros,
@@ -310,5 +310,47 @@ public class ProveedoresVM extends ProveedorMetaClass {
 							Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 		}
 	}
-	
+
+	@Command
+	public void onUploadExcel(
+			@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx)
+			throws IOException {
+		boolean lecturaCorrecta = true;
+		String filePath = "C:\\Stock\\LoadLayout\\";// copiar archivo
+		UploadEvent upEvent = null;
+		Object objUploadEvent = ctx.getTriggerEvent();
+		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent)) {
+			upEvent = (UploadEvent) objUploadEvent;
+		}
+		if (upEvent != null) {
+			Media media = upEvent.getMedia();
+
+			File baseDir = new File(filePath);
+			if (!baseDir.exists()) {
+				baseDir.mkdirs();
+			}
+
+			Files.copy(new File(filePath + media.getName()),
+					media.getStreamData());
+
+			File file = new File(filePath + media.getName());
+
+			try {
+				leerDatosDesdeExcel(filePath + media.getName());
+			} catch (Exception e) {
+				lecturaCorrecta = false;
+			}
+
+			if (lecturaCorrecta)
+				Messagebox
+						.show("Se han importado exitosamente productos desde el archivo: "
+								+ filePath + media.getName());
+			else
+				Messagebox
+						.show("Hubo un erroe en la carga de los proveedores, "
+								+ "verifique el layout del archivo de Excel e intente nuevamente"
+								+ filePath + media.getName());
+		}
+		System.err.println("Importar excel");
+	}
 }

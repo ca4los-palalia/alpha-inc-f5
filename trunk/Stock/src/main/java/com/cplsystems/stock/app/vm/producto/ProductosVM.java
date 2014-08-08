@@ -76,7 +76,7 @@ public class ProductosVM extends ProductoMetaClass {
 	}
 
 	@Command
-	public void onUploadPDF(
+	public void onUploadExcel(
 			@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx)
 			throws IOException {
 		goProgress("Cargando archivo", 5);
@@ -102,12 +102,9 @@ public class ProductosVM extends ProductoMetaClass {
 			
 			leerDatosDesdeExcel(filePath + media.getName());
 
-			Messagebox.show("File Sucessfully uploaded in the path [ ."
-					+ filePath + " ]");
-
+			Messagebox.show("´Se han importado exitosamente productos del " + filePath + media.getName());
 		}
 		System.err.println("Importar excel");
-
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -526,17 +523,8 @@ public class ProductosVM extends ProductoMetaClass {
 		}
 	}
 
-	/*
-	 * @Command
-	 * 
-	 * @NotifyChange("*") public void selectDynamic(@BindingParam("tabs")
-	 * TabInfo tabs) { if (tabs != null) { productoDB =
-	 * productoService.getByTipo(tabs.getProductoTipo()); //METODO getByTipo ya
-	 * no existe }
-	 * 
-	 * }
-	 */
-
+	
+	@SuppressWarnings("static-access")
 	@NotifyChange("*")
 	@Command
 	public void activarComboBoxUnidades() {

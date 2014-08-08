@@ -5,8 +5,14 @@
 		viewModel="@id('hvm') @init('com.cplsystems.stock.app.vm.HeaderVM')">
 		<hlayout hflex="1">
 			<hlayout style="padding-top:8px">
+				
+				<div sclass="estilo-Nombre-Usuario">
+					<label zclass="tlLabel" value="Hola, "
+					sclass="company" />
 				<label zclass="tlLabel" value="@load(hvm.compania)"
 					sclass="company" />
+				</div>
+				
 			</hlayout>
 			<hlayout
 				style="width:5px; text-align:right;padding-right:10px; padding-top:5px"

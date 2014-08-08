@@ -39,27 +39,30 @@
 			</columns>
 			<rows>
 				<row style="border:0">
-					<div>
-					</div>
-					
+					<div></div>
+
 					<hlayout style="text-align:right; margin:1px ">
-						<button image="/images/toolbar/newDoc.png" tooltiptext="Nuevo producto"
-								sclass="web_button" onClick="@command('nuevaCaptura')" />
-						
+						<button image="/images/toolbar/newDoc.png"
+							tooltiptext="Nuevo producto" sclass="web_button"
+							onClick="@command('nuevaCaptura')" />
+
 						<button id="saveButton"
 							image="/images/toolbar/saveOff.png" sclass="web_button"
-							onClick="@command('saveChanges')" tooltiptext="Guardar/actualizar producto" />
+							onClick="@command('saveChanges')"
+							tooltiptext="Guardar/actualizar producto" />
 						<button image="/images/toolbar/delete.png"
-							sclass="web_button" onClick="@command('deleteRecord')" tooltiptext="Eliminar producto"/>
-							
+							sclass="web_button" onClick="@command('deleteRecord')"
+							tooltiptext="Eliminar producto" />
+
 						<button image="/images/toolbar/pdf32.png"
 							sclass="web_button" onClick="@command('reporteProductos')"
 							tooltiptext="Exportar a un archivo PDF" />
-							
+
 						<button upload="true"
 							image="/images/toolbar/uploadColor32.png"
-			            	onUpload="@command('onUploadPDF',upEvent=event)" tooltiptext="Importar productos">
-			            </button>
+							onUpload="@command('onUploadExcel',upEvent=event)"
+							tooltiptext="Importar productos desde excel">
+						</button>
 					</hlayout>
 				</row>
 			</rows>
@@ -184,9 +187,9 @@
 
 		<separator />
 
-		<groupbox mold="3d" open="false"
-			tooltiptext="Clic para ver información del producto">
-			<caption label="Información del producto"/>
+		<groupbox mold="3d" open="false">
+			<caption label="Información del producto"
+				image="/images/toolbar/info16.png" />
 
 
 			<vlayout>
@@ -218,16 +221,18 @@
 										<row
 											style="background-color:transparent; border: 0;">
 											<hlayout>
-												<label value="*" style="color:red" />
+												<label value="*"
+													style="color:red" />
 												<label value="Clave:"
 													width="100%" />
 											</hlayout>
 											<textbox id="clave"
 												zclass="tBox" maxlength="24" width="100%"
 												value="@bind(pvm.producto.clave)" />
-											
+
 											<hlayout>
-												<label value="*" style="color:red" />
+												<label value="*"
+													style="color:red" />
 												<label value="Nombre:" />
 											</hlayout>
 											<textbox zclass="tBox"
@@ -237,15 +242,17 @@
 										<row
 											style="background-color:transparent; border: 0;">
 											<hlayout>
-												<label value="*" style="color:red" />
+												<label value="*"
+													style="color:red" />
 												<label value="Marca:" />
 											</hlayout>
 											<textbox zclass="tBox"
 												width="100%" maxlength="22"
 												value="@bind(pvm.producto.marca)" />
-											
+
 											<hlayout>
-												<label value="*" style="color:red" />
+												<label value="*"
+													style="color:red" />
 												<label value="Modelo :" />
 											</hlayout>
 											<textbox zclass="tBox"
@@ -272,7 +279,8 @@
 												value="@bind(pvm.producto.codigoBarras)" zclass="tBox"
 												maxlength="12" />
 											<hlayout>
-												<label value="*" style="color:red" />
+												<label value="*"
+													style="color:red" />
 												<label value="Unidad :" />
 											</hlayout>
 											<textbox
@@ -347,17 +355,20 @@
 									<rows>
 										<row
 											style="background-color:transparent; border: 0;">
-											
+
 											<hlayout>
-												<label value="*" style="color:red" />
+												<label value="*"
+													style="color:red" />
 												<label value="Activo:"
 													width="100%" />
 											</hlayout>
 											<checkbox
 												checked="@bind(pvm.producto.activo)" />
 											<hlayout>
-												<label value="*" style="color:red" />
-												<label value="Naturaleza:" />
+												<label value="*"
+													style="color:red" />
+												<label
+													value="Naturaleza:" />
 											</hlayout>
 											<combobox width="100%"
 												readonly="true" model="@bind(pvm.productosNaturalezas)"
@@ -383,14 +394,16 @@
 											<label />
 											<label />
 											<hlayout>
-												<label value="*" style="color:red" />
+												<label value="*"
+													style="color:red" />
 												<label value="Máximo" />
 											</hlayout>
 											<longbox width="100%"
 												maxlength="5" value="@bind(pvm.producto.maximo)" />
 											<hlayout>
-												<label value="*" style="color:red" />
-											<label value="Mínimo" />
+												<label value="*"
+													style="color:red" />
+												<label value="Mínimo" />
 											</hlayout>
 											<longbox width="100%"
 												maxlength="5" value="@bind(pvm.producto.minimo)" />
@@ -808,8 +821,94 @@
 			</vlayout>
 
 		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false">
+			<caption label="Reportes de artículos"
+				image="/images/toolbar/report.png" />
+				<include
+						src="/modulos/productos/reportesArticulos.zul" />
+		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false">
+			<caption label="Clasificaciones"
+				image="/images/toolbar/catalogs.png" />
+				<include
+						src="/modulos/productos/reportesClasificaciones.zul" />
+		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false">
+			<caption label="Múltiples códigos"
+				image="/images/toolbar/barcode.png" />
+				<include
+						src="/modulos/productos/reportesMultiplesCodigos.zul" />
+		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false">
+			<caption label="Actualizar costos"
+				image="/images/toolbar/cost16.png" />
+				<include
+						src="/modulos/productos/reportesActualizacionCosto.zul" />
+		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false">
+			<caption label="Actualizar precios"
+				image="/images/toolbar/price16.png" />
+				<include
+						src="/modulos/productos/reportesActualizacionPrecio.zul" />
+		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false">
+			<caption label="Actualización masiva de precios y costos"
+				image="/images/toolbar/priceMarked.png" />
+				<include
+						src="/modulos/productos/reportesActualizacionPrecioCostoMasiva.zul" />
+		</groupbox>
 
 
+		<!-- NO VISIBLES -->
+		<separator />
+		<groupbox mold="3d" open="false" visible="false">
+			<caption label="Actualización rápida"
+				image="/images/toolbar/update16.png" />
+				<include
+						src="/modulos/productos/reportesActualizacionRapida.zul" />
+		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false" visible="false">
+			<caption label="Ajuste de existencia"
+				image="/images/toolbar/setting.png" />
+				<include
+						src="/modulos/productos/reportesAjusteExistencia.zul" />
+		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false" visible="false">
+			<caption label="Artículos sustitutos"
+				image="/images/toolbar/products.png" />
+				<include
+						src="/modulos/productos/reportesArticuloSustituto.zul" />
+		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false" visible="false">
+			<caption label="Tipos de movimientos"
+				image="/images/toolbar/move.png" />
+				<include
+						src="/modulos/productos/reportesTipoMovimiento.zul" />
+		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false" visible="false">
+			<caption label="Registrar movimientos"
+				image="/images/toolbar/record.png" />
+				<include
+						src="/modulos/productos/reportesRegistroMovimiento.zul" />
+		</groupbox>
+		<separator />
+		<groupbox mold="3d" open="false" visible="false">
+			<caption label="Kardex de artículos"
+				image="/images/toolbar/report.png" />
+				<include
+						src="/modulos/productos/reportesKardex.zul" />
+		</groupbox>
+		
 
 
 

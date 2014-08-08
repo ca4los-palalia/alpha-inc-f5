@@ -20,11 +20,13 @@ import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.app.utils.UserPrivileges;
 import com.cplsystems.stock.app.vm.ordencompra.utils.OrdenCompraMetaclass;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.OrdenCompraInbox;
 import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Privilegios;
 import com.cplsystems.stock.domain.Requisicion;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -158,14 +160,29 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 
 				ordenCompra.setEstatusRequisicion(estado);
 				ordenCompraService.save(ordenCompra);
-
+/*
 				OrdenCompraInbox inbox = new OrdenCompraInbox();
 				inbox.setOrdenCompra(ordenCompra);
 				inbox.setLeido(false);
 				inbox.setFechaCreacion(new StockUtils()
 						.convertirCalendarToDate(Calendar.getInstance()));
-				ordenCompraInboxService.save(inbox);
+				ordenCompraInboxService.save(inbox);*/
 
+				// enviar notificacion
+				List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
+				for (Privilegios privilegio : privilegios) {
+					if (privilegio.getUsuarios().getPersona().getContacto() != null) {
+						mailService.sendMail(
+								privilegio.getUsuarios().getPersona()
+										.getContacto().getEmail().getEmail(),
+								"1nn3rgy@gmail.com",
+								"Orden de compra aceptada",
+								"La cotizacion "
+										+ ordenCompra
+												.getCodigo()
+										+ " ha sido aceptada");
+					}
+				}			
 				stockUtils.showSuccessmessage("La orden de compra ["
 						+ ordenCompra.getCodigo() + "] ha sido Aceptada",
 						Clients.NOTIFICATION_TYPE_INFO, 0, null);
@@ -255,5 +272,11 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 			stockUtils.showSuccessmessage(
 					"Es necesario seleccionar primero una orden de compra",
 					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+	}
+
+	private List<Privilegios> getEmailsUsuariosCotizacion() {
+		List<Privilegios> usuarios = privilegioService
+				.getUsuariosByPrivilegio(UserPrivileges.COTIZAR_AUTORIZAR);
+		return usuarios;
 	}
 }

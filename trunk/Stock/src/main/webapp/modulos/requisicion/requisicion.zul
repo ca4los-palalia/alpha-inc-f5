@@ -41,7 +41,7 @@
 					</row>
 				</rows>
 			</grid>
-
+			
 			<groupbox mold="3d" open="false">
 				<caption label="Bandeja de requisiciones"
 					image="/images/toolbar/mailColor16.png" />

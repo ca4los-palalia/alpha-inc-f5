@@ -210,7 +210,7 @@ public class RequisicionVM extends RequisicionMetaClass {
 									privilegio.getUsuarios().getPersona()
 											.getContacto().getEmail()
 											.getEmail(),
-									"csr.plz@gmail.com",
+									"1nn3rgy@gmail.com",
 									"Nueva requisición",
 									"La requisición con fólio ["
 											+ requisicion.getFolio()
@@ -615,4 +615,5 @@ public class RequisicionVM extends RequisicionMetaClass {
 							+ "o aceptada) o (ingresar palabra en el buscador)",
 							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 	}
+	
 }

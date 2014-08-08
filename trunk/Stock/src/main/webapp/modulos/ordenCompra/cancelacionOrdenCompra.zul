@@ -14,7 +14,10 @@
 			</hlayout>
 			
 			<textbox maxlength="100" multiline="true" height="100px" width="100%" value="@bind(rvm.ordenCompra.cancelarDescripcion)"/>
-			<button label="Aceptar" onClick="@command('save')"/>
+			<hlayout>
+				<button label="Aceptar" onClick="@command('save')"/>
+				<button label="Cancelar" onClick="@command('discart')"/>
+			</hlayout>
 		</vlayout>
 	</window>
 </zk>

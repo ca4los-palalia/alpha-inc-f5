@@ -8,7 +8,7 @@
 		viewModel="@id('cvm') @init('com.cplsystems.stock.app.vm.controlpanel.ControlPanelVM')">
 
 
-		<grid>
+		<grid visible="@bind(cvm.selectTab.visibleButtonSave)">
 			<columns>
 				<column width="22%" />
 				<column />
@@ -62,9 +62,11 @@
 					onSelect="@command('selectTabMoneda')" />
 
 				<tab label="Productos"
+					image="/images/toolbar/product16.png"
 					onSelect="@command('selectTabProducto')" />
 
 				<tab label="Proveedores"
+					image="/images/toolbar/supply16.png"
 					onSelect="@command('selectTabProveedores')" />
 
 				<tab label="Puestos" image="/images/toolbar/area.png"

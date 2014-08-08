@@ -8,13 +8,7 @@
 		<vlayout>
 			<tabbox id="menu" mold="accordion">
 				<tabs id="tabHeaders">
-					<tab id="productos" label="Productos"
-						selected="false" visible="@load(vm.mostrarProductos)"
-						image="/images/toolbar/box32.png" sclass="tab-red menutabs" />
-					<tab id="proveedores" label="Proveedores"
-						visible="@load(vm.mostrarProveedores)"
-						image="/images/toolbar/users32.png" sclass="tab-red menutabs" />
-					<tab id="requisiciones" label="Requisiciones"
+					<tab id="requisiciones" label="Requisiciones" selected="false"
 						visible="@load(vm.mostrarRequisiones)"
 						image="/images/toolbar/linedpapercheck32.png"
 						sclass="tab-red menutabs" />
@@ -33,35 +27,22 @@
 				</tabs>
 				<tabpanels id="tabContent">
 					<tabpanel sclass="tab-red">
-						<listbox style="border: 0; background: #B8D335;"
-							sclass="tab-red menutabs" visible="@load(vm.mostrarProductos)">
+						<listbox rows="2"
+							style="border: 0; background: #B8D335;"
+							sclass="tab-red menutabs">
 							<listhead>
 								<listheader width="20%" />
 								<listheader />
 							</listhead>
-							
-							
 							<listitem
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
-										src="/images/toolbar/report.png" />
+										src="/images/toolbar/text_enriched16.png" />
 								</listcell>
 								<listcell
-									onClick="@command('showProductsReportesArticulos')">
-									<label value="Reportes de artículos"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/catalogs.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProductsReportesClasificacion')">
-									<label value="Clasificaciones"
+									onClick="@command('showRequisitions')">
+									<label value="Requisición"
 										width="100%" style="font-size: 10px;" />
 								</listcell>
 							</listitem>
@@ -69,120 +50,11 @@
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
-										src="/images/toolbar/barcode.png" />
+										src="/images/toolbar/filter_list16.png" />
 								</listcell>
 								<listcell
-									onClick="@command('showProductsReportesCodigos')">
-									<label value="Múltiples códigos"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/priceMarked.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProductsReportesCosto')">
-									<label value="Actualizar costos"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/priceMarked.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProductsReportesPrecio')">
-									<label value="Actualizar precios"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/priceMarked.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProductsReportesPrecioCostoMasiva')">
-									<label
-										value="Actualización masiva de precios y costos" width="100%"
-										style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;" visible="false">
-								<listcell>
-									<image
-										src="/images/toolbar/update16.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProductsReportesActualizacionRapida')">
-									<label value="Actualización rápida"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;" visible="false">
-								<listcell>
-									<image
-										src="/images/toolbar/setting.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProductsReportesAjusteExistencia')">
-									<label value="Ajuste de existencia"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;" visible="false">
-								<listcell>
-									<image
-										src="/images/toolbar/products.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProductsReportesArticuloSustituto')">
-									<label value="Artículos sustitutos"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;" visible="false">
-								<listcell>
-									<image
-										src="/images/toolbar/move.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProductsReportesTipoMovimiento')">
-									<label value="Tipos de movimientos"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;" visible="false">
-								<listcell>
-									<image
-										src="/images/toolbar/record.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProductsReportesRregistroMovimiento')">
-									<label value="Registrar movimientos"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;" visible="false">
-								<listcell>
-									<image
-										src="/images/toolbar/report.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showProductsReportesKardex')">
-									<label value="Kardex de artículos"
+									onClick="@command('showConcentrado')">
+									<label value="Concentrado"
 										width="100%" style="font-size: 10px;" />
 								</listcell>
 							</listitem>
@@ -196,71 +68,12 @@
 								<listheader width="20%" />
 								<listheader />
 							</listhead>
-							
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/arrow.png" />
-								</listcell>
-
-								<listcell
-									onClick="@command('showProvidersProduct')">
-									<label
-										value="Relacionar productos con proveedor" width="100%"
-										style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-						</listbox>
-					</tabpanel>
-					<tabpanel sclass="tab-red">
-						<listbox rows="2"
-							style="border: 0; background: #B8D335;"
-							sclass="tab-red menutabs">
-							<listhead>
-								<listheader width="20%" />
-								<listheader />
-							</listhead>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/vineta12.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showRequisitions')">
-									<label value="Requisición"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/vineta12.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showConcentrado')">
-									<label value="Concentrado"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-						</listbox>
-					</tabpanel>
-					<tabpanel sclass="tab-red">
-						<listbox rows="2"
-							style="border: 0; background: #B8D335;"
-							sclass="tab-red menutabs">
-							<listhead>
-								<listheader width="20%" />
-								<listheader />
-							</listhead>
 
 							<listitem
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
-										src="/images/toolbar/gear32.png" />
+										src="/images/toolbar/list16.png" />
 								</listcell>
 								<listcell
 									onClick="@command('showCotizacion')">
@@ -268,11 +81,11 @@
 										width="100%" style="font-size: 10px;" />
 								</listcell>
 							</listitem>
-							<listitem
+							<listitem visible="false"
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
-										src="/images/toolbar/gear32.png" />
+										src="/images/toolbar/vineta12.png" />
 								</listcell>
 
 								<listcell
@@ -295,7 +108,7 @@
 								<row
 									style="background-color:#E6D92C; border: 0;">
 									<image
-										src="/images/toolbar/shoppingcart32.png" />
+										src="/images/toolbar/buy16.png" />
 									<toolbarbutton
 										onClick="@command('showOrders')" label="Órdenes de compra"
 										width="100%" />
@@ -314,7 +127,7 @@
 								<row
 									style="background-color:#E6D92C; border: 0;">
 									<image
-										src="/images/toolbar/risegraph32.png" />
+										src="/images/toolbar/report.png" />
 									<toolbarbutton
 										onClick="@command('showReports')" label="Reportes"
 										width="100%" />
@@ -335,7 +148,7 @@
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
-										src="/images/toolbar/gear32.png" />
+										src="/images/toolbar/catalog16.png" />
 								</listcell>
 
 								<listcell
@@ -348,7 +161,7 @@
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
-										src="/images/toolbar/gear32.png" />
+										src="/images/toolbar/clients16.png" />
 								</listcell>
 								<listcell
 									onClick="@command('mostrarConfiguracionUsuario')">
@@ -365,7 +178,7 @@
 								style="background-color:#E6D92C; border: 0;">
 								<listcell>
 									<image
-										src="/images/toolbar/gear32.png" />
+										src="/images/toolbar/user16.png" />
 								</listcell>
 								<listcell
 									onClick="@command('configurarUsuariosNegocio')">
