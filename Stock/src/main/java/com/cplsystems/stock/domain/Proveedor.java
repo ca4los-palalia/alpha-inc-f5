@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "provedor")
@@ -42,7 +43,7 @@ public class Proveedor implements Serializable {
 	private Persona representanteLegal;
 	private Persona representanteAteCliente;
 	private Giro giro;
-
+	private CuentaPago cuentaPago; 
 	private Organizacion organizacion;
 	private Usuarios usuario;
 	
@@ -281,6 +282,15 @@ public class Proveedor implements Serializable {
 	}
 	public void setUsuario(Usuarios usuario) {
 		this.usuario = usuario;
+	}
+
+	@Transient
+	public CuentaPago getCuentaPago() {
+		return cuentaPago;
+	}
+
+	public void setCuentaPago(CuentaPago cuentaPago) {
+		this.cuentaPago = cuentaPago;
 	}
 	
 	

@@ -3,6 +3,7 @@
  */
 package com.cplsystems.stock.app.vm.ordencompra.utils;
 
+import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
@@ -10,11 +11,13 @@ import org.zkoss.bind.annotation.ExecutionArgParam;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Window;
 
 import java.util.Calendar;
+
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
 import com.cplsystems.stock.domain.EstatusRequisicion;
@@ -42,6 +45,11 @@ public class CancelarOrdenCompraVM extends RequisicionVariables {
 		ordenCompra = ct;
 	}
 
+	@AfterCompose
+	public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
+		Selectors.wireComponents(view, this, false);
+	}
+	
 	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
@@ -53,13 +61,13 @@ public class CancelarOrdenCompraVM extends RequisicionVariables {
 				EstatusRequisicion estado = estatusRequisicionService
 						.getByClave(StockConstants.ESTADO_ORDEN_COMPRA_CANCELADA);
 				ordenCompra.setEstatusRequisicion(estado);
-				
 				ordenCompraService.save(ordenCompra);
-				OrdenCompraInbox inbox = new OrdenCompraInbox();
+				
+				/*OrdenCompraInbox inbox = new OrdenCompraInbox();
 				inbox.setFechaCreacion(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
 				inbox.setOrdenCompra(ordenCompra);
 				inbox.setLeido(false);
-				ordenCompraInboxService.save(inbox);
+				ordenCompraInboxService.save(inbox);*/
 				win.detach();
 
 			} catch (Exception e) {
@@ -72,4 +80,9 @@ public class CancelarOrdenCompraVM extends RequisicionVariables {
 					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 	}
 
+	@Command
+	public void discart(){
+		if(win != null)
+			win.detach();
+	}
 }

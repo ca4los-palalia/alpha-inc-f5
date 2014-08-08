@@ -42,6 +42,7 @@ import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.app.utils.UserPrivileges;
 import com.cplsystems.stock.app.vm.requisicion.utils.CotizacionListaExcelFile;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
 import com.cplsystems.stock.domain.Cotizacion;
@@ -50,6 +51,7 @@ import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.OrdenCompra;
 import com.cplsystems.stock.domain.OrdenCompraInbox;
 import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Privilegios;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.RequisicionInbox;
 import com.cplsystems.stock.domain.Usuarios;
@@ -249,8 +251,24 @@ public class CotizacionVM extends RequisicionVariables {
 						.convertirCalendarToDate(Calendar.getInstance()));
 				cotizacionInboxService.save(inbox);
 
-				// GENERAR PDF
-				// ENVIAR CORREO
+				// Imprimir y enviar PDF
+				imprimirCotizacion();
+				List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
+				for (Privilegios privilegio : privilegios) {
+					if (privilegio.getUsuarios().getPersona().getContacto() != null) {
+						mailService.sendMail(
+								privilegio.getUsuarios().getPersona()
+										.getContacto().getEmail().getEmail(),
+								"1nn3rgy@gmail.com",
+								"Cotización enviada con proveedor",
+								"La cotizacion "
+										+ cotizacionSelected
+												.getFolioCotizacion()
+										+ "Ha sido enviada con el proveedor "
+										+ cotizacionSelected.getProveedor()
+												.getNombre(), rutaPdfGenerado);
+					}
+				}// END Imprimir y enviar PDF
 
 				stockUtils.showSuccessmessage("La cotizacion con folio ["
 						+ cotizacionSelected.getFolioCotizacion()
@@ -307,6 +325,25 @@ public class CotizacionVM extends RequisicionVariables {
 						.convertirCalendarToDate(Calendar.getInstance()));
 				ordenCompraInboxService.save(inbox);
 
+				// enviar notificacion
+				List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
+				for (Privilegios privilegio : privilegios) {
+					if (privilegio.getUsuarios().getPersona().getContacto() != null) {
+						mailService.sendMail(
+								privilegio.getUsuarios().getPersona()
+										.getContacto().getEmail().getEmail(),
+								"1nn3rgy@gmail.com",
+								"Cotización Aceptada",
+								"La cotizacion "
+										+ cotizacionSelected
+												.getFolioCotizacion()
+										+ " del proveedor proveedor "
+										+ cotizacionSelected.getProveedor()
+												.getNombre()
+										+ " ha sido aceptada");
+					}
+				}
+
 				stockUtils.showSuccessmessage("La cotizacion con folio ["
 						+ cotizacionSelected.getFolioCotizacion()
 						+ "] ha sido Aceptada", Clients.NOTIFICATION_TYPE_INFO,
@@ -325,6 +362,8 @@ public class CotizacionVM extends RequisicionVariables {
 					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 	}
 
+	
+	
 	@SuppressWarnings("static-access")
 	@Command
 	@NotifyChange("*")
@@ -342,9 +381,9 @@ public class CotizacionVM extends RequisicionVariables {
 						map);
 
 			} else
-				stockUtils.showSuccessmessage("La cotizacion con folio -"
+				stockUtils.showSuccessmessage("La cotización con folio ["
 						+ cotizacionSelected.getFolioCotizacion()
-						+ "- nu puede ser cancelada bajo este estatus ("
+						+ "] no puede ser cancelada bajo este estatus ("
 						+ cotizacionSelected.getEstatusRequisicion()
 								.getNombre() + ")",
 						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
@@ -630,37 +669,53 @@ public class CotizacionVM extends RequisicionVariables {
 				mapa.put("nombreEmpresa", org.getNombre());
 				mapa.put("proveedor", cotizacionSelected.getProveedor()
 						.getNombre());
-				mapa.put("direccion", cotizacionSelected.getProveedor().getDireccionFiscal().getCalle()
-					+ "|" + cotizacionSelected.getProveedor().getDireccionFiscal().getNumExt()
-					+ "|" + cotizacionSelected.getProveedor().getDireccionFiscal().getColonia()
-					+ "|" + cotizacionSelected.getProveedor().getDireccionFiscal().getCuidad()
-					+ "|" + cotizacionSelected.getProveedor().getDireccionFiscal().getEstado().getNombre()
-					+ "|" + cotizacionSelected.getProveedor().getDireccionFiscal().getPais().getNombre());
-				
+				mapa.put("direccion", cotizacionSelected.getProveedor()
+						.getDireccionFiscal().getCalle()
+						+ "|"
+						+ cotizacionSelected.getProveedor()
+								.getDireccionFiscal().getNumExt()
+						+ "|"
+						+ cotizacionSelected.getProveedor()
+								.getDireccionFiscal().getColonia()
+						+ "|"
+						+ cotizacionSelected.getProveedor()
+								.getDireccionFiscal().getCuidad()
+						+ "|"
+						+ cotizacionSelected.getProveedor()
+								.getDireccionFiscal().getEstado().getNombre()
+						+ "|"
+						+ cotizacionSelected.getProveedor()
+								.getDireccionFiscal().getPais().getNombre());
+
 				String telefonoMap = "";
-				
-				if(cotizacionSelected.getProveedor().getContacto()!= null && cotizacionSelected.getProveedor().getContacto().getTelefono() != null)
-					telefonoMap = cotizacionSelected.getProveedor().getContacto().getTelefono().getNumero();
+
+				if (cotizacionSelected.getProveedor().getContacto() != null
+						&& cotizacionSelected.getProveedor().getContacto()
+								.getTelefono() != null)
+					telefonoMap = cotizacionSelected.getProveedor()
+							.getContacto().getTelefono().getNumero();
 				mapa.put("telefono", telefonoMap);
-				
+
 				String representanteLegal = "";
-					if(cotizacionSelected.getProveedor().getRepresentanteLegal() != null)
-						representanteLegal = cotizacionSelected.getProveedor().getRepresentanteLegal().getNombreCompleto();
+				if (cotizacionSelected.getProveedor().getRepresentanteLegal() != null)
+					representanteLegal = cotizacionSelected.getProveedor()
+							.getRepresentanteLegal().getNombreCompleto();
 				mapa.put("atencion", representanteLegal);
-				mapa.put("folio",
-						cotizacionSelected.getFolioCotizacion());
-				
+				mapa.put("folio", cotizacionSelected.getFolioCotizacion());
+
 				Calendar fechaMap = Calendar.getInstance();
-				if(cotizacionSelected.getFechaEnvioCotizacion() != null)
+				if (cotizacionSelected.getFechaEnvioCotizacion() != null)
 					fechaMap = cotizacionSelected.getFechaEnvioCotizacion();
-				mapa.put("fecha", stockUtils
-						.convertirCalendarToString(fechaMap));
-				
+				mapa.put("fecha",
+						stockUtils.convertirCalendarToString(fechaMap));
+
 				String emailMap = "";
-				if(cotizacionSelected.getProveedor().getContacto() != null && cotizacionSelected.getProveedor().getContacto().getEmail() != null)
-					emailMap = cotizacionSelected.getProveedor().getContacto().getEmail().getEmail();
+				if (cotizacionSelected.getProveedor().getContacto() != null
+						&& cotizacionSelected.getProveedor().getContacto()
+								.getEmail() != null)
+					emailMap = cotizacionSelected.getProveedor().getContacto()
+							.getEmail().getEmail();
 				mapa.put("email", emailMap);
-				
 
 				Float total = 0F;
 
@@ -669,7 +724,7 @@ public class CotizacionVM extends RequisicionVariables {
 							.getTotalProductoPorUnidad();
 				}
 				mapa.put("total", String.valueOf(total));
-				
+
 				List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
 				listaHashsParametros.add(mapa);
 
@@ -689,6 +744,7 @@ public class CotizacionVM extends RequisicionVariables {
 					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 	}
 
+	
 	@SuppressWarnings({ "rawtypes", "unchecked", "static-access" })
 	@Command
 	public String generarCotizacionJasper(List<HashMap> listaHashsParametros,
@@ -696,17 +752,15 @@ public class CotizacionVM extends RequisicionVariables {
 		String mensaje = "";
 		HashMap hashParametros = construirHashMapParametros(listaHashsParametros);
 
+		rutaPdfGenerado = StockConstants.CARPETA_ARCHIVOS_COTIZACIONES
+				+ hashParametros.get("folio")
+				+ stockUtils.getFechaActualConHora()
+				+ StockConstants.EXTENCION_PDF;
 		try {
+
 			print = JasperFillManager.fillReport(readJasper, hashParametros,
 					new JRBeanCollectionDataSource(lista));
-
-			JasperExportManager.exportReportToPdfFile(
-					print,
-					StockConstants.CARPETA_ARCHIVOS_COTIZACIONES
-							+ hashParametros.get("folio")
-							+ stockUtils.getFechaActualConHora()
-							+ StockConstants.EXTENCION_PDF);
-			openPdf(StockConstants.CARPETA_ARCHIVOS_COTIZACIONES);
+			JasperExportManager.exportReportToPdfFile(print, rutaPdfGenerado);
 			mensaje = "Cotizacion rxportado a PDF "
 					+ StockConstants.CARPETA_ARCHIVOS_COTIZACIONES;
 
@@ -727,8 +781,15 @@ public class CotizacionVM extends RequisicionVariables {
 		}
 		return mensaje;
 	}
+
 	@Command
 	public void abrirPDF(@BindingParam("index") Integer index) {
 
+	}
+
+	private List<Privilegios> getEmailsUsuariosCotizacion() {
+		List<Privilegios> usuarios = privilegioService
+				.getUsuariosByPrivilegio(UserPrivileges.COTIZAR_AUTORIZAR);
+		return usuarios;
 	}
 }

@@ -11,51 +11,11 @@
 		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.proveedor.ProveedoresVM')">
 
 
-
-
-		<grid>
-			<columns>
-				<column />
-				<column width="16%" zclass="shadowMenuActions" />
-			</columns>
-			<rows>
-				<row zclass="shadowMenuActions">
-					<div style="margin:5px">
-						<button
-							label="Proveedores > Relacionar productos con proveesores"
-							image="/images/toolbar/home32.png"
-							zclass="panelInfoItemMenuTitle" />
-					</div>
-
-					<hlayout>
-						<button image="/images/toolbar/add.png"
-							sclass="web_button"
-							onClick="@command('asignarProductosAProveedor')"
-							tooltiptext="Agregar productos seleccionados a proveedor" />
-
-						<button image="/images/toolbar/remove.png"
-							sclass="web_button"
-							onClick="@command('quitarProductosDeProveedor')"
-							tooltiptext="Quitar productos seleccionados del proveedor" />
-					</hlayout>
-				</row>
-			</rows>
-		</grid>
-
-
-
-
-
-
-
-		<separator />
-		<separator />
 		<vlayout>
 			<listbox emptyMessage="No se encontro ningun proveedor"
 				rows="5" onSelect="@command('seleccionarProveedorRelacionProducto')"
 				model="@load(pvm.proveedoresAsociacion)"
 				selectedItem="@bind(pvm.proveedoresAsociacionSelected)">
-
 				<auxhead>
 					<auxheader colspan="5" class="topic">
 						<grid style="border: 0;">
@@ -83,11 +43,10 @@
 				</auxhead>
 				<listhead>
 					<listheader label="Clave" width="10%" />
-					<listheader label="Nombre" width="100%"/>
+					<listheader label="Nombre" width="100%" />
 				</listhead>
 				<template name="model" var="proveedor">
 					<listitem>
-
 						<listcell>
 							<label value="@bind(proveedor.clave)"
 								width="100%" sclass="fontSizeContentGrid" />
@@ -96,7 +55,6 @@
 							<label value="@bind(proveedor.nombre)"
 								width="100%" sclass="fontSizeContentGrid" />
 						</listcell>
-
 					</listitem>
 				</template>
 			</listbox>
@@ -146,7 +104,7 @@
 							<listhead>
 								<listheader label="" align="center"
 									width="10%" />
-								<listheader label="Clave" width="15%"/>
+								<listheader label="Clave" width="15%" />
 								<listheader label="Nombre" />
 							</listhead>
 							<template name="model" var="productoVar">
@@ -171,36 +129,36 @@
 						</listbox>
 					</groupbox>
 
-
-
-
-
-
 					<groupbox>
 						<caption label="Productos del proveedor" />
 
 						<grid style="border: 0;">
 							<columns>
 								<column />
-
 							</columns>
 							<rows>
 								<row
 									style="background-color:transparent; border: 0;">
 									<vlayout>
-										<label value="empty"
-											style="color:white">
-										</label>
-										<separator />
+										<hlayout>
+											<button
+												image="/images/toolbar/add16.png" zclass="find_button"
+												onClick="@command('asignarProductosAProveedor')"
+												tooltiptext="Agregar productos seleccionados a proveedor" />
+
+											<button
+												image="/images/toolbar/remove16.png" zclass="find_button"
+												onClick="@command('quitarProductosDeProveedor')"
+												tooltiptext="Quitar productos seleccionados del proveedor" />
+										</hlayout>
 									</vlayout>
 								</row>
 							</rows>
 						</grid>
-
-
 						<listbox
 							emptyMessage="No se encontro ningun producto" rows="7" id="pro"
-							model="@bind(pvm.proveedorProductos)" selectedItem="@bind(pvm.proveedorProducto)">
+							model="@bind(pvm.proveedorProductos)"
+							selectedItem="@bind(pvm.proveedorProducto)">
 
 							<listhead>
 								<listheader label="" align="center"
@@ -211,8 +169,8 @@
 							</listhead>
 							<template name="model" var="prodProv">
 								<listitem>
-									<listcell >
-										<checkbox 
+									<listcell>
+										<checkbox
 											tooltiptext="Seleccionar para eliminar producto de proveedor"
 											checked="@bind(prodProv.producto.seleccionar)" />
 									</listcell>
@@ -230,13 +188,11 @@
 								</listitem>
 							</template>
 						</listbox>
-
 					</groupbox>
-
 				</row>
-
 			</rows>
 		</grid>
+
 
 
 

@@ -25,7 +25,7 @@ public class TelefonoDAOImpl extends HibernateDAOSuportUtil implements TelefonoD
 
 	@Transactional
 	public void save(Telefono telefono) {
-		getHibernateTemplate().save(telefono);
+		getHibernateTemplate().saveOrUpdate(telefono);
 	}
 
 	@Transactional

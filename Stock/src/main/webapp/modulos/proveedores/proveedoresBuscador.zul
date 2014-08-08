@@ -13,7 +13,7 @@
 		<grid style="border:0;">
 			<columns>
 				<column />
-				<column width="32%"/>
+				<column width="402%"/>
 			</columns>
 			<rows>
 				<row style="border:0;">
@@ -38,7 +38,10 @@
 							sclass="web_button" onClick="@command('reporteProveedores')"
 							tooltiptext="Exportar PDF" />
 						
-						<button image="/images/toolbar/excel32.png" upload="true"/>
+						<button upload="true"
+							image="/images/toolbar/uploadColor32.png"
+			            	onUpload="@command('onUploadExcel',upEvent=event)" tooltiptext="Importar proveedores desde excel">
+			            </button>
 
 					</hlayout>
 				</row>
@@ -49,8 +52,7 @@
 
 		<vlayout>
 			
-			<groupbox mold="3d" open="false"
-				tooltiptext="Clic para ver formulario de busqueda">
+			<groupbox mold="3d" open="false">
 				<caption label="Buscar"
 					image="/images/toolbar/find16x16.png" />
 				
@@ -81,12 +83,7 @@
 					model="@load(pvm.proveedoresLista)"
 					onSelect="@command('obtenerInformacionProveedorBuscado')"
 					selectedItem="@bind(pvm.proveedorSelected)">
-					<auxhead>
-						<auxheader colspan="3" class="topic">
-							<label
-								value="@bind(pvm.buscarProveedor.comentario)" />
-						</auxheader>
-					</auxhead>
+					
 					<listhead>
 						<listheader label="Clave" width="10%" />
 						<listheader label="Nombre" sort="auto" />
@@ -106,13 +103,9 @@
 				</listbox>
 			</groupbox>
 
-
-
-
-
-			<groupbox mold="3d" open="false"
-				tooltiptext="Clic para ver información del proveedor">
-				<caption label="Buscar"/>
+			<groupbox mold="3d" open="false">
+				<caption label="Información de proveedor"
+					image="/images/toolbar/info16.png"/>
 			
 
 				<tabbox>
@@ -487,17 +480,12 @@
 
 			</groupbox>
 
-
-
-
-
-
-
-
-
-
-
-
+			<groupbox mold="3d" open="false">
+				<caption label="Asignar productos a proveedor"
+					image="/images/toolbar/arrow.png"/>
+					<include
+						src="/modulos/proveedores/proveedoresProducto.zul" />
+			</groupbox>
 
 		</vlayout>
 

@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 import javax.crypto.Cipher;
@@ -100,11 +101,19 @@ public class StockUtils {
 		Date date = calendar.getTime();
 		return date;
 	}
-	
-	public String convertirCalendarToString(Calendar calendar){
+
+	public String convertirCalendarToString(Calendar calendar) {
 		Date date = convertirCalendarToDate(calendar);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(date);
+	}
+
+	public Calendar convertirStringToCalendar(Integer dia, Integer mes, Integer anyo){
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, anyo);
+		calendar.set(Calendar.MONTH, (mes-1)); // OJO: Recueda que los valores de los meses comienzan por 0.
+		calendar.set(Calendar.DATE, dia);
+		return calendar;
 	}
 
 	/* Encryption Method */
@@ -160,16 +169,18 @@ public class StockUtils {
 		return null;
 	}
 
-	public static String getFechaActualConHora(){
+	public static String getFechaActualConHora() {
 		Date date = new Date();
 		DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH+mm+ss");
 		return hourdateFormat.format(date);
 	}
-	
-	public FileInputStream getLogotipoDeOrganizacionParaJasper(String nombreAtchivo){
-		File archivoLogotipo = new File(StockConstants.CARPETA_ARCHIVOS_LOGOTIPOS + nombreAtchivo);
-		FileInputStream streamLogotipo =  null;
-		if(archivoLogotipo.exists()){
+
+	public FileInputStream getLogotipoDeOrganizacionParaJasper(
+			String nombreAtchivo) {
+		File archivoLogotipo = new File(
+				StockConstants.CARPETA_ARCHIVOS_LOGOTIPOS + nombreAtchivo);
+		FileInputStream streamLogotipo = null;
+		if (archivoLogotipo.exists()) {
 			try {
 				streamLogotipo = new FileInputStream(archivoLogotipo);
 			} catch (FileNotFoundException e) {

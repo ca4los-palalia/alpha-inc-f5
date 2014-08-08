@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +19,8 @@ public class Municipio implements Serializable {
 	private static final long serialVersionUID = 2327486550971803091L;
 	private Long idMunicipio;
 	private String nombre;
+	private String numeroMunicipio;
+	private Estado estado;
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -37,5 +41,23 @@ public class Municipio implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	@OneToOne
+	@JoinColumn(name = "estado")
+	public Estado getEstado() {
+		return estado;
+	}
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
 
+	@Column
+	public String getNumeroMunicipio() {
+		return numeroMunicipio;
+	}
+
+	public void setNumeroMunicipio(String numeroMunicipio) {
+		this.numeroMunicipio = numeroMunicipio;
+	}
+	
 }

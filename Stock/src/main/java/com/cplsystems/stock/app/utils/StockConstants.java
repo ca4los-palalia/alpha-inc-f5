@@ -18,24 +18,7 @@ public class StockConstants {
 		public static final String LOGIN_URL = "/login.zul";
 		public static final String PRODUCTOS = "/modulos/productos/productos.zul";
 		public static final String PRODUCTOS_BUSCADOR = "/modulos/productos/productosBuscador.zul";
-		public static final String PRODUCTOS_REPORTE_ARTICULOS = "/modulos/productos/reportesArticulos.zul";
-
-		public static final String PRODUCTOS_REPORTE_CLASIFICACION = "/modulos/productos/reportesClasificaciones.zul";
-		public static final String PRODUCTOS_REPORTE_MULTIPLES_CODIGOS = "/modulos/productos/reportesMultiplesCodigos.zul";
-		public static final String PRODUCTOS_REPORTE_COSTO = "/modulos/productos/reportesActualizacionCosto.zul";
-		public static final String PRODUCTOS_REPORTE_PRECIO = "/modulos/productos/reportesActualizacionPrecio.zul";
-		public static final String PRODUCTOS_REPORTE_PRECIO_COSTO_MASIVA = "/modulos/productos/reportesActualizacionPrecioCostoMasiva.zul";
-		public static final String PRODUCTOS_REPORTE_ACTUALIZACION_RAPIDA = "/modulos/productos/reportesActualizacionRapida.zul";
-		public static final String PRODUCTOS_REPORTE_AJUSTE_EXISTENCIA = "/modulos/productos/reportesAjusteExistencia.zul";
-		public static final String PRODUCTOS_REPORTE_ARTICULO_SUSTITUTO = "/modulos/productos/reportesArticuloSustituto.zul";
-		public static final String PRODUCTOS_REPORTE_TIPO_MOVIMIENTO = "/modulos/productos/reportesTipoMovimiento.zul";
-		public static final String PRODUCTOS_REPORTE_REGISTRO_MOVIMIENTO = "/modulos/productos/reportesRegistroMovimiento.zul";
-		public static final String PRODUCTOS_REPORTE_KARDEX = "/modulos/productos/reportesKardex.zul";
-		public static final String PROVEEDORES = "/modulos/proveedores/proveedores.zul";
-
-		public static final String PROVEEDORES_BUSCADOR = "/modulos/proveedores/proveedoresBuscador.zul";
-		public static final String PROVEEDORES_PRODUCTO = "/modulos/proveedores/proveedoresProducto.zul";
-
+		
 		public static final String REQUISICION = "/modulos/requisicion/requisicion.zul";
 		public static final String REQUISICION_BUSCADOR = "/modulos/requisicion/requisicionBuscador.zul";
 		public static final String CONCENTRADO = "/modulos/requisicion/concentrado.zul";
@@ -96,12 +79,10 @@ public class StockConstants {
 	public static final String REPORT_PROVEEDOR_PARAM1 = "parameter1";
 	public static final String REPORT_PROVEEDOR_NOMBRE_EMPRESA = "empresaTitle";
 	public static final String REPORT_VARIABLE_PRODUCTO_NAME_FILE = "C:\\Stock\\Productos\\reportProductos.pdf";
-	
 
 	public static final String NOMBRE_TEMPORAL_USUARIO_SYSTEMA = "NOMBRE TEMPORAL DE LA EMPRESA";
 	public static final Object BENUTZER = "BENUTZER";
 	public static final String FIRMA = "FIRMA";
-	
 	
 	public static final String CARPETA_ARCHIVOS_REQUISICIONES = "C:\\Stock\\Requisiciones\\";
 	public static final String CARPETA_ARCHIVOS_COTIZACIONES = "C:\\Stock\\Cotizaciones\\";

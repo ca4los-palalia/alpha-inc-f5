@@ -394,7 +394,7 @@ div {
 	white-space: nowrap;
 }
 
-.privilege-button {
+.privilege-button:hover {
 	width: 30px;
 	height: 30px;
 	border: thick black;
@@ -402,4 +402,12 @@ div {
 	color: white;
 	background: white;
 	font-size: 8px;
+}
+
+
+.estilo-Nombre-Usuario{
+   
+    -webkit-transform: scale(1.2);     /* Safari & Chrome */
+  	-moz-transform: scale(1.2);        /* Firefox */
+  	-o-transform: scale(1.2);
 }

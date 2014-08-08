@@ -3,9 +3,12 @@
  */
 package com.cplsystems.stock.app.vm.proveedor;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import net.sf.jasperreports.engine.JRException;
@@ -14,12 +17,17 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.util.Clients;
 
 import com.cplsystems.stock.app.utils.AplicacionExterna;
+import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
@@ -30,8 +38,10 @@ import com.cplsystems.stock.domain.CuentaPago;
 import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Email;
 import com.cplsystems.stock.domain.Estado;
+import com.cplsystems.stock.domain.Giro;
 import com.cplsystems.stock.domain.Moneda;
 import com.cplsystems.stock.domain.Municipio;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Pais;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Producto;
@@ -251,10 +261,10 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 			direccionProveedor.setPais(paisProveedor);
 			direccionProveedor.setNumExt(direccionProveedor.getNumExt()
 					.toUpperCase());
-			
-			if(direccionProveedor.getNumInt() != null)
+
+			if (direccionProveedor.getNumInt() != null)
 				direccionProveedor.setNumInt(direccionProveedor.getNumInt()
-					.toUpperCase());
+						.toUpperCase());
 			direccionService.save(direccionProveedor);
 			guardadoDireccionProveedor = true;
 		}
@@ -402,7 +412,15 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 
 			/** RECODIFICAR CODIGO **/
 
-			if (proveedorProductos != null && proveedorProductos.size() > 0) {//LISTA DE PRODUCTOS DEL PROVEEDOR SELECCIOADO NO ESTE VACIA
+			if (proveedorProductos != null && proveedorProductos.size() > 0) {// LISTA
+																				// DE
+																				// PRODUCTOS
+																				// DEL
+																				// PROVEEDOR
+																				// SELECCIOADO
+																				// NO
+																				// ESTE
+																				// VACIA
 				List<ProveedorProducto> removerProductos = new ArrayList<ProveedorProducto>();
 
 				for (ProveedorProducto proveedorProducto : proveedorProductos) {
@@ -414,10 +432,13 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 					}
 					proveedorProducto.getProducto().setSeleccionar(false);
 				}
-				/*proveedoresAsociacionSelected = proveedorService
-						.getById(proveedoresAsociacionSelected.getIdProveedor());*/
-				
-				proveedorProductos = proveedorProductoService.getByProveedor(proveedoresAsociacionSelected);
+				/*
+				 * proveedoresAsociacionSelected = proveedorService
+				 * .getById(proveedoresAsociacionSelected.getIdProveedor());
+				 */
+
+				proveedorProductos = proveedorProductoService
+						.getByProveedor(proveedoresAsociacionSelected);
 				String mensaje = "";
 
 				if (registrosRemovidos > 0)
@@ -519,7 +540,7 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 						.convertirCalendarToDate(proveedorSelected
 								.getContrato().getFechaVigenciaFin());
 			}
-			if(proveedorProductos == null)
+			if (proveedorProductos == null)
 				proveedorProductos = new ArrayList<ProveedorProducto>();
 			proveedorProductos = proveedorProductoService
 					.getByProveedor(proveedorSelected);
@@ -537,4 +558,665 @@ public abstract class ProveedorMetaClass extends ProveedorVariables {
 					.getByProveedor(proveedoresAsociacionSelected);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unused" })
+	public void leerDatosDesdeExcel(String fileName) {
+		boolean escribirDatos = true;
+		List<Proveedor> productoNuevosExcel = new ArrayList<Proveedor>();
+		try {
+			FileInputStream fileInputStream = new FileInputStream(fileName);
+			XSSFWorkbook workBook = new XSSFWorkbook(fileInputStream);
+			XSSFSheet hssfSheet = workBook.getSheetAt(0);
+			Iterator rowIterator = hssfSheet.rowIterator();
+			Integer i = 0;
+			
+			
+			try {
+				while (rowIterator.hasNext()) {
+					Proveedor proveedorNuevo = new Proveedor();
+					XSSFRow hssfRow = (XSSFRow) rowIterator.next();
+					Iterator iterator = hssfRow.cellIterator();
+					List cellTempList = new ArrayList();
+					if (i > 0) {
+						int j = 0;
+						while (iterator.hasNext()) {
+							if (j < 30) {
+								XSSFCell hssfCell = (XSSFCell) iterator.next();
+								proveedorNuevo = crearProveedor(proveedorNuevo,
+										hssfCell, j);
+								// System.err.print(hssfCell + "\t\t\t");
+							} else
+								break;
+							j++;
+						}
+						proveedorNuevo.setOrganizacion((Organizacion) sessionUtils
+								.getFromSession(SessionUtils.FIRMA));
+						productoNuevosExcel.add(proveedorNuevo);
+					}
+					i++;
+				}
+			} catch (Exception e) {
+				escribirDatos = false;
+				File borrarArchivo = new File(fileName);
+				borrarArchivo.delete();
+			}
+			
+			
+			
+			
+			File borrarArchivo = new File(fileName);
+			if (borrarArchivo.delete()) {
+				if(escribirDatos){
+					for (Proveedor item : productoNuevosExcel) {
+						Direccion direccionSave = item.getDireccionFiscal();
+						direccionService.save(direccionSave);
+						// --------------------------------------------------
+						Contacto contactoSave = item.getContacto();
+						Telefono telefonoSave = contactoSave.getTelefono();
+						Email emailSave = contactoSave.getEmail();
+						emailService.save(emailSave);
+						telefonoService.save(telefonoSave);
+						contactoService.save(contactoSave);
+						// --------------------------------------------------
+						Persona representanteLegal = item.getRepresentanteLegal();
+						contactoSave = representanteLegal.getContacto();
+						telefonoSave = contactoSave.getTelefono();
+						emailSave = contactoSave.getEmail();
+						emailService.save(emailSave);
+						telefonoService.save(telefonoSave);
+						contactoService.save(contactoSave);
+						personaService.save(representanteLegal);
+						// --------------------------------------------------
+						Contrato contratoSave = item.getContrato();
+						contratoSave.setOrganizacion((Organizacion) sessionUtils
+								.getFromSession(SessionUtils.FIRMA));
+						contratoSave.setFechaActualizacion(stockUtils
+								.convertirCalendarToString(Calendar.getInstance()));
+						contratoService.save(contratoSave);
+						// --------------------------------------------------
+						item.setProveedorActivo(true);
+						item.setFechaActualizacion(Calendar.getInstance());
+						item.setClave(item.getNombre().substring(0, 2)
+								.toUpperCase()
+								+ item.getRfc()
+										.substring(item.getRfc().length() - 2)
+										.toUpperCase()
+								+ item.getDireccionFiscal().getEstado().getNombre()
+										.substring(0, 1).toUpperCase());
+						proveedorService.save(item);
+						// --------------------------------------------------
+						CuentaPago cuentaPagoSave = item.getCuentaPago();
+						cuentaPagoSave.setProveedor(item);
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			escribirDatos = false;
+			e.printStackTrace();
+		}
+		// mostrarInformacionDeExcelLeer(cellDataList);
+
+	}
+
+	private Proveedor crearProveedor(Proveedor nuevoProveedor,
+			XSSFCell valorDePropiedad, int indice) {
+		String valor = "";
+
+		/*Direccion direccionEntradaProveedor = nuevoProveedor
+				.getDireccionFiscal();
+		Pais paisEntrada;
+		Estado estadoEntrada;
+		Municipio municipioEntrada;
+		if (direccionEntradaProveedor == null)
+			direccionEntradaProveedor = new Direccion();*/
+
+		switch (indice) {
+		case 0:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty())
+				nuevoProveedor.setNombre(valor);
+			break;
+		case 1:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				if (valor.contains(".0"))
+					valor = removerPuntoCero(valor);
+				Giro giroEntrada = giroService.getById(Long.valueOf(valor));
+				nuevoProveedor.setGiro(giroEntrada);
+			}
+			break;
+		case 2:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty())
+				nuevoProveedor.setRazonSocial(valor);
+			break;
+		case 3:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty())
+				nuevoProveedor.setRfc(valor);
+			break;
+		case 4:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				if (valor.contains(".0"))
+					valor = removerPuntoCero(valor);
+				
+				Direccion direccionFiscal = nuevoProveedor.getDireccionFiscal();
+				if(direccionFiscal == null)
+					direccionFiscal = new Direccion();
+				
+				Pais paisEntrada = paisService.findById(Long.valueOf(valor));
+				direccionFiscal.setPais(paisEntrada);
+				nuevoProveedor.setDireccionFiscal(direccionFiscal);
+			}
+			break;
+		case 5:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				if (valor.contains(".0"))
+					valor = removerPuntoCero(valor);
+				
+				
+				Direccion direccionFiscal = nuevoProveedor.getDireccionFiscal();
+				if(direccionFiscal == null)
+					direccionFiscal = new Direccion();
+				
+				Estado estadoEntrada = estadoService.getById(Long.valueOf(valor));
+				direccionFiscal.setEstado(estadoEntrada);
+				nuevoProveedor.setDireccionFiscal(direccionFiscal);
+			}
+			break;
+		case 6:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()){
+				
+				Direccion direccionFiscal = nuevoProveedor.getDireccionFiscal();
+				if(direccionFiscal == null)
+					direccionFiscal = new Direccion();
+				
+				direccionFiscal.setCuidad(valor);
+				nuevoProveedor.setDireccionFiscal(direccionFiscal);
+			}
+			break;
+		case 7:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				if (valor.contains(".0"))
+					valor = removerPuntoCero(valor);
+				
+				Direccion direccionFiscal = nuevoProveedor.getDireccionFiscal();
+				if(direccionFiscal == null)
+					direccionFiscal = new Direccion();
+				
+				Municipio municipioEntrada = municipioService
+						.getById(Long.valueOf(valor));
+				direccionFiscal.setMunicipio(municipioEntrada);
+				nuevoProveedor.setDireccionFiscal(direccionFiscal);
+			}
+			break;
+		case 8:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()){
+				Direccion direccionFiscal = nuevoProveedor.getDireccionFiscal();
+				if(direccionFiscal == null)
+					direccionFiscal = new Direccion();
+				direccionFiscal.setColonia(valor);
+				nuevoProveedor.setDireccionFiscal(direccionFiscal);
+			}
+			break;
+		case 9:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()){
+				Direccion direccionFiscal = nuevoProveedor.getDireccionFiscal();
+				if(direccionFiscal == null)
+					direccionFiscal = new Direccion();
+				direccionFiscal.setCalle(valor);
+				nuevoProveedor.setDireccionFiscal(direccionFiscal);
+			}
+			break;
+		case 10:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				try {
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					Integer a = Integer.parseInt(valor);
+					valor = String.valueOf(a);
+				} catch (Exception e) {
+					valor = String.valueOf(valorDePropiedad);
+				}
+				
+				Direccion direccionFiscal = nuevoProveedor.getDireccionFiscal();
+				if(direccionFiscal == null)
+					direccionFiscal = new Direccion();
+				direccionFiscal.setNumExt(valor);
+				nuevoProveedor.setDireccionFiscal(direccionFiscal);
+			}
+			break;
+		case 11:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				try {
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					Integer a = Integer.parseInt(valor);
+					valor = String.valueOf(a);
+				} catch (Exception e) {
+					valor = String.valueOf(valorDePropiedad);
+				}
+				
+				Direccion direccionFiscal = nuevoProveedor.getDireccionFiscal();
+				if(direccionFiscal == null)
+					direccionFiscal = new Direccion();
+				direccionFiscal.setNumInt(valor);
+				nuevoProveedor.setDireccionFiscal(direccionFiscal);
+			}
+			break;
+		case 12:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()){
+				Direccion direccionFiscal = nuevoProveedor.getDireccionFiscal();
+				if(direccionFiscal == null)
+					direccionFiscal = new Direccion();
+				direccionFiscal.setCp(valor);
+				nuevoProveedor.setDireccionFiscal(direccionFiscal);
+			}
+			break;
+		case 13:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Contacto contactoEntrada = nuevoProveedor.getContacto();
+				Telefono telefonoEntrada;
+
+				if (contactoEntrada != null) {
+					telefonoEntrada = contactoEntrada.getTelefono();
+					if (telefonoEntrada == null)
+						telefonoEntrada = new Telefono();
+				} else {
+					contactoEntrada = new Contacto();
+					telefonoEntrada = new Telefono();
+				}
+				try {
+					valor = String.valueOf(valorDePropiedad);
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					Integer a = Integer.parseInt(valor);
+					valor = String.valueOf(a);
+				} catch (Exception e) {
+					valor = String.valueOf(valorDePropiedad);
+				}
+				telefonoEntrada.setNumero(valor);
+				contactoEntrada.setTelefono(telefonoEntrada);
+				nuevoProveedor.setContacto(contactoEntrada);
+			}
+			break;
+		case 14:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Contacto contactoEntrada = nuevoProveedor.getContacto();
+				Telefono telefonoEntrada;
+				if (contactoEntrada != null) {
+					telefonoEntrada = contactoEntrada.getTelefono();
+					if (telefonoEntrada == null)
+						telefonoEntrada = new Telefono();
+				} else {
+					contactoEntrada = new Contacto();
+					telefonoEntrada = new Telefono();
+				}
+				try {
+					valor = String.valueOf(valorDePropiedad);
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					Integer a = Integer.parseInt(valor);
+					valor = String.valueOf(a);
+				} catch (Exception e) {
+					valor = String.valueOf(valorDePropiedad);
+				}
+				telefonoEntrada.setFax(valor);
+				contactoEntrada.setTelefono(telefonoEntrada);
+				nuevoProveedor.setContacto(contactoEntrada);
+			}
+			break;
+		case 15:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Contacto contactoEntrada = nuevoProveedor.getContacto();
+				Email emailEntrada;
+				if (contactoEntrada != null) {
+					emailEntrada = contactoEntrada.getEmail();
+					if (emailEntrada == null)
+						emailEntrada = new Email();
+				} else {
+					contactoEntrada = new Contacto();
+					emailEntrada = new Email();
+				}
+				try {
+					valor = String.valueOf(valorDePropiedad);
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					Integer a = Integer.parseInt(valor);
+					valor = String.valueOf(a);
+				} catch (Exception e) {
+					valor = String.valueOf(valorDePropiedad);
+				}
+				emailEntrada.setEmail(valor);
+				contactoEntrada.setEmail(emailEntrada);
+				nuevoProveedor.setContacto(contactoEntrada);
+			}
+			break;
+		case 16:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty())
+				nuevoProveedor.setPaginaWeb(String.valueOf(valorDePropiedad));
+			break;
+		case 17:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Persona personaEntrada = nuevoProveedor.getRepresentanteLegal();
+				if (personaEntrada == null)
+					personaEntrada = new Persona();
+				personaEntrada.setApellidoPaterno(String
+						.valueOf(valorDePropiedad));
+				nuevoProveedor.setRepresentanteLegal(personaEntrada);
+			}
+			break;
+		case 18:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Persona personaEntrada = nuevoProveedor.getRepresentanteLegal();
+				if (personaEntrada == null)
+					personaEntrada = new Persona();
+				personaEntrada.setApellidoMaterno(String
+						.valueOf(valorDePropiedad));
+				nuevoProveedor.setRepresentanteLegal(personaEntrada);
+			}
+			break;
+		case 19:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Persona personaEntrada = nuevoProveedor.getRepresentanteLegal();
+				if (personaEntrada == null)
+					personaEntrada = new Persona();
+				personaEntrada.setNombre(String.valueOf(valorDePropiedad));
+				nuevoProveedor.setRepresentanteLegal(personaEntrada);
+			}
+			break;
+		case 20:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Persona personaEntrada = nuevoProveedor.getRepresentanteLegal();
+				if (personaEntrada == null)
+					personaEntrada = new Persona();
+				personaEntrada.setRfc(String.valueOf(valorDePropiedad));
+				nuevoProveedor.setRepresentanteLegal(personaEntrada);
+			}
+			break;
+		case 21:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Persona personaEntrada = nuevoProveedor.getRepresentanteLegal();
+				if (personaEntrada == null)
+					personaEntrada = new Persona();
+				personaEntrada.setCurp(String.valueOf(valorDePropiedad));
+				nuevoProveedor.setRepresentanteLegal(personaEntrada);
+			}
+			break;
+		case 22:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Persona personaEntrada = nuevoProveedor.getRepresentanteLegal();
+				Contacto contactoContacto;
+				Telefono telefonoContacto;
+				if (personaEntrada != null) {
+					contactoContacto = personaEntrada.getContacto();
+					if (contactoContacto != null) {
+						telefonoContacto = contactoContacto.getTelefono();
+						if (telefonoContacto == null)
+							telefonoContacto = new Telefono();
+					} else {
+						contactoContacto = new Contacto();
+						telefonoContacto = new Telefono();
+					}
+				} else {
+					personaEntrada = new Persona();
+					contactoContacto = new Contacto();
+					telefonoContacto = new Telefono();
+				}
+				try {
+					valor = String.valueOf(valorDePropiedad);
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					Integer a = Integer.parseInt(valor);
+					valor = String.valueOf(a);
+				} catch (Exception e) {
+					valor = String.valueOf(valorDePropiedad);
+				}
+				telefonoContacto.setNumero(valor);
+				contactoContacto.setTelefono(telefonoContacto);
+				personaEntrada.setContacto(contactoContacto);
+				nuevoProveedor.setRepresentanteLegal(personaEntrada);
+			}
+			break;
+		case 23:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Persona personaEntrada = nuevoProveedor.getRepresentanteLegal();
+				Contacto contactoContacto;
+				Email correoContacto;
+				if (personaEntrada != null) {
+					contactoContacto = personaEntrada.getContacto();
+					if (contactoContacto != null) {
+						correoContacto = contactoContacto.getEmail();
+						if (correoContacto == null)
+							correoContacto = new Email();
+					} else {
+						contactoContacto = new Contacto();
+						correoContacto = new Email();
+					}
+				} else {
+					personaEntrada = new Persona();
+					contactoContacto = new Contacto();
+					correoContacto = new Email();
+				}
+				correoContacto.setEmail(String.valueOf(valorDePropiedad));
+				contactoContacto.setEmail(correoContacto);
+				personaEntrada.setContacto(contactoContacto);
+				nuevoProveedor.setRepresentanteLegal(personaEntrada);
+			}
+			break;
+		case 24:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Persona personaEntrada = nuevoProveedor.getRepresentanteLegal();
+				Contacto contactoContacto;
+				Telefono telefonoContacto;
+				if (personaEntrada != null) {
+					contactoContacto = personaEntrada.getContacto();
+					if (contactoContacto != null) {
+						telefonoContacto = contactoContacto.getTelefono();
+						if (telefonoContacto == null)
+							telefonoContacto = new Telefono();
+					} else {
+						contactoContacto = new Contacto();
+						telefonoContacto = new Telefono();
+					}
+				} else {
+					personaEntrada = new Persona();
+					contactoContacto = new Contacto();
+					telefonoContacto = new Telefono();
+				}
+				try {
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					Integer a = Integer.parseInt(valor);
+					valor = String.valueOf(a);
+				} catch (Exception e) {
+					valor = String.valueOf(valorDePropiedad);
+				}
+				telefonoContacto.setCelular(valor);
+				contactoContacto.setTelefono(telefonoContacto);
+				personaEntrada.setContacto(contactoContacto);
+				nuevoProveedor.setRepresentanteLegal(personaEntrada);
+			}
+			break;
+		case 25:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Contrato contratoEntrada = nuevoProveedor.getContrato();
+				if (contratoEntrada == null)
+					contratoEntrada = new Contrato();
+				valor = String.valueOf(valorDePropiedad);
+				String dia = "", mes = "", anyo = "";
+				Integer diaInteger, mesInteger, anyoInteger;
+				int counter = 0;
+				for (int i = 0; i < valor.length(); i++) {
+					String caracter = valor.substring(i, (i + 1));
+					boolean concatenar = true;
+					if (caracter.equals(".")) {
+						concatenar = false;
+						counter++;
+					}
+					switch (counter) {
+					case 0:
+						if (concatenar)
+							dia += caracter;
+						break;
+					case 1:
+						if (concatenar)
+							mes += caracter;
+						break;
+					case 2:
+						if (concatenar)
+							anyo += caracter;
+						break;
+					}
+				}
+				diaInteger = Integer.parseInt(dia);
+				mesInteger = Integer.parseInt(mes);
+				anyoInteger = Integer.parseInt(anyo);
+				contratoEntrada.setFechaVigenciaInicio(stockUtils
+						.convertirStringToCalendar(diaInteger, mesInteger,
+								anyoInteger));
+				nuevoProveedor.setContrato(contratoEntrada);
+			}
+			break;
+		case 26:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				Contrato contratoEntrada = nuevoProveedor.getContrato();
+				if (contratoEntrada == null)
+					contratoEntrada = new Contrato();
+				valor = String.valueOf(valorDePropiedad);
+				String dia = "", mes = "", anyo = "";
+				Integer diaInteger, mesInteger, anyoInteger;
+				int counter = 0;
+				for (int i = 0; i < valor.length(); i++) {
+					String caracter = valor.substring(i, (i + 1));
+					boolean concatenar = true;
+					if (caracter.equals(".")) {
+						concatenar = false;
+						counter++;
+					}
+					switch (counter) {
+					case 0:
+						if (concatenar)
+							dia += caracter;
+						break;
+					case 1:
+						if (concatenar)
+							mes += caracter;
+						break;
+					case 2:
+						if (concatenar)
+							anyo += caracter;
+						break;
+					}
+				}
+				diaInteger = Integer.parseInt(dia);
+				mesInteger = Integer.parseInt(mes);
+				anyoInteger = Integer.parseInt(anyo);
+				contratoEntrada.setFechaVigenciaFin(stockUtils
+						.convertirStringToCalendar(diaInteger, mesInteger,
+								anyoInteger));
+				nuevoProveedor.setContrato(contratoEntrada);
+			}
+			break;
+		case 27: // MONEDA
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				CuentaPago cuentaPagoEntrada = nuevoProveedor.getCuentaPago();
+				if (cuentaPagoEntrada == null)
+					cuentaPagoEntrada = new CuentaPago();
+				try {
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					Integer a = Integer.parseInt(valor);
+					valor = String.valueOf(a);
+				} catch (Exception e) {
+					valor = String.valueOf(valorDePropiedad);
+				}
+				Moneda monedaEntrada = monedaService.getById(Long
+						.valueOf(valor));
+				cuentaPagoEntrada.setMoneda(monedaEntrada);
+				nuevoProveedor.setCuentaPago(cuentaPagoEntrada);
+			}
+			break;
+		case 28:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				CuentaPago cuentaPagoEntrada = nuevoProveedor.getCuentaPago();
+				if (cuentaPagoEntrada == null)
+					cuentaPagoEntrada = new CuentaPago();
+				try {
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					Integer a = Integer.parseInt(valor);
+					valor = String.valueOf(a);
+				} catch (Exception e) {
+					valor = String.valueOf(valorDePropiedad);
+				}
+				Banco bancoEntrada = bancoService.getById(Long.valueOf(valor));
+				cuentaPagoEntrada.setBanco(bancoEntrada);
+				nuevoProveedor.setCuentaPago(cuentaPagoEntrada);
+			}
+			break;
+		case 29:// CUENTA BANCARIA
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty()) {
+				CuentaPago cuentaPagoEntrada = nuevoProveedor.getCuentaPago();
+				if (cuentaPagoEntrada == null)
+					cuentaPagoEntrada = new CuentaPago();
+				try {
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					Integer a = Integer.parseInt(valor);
+					valor = String.valueOf(a);
+				} catch (Exception e) {
+					valor = String.valueOf(valorDePropiedad);
+				}
+				cuentaPagoEntrada.setCuentaBancaria(valor);
+				nuevoProveedor.setCuentaPago(cuentaPagoEntrada);
+			}
+			break;
+		case 30:
+			valor = String.valueOf(valorDePropiedad);
+			if (!valor.equalsIgnoreCase("NULL") && !valor.isEmpty())
+				nuevoProveedor.setComentario(valor);
+			break;
+		}
+
+		return nuevoProveedor;
+	}
+
+	private String removerPuntoCero(String valor) {
+		String salida = "";
+		for (int i = 0; i < valor.length(); i++) {
+			String caracter = valor.substring(i, (i + 1));
+			if (caracter.equals("."))
+				break;
+			else
+				salida += caracter;
+		}
+		return salida;
+	}
 }
