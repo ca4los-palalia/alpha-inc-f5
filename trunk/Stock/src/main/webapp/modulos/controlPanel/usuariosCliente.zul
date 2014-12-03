@@ -32,66 +32,121 @@
 					</row>
 				</rows>
 			</grid>
-
-			<hlayout>
-				<label value="*Nombre" />
-				<textbox zclass="tBox" cols="15"
-					value="@bind(vm.usuarioSeleccionado.persona.nombre)" />
-				<label value="*Apellido Paterno" />
-				<textbox zclass="tBox" cols="25"
-					value="@bind(vm.usuarioSeleccionado.persona.apellidoPaterno)" />
-				<label value="*Apellido Materno" />
-				<textbox zclass="tBox" cols="25"
-					value="@bind(vm.usuarioSeleccionado.persona.apellidoMaterno)" />
-			</hlayout>
-			<hlayout>
-				<label value="*Usuario" />
-				<textbox zclass="tBox" cols="15"
-					value="@bind(vm.usuarioSeleccionado.benutzer)" />
-				<hlayout style="padding-left: 60px">
-					<label value="*Clave " />
-					<textbox zclass="tBox" cols="25" type="password"
-						value="@bind(vm.usuarioSeleccionado.kennwort)" />
-					<hlayout style="padding-left: 59px">
-						<label value="*Email" />
-						<textbox zclass="tBox" cols="25" maxlength="50"
-							value="@bind(vm.usuarioSeleccionado.persona.contacto.email.email)"
-							constraint="/.+@.+\.[a-z]+/: por favor ingrese una dirección de email válida" />
-					</hlayout>
-				</hlayout>
-			</hlayout>
-			<hlayout style="padding-left: 198px">
-				<label value="*Repetir Clave" />
-				<textbox zclass="tBox" cols="25" type="password"
-					value="@bind(vm.usuarioSeleccionado.retypeKennwort)" />
-				<hlayout style="padding-left: 98px">
-					<checkbox label="Requisiciones"
-						checked="@bind(vm.privilegioRequision)"
-						onCheck="@command('addRequisicionPrivilege')"
-						image="/images/toolbar/linedpaperpencil32.png" />
-				</hlayout>
-			</hlayout>
-
-			<hlayout style="padding-left: 567px">
-				<checkbox label="Concentrados"
-					checked="@bind(vm.privilegioConcentrado)"
-					onCheck="@command('addConcentradosPrivilege')"
-					image="/images/toolbar/linedpaperplus32.png" />
-			</hlayout>
-
-			<hlayout style="padding-left: 567px">
-				<checkbox label="Cotizaciones y Autorizaciones"
-					checked="@bind(vm.privilegioCotizacionAutorizacion)"
-					onCheck="@command('addCotizaAutorizaPrivilege')"
-					image="/images/toolbar/notecheck32.png" />
-			</hlayout>
-
-			<hlayout style="padding-left: 567px">
-				<checkbox label="Órdenes de compra"
-					checked="@bind(vm.privilegioOrdenCompra)"
-					onCheck="@command('addOrdenCompraPrivilege')"
-					image="/images/toolbar/shoppingcart32.png" />
-			</hlayout>
+			
+			
+			
+			<groupbox mold="3d">
+				<caption label="Informacion del usuario"
+					image="/images/toolbar/info16.png" />
+				
+				<grid style="border: 0;">
+					<columns>
+						<column width="12%"/>
+						<column/>
+						<column width="12%"/>
+						<column/>
+						<column width="13%"/>
+						<column/>
+					</columns>
+					<rows>
+						<row style="background-color: transparent; border: 0;">
+						
+							<hlayout>
+								<label value="*" style="color:red" />
+								<label value="Nombre" />
+							</hlayout>
+							<textbox zclass="tBox" width="100%" maxlength="50"
+								value="@bind(vm.usuarioSeleccionado.persona.nombre)" />
+							<hlayout>
+								<label value="*" style="color:red" />
+								<label value="Apellido Paterno" />
+							</hlayout>
+							<textbox zclass="tBox" width="100%" maxlength="50"
+								value="@bind(vm.usuarioSeleccionado.persona.apellidoPaterno)" />
+							<hlayout>
+								<label value="*" style="color:red" />
+								<label value="Apellido Materno" />
+							</hlayout>
+							<textbox zclass="tBox" width="100%" maxlength="50"
+								value="@bind(vm.usuarioSeleccionado.persona.apellidoMaterno)" />
+						</row>
+						
+						<row style="background-color: transparent; border: 0;">
+							<hlayout>
+								<label value="*" style="color:red" />
+								<label value="Usuario" />
+							</hlayout>
+							<textbox zclass="tBox" width="100%" maxlength="30"
+								value="@bind(vm.usuarioSeleccionado.benutzer)" />
+							
+							<hlayout>
+								<label value="*" style="color:red" />
+								<label value="Clave " />
+							</hlayout>
+							<textbox zclass="tBox" width="100%" type="password" maxlength="30"
+								value="@bind(vm.usuarioSeleccionado.kennwort)" />
+							
+							<hlayout>
+								<label value="*" style="color:red" />
+								<label value="Repetir Clave" />
+							</hlayout>
+							<textbox zclass="tBox" width="100%" type="password"
+								value="@bind(vm.usuarioSeleccionado.retypeKennwort)" />
+						</row>
+						
+						<row style="background-color: transparent; border: 0;">
+							<hlayout>
+								<label value="*" style="color:red" />
+								<label value="Email" />
+							</hlayout>
+							<textbox zclass="tBox" width="100%" maxlength="50"
+								value="@bind(vm.usuarioSeleccionado.persona.contacto.email.email)"
+								constraint="/.+@.+\.[a-z]+/: por favor ingrese una dirección de email válida" />
+						</row>
+					</rows>
+				</grid>
+			
+			</groupbox>
+			
+			
+			
+			
+			<groupbox mold="3d">
+				<caption label="Permisos para los módulos"
+					image="/images/toolbar/module16.png" />
+					
+					<grid style="border: 0;">
+						<columns>
+							<column width="22%"/>
+							<column width="22%"/>
+							<column/>
+							<column/>
+						</columns>
+						<rows>
+							<row style="background-color: transparent; border: 0;">
+								<checkbox label="Requisiciones"
+									checked="@bind(vm.privilegioRequision)"
+									onCheck="@command('addRequisicionPrivilege')"/>
+									
+								<checkbox label="Concentrados"
+									checked="@bind(vm.privilegioConcentrado)"
+									onCheck="@command('addConcentradosPrivilege')"/>
+									
+								<checkbox label="Cotizaciones y Autorizaciones"
+									checked="@bind(vm.privilegioCotizacionAutorizacion)"
+									onCheck="@command('addCotizaAutorizaPrivilege')"/>
+								
+								<checkbox label="Órdenes de compra"
+									checked="@bind(vm.privilegioOrdenCompra)"
+									onCheck="@command('addOrdenCompraPrivilege')"/>
+							</row>
+							
+						</rows>
+					</grid>
+					
+			</groupbox>
+			
+			
 
 			<listbox model="@load(vm.usuarios)"
 				selectedItem="@bind(vm.usuarioSeleccionado)"

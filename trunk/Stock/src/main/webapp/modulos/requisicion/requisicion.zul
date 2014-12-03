@@ -596,7 +596,19 @@
 						<row
 							style="background-color:transparent; border: 0;">
 							<label value="Contrato" />
-							<combobox width="100%" />
+							<combobox readonly="true"
+								model="@load(rvm.contratos)" width="100%"
+								selectedItem="@bind(rvm.contrato)">
+								<template name="model" var="contratoVar">
+									<comboitem
+										label="@bind(contratoVar.nombre)" />
+								</template>
+							</combobox>
+							
+							
+							
+							
+							
 							<label value="Fecha:" />
 							<datebox readonly="true" format="yyyy/MM/dd"
 								width="100%" value="@bind(rvm.fecha)" buttonVisible="false" />

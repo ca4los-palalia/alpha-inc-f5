@@ -202,7 +202,7 @@
 						<tab label="Información general" />
 						<tab label="Clasificación"
 							image="/images/toolbar/sorting.png" />
-						<tab label="Precios"
+						<tab label="Precios" onSelect="@command('selectTabPrecio')"
 							image="/images/toolbar/priceMarked.png" />
 						<tab label="Últimas compras"
 							image="/images/toolbar/shoppingCart16.png" />
@@ -850,14 +850,14 @@
 						src="/modulos/productos/reportesActualizacionCosto.zul" />
 		</groupbox>
 		<separator />
-		<groupbox mold="3d" open="false">
+		<groupbox mold="3d" open="false" visible="false">
 			<caption label="Actualizar precios"
 				image="/images/toolbar/price16.png" />
 				<include
 						src="/modulos/productos/reportesActualizacionPrecio.zul" />
 		</groupbox>
 		<separator />
-		<groupbox mold="3d" open="false">
+		<groupbox mold="3d" open="false" visible="false">
 			<caption label="Actualización masiva de precios y costos"
 				image="/images/toolbar/priceMarked.png" />
 				<include
