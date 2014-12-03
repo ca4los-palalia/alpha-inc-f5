@@ -28,7 +28,7 @@ public class ContratoDAOImpl extends HibernateDAOSuportUtil implements
 	
 	@Autowired
 	private SessionUtils sessionUtils;
-
+	
 	private Organizacion getOrganizacion(){
 		return (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
 	}
