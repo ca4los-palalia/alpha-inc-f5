@@ -77,6 +77,10 @@
 				<tab label="Unidades de medida"
 					onSelect="@command('selectTabUnidades')"
 					image="/images/toolbar/stationery.png" />
+				
+				<tab label="Layouts"
+					onSelect="@command('selectTabProveedores')"
+					image="/images/toolbar/excel16.png" />
 
 
 			</tabs>
@@ -485,7 +489,14 @@
 						</hlayout>
 					</hlayout>
 				</tabpanel>
-
+				
+				<tabpanel>
+					<button label="LAyout de productos"
+					onClick="@command('openLayoutProducto')"/>
+					<button label="LAyout de productos"
+						onClick="@command('openLayoutProveedores')"/>
+					
+				</tabpanel>
 			</tabpanels>
 
 		</tabbox>

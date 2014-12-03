@@ -10,20 +10,22 @@
 	<session-factory>
 		<!-- Configuration Data -->
 
-
+		
 		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
 		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/stock</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
-		<property name="connection.username">carlos</property>
-		<property name="connection.password">carlos</property>
+		<property name="connection.username">USUARIOSTOCK</property>
+		<property name="connection.password">STOCK2014</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
-
-		<!-- <property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property> 
-			<property name="hibernate.connection.url">jdbc:jtds:sqlserver://184.168.69.15:1433/stock</property> 
-			<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property> 
-			<property name="connection.username">USUARIOSTOCK</property> <property name="connection.password">STOCK2014</property> 
-			<property name="hibernate.hbm2ddl.auto">update</property> -->
-
+		
+		<!--
+		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property> 
+		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://184.168.69.15:1433/stock</property> 
+		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property> 
+		<property name="connection.username">USUARIOSTOCK</property>
+		<property name="connection.password">STOCK2014</property> 
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		-->
 		<!-- END Configuration Data -->
 
 		<!-- Mapping of Classes -->
