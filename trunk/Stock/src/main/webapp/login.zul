@@ -10,7 +10,7 @@
 			</north>
 			<center zclass="contentContainer">
 				<vlayout style="text-align:center">
-					<image src="/images/home/mainLogo.png" />
+					<image src="/images/home/CAMELogo.png" />
 					<textbox id="user" type="text" onOK="@command('authenticateUser')"
 						value="@bind(vm.user)" zclass="textbox" tooltiptext="Usuario" />
 					<textbox id="password" type="password" onOK="@command('authenticateUser')"
@@ -23,9 +23,11 @@
 			<south>
 				<div sclass="bottomContainer">
 					<hlayout sclass="footerLabels">
-						<a
-							label="CPL Systems Software Development Company" href="#" />
-						<a label="Soporte" href="#" />
+						<a  style="color: white;"
+							label="BISHE SOFTWARE Y TECNOLOGÍAS DE INFORMACIÓN, S.A. DE C.V." href="http://legajo-virtual.com" target="_new"/>
+						
+					<label value="| contacto: servicios@legajo-virtual.com" style="color: white;"/>
+					<label value="| Teléfono: 01 (55) 52 50 45 02" style="color: white;"/>
 					</hlayout>
 				</div>
 			</south>

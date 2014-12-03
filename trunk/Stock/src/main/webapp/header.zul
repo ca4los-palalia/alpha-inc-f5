@@ -7,10 +7,8 @@
 			<hlayout style="padding-top:8px">
 				
 				<div sclass="estilo-Nombre-Usuario">
-					<label zclass="tlLabel" value="Hola, "
-					sclass="company" />
-				<label zclass="tlLabel" value="@load(hvm.compania)"
-					sclass="company" />
+					<label zclass="tlLabel" value="@load(hvm.compania)" 
+						sclass="company" />
 				</div>
 				
 			</hlayout>
