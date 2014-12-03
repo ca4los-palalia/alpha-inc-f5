@@ -75,19 +75,23 @@ public class StockConstants {
 	public static final String ARCHIVO_JASPER_REQUISICION_FORMATO = "jasperTemplates/requisicionFormato.jasper";
 	public static final String ARCHIVO_JASPER_COTIZACION_FORMATO = "jasperTemplates/cotizacionFormato.jasper";
 	public static final String ARCHIVO_JASPER_ORDEN_COMPRA_FORMATO = "jasperTemplates/ordenCompraFormato.jasper";
-	public static final String REPORT_PROVEEDOR_NAME_FILE = "C:\\Stock\\Proveedores\\reportProveedores.pdf";
+	public static final String REPORT_PROVEEDOR_NAME_FILE = new SistemaOperativo().getDirectorioDeInicioDelUsuario() + new SistemaOperativo().getSeparadorDeArchivos() + "Stock"  + new SistemaOperativo().getSeparadorDeArchivos() + "Proveedores" + new SistemaOperativo().getSeparadorDeArchivos() + "reportProveedores.pdf";
 	public static final String REPORT_PROVEEDOR_PARAM1 = "parameter1";
 	public static final String REPORT_PROVEEDOR_NOMBRE_EMPRESA = "empresaTitle";
-	public static final String REPORT_VARIABLE_PRODUCTO_NAME_FILE = "C:\\Stock\\Productos\\reportProductos.pdf";
+	public static final String REPORT_VARIABLE_PRODUCTO_NAME_FILE = new SistemaOperativo().getDirectorioDeInicioDelUsuario()  + new SistemaOperativo().getSeparadorDeArchivos() + "Stock"  + new SistemaOperativo().getSeparadorDeArchivos() + "Productos" + new SistemaOperativo().getSeparadorDeArchivos() + "reportProductos.pdf";
 
 	public static final String NOMBRE_TEMPORAL_USUARIO_SYSTEMA = "NOMBRE TEMPORAL DE LA EMPRESA";
 	public static final Object BENUTZER = "BENUTZER";
 	public static final String FIRMA = "FIRMA";
 	
-	public static final String CARPETA_ARCHIVOS_REQUISICIONES = "C:\\Stock\\Requisiciones\\";
-	public static final String CARPETA_ARCHIVOS_COTIZACIONES = "C:\\Stock\\Cotizaciones\\";
-	public static final String CARPETA_ARCHIVOS_ORDEN_COMPRA = "C:\\Stock\\OrdenCompra\\";
-	public static final String CARPETA_ARCHIVOS_LOGOTIPOS = "C://Stock//Logotipos//";
+	public static final String CARPETA_ARCHIVOS_REQUISICIONES = new SistemaOperativo().getDirectorioDeInicioDelUsuario() + new SistemaOperativo().getSeparadorDeArchivos() + "Stock" + new SistemaOperativo().getSeparadorDeArchivos() + "Requisiciones"  + new SistemaOperativo().getSeparadorDeArchivos();
+	public static final String CARPETA_ARCHIVOS_COTIZACIONES = new SistemaOperativo().getDirectorioDeInicioDelUsuario() + new SistemaOperativo().getSeparadorDeArchivos() + "Stock" + new SistemaOperativo().getSeparadorDeArchivos() + "Cotizaciones" + new SistemaOperativo().getSeparadorDeArchivos();
+	public static final String CARPETA_ARCHIVOS_ORDEN_COMPRA = new SistemaOperativo().getDirectorioDeInicioDelUsuario() + new SistemaOperativo().getSeparadorDeArchivos() + "Stock" + new SistemaOperativo().getSeparadorDeArchivos() + "OrdenCompra" + new SistemaOperativo().getSeparadorDeArchivos();
+	public static final String CARPETA_ARCHIVOS_LOGOTIPOS = new SistemaOperativo().getDirectorioDeInicioDelUsuario() + new SistemaOperativo().getSeparadorDeArchivos() + "Stock" + new SistemaOperativo().getSeparadorDeArchivos() + "Logotipos" + new SistemaOperativo().getSeparadorDeArchivos();
+	public static final String CARPETA_ARCHIVOS_PRODUCTOS = new SistemaOperativo().getDirectorioDeInicioDelUsuario() + new SistemaOperativo().getSeparadorDeArchivos() + "Stock" + new SistemaOperativo().getSeparadorDeArchivos() + "Productos" + new SistemaOperativo().getSeparadorDeArchivos();
+	public static final String CARPETA_ARCHIVOS_PROVEEDORES = new SistemaOperativo().getDirectorioDeInicioDelUsuario() + new SistemaOperativo().getSeparadorDeArchivos() + "Stock" + new SistemaOperativo().getSeparadorDeArchivos() + "Proveedores" + new SistemaOperativo().getSeparadorDeArchivos();
+	public static final String CARPETA_ARCHIVOS_USUARIOS = new SistemaOperativo().getDirectorioDeInicioDelUsuario() + new SistemaOperativo().getSeparadorDeArchivos() + "Stock" + new SistemaOperativo().getSeparadorDeArchivos() + "Users" + new SistemaOperativo().getSeparadorDeArchivos();
+	public static final String LAYOUT =  new SistemaOperativo().getDirectorioDeInicioDelUsuario() + new SistemaOperativo().getSeparadorDeArchivos() + "Stock" + new SistemaOperativo().getSeparadorDeArchivos() + "Layout" + new SistemaOperativo().getSeparadorDeArchivos();
 	public static final String EXTENCION_EXCEL = ".xls";
 	public static final String EXTENCION_PDF = ".pdf";
 	public static final String OS_WIN = "WIN";

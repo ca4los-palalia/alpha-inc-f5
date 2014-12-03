@@ -56,9 +56,6 @@ public class ProductosVM extends ProductoMetaClass {
 
 	private Button clasificacionButton;
 	private Button saveButton;
-	
-	
-	
 
 	@Init
 	public void init() {
@@ -99,10 +96,11 @@ public class ProductosVM extends ProductoMetaClass {
 					media.getStreamData());
 
 			File file = new File(filePath + media.getName());
-			
+
 			leerDatosDesdeExcel(filePath + media.getName());
 
-			Messagebox.show("´Se han importado exitosamente productos del " + filePath + media.getName());
+			Messagebox.show("´Se han importado exitosamente productos del "
+					+ filePath + media.getName());
 		}
 		System.err.println("Importar excel");
 	}
@@ -128,7 +126,7 @@ public class ProductosVM extends ProductoMetaClass {
 						if (j < 25) {
 							XSSFCell hssfCell = (XSSFCell) iterator.next();
 							producto = crearProducto(producto, hssfCell, j);
-							//System.err.print(hssfCell + "\t\t\t");
+							// System.err.print(hssfCell + "\t\t\t");
 						} else
 							break;
 						j++;
@@ -138,12 +136,12 @@ public class ProductosVM extends ProductoMetaClass {
 				i++;
 			}
 			File borrarArchivo = new File(fileName);
-			if (borrarArchivo.delete()){
+			if (borrarArchivo.delete()) {
 				goProgress("Guardando nuevos productos al sistema", 80);
 				for (Producto item : productoNuevosExcel) {
-					//productoService.save(item);
+					// productoService.save(item);
 				}
-				
+
 				goProgress("Terminado", 100);
 			}
 
@@ -313,13 +311,14 @@ public class ProductosVM extends ProductoMetaClass {
 		}
 		return salida;
 	}
-	
+
 	@Command
 	@NotifyChange("*")
-	private void goProgress(String mensaje, Integer value){
+	private void goProgress(String mensaje, Integer value) {
 		progressValueLabel = mensaje;
 		progressValue = value;
 	}
+
 	@Command
 	@NotifyChange("imagenProducto")
 	public void generarBar() {
@@ -523,7 +522,6 @@ public class ProductosVM extends ProductoMetaClass {
 		}
 	}
 
-	
 	@SuppressWarnings("static-access")
 	@NotifyChange("*")
 	@Command
@@ -578,9 +576,10 @@ public class ProductosVM extends ProductoMetaClass {
 					mensaje = "productos";
 
 				if (buscarProducto.getNombre().equals("*"))
-					stockUtils.showSuccessmessage(
-							"Tu búsqueda obtuvo todos los proveedores",
-							Clients.NOTIFICATION_TYPE_INFO, 0, null);
+					stockUtils.showSuccessmessage("Tu búsqueda -"
+							+ buscarProducto.getNombre()
+							+ "- no obtuvo ningún resultado",
+							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 				else
 					stockUtils.showSuccessmessage("Tu búsqueda -"
 							+ buscarProducto.getNombre() + "- obtuvo "
@@ -1108,6 +1107,13 @@ public class ProductosVM extends ProductoMetaClass {
 			}
 		}
 
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void selectTabPrecio() {
+		/*monedasDB = new ArrayList<Moneda>();
+		monedasDB = monedaService.getAll();*/
 	}
 
 }

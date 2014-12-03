@@ -306,10 +306,6 @@ public class concentradoVM extends RequisicionVariables {
 									item.getProveedor(),
 									item.getProducto());
 
-					System.err.println(item.getRequisicion().getFolio() + "\t"
-							+ item.getProducto().getClave() + "\t\t"
-							+ item.getProveedor().getNombre());
-
 					if (verificarCotizacion == null) {
 						EstatusRequisicion estado = estatusRequisicionService
 								.getByClave(StockConstants.ESTADO_COTIZACION_NUEVA);
