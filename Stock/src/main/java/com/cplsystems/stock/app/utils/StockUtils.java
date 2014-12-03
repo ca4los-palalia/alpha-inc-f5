@@ -115,7 +115,7 @@ public class StockUtils {
 		calendar.set(Calendar.DATE, dia);
 		return calendar;
 	}
-
+	
 	/* Encryption Method */
 	public static String encrypt(String message) {
 		try {

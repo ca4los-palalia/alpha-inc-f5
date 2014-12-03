@@ -122,6 +122,8 @@ public class DataLayer implements Serializable {
 	protected FileOutputStream fileOutputStream;
 	
 	protected String readJasper;
+	protected String readLayoutProductos;
+	protected String readLayoutProveedores;
 	protected JasperPrint print;
 	protected JasperViewer jviewer;
 	protected AImage imagenProducto;

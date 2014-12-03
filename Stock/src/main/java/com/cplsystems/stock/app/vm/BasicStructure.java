@@ -70,6 +70,7 @@ public abstract class BasicStructure extends ServiceLayer {
 			} else {
 			}
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			closePdf(url);
 		}
 	}

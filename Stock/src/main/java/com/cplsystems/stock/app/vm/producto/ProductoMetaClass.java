@@ -299,7 +299,6 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public String detectarEliminacionDeProducto(Producto producto) {
 		String mensaje = "";

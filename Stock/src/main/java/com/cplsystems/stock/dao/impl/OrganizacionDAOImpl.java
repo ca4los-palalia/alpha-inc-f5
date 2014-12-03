@@ -75,7 +75,8 @@ public class OrganizacionDAOImpl extends HibernateDAOSuportUtil implements
 		return getHibernateTemplate().find("FROM Organizacion as o");
 	}
 
-	@Override
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public Organizacion getById(Long idOrganizacion) {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
 				createCriteria(Organizacion.class);

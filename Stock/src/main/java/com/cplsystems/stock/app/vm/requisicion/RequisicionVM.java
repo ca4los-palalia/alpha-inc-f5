@@ -59,7 +59,8 @@ public class RequisicionVM extends RequisicionMetaClass {
 	public void init() {
 		super.init();
 		areaBuscar = new Area();
-
+		contratos = contratoService.getAll();
+		
 		if (requisicion == null)
 			requisicion = new Requisicion();
 
