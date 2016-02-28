@@ -15,7 +15,7 @@
 		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/stock</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
 		<property name="connection.username">USUARIOSTOCK</property>
-		<property name="connection.password">STOCK2014</property>
+		<property name="connection.password">5t0ck</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		
 		<!--
