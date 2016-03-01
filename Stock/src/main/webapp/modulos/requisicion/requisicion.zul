@@ -41,174 +41,219 @@
 					</row>
 				</rows>
 			</grid>
-			
-			<groupbox mold="3d" open="false">
-				<caption label="Bandeja de requisiciones"
-					image="/images/toolbar/mailColor16.png" />
 
 
-				<listbox model="@load(rvm.requisicionesInbox)"
-					selectedItem="@bind(rvm.requisicionInboxSeleccionada)"
-					emptyMessage="No hay requisiciones" mold="paging" pageSize="6"
-					height="100%">
-					<listhead>
-						<listheader align="center" width="5%"
-							style="font-size:smaller;" />
-						<listheader label="Folio" align="center"
-							width="7%" style="font-size:smaller;" />
-						<listheader label="Adscripción" align="center"
-							width="25%" style="font-size:smaller;" />
-						<listheader label="Área" align="center"
-							style="font-size:smaller;" />
-						<listheader label="Comentarios" align="center"
-							width="20%" style="font-size:smaller;" />
-						<listheader label="Estado" align="center"
-							width="23%" style="font-size:smaller;" />
-					</listhead>
-					<template name="model" var="requisicion">
-						<listitem>
-							<listcell style="font-size:smaller;"
-								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
-								<image src="@load(requisicion.icono)" />
-							</listcell>
-							<listcell style="font-size:smaller;"
-								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-								label="${requisicion.requisicion.folio}" />
-							<listcell style="font-size:smaller;"
-								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-								label="${requisicion.requisicion.adscripcion}" />
-							<listcell style="font-size:smaller;"
-								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-								label="${requisicion.requisicion.area.nombre}" />
-							<listcell style="font-size:smaller;"
-								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-								label="${requisicion.comentarios}" />
-							<listcell
-								onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
-								<hlayout>
-									<button disabled="true"
-										style="${requisicion.requisicion.estatusRequisicion.color}" />
-									<label style="font-size:smaller;"
-										value="${requisicion.requisicion.estatusRequisicion.nombre}" />
-								</hlayout>
-							</listcell>
-						</listitem>
-					</template>
-				</listbox>
-			</groupbox>
+			<panel title="Splitter" border="normal" width="100%">
+				<panelchildren>
+					<hbox spacing="0" width="100%" height="100%">
+						<vbox spacing="0" width="100%"
+							heights="100%,100%">
 
+							<groupbox mold="3d" open="true"
+								visible="true">
+								<caption label="Buscar"
+									image="/images/toolbar/find16x16.png" />
+								<grid style="border: 0;">
+									<columns>
+										<column />
+										<column />
+										<column />
+										<column />
+									</columns>
+									<rows>
+										<row
+											style="background-color: transparent; border: 0;">
+											<checkbox
+												onCheck="@command('checkNueva')" label="Nueva" width="100%" />
+											<checkbox
+												onCheck="@command('checkCancelada')" label="Cancelada"
+												width="100%" />
+											<checkbox
+												onCheck="@command('checkAceptada')" label="Aceptada"
+												width="100%" />
 
+											<hlayout>
+												<label
+													value="Area(UR): " />
+												<combobox
+													readonly="true" model="@load(rvm.areas)" width="100%"
+													selectedItem="@bind(rvm.areaBuscar)">
+													<template
+														name="model" var="area">
+														<comboitem
+															width="100%" label="@bind(area.nombre)" />
+													</template>
+												</combobox>
+											</hlayout>
+										</row>
+									</rows>
+								</grid>
+								<grid style="border: 0;">
+									<columns>
+										<column />
+										<column width="8%" />
+									</columns>
+									<rows>
+										<row
+											style="background-color:transparent; border: 0;">
+											<textbox
+												onOK="@command('buscadorRequisicion')"
+												value="@bind(rvm.requisicion.buscarRequisicion)"
+												width="100%" />
 
+											<hlayout
+												style="text-align:center">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			<groupbox mold="3d" open="false">
-				<caption label="Buscar"
-					image="/images/toolbar/find16x16.png" />
-				<grid style="border: 0;">
-					<columns>
-						<column />
-						<column />
-						<column />
-						<column />
-					</columns>
-					<rows>
-						<row
-							style="background-color: transparent; border: 0;">
-							<checkbox onCheck="@command('checkNueva')"
-								label="Nueva" width="100%" />
-							<checkbox
-								onCheck="@command('checkCancelada')" label="Cancelada"
-								width="100%" />
-							<checkbox
-								onCheck="@command('checkAceptada')" label="Aceptada"
-								width="100%" />
-
-							<hlayout>
-								<label value="Area(UR): " />
-								<combobox readonly="true"
-									model="@load(rvm.areas)" width="100%"
-									selectedItem="@bind(rvm.areaBuscar)">
-									<template name="model" var="area">
-										<comboitem width="100%"
-											label="@bind(area.nombre)" />
+												<button
+													image="/images/toolbar/find16x16.png" zclass="find_button"
+													onClick="@command('buscadorRequisicion')"
+													tooltiptext="Buscar" />
+											</hlayout>
+										</row>
+									</rows>
+								</grid>
+								<listbox
+									model="@load(rvm.requisiciones)"
+									onSelect="@command('selectedResultadoRequisiciones')"
+									selectedItem="@bind(rvm.requisicion)" rows="3"
+									emptyMessage="resultados de requisiciones vacia">
+									<listhead>
+										<listheader label="Clave"
+											width="15%" />
+										<listheader label="Área" />
+										<listheader width="10%"
+											align="center" />
+									</listhead>
+									<template name="model"
+										var="requisicionVar">
+										<listitem>
+											<listcell>
+												<label
+													value="@bind(requisicionVar.folio)" width="100%" />
+											</listcell>
+											<listcell>
+												<label
+													value="@bind(requisicionVar.area.nombre)" width="100%" />
+											</listcell>
+											<listcell>
+												<button
+													tooltiptext="@bind(requisicionVar.estatusRequisicion.nombre)"
+													style="@bind(requisicionVar.estatusRequisicion.color)" />
+											</listcell>
+										</listitem>
 									</template>
-								</combobox>
-							</hlayout>
-						</row>
-					</rows>
-				</grid>
-				<grid style="border: 0;">
-					<columns>
-						<column />
-						<column width="8%" />
-					</columns>
-					<rows>
-						<row
-							style="background-color:transparent; border: 0;">
-							<textbox
-								onOK="@command('buscadorRequisicion')"
-								value="@bind(rvm.requisicion.buscarRequisicion)" width="100%" />
+								</listbox>
+							</groupbox>
 
-							<hlayout style="text-align:center">
 
-								<button
-									image="/images/toolbar/find16x16.png" zclass="find_button"
-									onClick="@command('buscadorRequisicion')" tooltiptext="Buscar" />
-							</hlayout>
-						</row>
-					</rows>
-				</grid>
-				<listbox model="@load(rvm.requisiciones)"
-					onSelect="@command('selectedResultadoRequisiciones')"
-					selectedItem="@bind(rvm.requisicion)" rows="3"
-					emptyMessage="resultados de requisiciones vacia">
-					<listhead>
-						<listheader label="Clave" width="15%"/>
-						<listheader label="Área" />
-						<listheader width="10%" align="center" />
-					</listhead>
-					<template name="model" var="requisicionVar">
-						<listitem>
-							<listcell>
-								<label
-									value="@bind(requisicionVar.folio)" width="100%" />
-							</listcell>
-							<listcell>
-								<label
-									value="@bind(requisicionVar.area.nombre)" width="100%" />
-							</listcell>
-							<listcell>
-								<button
-									tooltiptext="@bind(requisicionVar.estatusRequisicion.nombre)"
-									style="@bind(requisicionVar.estatusRequisicion.color)" />
-							</listcell>
-						</listitem>
-					</template>
-				</listbox>
-			</groupbox>
-			
-			<groupbox mold="3d" open="false">
+							<splitter id="s1" collapse="before" />
+
+							<groupbox mold="3d">
+								<caption
+									label="Bandeja de requisiciones"
+									image="/images/toolbar/mailColor16.png" />
+
+
+								<listbox
+									model="@load(rvm.requisicionesInbox)"
+									selectedItem="@bind(rvm.requisicionInboxSeleccionada)"
+									emptyMessage="No hay requisiciones" mold="paging" pageSize="6"
+									height="100%">
+									<listhead>
+										<listheader align="center"
+											width="5%" style="font-size:smaller;" />
+										<listheader label="Folio"
+											align="center" width="7%" style="font-size:smaller;" />
+										<listheader label="Adscripción"
+											align="center" width="25%" style="font-size:smaller;" />
+										<listheader label="Área"
+											align="center" style="font-size:smaller;" />
+										<listheader label="Comentarios"
+											align="center" width="20%" style="font-size:smaller;" />
+										<listheader label="Estado"
+											align="center" width="23%" style="font-size:smaller;" />
+									</listhead>
+									<template name="model"
+										var="requisicion">
+										<listitem>
+											<listcell
+												style="font-size:smaller;"
+												onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
+												<image
+													src="@load(requisicion.icono)" />
+											</listcell>
+											<listcell
+												style="font-size:smaller;"
+												onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+												label="${requisicion.requisicion.folio}" />
+											<listcell
+												style="font-size:smaller;"
+												onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+												label="${requisicion.requisicion.adscripcion}" />
+											<listcell
+												style="font-size:smaller;"
+												onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+												label="${requisicion.requisicion.area.nombre}" />
+											<listcell
+												style="font-size:smaller;"
+												onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+												label="${requisicion.comentarios}" />
+											<listcell
+												onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
+												<hlayout>
+													<button
+														disabled="true"
+														style="${requisicion.requisicion.estatusRequisicion.color}" />
+													<label
+														style="font-size:smaller;"
+														value="${requisicion.requisicion.estatusRequisicion.nombre}" />
+												</hlayout>
+											</listcell>
+										</listitem>
+									</template>
+								</listbox>
+							</groupbox>
+						</vbox>
+						<splitter id="s2" collapse="before" />
+						Column 2: Whether a splitter allows users to
+						open or collapse depending on the collapse
+						attribute.
+					</hbox>
+				</panelchildren>
+			</panel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<groupbox mold="3d" open="false" visible="false">
 				<caption label="Información de la requisición"
-					image="/images/toolbar/info16.png"  />
+					image="/images/toolbar/info16.png" />
 
 				<grid style="border: 0;">
 					<columns>
@@ -337,7 +382,7 @@
 									sclass="invoiceLabel" />
 							</hlayout>
 							<textbox sclass="invoiceTextBox tBox"
-								width="100%" maxlength="40"
+								width="100%" maxlength="40" disabled="true"
 								value="@bind(rvm.requisicion.persona.nombre)" />
 
 							<hlayout>
@@ -346,7 +391,7 @@
 									sclass="invoiceLabel" />
 							</hlayout>
 							<textbox sclass="invoiceTextBox tBox"
-								width="100%" maxlength="40"
+								width="100%" maxlength="40" disabled="true"
 								value="@bind(rvm.requisicion.persona.apellidoPaterno)" />
 
 							<hlayout>
@@ -355,7 +400,7 @@
 									sclass="invoiceLabel" />
 							</hlayout>
 							<textbox sclass="invoiceTextBox tBox"
-								width="100%" maxlength="40"
+								width="100%" maxlength="40" disabled="true"
 								value="@bind(rvm.requisicion.persona.apellidoMaterno)" />
 						</row>
 					</rows>
@@ -599,16 +644,17 @@
 							<combobox readonly="true"
 								model="@load(rvm.contratos)" width="100%"
 								selectedItem="@bind(rvm.contrato)">
-								<template name="model" var="contratoVar">
+								<template name="model"
+									var="contratoVar">
 									<comboitem
 										label="@bind(contratoVar.nombre)" />
 								</template>
 							</combobox>
-							
-							
-							
-							
-							
+
+
+
+
+
 							<label value="Fecha:" />
 							<datebox readonly="true" format="yyyy/MM/dd"
 								width="100%" value="@bind(rvm.fecha)" buttonVisible="false" />
@@ -617,8 +663,17 @@
 						<row
 							style="background-color:transparent; border: 0;">
 							<label value="Proveedor Núm:" />
-							<longbox width="100%"
-								sclass="invoiceTextBox tBox" />
+							<combobox readonly="true"
+								model="@load(rvm.proveedoresLista)" width="100%"
+								selectedItem="@bind(rvm.proveedorSelected)">
+								<template name="model"
+									var="proveedorVar">
+									<comboitem width="100%"
+										label="@bind(proveedorVar.nombre)" />
+								</template>
+							</combobox>
+
+
 							<label value="Nombre:" />
 							<textbox width="100%"
 								sclass="invoiceTextBox tBox" />
@@ -637,6 +692,7 @@
 				</grid>
 			</groupbox>
 		</vlayout>
+
 
 	</window>
 </zk>
