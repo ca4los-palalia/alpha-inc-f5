@@ -1,10 +1,6 @@
-/**
- * 
- */
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,16 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Entity
 @Table
 public class ModulosOrganizacion implements Serializable {
-
 	private static final long serialVersionUID = 5251584456310433341L;
-
 	private Long idModulosOrganizacion;
 	private Organizacion organizacion;
 	private Modulos modulos;
@@ -33,7 +23,7 @@ public class ModulosOrganizacion implements Serializable {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdModulosOrganizacion() {
-		return idModulosOrganizacion;
+		return this.idModulosOrganizacion;
 	}
 
 	public void setIdModulosOrganizacion(Long idModulosOrganizacion) {
@@ -43,7 +33,7 @@ public class ModulosOrganizacion implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organizacion")
 	public Organizacion getOrganizacion() {
-		return organizacion;
+		return this.organizacion;
 	}
 
 	public void setOrganizacion(Organizacion organizacion) {
@@ -53,11 +43,10 @@ public class ModulosOrganizacion implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "modulos")
 	public Modulos getModulos() {
-		return modulos;
+		return this.modulos;
 	}
 
 	public void setModulos(Modulos modulos) {
 		this.modulos = modulos;
 	}
-
 }

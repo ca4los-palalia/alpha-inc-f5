@@ -1,11 +1,5 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
-import java.util.List;
-
-import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
@@ -14,39 +8,34 @@ import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface RequisicionProductoDAO {
+	public abstract void save(RequisicionProducto paramRequisicionProducto);
 
-public interface RequisicionProductoDAO {
+	public abstract void delete(RequisicionProducto paramRequisicionProducto);
 
-	public void save(RequisicionProducto requisicionProducto);
+	public abstract RequisicionProducto getById(Long paramLong);
 
-	public void delete(RequisicionProducto requisicionProducto);
+	public abstract List<RequisicionProducto> getByProducto(Producto paramProducto);
 
-	public RequisicionProducto getById(Long idRequisicionProducto);
+	public abstract List<RequisicionProducto> getByRequisicion(Requisicion paramRequisicion);
 
-	public List<RequisicionProducto> getByProducto(Producto producto);
+	public abstract List<RequisicionProducto> getRequisicionesConEstadoEspecifico(
+			EstatusRequisicion paramEstatusRequisicion);
 
-	public List<RequisicionProducto> getByRequisicion(Requisicion requisicion);
+	public abstract List<RequisicionProducto> getByProveedor(Proveedor paramProveedor);
 
-	public List<RequisicionProducto> getRequisicionesConEstadoEspecifico(
-			EstatusRequisicion estatusRequisicion);
-	
-	public List<RequisicionProducto> getByProveedor(Proveedor proveedor);
+	public abstract List<RequisicionProducto> getByLugar(Lugar paramLugar);
 
-	public List<RequisicionProducto> getByLugar(Lugar lugar);
+	public abstract List<RequisicionProducto> getAll();
 
-	public List<RequisicionProducto> getAll();
+	public abstract List<RequisicionProducto> getAllRequisiciones();
 
-	public List<RequisicionProducto> getAllRequisiciones();
+	public abstract List<Proveedor> getAllDistinctByProveedor();
 
-	public List<Proveedor> getAllDistinctByProveedor();
+	public abstract List<RequisicionProducto> getByConfiaPartidaGenerica(
+			CofiaPartidaGenerica paramCofiaPartidaGenerica);
 
-	public List<RequisicionProducto> getByConfiaPartidaGenerica(
-			CofiaPartidaGenerica cofiaPartidaGenerica);
-
-	public List<RequisicionProducto> getByCotizacion(Cotizacion cotizacion);
-
+	public abstract List<RequisicionProducto> getByCotizacion(Cotizacion paramCotizacion);
 }

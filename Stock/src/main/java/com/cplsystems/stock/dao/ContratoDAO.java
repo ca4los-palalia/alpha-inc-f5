@@ -1,20 +1,14 @@
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Contrato;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Contrato;
+public abstract interface ContratoDAO {
+	public abstract void save(Contrato paramContrato);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void delete(Contrato paramContrato);
 
-public interface ContratoDAO {
+	public abstract Contrato getById(Long paramLong);
 
-	public void save(Contrato contrato);
-
-	public void delete(Contrato contrato);
-
-	public Contrato getById(Long idContrato);
-
-	public List<Contrato> getAll();
+	public abstract List<Contrato> getAll();
 }

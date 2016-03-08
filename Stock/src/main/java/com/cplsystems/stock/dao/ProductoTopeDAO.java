@@ -1,30 +1,20 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Lugar;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.ProductoTope;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface ProductoTopeDAO {
+	public abstract void save(ProductoTope paramProductoTope);
 
-public interface ProductoTopeDAO {
+	public abstract void delete(ProductoTope paramProductoTope);
 
-	public void save(ProductoTope productoTope);
+	public abstract ProductoTope getById(Long paramLong);
 
-	public void delete(ProductoTope productoTope);
+	public abstract List<ProductoTope> getAll();
 
-	public ProductoTope getById(Long idProductoTope);
+	public abstract List<ProductoTope> getByProducto(Producto paramProducto);
 
-	public List<ProductoTope> getAll();
-
-	public List<ProductoTope> getByProducto(Producto producto);
-
-	public List<ProductoTope> getByLugar(Lugar lugar);
-
+	public abstract List<ProductoTope> getByLugar(Lugar paramLugar);
 }

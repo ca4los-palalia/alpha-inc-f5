@@ -1,24 +1,20 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.ProductoTipo;
 import java.util.List;
 
-import com.cplsystems.stock.domain.ProductoTipo;
+public abstract interface ProductoTipoDAO {
+	public abstract void saveOrUpdate(ProductoTipo paramProductoTipo);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void save(ProductoTipo paramProductoTipo);
 
-public interface ProductoTipoDAO {
+	public abstract void update(ProductoTipo paramProductoTipo);
 
-	public void saveOrUpdate(final ProductoTipo productoTipo);
-	public void save(final ProductoTipo productoTipo);
-	public void update(final ProductoTipo productoTipo);
-	public void delete(final ProductoTipo productoTipo);
-	public ProductoTipo getById(final Long idProductoTipo);
-	public List<ProductoTipo> getAll();
-	public ProductoTipo getByNombre(final String nombre);
+	public abstract void delete(ProductoTipo paramProductoTipo);
 
+	public abstract ProductoTipo getById(Long paramLong);
+
+	public abstract List<ProductoTipo> getAll();
+
+	public abstract ProductoTipo getByNombre(String paramString);
 }

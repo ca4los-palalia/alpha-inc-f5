@@ -1,8 +1,11 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.ordencompra.utils;
 
+import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
+import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.OrdenCompra;
+import com.cplsystems.stock.services.EstatusRequisicionService;
+import com.cplsystems.stock.services.OrdenCompraService;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -13,76 +16,52 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Window;
 
-import java.util.Calendar;
-
-import com.cplsystems.stock.app.utils.StockConstants;
-import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
-import com.cplsystems.stock.domain.EstatusRequisicion;
-import com.cplsystems.stock.domain.OrdenCompra;
-import com.cplsystems.stock.domain.OrdenCompraInbox;
-
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 public class CancelarOrdenCompraVM extends RequisicionVariables {
-
 	private static final long serialVersionUID = 2584088569805199520L;
 	public static final String REQUISICION_GLOBALCOMMAND_NAME_FOR_UPDATE = "updateCommandFromItemFinder";
-
 	@Wire("#modalDialog")
 	private Window win;
 
 	@Init
-	public void init(@ContextParam(ContextType.VIEW) Component view,
-			@ExecutionArgParam("orden") OrdenCompra ct) {
+	public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam("orden") OrdenCompra ct) {
 		super.init();
-		if (ordenCompra == null)
-			ordenCompra = new OrdenCompra();
-		ordenCompra = ct;
+		if (this.ordenCompra == null) {
+			this.ordenCompra = new OrdenCompra();
+		}
+		this.ordenCompra = ct;
 	}
 
 	@AfterCompose
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
 		Selectors.wireComponents(view, this, false);
 	}
-	
-	@SuppressWarnings("static-access")
+
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void save() {
-		if (ordenCompra != null
-				&& (ordenCompra.getCancelarDescripcion() != null && !ordenCompra
-						.getCancelarDescripcion().isEmpty())) {
+		if ((this.ordenCompra != null) && (this.ordenCompra.getCancelarDescripcion() != null)
+				&& (!this.ordenCompra.getCancelarDescripcion().isEmpty())) {
 			try {
-				EstatusRequisicion estado = estatusRequisicionService
-						.getByClave(StockConstants.ESTADO_ORDEN_COMPRA_CANCELADA);
-				ordenCompra.setEstatusRequisicion(estado);
-				ordenCompraService.save(ordenCompra);
-				
-				/*OrdenCompraInbox inbox = new OrdenCompraInbox();
-				inbox.setFechaCreacion(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
-				inbox.setOrdenCompra(ordenCompra);
-				inbox.setLeido(false);
-				ordenCompraInboxService.save(inbox);*/
-				win.detach();
+				EstatusRequisicion estado = this.estatusRequisicionService.getByClave("OCC");
 
+				this.ordenCompra.setEstatusRequisicion(estado);
+				this.ordenCompraService.save(this.ordenCompra);
+
+				this.win.detach();
 			} catch (Exception e) {
-				// TODO: handle exception
 			}
-
-		} else
-			stockUtils.showSuccessmessage(
-					"Por favor ingrese el motivo de cancelación",
-					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+		} else {
+			StockUtils.showSuccessmessage("Por favor ingrese el motivo de cancelaci�n", "warning", Integer.valueOf(0),
+					null);
+		}
 	}
 
 	@Command
-	public void discart(){
-		if(win != null)
-			win.detach();
+	public void discart() {
+		if (this.win != null) {
+			this.win.detach();
+		}
 	}
 }

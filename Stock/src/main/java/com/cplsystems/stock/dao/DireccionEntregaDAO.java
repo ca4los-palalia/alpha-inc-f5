@@ -1,26 +1,17 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.DireccionEntrega;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface DireccionEntregaDAO {
+	public abstract void save(DireccionEntrega paramDireccionEntrega);
 
-public interface DireccionEntregaDAO {
+	public abstract void delete(DireccionEntrega paramDireccionEntrega);
 
-	public void save(DireccionEntrega direccion);
+	public abstract DireccionEntrega getById(Long paramLong);
 
-	public void delete(DireccionEntrega direccion);
+	public abstract List<DireccionEntrega> getByDireccion(Direccion paramDireccion);
 
-	public DireccionEntrega getById(Long direccion);
-
-	public List<DireccionEntrega> getByDireccion(Direccion direccion);
-
-	public List<DireccionEntrega> getAll();
+	public abstract List<DireccionEntrega> getAll();
 }

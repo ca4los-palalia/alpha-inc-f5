@@ -1,51 +1,42 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Contrato;
 import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Proveedor;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface ProveedorDAO {
+	public abstract void save(Proveedor paramProveedor);
 
-public interface ProveedorDAO {
+	public abstract void update(Proveedor paramProveedor);
 
-	public void save(Proveedor proveedor);
-	
-	public void update(Proveedor proveedor);
+	public abstract void delete(Proveedor paramProveedor);
 
-	public void delete(Proveedor proveedor);
+	public abstract Proveedor getById(Long paramLong);
 
-	public Proveedor getById(Long idProveedor);
-	
-	public List<Proveedor> getProveedoresById(List<Long> idsProveedores);
-	
-	public List<Proveedor> getByContacto(Contacto contacto);
+	public abstract List<Proveedor> getProveedoresById(List<Long> paramList);
 
-	public List<Proveedor> getByContrato(Contrato contrato);
+	public abstract List<Proveedor> getByContacto(Contacto paramContacto);
 
-	public List<Proveedor> getByDireccionDevolucion(Direccion direccion);
+	public abstract List<Proveedor> getByContrato(Contrato paramContrato);
 
-	public List<Proveedor> getByDireccionFiscal(Direccion direccion);
+	public abstract List<Proveedor> getByDireccionDevolucion(Direccion paramDireccion);
 
-	public List<Proveedor> getByGerenteFinanzas(Persona persona);
+	public abstract List<Proveedor> getByDireccionFiscal(Direccion paramDireccion);
 
-	public List<Proveedor> getByGerenteVentas(Persona persona);
+	public abstract List<Proveedor> getByGerenteFinanzas(Persona paramPersona);
 
-	public List<Proveedor> getByRepresentanteLegal(Persona persona);
+	public abstract List<Proveedor> getByGerenteVentas(Persona paramPersona);
 
-	public List<Proveedor> getByRepresentanteClientes(Persona persona);
+	public abstract List<Proveedor> getByRepresentanteLegal(Persona paramPersona);
 
-	public List<Proveedor> getAll();
-	
-	public List<Proveedor> getBysClaveNombreRfc(String buscarTexto);
-	
-	public List<Proveedor> getByNombre(String nombre);
+	public abstract List<Proveedor> getByRepresentanteClientes(Persona paramPersona);
+
+	public abstract List<Proveedor> getAll();
+
+	public abstract List<Proveedor> getBysClaveNombreRfc(String paramString);
+
+	public abstract List<Proveedor> getByNombre(String paramString);
 }

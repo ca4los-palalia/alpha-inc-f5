@@ -1,23 +1,14 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Destino;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Destino;
+public abstract interface DestinoDAO {
+	public abstract void save(Destino paramDestino);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract Destino getById(Long paramLong);
 
-public interface DestinoDAO {
+	public abstract Destino getByNombre(String paramString);
 
-	public void save(Destino destino);
-
-	public Destino getById(Long idDestino);
-
-	public Destino getByNombre(String lugar);
-
-	public List<Destino> getAll();
+	public abstract List<Destino> getAll();
 }

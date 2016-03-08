@@ -1,7 +1,5 @@
 package com.cplsystems.stock.domain;
 
-
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,43 +11,39 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table (name = "lugar")
-
+@Table(name = "lugar")
 public class Lugar {
-	
 	private Long idLugar;
 	private String nombre;
 	private Proyecto proyecto;
-	
+
 	@Id
-	@Column (name = "idLugar", nullable = false)
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@Column(name = "idLugar", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdLugar() {
-		return idLugar;
+		return this.idLugar;
 	}
-	
+
 	public void setIdLugar(Long idLugar) {
 		this.idLugar = idLugar;
 	}
-	@Column (name = "nombre", length =250)
+
+	@Column(name = "nombre", length = 250)
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
-	
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	
-	@ManyToOne (fetch = FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proyecto")
 	public Proyecto getProyecto() {
-		return proyecto;
+		return this.proyecto;
 	}
 
 	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
 	}
-		
 }
-

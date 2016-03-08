@@ -1,22 +1,17 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Estado;
+import com.cplsystems.stock.domain.Municipio;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Municipio;
+public abstract interface MunicipioDAO {
+	public abstract void save(Municipio paramMunicipio);
 
-/**
- * @author Carlos Palalía López
- */
-public interface MunicipioDAO {
+	public abstract void delete(Municipio paramMunicipio);
 
-	public void save(Municipio estado);
+	public abstract Municipio getById(Long paramLong);
 
-	public void delete(Municipio estado);
+	public abstract List<Municipio> getAll();
 
-	public Municipio getById(Long idMunicipio);
-
-	public List<Municipio> getAll();
+	public abstract List<Municipio> getByEstado(Estado paramEstado);
 }

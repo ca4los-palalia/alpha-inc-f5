@@ -1,0 +1,64 @@
+<?page title="Home" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/styles/home/styleHome.css" />
+	
+		
+	<window apply="org.zkoss.bind.BindComposer"
+		id="bandejaInboxModalDialog" position="center,center" closable="true"
+		viewModel="@id('bvm') @init('com.cplsystems.stock.app.utils.BandejaVM')">
+
+		<groupbox mold="3d" open="true">
+			<caption label="Bandeja de cotizaciones"
+				image="/images/toolbar/mailColor16.png" />
+			<listbox model="@load(bvm.cotizacionesInbox)"
+				selectedItem="@bind(bvm.cotizacionInboxSeleccionada)"
+				emptyMessage="No hay cotizaciones" mold="paging" pageSize="6"
+				height="100%">
+				<listhead>
+					<listheader align="center" width="5%"
+						style="font-size:smaller;" />
+					<listheader label="Folio" align="center" width="7%"
+						style="font-size:smaller;" />
+					<listheader label="Comentarios" align="center"
+						width="30%" style="font-size:smaller;" />
+					<listheader label="Proveedor" align="center"
+						width="25%" style="font-size:smaller;" />
+					<listheader label="Total" align="center"
+						style="font-size:smaller;" />
+					<listheader label="Estado" align="center"
+						width="23%" style="font-size:smaller;" />
+				</listhead>
+				<template name="model" var="cotizacion">
+					<listitem>
+						<listcell style="font-size:smaller;"
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)">
+							<image src="@load(cotizacion.icono)" />
+						</listcell>
+						<listcell style="font-size:smaller;"
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+							label="${cotizacion.cotizacion.requisicion.folio}" />
+						<listcell style="font-size:smaller;"
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+							label="${cotizacion.comentarios}" />
+						<listcell style="font-size:smaller;"
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+							label="${cotizacion.cotizacion.proveedor.nombre}" />
+						<listcell style="font-size:smaller;"
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+							label="${cotizacion.cotizacion.total}" />
+						<listcell
+							onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)">
+							<hlayout>
+								<button disabled="true"
+									style="${cotizacion.cotizacion.estatusRequisicion.color}" />
+								<label style="font-size:smaller;"
+									value="${cotizacion.cotizacion.estatusRequisicion.nombre}" />
+							</hlayout>
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+		</groupbox>
+
+	</window>
+</zk>

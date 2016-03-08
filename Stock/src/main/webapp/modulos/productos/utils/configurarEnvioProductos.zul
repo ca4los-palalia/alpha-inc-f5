@@ -1,0 +1,104 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+	<window apply="org.zkoss.bind.BindComposer"
+		id="envioModalDialog"
+		title="Configuracion de envio de mercancias" border="normal"
+		viewModel="@id('cpv') @init('com.cplsystems.stock.app.vm.requisicion.ConfigurarEnvioProductosVM')"
+		width="70%" height="70%" position="center,center"
+		closable="true">
+		
+			
+			
+			<listbox model="@load(cpv.cotizacionesConProductos)" 
+				emptyMessage="No hay productos para esta cotización">
+				<listhead>
+					<listheader label="No" width="5%" visible="false" />
+					<listheader label="Clave" width="10%"
+						sort="auto(producto.clave)" />
+					<listheader label="Producto"
+						sort="auto(proveedor.nombre)" />
+					<listheader label="Partida generica" width="20%"
+						sort="auto(requisicionProducto.cofiaPartidaGenerica.nombre)" />
+
+					<listheader label="Cantidad" width="10%"
+						sort="auto(cantidad)" />
+					<listheader label="U/M" width="10%"
+						sort="auto(producto.unidad.nombre)" />
+					<listheader label="Precio U." width="10%"
+						sort="auto(producto.precio)" />
+					<listheader label="Total." width="10%"
+						sort="auto(requisicionProducto.totalProductoPorUnidad)" />
+					<listheader label="Enviar a"/>
+				</listhead>
+				
+				<template name="model">
+					<listitem>
+						<listcell>
+							<label style="font-size:smaller;"
+								value="${forEachStatus.index + 1}" />
+						</listcell>
+
+						<listcell>
+							<label style="font-size:smaller;"
+								value="@bind(each.producto.clave)" />
+						</listcell>
+						<listcell>
+							<label value="@bind(each.producto.nombre)"
+								style="font-size:smaller;" />
+						</listcell>
+						<listcell>
+							<label
+								value="@bind(each.requisicionProducto.cofiaPartidaGenerica.nombre)"
+								style="font-size:smaller;" />
+						</listcell>
+						<listcell>
+							<label
+								value="@bind(each.requisicionProducto.cantidad)"
+								style="font-size:smaller;" />
+						</listcell>
+						<listcell>
+							<label
+								value="@bind(each.producto.unidad.nombre)"
+								style="font-size:smaller;" />
+						</listcell>
+						<listcell>
+							<doublebox
+								style="font-size:smaller; border:0px" width="100%"
+								readonly="true" format="###,###,###.00"
+								value="@bind(each.producto.precio)" />
+
+						</listcell>
+						<listcell>
+							<doublebox
+								style="font-size:smaller; border:0px" width="100%"
+								readonly="true" format="###,###,###"
+								value="@bind(each.requisicionProducto.totalProductoPorUnidad)" />
+
+						</listcell>
+						<listcell>
+							<hlayout>
+								<label
+									value="@bind(each.requisicion.area.nombre)"
+									style="font-size:smaller;" />
+									
+			                    <combobox 
+									model="@load(each.requisicion.area.almacen)" readonly="true"
+									width="100%"
+									selectedItem="@bind(each.almacen)">
+									<template
+										name="model" var="almacen">
+										<comboitem width="100%"
+											label="@bind(almacen.nombre)" />
+									</template>
+								</combobox>
+							
+							</hlayout>
+						</listcell>
+
+					</listitem>
+				</template>
+			</listbox>
+			
+	</window>
+</zk>

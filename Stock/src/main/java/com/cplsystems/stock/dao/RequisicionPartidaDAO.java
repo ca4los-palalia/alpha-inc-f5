@@ -1,27 +1,20 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Partida;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionPartida;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
-public interface RequisicionPartidaDAO {
-	public void save(RequisicionPartida requisicionPartida);
+public abstract interface RequisicionPartidaDAO {
+	public abstract void save(RequisicionPartida paramRequisicionPartida);
 
-	public void delete(RequisicionPartida requisicionPartida);
+	public abstract void delete(RequisicionPartida paramRequisicionPartida);
 
-	public RequisicionPartida getById(Long idRequisicionPartida);
+	public abstract RequisicionPartida getById(Long paramLong);
 
-	public List<RequisicionPartida> getByPartida(Partida partida);
+	public abstract List<RequisicionPartida> getByPartida(Partida paramPartida);
 
-	public List<RequisicionPartida> getByRequisicion(Requisicion requisicion);
+	public abstract List<RequisicionPartida> getByRequisicion(Requisicion paramRequisicion);
 
-	public List<RequisicionPartida> getAll();
+	public abstract List<RequisicionPartida> getAll();
 }

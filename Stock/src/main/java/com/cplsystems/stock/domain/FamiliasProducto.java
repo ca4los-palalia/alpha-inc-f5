@@ -1,7 +1,6 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +14,6 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class FamiliasProducto implements Serializable {
-
 	private static final long serialVersionUID = -7955290534021913746L;
 	private Long idFamiliasProducto;
 	private ProductoTipo productoTipo;
@@ -25,7 +23,7 @@ public class FamiliasProducto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	public Long getIdFamiliasProducto() {
-		return idFamiliasProducto;
+		return this.idFamiliasProducto;
 	}
 
 	public void setIdFamiliasProducto(Long idFamiliasProducto) {
@@ -35,7 +33,7 @@ public class FamiliasProducto implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "productoTipo")
 	public ProductoTipo getProductoTipo() {
-		return productoTipo;
+		return this.productoTipo;
 	}
 
 	public void setProductoTipo(ProductoTipo productoTipo) {
@@ -45,11 +43,10 @@ public class FamiliasProducto implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
-		return producto;
+		return this.producto;
 	}
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
-
 }

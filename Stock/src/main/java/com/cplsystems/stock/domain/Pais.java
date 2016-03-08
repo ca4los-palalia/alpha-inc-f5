@@ -8,19 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name= "pais")
+@Table(name = "pais")
 public class Pais {
-
 	private Long idPais;
 	private String nombre;
 	private String abreviatura;
 
-	
 	@Id
 	@Column(name = "idPais", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdPais() {
-		return idPais;
+		return this.idPais;
 	}
 
 	public void setIdPais(Long idPais) {
@@ -29,7 +27,7 @@ public class Pais {
 
 	@Column
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
@@ -38,13 +36,10 @@ public class Pais {
 
 	@Column
 	public String getAbreviatura() {
-		return abreviatura;
+		return this.abreviatura;
 	}
 
 	public void setAbreviatura(String abreviatura) {
 		this.abreviatura = abreviatura;
 	}
-
-	
-	
 }

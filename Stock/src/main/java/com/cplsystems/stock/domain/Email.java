@@ -1,7 +1,6 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +11,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "email")
 public class Email implements Serializable {
-
 	private static final long serialVersionUID = -3514567107156038610L;
 	private Long idEmails;
 	private String contacto;
@@ -23,7 +21,7 @@ public class Email implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idEmails", nullable = false)
 	public Long getIdEmails() {
-		return idEmails;
+		return this.idEmails;
 	}
 
 	public void setIdEmails(Long idEmails) {
@@ -32,7 +30,7 @@ public class Email implements Serializable {
 
 	@Column
 	public String getContacto() {
-		return contacto;
+		return this.contacto;
 	}
 
 	public void setContacto(String contacto) {
@@ -41,7 +39,7 @@ public class Email implements Serializable {
 
 	@Column
 	public String getTipo() {
-		return tipo;
+		return this.tipo;
 	}
 
 	public void setTipo(String tipo) {
@@ -50,11 +48,10 @@ public class Email implements Serializable {
 
 	@Column
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 }

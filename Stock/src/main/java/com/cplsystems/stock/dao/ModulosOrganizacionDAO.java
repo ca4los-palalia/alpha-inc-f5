@@ -1,23 +1,13 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.ModulosOrganizacion;
 import com.cplsystems.stock.domain.Organizacion;
+import java.util.List;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-public interface ModulosOrganizacionDAO {
+public abstract interface ModulosOrganizacionDAO {
+	public abstract void delete(ModulosOrganizacion paramModulosOrganizacion);
 
-	void delete(ModulosOrganizacion modulosOrganizacion);
+	public abstract List<ModulosOrganizacion> getModulosByOrganizacion(Organizacion paramOrganizacion);
 
-	List<ModulosOrganizacion> getModulosByOrganizacion(Organizacion organizacion);
-
-	void save(ModulosOrganizacion modulosOrganizacion);
-
+	public abstract void save(ModulosOrganizacion paramModulosOrganizacion);
 }

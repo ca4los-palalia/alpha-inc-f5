@@ -1,7 +1,6 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,16 +14,13 @@ import javax.persistence.Transient;
 @Entity
 @Table
 public class Moneda implements Serializable {
-
 	private static final long serialVersionUID = -7164588155326780268L;
-
 	private Long idMoneda;
 	private String nombre;
 	private String simbolo;
 	private String toolTipIndice;
 	private String toolTipNombre;
 	private boolean nuevoRegistro;
-	
 	private Organizacion organizacion;
 	private Usuarios usuario;
 	private String fechaActualizacion;
@@ -33,7 +29,7 @@ public class Moneda implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	public Long getIdMoneda() {
-		return idMoneda;
+		return this.idMoneda;
 	}
 
 	public void setIdMoneda(Long idMoneda) {
@@ -42,7 +38,7 @@ public class Moneda implements Serializable {
 
 	@Column
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
@@ -51,7 +47,7 @@ public class Moneda implements Serializable {
 
 	@Column
 	public String getSimbolo() {
-		return simbolo;
+		return this.simbolo;
 	}
 
 	public void setSimbolo(String simbolo) {
@@ -60,7 +56,7 @@ public class Moneda implements Serializable {
 
 	@Transient
 	public String getToolTipIndice() {
-		return toolTipIndice;
+		return this.toolTipIndice;
 	}
 
 	public void setToolTipIndice(String toolTipIndice) {
@@ -69,7 +65,7 @@ public class Moneda implements Serializable {
 
 	@Transient
 	public String getToolTipNombre() {
-		return toolTipNombre;
+		return this.toolTipNombre;
 	}
 
 	public void setToolTipNombre(String toolTipNombre) {
@@ -78,37 +74,39 @@ public class Moneda implements Serializable {
 
 	@Transient
 	public boolean isNuevoRegistro() {
-		return nuevoRegistro;
+		return this.nuevoRegistro;
 	}
 
 	public void setNuevoRegistro(boolean nuevoRegistro) {
 		this.nuevoRegistro = nuevoRegistro;
 	}
-	
+
 	@OneToOne
 	@JoinColumn(name = "organizacion")
 	public Organizacion getOrganizacion() {
-		return organizacion;
+		return this.organizacion;
 	}
+
 	public void setOrganizacion(Organizacion organizacion) {
 		this.organizacion = organizacion;
 	}
-	
+
 	@OneToOne
 	@JoinColumn(name = "usuario")
 	public Usuarios getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
+
 	public void setUsuario(Usuarios usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	@Column
 	public String getFechaActualizacion() {
-		return fechaActualizacion;
+		return this.fechaActualizacion;
 	}
+
 	public void setFechaActualizacion(String fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
 	}
-
 }

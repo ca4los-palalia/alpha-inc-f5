@@ -7,14 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- *
- */
 @Entity
 @Table(name = "Telefono")
 public class Telefono {
-
 	private Long idTelefono;
 	private String extension;
 	private String numero;
@@ -26,7 +21,7 @@ public class Telefono {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idTelefono", nullable = false)
 	public Long getIdTelefono() {
-		return idTelefono;
+		return this.idTelefono;
 	}
 
 	public void setIdTelefono(Long idTelefono) {
@@ -35,7 +30,7 @@ public class Telefono {
 
 	@Column
 	public String getExtension() {
-		return extension;
+		return this.extension;
 	}
 
 	public void setExtension(String extension) {
@@ -44,7 +39,7 @@ public class Telefono {
 
 	@Column
 	public String getNumero() {
-		return numero;
+		return this.numero;
 	}
 
 	public void setNumero(String numero) {
@@ -53,15 +48,16 @@ public class Telefono {
 
 	@Column
 	public String getTipo() {
-		return tipo;
+		return this.tipo;
 	}
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
 	@Column
 	public String getFax() {
-		return fax;
+		return this.fax;
 	}
 
 	public void setFax(String fax) {
@@ -70,10 +66,10 @@ public class Telefono {
 
 	@Column
 	public String getCelular() {
-		return celular;
+		return this.celular;
 	}
+
 	public void setCelular(String celular) {
 		this.celular = celular;
 	}
-	
 }

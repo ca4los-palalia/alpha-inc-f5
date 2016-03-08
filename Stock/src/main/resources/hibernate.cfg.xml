@@ -10,27 +10,28 @@
 	<session-factory>
 		<!-- Configuration Data -->
 
-		
 		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
 		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/stock</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
 		<property name="connection.username">USUARIOSTOCK</property>
 		<property name="connection.password">5t0ck</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
-		
-		<!--
+
+<!--		
 		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property> 
-		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://184.168.69.15:1433/stock</property> 
+		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/stock;instance=SISTEMAS</property> 
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property> 
 		<property name="connection.username">USUARIOSTOCK</property>
-		<property name="connection.password">STOCK2014</property> 
+		<property name="connection.password">STOCK2014</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
-		-->
+  -->		
 		<!-- END Configuration Data -->
 
 		<!-- Mapping of Classes -->
+		<mapping class="com.cplsystems.stock.domain.Almacen" />
 		<mapping class="com.cplsystems.stock.domain.Area" />
 		<mapping class="com.cplsystems.stock.domain.Banco" />
+		<mapping class="com.cplsystems.stock.domain.ClaveArmonizada" />
 		<mapping class="com.cplsystems.stock.domain.CodigoBarrasProducto" />
 		<mapping class="com.cplsystems.stock.domain.CofiaFuenteFinanciamiento" />
 		<mapping class="com.cplsystems.stock.domain.CofiaPartidaGenerica" />
@@ -40,6 +41,7 @@
 		<mapping class="com.cplsystems.stock.domain.Contrato" />
 		<mapping class="com.cplsystems.stock.domain.CostosProducto" />
 		<mapping class="com.cplsystems.stock.domain.Cotizacion" />
+		<mapping class="com.cplsystems.stock.domain.CotizacionEnvios" />
 		<mapping class="com.cplsystems.stock.domain.CotizacionInbox" />
 		<mapping class="com.cplsystems.stock.domain.CotizacionProducto" />
 		<mapping class="com.cplsystems.stock.domain.CuentaPago" />
@@ -80,6 +82,7 @@
 		<mapping class="com.cplsystems.stock.domain.Telefono" />
 		<mapping class="com.cplsystems.stock.domain.Unidad" />
 		<mapping class="com.cplsystems.stock.domain.Usuarios" />
+
 	</session-factory>
 
 </hibernate-configuration>

@@ -1,44 +1,32 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
-import com.cplsystems.stock.domain.RequisicionProducto;
+import java.util.List;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- *
- */
-public interface RequisicionDAO {
+public abstract interface RequisicionDAO {
+	public abstract void save(Requisicion paramRequisicion);
 
-	public void save(final Requisicion requisicion);
-	
-	public void update (final Requisicion requisicion);
-	
-	public void delete (final Requisicion requisicion);
-	
-	public Requisicion getById(final Long idRequisicion);
-	
-	public Requisicion getByPersona(final Persona persona);
-	
-	public String getUltimoFolio();
-	
-	public List<Requisicion> getAll();
-	
-	public List<Requisicion> getByEstatusRequisicion(EstatusRequisicion estatusRequisicion);
-	
-	public Requisicion getByFolio(String folio);
-	
-	public List<Requisicion> getByUnidadResponsable(Area area);
-	
-	public List<Requisicion> getRequisicionesConListaDeEstatusFolioArea(
-			List<EstatusRequisicion> estatusRequisiciones, String folio,
-			Area area);
+	public abstract void update(Requisicion paramRequisicion);
 
+	public abstract void delete(Requisicion paramRequisicion);
+
+	public abstract Requisicion getById(Long paramLong);
+
+	public abstract Requisicion getByPersona(Persona paramPersona);
+
+	public abstract String getUltimoFolio();
+
+	public abstract List<Requisicion> getAll();
+
+	public abstract List<Requisicion> getByEstatusRequisicion(EstatusRequisicion paramEstatusRequisicion);
+
+	public abstract Requisicion getByFolio(String paramString);
+
+	public abstract List<Requisicion> getByUnidadResponsable(Area paramArea);
+
+	public abstract List<Requisicion> getRequisicionesConListaDeEstatusFolioArea(List<EstatusRequisicion> paramList,
+			String paramString, Area paramArea);
 }

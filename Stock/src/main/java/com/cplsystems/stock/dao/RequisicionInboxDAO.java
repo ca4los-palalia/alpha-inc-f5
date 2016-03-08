@@ -1,25 +1,15 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.RequisicionInbox;
+import java.util.List;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-public interface RequisicionInboxDAO {
+public abstract interface RequisicionInboxDAO {
+	public abstract void save(RequisicionInbox paramRequisicionInbox);
 
-	void save(RequisicionInbox requisicionInbox);
+	public abstract void delete(RequisicionInbox paramRequisicionInbox);
 
-	void delete(RequisicionInbox requisicionInbox);
+	public abstract List<RequisicionInbox> getAllNews(Organizacion paramOrganizacion);
 
-	List<RequisicionInbox> getAllNews(final Organizacion organizacion);
-
-	List<RequisicionInbox> getAll(final Organizacion organizacion);
-
+	public abstract List<RequisicionInbox> getAll(Organizacion paramOrganizacion);
 }

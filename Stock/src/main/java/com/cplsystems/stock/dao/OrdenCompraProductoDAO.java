@@ -1,29 +1,20 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.OrdenCompra;
 import com.cplsystems.stock.domain.OrdenCompraProducto;
 import com.cplsystems.stock.domain.Producto;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
-public interface OrdenCompraProductoDAO {
+public abstract interface OrdenCompraProductoDAO {
+	public abstract void save(OrdenCompraProducto paramOrdenCompraProducto);
 
-	public void save(OrdenCompraProducto ordenCompraProducto);
+	public abstract void delete(OrdenCompraProducto paramOrdenCompraProducto);
 
-	public void delete(OrdenCompraProducto ordenCompraProducto);
+	public abstract OrdenCompraProducto getById(Long paramLong);
 
-	public OrdenCompraProducto getById(Long idOrdenCompraProducto);
+	public abstract List<OrdenCompraProducto> getAll();
 
-	public List<OrdenCompraProducto> getAll();
+	public abstract List<OrdenCompraProducto> getByOrdenCopra(OrdenCompra paramOrdenCompra);
 
-	public List<OrdenCompraProducto> getByOrdenCopra(OrdenCompra ordenCompra);
-
-	public List<OrdenCompraProducto> getByProducto(Producto producto);
-
+	public abstract List<OrdenCompraProducto> getByProducto(Producto paramProducto);
 }

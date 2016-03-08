@@ -1,10 +1,7 @@
-/**
- * 
- */
 package com.cplsystems.stock.domain;
 
+import com.cplsystems.stock.app.utils.UserPrivileges;
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,32 +13,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import org.zkoss.bind.annotation.Command;
 
-import com.cplsystems.stock.app.utils.StockConstants;
-import com.cplsystems.stock.app.utils.UserPrivileges;
-
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Entity
 @Table
 public class Privilegios implements Serializable {
-
 	private static final long serialVersionUID = -1186727205643806890L;
-
 	public static final String RQ_ICON = "/images/toolbar/linedpaperpencil32.png";
 	public static final String CN_ICON = "/images/toolbar/linedpaperplus32.png";
 	public static final String CTAT_ICON = "/images/toolbar/notecheck32.png";
 	public static final String OC_ICON = "/images/toolbar/shoppingcart32.png";
-
-	public static final String REQUISION = StockConstants.GLOBAL_PAGES.REQUISICION;
-	public static final String CONCENTRADO = StockConstants.GLOBAL_PAGES.CONCENTRADO;
-	public static final String COTIZACION_AUTORIZACION = StockConstants.GLOBAL_PAGES.COTIZACION;
-	public static final String ORDEN_COMPRA = StockConstants.GLOBAL_PAGES.ORDERS;
-
+	public static final String REQUISION = "/modulos/requisicion/requisicion.zul";
+	public static final String CONCENTRADO = "/modulos/requisicion/concentrado.zul";
+	public static final String COTIZACION_AUTORIZACION = "/modulos/requisicion/cotizacion.zul";
+	public static final String ORDEN_COMPRA = "/modulos/ordenCompra/ordenCompra.zul";
 	private Long idPrivilegio;
 	private UserPrivileges userPrivileges;
 	private String icono;
@@ -52,7 +37,7 @@ public class Privilegios implements Serializable {
 	@Column
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getIdPrivilegio() {
-		return idPrivilegio;
+		return this.idPrivilegio;
 	}
 
 	public void setIdPrivilegio(Long idPrivilegio) {
@@ -62,7 +47,7 @@ public class Privilegios implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column
 	public UserPrivileges getUserPrivileges() {
-		return userPrivileges;
+		return this.userPrivileges;
 	}
 
 	public void setUserPrivileges(UserPrivileges userPrivileges) {
@@ -71,7 +56,7 @@ public class Privilegios implements Serializable {
 
 	@Column
 	public String getIcono() {
-		return icono;
+		return this.icono;
 	}
 
 	public void setIcono(String icono) {
@@ -81,7 +66,7 @@ public class Privilegios implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario")
 	public Usuarios getUsuarios() {
-		return usuarios;
+		return this.usuarios;
 	}
 
 	public void setUsuarios(Usuarios usuarios) {
@@ -90,11 +75,10 @@ public class Privilegios implements Serializable {
 
 	@Command
 	public String getPathLocationModule() {
-		return pathLocationModule;
+		return this.pathLocationModule;
 	}
 
 	public void setPathLocationModule(String pathLocationModule) {
 		this.pathLocationModule = pathLocationModule;
 	}
-
 }

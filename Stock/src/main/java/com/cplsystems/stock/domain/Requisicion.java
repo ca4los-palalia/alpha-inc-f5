@@ -1,7 +1,6 @@
 package com.cplsystems.stock.domain;
 
 import java.util.Calendar;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +14,6 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "Requsicion")
 public class Requisicion {
-
 	private Long idRequisicion;
 	private String emailAlmacenista;
 	private String clave;
@@ -26,8 +24,8 @@ public class Requisicion {
 	private String emailPersonaRevisoRequisicion;
 	private String emailPersonaSolicitante;
 	private Area area;
-	private Posicion posicion; // Puesto
-	private Persona persona;// Solicitante
+	private Posicion posicion;
+	private Persona persona;
 	private String adscripcion;
 	private String justificacion;
 	private CofiaProg cofiaProg;
@@ -36,17 +34,15 @@ public class Requisicion {
 	private Long numeroInventario;
 	private String folio;
 	private EstatusRequisicion estatusRequisicion;
-
 	private Organizacion organizacion;
 	private Usuarios usuario;
-	
 	private String buscarRequisicion;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idRequisicion", nullable = false)
 	public Long getIdRequisicion() {
-		return idRequisicion;
+		return this.idRequisicion;
 	}
 
 	public void setIdRequisicion(Long idRequisicion) {
@@ -55,7 +51,7 @@ public class Requisicion {
 
 	@Column(name = "emailAlmacenista", length = 250)
 	public String getEmailAlmacenista() {
-		return emailAlmacenista;
+		return this.emailAlmacenista;
 	}
 
 	public void setEmailAlmacenista(String emailAlmacenista) {
@@ -64,7 +60,7 @@ public class Requisicion {
 
 	@Column(name = "clave", length = 250)
 	public String getClave() {
-		return clave;
+		return this.clave;
 	}
 
 	public void setClave(String clave) {
@@ -73,7 +69,7 @@ public class Requisicion {
 
 	@Column(name = "fecha", length = 250)
 	public Calendar getFecha() {
-		return fecha;
+		return this.fecha;
 	}
 
 	public void setFecha(Calendar fecha) {
@@ -82,7 +78,7 @@ public class Requisicion {
 
 	@Column(name = "fecha_entrega", length = 250)
 	public Calendar getFechaEntrega() {
-		return fechaEntrega;
+		return this.fechaEntrega;
 	}
 
 	public void setFechaEntrega(Calendar fechaEntrega) {
@@ -91,7 +87,7 @@ public class Requisicion {
 
 	@Column(name = "fecha_solicitud_proveedor", length = 250)
 	public Calendar getFechaSolicitudProveedor() {
-		return fechaSolicitudProveedor;
+		return this.fechaSolicitudProveedor;
 	}
 
 	public void setFechaSolicitudProveedor(Calendar fechaSolicitudProveedor) {
@@ -100,17 +96,16 @@ public class Requisicion {
 
 	@Column(name = "email_Personal_Resio_Requisicion", length = 250)
 	public String getEmailPersonaRevisoRequisicion() {
-		return emailPersonaRevisoRequisicion;
+		return this.emailPersonaRevisoRequisicion;
 	}
 
-	public void setEmailPersonaRevisoRequisicion(
-			String emailPersonaRevisoRequisicion) {
+	public void setEmailPersonaRevisoRequisicion(String emailPersonaRevisoRequisicion) {
 		this.emailPersonaRevisoRequisicion = emailPersonaRevisoRequisicion;
 	}
 
 	@Column(name = "email_Personal_Solicitante", length = 250)
 	public String getEmailPersonaSolicitante() {
-		return emailPersonaSolicitante;
+		return this.emailPersonaSolicitante;
 	}
 
 	public void setEmailPersonaSolicitante(String emailPersonaSolicitante) {
@@ -120,7 +115,7 @@ public class Requisicion {
 	@OneToOne
 	@JoinColumn(name = "proyecto")
 	public Proyecto getProyecto() {
-		return proyecto;
+		return this.proyecto;
 	}
 
 	public void setProyecto(Proyecto proyecto) {
@@ -130,32 +125,26 @@ public class Requisicion {
 	@OneToOne
 	@JoinColumn(name = "area")
 	public Area getArea() {
-		return area;
+		return this.area;
 	}
 
 	public void setArea(Area area) {
 		this.area = area;
 	}
 
-	/**
-	 * Puesto del solicitante
-	 * **/
 	@OneToOne
 	@JoinColumn(name = "posicion")
 	public Posicion getPosicion() {
-		return posicion;
+		return this.posicion;
 	}
 
-	/**
-	 * Puesto del solicitante
-	 * **/
 	public void setPosicion(Posicion posicion) {
 		this.posicion = posicion;
 	}
 
 	@Column
 	public String getAdscripcion() {
-		return adscripcion;
+		return this.adscripcion;
 	}
 
 	public void setAdscripcion(String adscripcion) {
@@ -164,7 +153,7 @@ public class Requisicion {
 
 	@Column
 	public String getJustificacion() {
-		return justificacion;
+		return this.justificacion;
 	}
 
 	public void setJustificacion(String justificacion) {
@@ -173,32 +162,26 @@ public class Requisicion {
 
 	@Column
 	public Long getNumeroInventario() {
-		return numeroInventario;
+		return this.numeroInventario;
 	}
 
 	public void setNumeroInventario(Long numeroInventario) {
 		this.numeroInventario = numeroInventario;
 	}
 
-	/**
-	 * persona solicitante
-	 * **/
 	@OneToOne
 	@JoinColumn(name = "persona")
 	public Persona getPersona() {
-		return persona;
+		return this.persona;
 	}
 
-	/**
-	 * persona solicitante
-	 * **/
 	public void setPersona(Persona persona) {
 		this.persona = persona;
 	}
 
 	@Column
 	public String getFolio() {
-		return folio;
+		return this.folio;
 	}
 
 	public void setFolio(String folio) {
@@ -208,7 +191,7 @@ public class Requisicion {
 	@OneToOne
 	@JoinColumn(name = "cofiaProg")
 	public CofiaProg getCofiaProg() {
-		return cofiaProg;
+		return this.cofiaProg;
 	}
 
 	public void setCofiaProg(CofiaProg cofiaProg) {
@@ -218,7 +201,7 @@ public class Requisicion {
 	@OneToOne
 	@JoinColumn(name = "cofiaPy")
 	public CofiaPy getCofiaPy() {
-		return cofiaPy;
+		return this.cofiaPy;
 	}
 
 	public void setCofiaPy(CofiaPy cofiaPy) {
@@ -228,18 +211,17 @@ public class Requisicion {
 	@OneToOne
 	@JoinColumn(name = "cofiaFuenteFinanciamiento")
 	public CofiaFuenteFinanciamiento getCofiaFuenteFinanciamiento() {
-		return cofiaFuenteFinanciamiento;
+		return this.cofiaFuenteFinanciamiento;
 	}
 
-	public void setCofiaFuenteFinanciamiento(
-			CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento) {
+	public void setCofiaFuenteFinanciamiento(CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento) {
 		this.cofiaFuenteFinanciamiento = cofiaFuenteFinanciamiento;
 	}
 
 	@OneToOne
 	@JoinColumn(name = "estatusRequisicion")
 	public EstatusRequisicion getEstatusRequisicion() {
-		return estatusRequisicion;
+		return this.estatusRequisicion;
 	}
 
 	public void setEstatusRequisicion(EstatusRequisicion estatusRequisicion) {
@@ -248,7 +230,7 @@ public class Requisicion {
 
 	@Transient
 	public String getBuscarRequisicion() {
-		return buscarRequisicion;
+		return this.buscarRequisicion;
 	}
 
 	public void setBuscarRequisicion(String buscarRequisicion) {
@@ -258,7 +240,7 @@ public class Requisicion {
 	@OneToOne
 	@JoinColumn(name = "organizacion")
 	public Organizacion getOrganizacion() {
-		return organizacion;
+		return this.organizacion;
 	}
 
 	public void setOrganizacion(Organizacion organizacion) {
@@ -268,7 +250,7 @@ public class Requisicion {
 	@OneToOne
 	@JoinColumn(name = "usuario")
 	public Usuarios getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
 
 	public void setUsuario(Usuarios usuario) {

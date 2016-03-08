@@ -1,30 +1,20 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.reportes;
 
+import com.cplsystems.stock.services.ProveedorService;
 import java.net.URL;
 import java.util.Collection;
-
 import org.zkoss.bind.annotation.Init;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- *
- */
-public abstract class ReporteMetaClass extends ReporteVariables{
-
+public abstract class ReporteMetaClass extends ReporteVariables {
 	private static final long serialVersionUID = -2648381799748071319L;
 
 	@Init
-	public void init(){
-		
+	public void init() {
 	}
-	
-	@SuppressWarnings("rawtypes")
+
 	public Collection findReportData() {
-		proveedoresLista = proveedorService.getAll();
-		return proveedoresLista;
+		this.proveedoresLista = this.proveedorService.getAll();
+		return this.proveedoresLista;
 	}
 
 	public String generarUrlString(String phat) {

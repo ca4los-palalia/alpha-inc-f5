@@ -1,43 +1,32 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Producto;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Producto;
-import com.cplsystems.stock.domain.ProductoTipo;
+public abstract interface ProductoDAO {
+	public abstract void save(Producto paramProducto);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void delete(Producto paramProducto);
 
-public interface ProductoDAO {
+	public abstract Producto getById(Long paramLong);
 
-	public void save(Producto producto);
+	public abstract List<Producto> getAll();
 
-	public void delete(Producto producto);
+	public abstract List<Producto> getItemByKeyOrName(String paramString1, String paramString2);
 
-	public Producto getById(Long idProducto);
+	public abstract List<String> getAllKeys();
 
-	public List<Producto> getAll();
+	public abstract List<Producto> getByClaveNombre(String paramString);
 
-	public List<Producto> getItemByKeyOrName(String claveProducto,
-			String nombreProducto);
+	public abstract Producto getByClaveNombrePrecioCosto(String paramString);
 
-	public List<String> getAllKeys();
-	
-	public List<Producto> getByClaveNombre(String buscarTexto);
-	
-	public Producto getByClaveNombrePrecioCosto(String buscarTexto);
-	
-	public List<Producto> getPreciosMaximos();
-	
-	public List<Producto> getPreciosMinimos();
-	
-	public List<Producto> getPreciosPromedio();
-	
-	public List<Producto> getByPrecio(String precio);
-	
-	public Producto getByClave(String clave);
+	public abstract List<Producto> getPreciosMaximos();
+
+	public abstract List<Producto> getPreciosMinimos();
+
+	public abstract List<Producto> getPreciosPromedio();
+
+	public abstract List<Producto> getByPrecio(String paramString);
+
+	public abstract Producto getByClave(String paramString);
 }

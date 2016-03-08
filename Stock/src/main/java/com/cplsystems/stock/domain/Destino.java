@@ -1,20 +1,18 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "destino")
 public class Destino implements Serializable {
-
 	private static final long serialVersionUID = -825268613541991802L;
 	private Long idDestino;
 	private Lugar lugar;
@@ -23,7 +21,7 @@ public class Destino implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idDestino", nullable = false)
 	public Long getIdDestino() {
-		return idDestino;
+		return this.idDestino;
 	}
 
 	public void setIdDestino(Long idDestino) {
@@ -33,11 +31,10 @@ public class Destino implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "Lugar")
 	public Lugar getLugar() {
-		return lugar;
+		return this.lugar;
 	}
 
 	public void setLugar(Lugar lugar) {
 		this.lugar = lugar;
 	}
-		
 }

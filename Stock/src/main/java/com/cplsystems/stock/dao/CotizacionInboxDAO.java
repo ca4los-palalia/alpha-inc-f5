@@ -1,25 +1,15 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.CotizacionInbox;
 import com.cplsystems.stock.domain.Organizacion;
+import java.util.List;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-public interface CotizacionInboxDAO {
+public abstract interface CotizacionInboxDAO {
+	public abstract void save(CotizacionInbox paramCotizacionInbox);
 
-	void save(CotizacionInbox cotizacionInbox);
+	public abstract void delete(CotizacionInbox paramCotizacionInbox);
 
-	void delete(CotizacionInbox cotizacionInbox);
+	public abstract List<CotizacionInbox> getAllNews(Organizacion paramOrganizacion);
 
-	List<CotizacionInbox> getAllNews(final Organizacion organizacion);
-
-	List<CotizacionInbox> getAll(final Organizacion organizacion);
-
+	public abstract List<CotizacionInbox> getAll(Organizacion paramOrganizacion);
 }

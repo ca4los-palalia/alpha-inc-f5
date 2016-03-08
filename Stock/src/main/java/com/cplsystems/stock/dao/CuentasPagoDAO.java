@@ -1,24 +1,17 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.CuentaPago;
 import com.cplsystems.stock.domain.Proveedor;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
-public interface CuentasPagoDAO {
-	public void save(CuentaPago cuentaPago);
+public abstract interface CuentasPagoDAO {
+	public abstract void save(CuentaPago paramCuentaPago);
 
-	public void delete(CuentaPago cuentaPago);
+	public abstract void delete(CuentaPago paramCuentaPago);
 
-	public CuentaPago getById(Long idCuentaPago);
+	public abstract CuentaPago getById(Long paramLong);
 
-	public List<CuentaPago> getAll();
+	public abstract List<CuentaPago> getAll();
 
-	public List<CuentaPago> getByProveedor(Proveedor proveedor);
+	public abstract List<CuentaPago> getByProveedor(Proveedor paramProveedor);
 }

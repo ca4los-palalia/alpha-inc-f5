@@ -1,57 +1,51 @@
-/**
- * 
- */
 package com.cplsystems.stock.services;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.UsuarioDAO;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Usuarios;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Service
 public class UsuarioService {
-
 	@Autowired
 	private UsuarioDAO usuarioDAO;
 
-	public Usuarios getUsuarioByCredentials(final String usuario,
-			final String password) throws DataAccessException {
-		return usuarioDAO.getUsuarioByCredentials(usuario, password);
+	public Usuarios getUsuarioByCredentials(String usuario, String password) throws DataAccessException {
+		return this.usuarioDAO.getUsuarioByCredentials(usuario, password);
 	}
 
-	public void save(final Usuarios usuarios) {
-		usuarioDAO.save(usuarios);
+	public void save(Usuarios usuarios) {
+		this.usuarioDAO.save(usuarios);
 	}
 
-	public void delete(final Usuarios usuario) {
-		usuarioDAO.delete(usuario);
+	public void delete(Usuarios usuario) {
+		this.usuarioDAO.delete(usuario);
 	}
 
-	public List<Usuarios> getUsuariosByOrganizacion(
-			final Organizacion organizacion) {
-		return usuarioDAO.getUsuariosByOrganizacion(organizacion);
+	public List<Usuarios> getUsuariosByOrganizacion(Organizacion organizacion) {
+		return this.usuarioDAO.getUsuariosByOrganizacion(organizacion);
 	}
 
-	public boolean verificarNombreUsuario(final String benutzer,
-			final Long idUsuario) {
-		return usuarioDAO.verificarNombreUsuario(benutzer, idUsuario);
+	public boolean verificarNombreUsuario(String benutzer, Long idUsuario) {
+		return this.usuarioDAO.verificarNombreUsuario(benutzer, idUsuario);
 	}
 
 	public Usuarios getClienteByOrganizacion(Organizacion organizacion) {
-		return usuarioDAO.getClienteByOrganizacion(organizacion);
+		return this.usuarioDAO.getClienteByOrganizacion(organizacion);
 	}
 
 	public Usuarios getOwner(Organizacion organizacion) {
-		return usuarioDAO.getOwner(organizacion);
+		return this.usuarioDAO.getOwner(organizacion);
 	}
 
+	public List<Usuarios> getUsuariosByOrganizacionAll(Organizacion organizacion) {
+		return this.usuarioDAO.getUsuariosByOrganizacionAll(organizacion);
+	}
+
+	public List<Usuarios> getAll() {
+		return this.usuarioDAO.getAll();
+	}
 }

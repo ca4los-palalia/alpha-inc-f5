@@ -1,25 +1,15 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.OrdenCompraInbox;
 import com.cplsystems.stock.domain.Organizacion;
+import java.util.List;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-public interface OrdenCompraInboxDAO {
+public abstract interface OrdenCompraInboxDAO {
+	public abstract void save(OrdenCompraInbox paramOrdenCompraInbox);
 
-	void save(OrdenCompraInbox ordenCompraInbox);
+	public abstract void delete(OrdenCompraInbox paramOrdenCompraInbox);
 
-	void delete(OrdenCompraInbox ordenCompraInbox);
+	public abstract List<OrdenCompraInbox> getAllNews(Organizacion paramOrganizacion);
 
-	List<OrdenCompraInbox> getAllNews(final Organizacion organizacion);
-
-	List<OrdenCompraInbox> getAll(final Organizacion organizacion);
-
+	public abstract List<OrdenCompraInbox> getAll(Organizacion paramOrganizacion);
 }

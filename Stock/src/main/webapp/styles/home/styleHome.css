@@ -311,7 +311,7 @@ div {
 }
 
 .tlLabel {
-	padding-left: 10px;
+	/*padding-left: 10px;*/
 	top: 10px;
 	font-family: tahoma;
 	color: white;
@@ -406,8 +406,8 @@ div {
 
 
 .estilo-Nombre-Usuario{
-   
-    -webkit-transform: scale(1.2);     /* Safari & Chrome */
-  	-moz-transform: scale(1.2);        /* Firefox */
-  	-o-transform: scale(1.2);
+   /*
+    -webkit-transform: scale(1.2);
+  	-moz-transform: scale(1.2);
+  	-o-transform: scale(1.2);*/
 }

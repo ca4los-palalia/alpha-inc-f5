@@ -1,11 +1,7 @@
-/**
- * 
- */
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +15,6 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "RequsicionProducto")
 public class RequisicionProducto implements Serializable {
-
 	private static final long serialVersionUID = -9121053303871749035L;
 	private Long idRequisionProducto;
 	private Float cantidad;
@@ -30,23 +25,21 @@ public class RequisicionProducto implements Serializable {
 	private Requisicion requisicion;
 	private Producto producto;
 	private Float importe;
-	//private String partida;
 	private CofiaPartidaGenerica cofiaPartidaGenerica;
 	private Float totalProductoPorUnidad;
 	private Cotizacion cotizacion;
-
 	private Organizacion organizacion;
 	private Usuarios usuario;
-	
+
 	public RequisicionProducto() {
-		producto = new Producto();
+		this.producto = new Producto();
 	}
 
 	@Id
 	@Column(name = "idRequisicionProducto", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdRequisionProducto() {
-		return idRequisionProducto;
+		return this.idRequisionProducto;
 	}
 
 	public void setIdRequisionProducto(Long idRequisionProducto) {
@@ -55,7 +48,7 @@ public class RequisicionProducto implements Serializable {
 
 	@Column(name = "cantidad", length = 250)
 	public Float getCantidad() {
-		return cantidad;
+		return this.cantidad;
 	}
 
 	public void setCantidad(Float cantidad) {
@@ -63,10 +56,9 @@ public class RequisicionProducto implements Serializable {
 	}
 
 	@OneToOne
-	// @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "lugar")
 	public Lugar getLugar() {
-		return lugar;
+		return this.lugar;
 	}
 
 	public void setLugar(Lugar lugar) {
@@ -74,10 +66,9 @@ public class RequisicionProducto implements Serializable {
 	}
 
 	@OneToOne
-	// @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proveedor")
 	public Proveedor getProveedor() {
-		return proveedor;
+		return this.proveedor;
 	}
 
 	public void setProveedor(Proveedor proveedor) {
@@ -85,10 +76,9 @@ public class RequisicionProducto implements Serializable {
 	}
 
 	@OneToOne
-	// @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "requisicion")
 	public Requisicion getRequisicion() {
-		return requisicion;
+		return this.requisicion;
 	}
 
 	public void setRequisicion(Requisicion requisicion) {
@@ -96,10 +86,9 @@ public class RequisicionProducto implements Serializable {
 	}
 
 	@OneToOne
-	// @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
-		return producto;
+		return this.producto;
 	}
 
 	public void setProducto(Producto producto) {
@@ -108,7 +97,7 @@ public class RequisicionProducto implements Serializable {
 
 	@Column
 	public String getDescripcion() {
-		return descripcion;
+		return this.descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
@@ -117,42 +106,32 @@ public class RequisicionProducto implements Serializable {
 
 	@Column
 	public Float getImporte() {
-		return importe;
+		return this.importe;
 	}
 
 	public void setImporte(Float importe) {
 		this.importe = importe;
 	}
-/*
-	@Column
-	public String getPartida() {
-		return partida;
-	}
-
-	public void setPartida(String partida) {
-		this.partida = partida;
-	}*/
 
 	@Transient
 	public Float getTotalProductoPorUnidad() {
-		if (cantidad != null
-				&& (producto != null && producto.getPrecio() != null)) {
-			
+		if ((this.cantidad != null) && (this.producto != null) && (this.producto.getPrecio() != null)) {
 			DecimalFormat formato = new DecimalFormat("###.##");
-			totalProductoPorUnidad = cantidad * producto.getPrecio();
-			
-			String flotante = formato.format(totalProductoPorUnidad);
+			this.totalProductoPorUnidad = Float
+					.valueOf(this.cantidad.floatValue() * this.producto.getPrecio().floatValue());
+
+			String flotante = formato.format(this.totalProductoPorUnidad);
 			String nuevoFlotante = "";
 			for (int i = 0; i < flotante.length(); i++) {
-				String caracter = flotante.substring(i, (i+1));
-				if(caracter.equals(","))
+				String caracter = flotante.substring(i, i + 1);
+				if (caracter.equals(",")) {
 					caracter = ".";
-				nuevoFlotante += caracter;
+				}
+				nuevoFlotante = nuevoFlotante + caracter;
 			}
-			totalProductoPorUnidad = Float.parseFloat(nuevoFlotante);
-			
+			this.totalProductoPorUnidad = Float.valueOf(Float.parseFloat(nuevoFlotante));
 		}
-		return totalProductoPorUnidad;
+		return this.totalProductoPorUnidad;
 	}
 
 	public void setTotalProductoPorUnidad(Float totalProductoPorUnidad) {
@@ -162,17 +141,16 @@ public class RequisicionProducto implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "cofiaPartidaGenerica")
 	public CofiaPartidaGenerica getCofiaPartidaGenerica() {
-		return cofiaPartidaGenerica;
+		return this.cofiaPartidaGenerica;
 	}
 
-	public void setCofiaPartidaGenerica(
-			CofiaPartidaGenerica cofiaPartidaGenerica) {
+	public void setCofiaPartidaGenerica(CofiaPartidaGenerica cofiaPartidaGenerica) {
 		this.cofiaPartidaGenerica = cofiaPartidaGenerica;
 	}
 
 	@Column
 	public Long getEntregados() {
-		return entregados;
+		return this.entregados;
 	}
 
 	public void setEntregados(Long entregados) {
@@ -182,17 +160,17 @@ public class RequisicionProducto implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "cotizacion")
 	public Cotizacion getCotizacion() {
-		return cotizacion;
+		return this.cotizacion;
 	}
 
 	public void setCotizacion(Cotizacion cotizacion) {
 		this.cotizacion = cotizacion;
 	}
-	
+
 	@OneToOne
 	@JoinColumn(name = "organizacion")
 	public Organizacion getOrganizacion() {
-		return organizacion;
+		return this.organizacion;
 	}
 
 	public void setOrganizacion(Organizacion organizacion) {
@@ -202,7 +180,7 @@ public class RequisicionProducto implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "usuario")
 	public Usuarios getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
 
 	public void setUsuario(Usuarios usuario) {

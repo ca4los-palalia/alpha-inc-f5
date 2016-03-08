@@ -1,24 +1,15 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm;
 
+import com.cplsystems.stock.app.utils.SessionUtils;
+import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.domain.Organizacion;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 
-import com.cplsystems.stock.app.utils.SessionUtils;
-import com.cplsystems.stock.app.utils.StockConstants;
-import com.cplsystems.stock.app.utils.StockUtils;
-import com.cplsystems.stock.domain.Organizacion;
-
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-@VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
+@VariableResolver({ DelegatingVariableResolver.class })
 public class HeaderVM extends BasicStructure {
-
 	private static final long serialVersionUID = -1635442587326363484L;
 	private String compania;
 	private String usuario;
@@ -27,20 +18,20 @@ public class HeaderVM extends BasicStructure {
 
 	@Init
 	public void init() {
-		organizacion = (Organizacion) sessionUtils.getFromSession(SessionUtils.FIRMA);
-		if (organizacion != null) {
-			compania = organizacion.getNombre();
+		this.organizacion = ((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
+		if (this.organizacion != null) {
+			this.compania = this.organizacion.getNombre();
 		}
 	}
 
 	@Command
 	public void logOut() {
-		sessionUtils.logOut();
-		stockUtils.redirect(StockConstants.GLOBAL_PAGES.LOGIN_URL);
+		this.sessionUtils.logOut();
+		this.stockUtils.redirect("/login.zul");
 	}
 
 	public String getCompania() {
-		return compania;
+		return this.compania;
 	}
 
 	public void setCompania(String compania) {
@@ -48,7 +39,7 @@ public class HeaderVM extends BasicStructure {
 	}
 
 	public String getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
 
 	public void setUsuario(String usuario) {
@@ -56,11 +47,10 @@ public class HeaderVM extends BasicStructure {
 	}
 
 	public int getTotalTransacciones() {
-		return totalTransacciones;
+		return this.totalTransacciones;
 	}
 
 	public void setTotalTransacciones(int totalTransacciones) {
 		this.totalTransacciones = totalTransacciones;
 	}
-
 }

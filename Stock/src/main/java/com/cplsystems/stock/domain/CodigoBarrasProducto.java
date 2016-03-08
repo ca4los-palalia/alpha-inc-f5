@@ -14,17 +14,16 @@ import javax.persistence.Transient;
 @Entity
 @Table
 public class CodigoBarrasProducto {
-
 	private Long idCodigoBarrasProducto;
 	private String codigo;
 	private Producto producto;
 	private boolean selected;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	public Long getIdCodigoBarrasProducto() {
-		return idCodigoBarrasProducto;
+		return this.idCodigoBarrasProducto;
 	}
 
 	public void setIdCodigoBarrasProducto(Long idCodigoBarrasProducto) {
@@ -33,7 +32,7 @@ public class CodigoBarrasProducto {
 
 	@Column
 	public String getCodigo() {
-		return codigo;
+		return this.codigo;
 	}
 
 	public void setCodigo(String codigo) {
@@ -43,7 +42,7 @@ public class CodigoBarrasProducto {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
-		return producto;
+		return this.producto;
 	}
 
 	public void setProducto(Producto producto) {
@@ -52,13 +51,10 @@ public class CodigoBarrasProducto {
 
 	@Transient
 	public boolean isSelected() {
-		return selected;
+		return this.selected;
 	}
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
-	
-	
-	
 }

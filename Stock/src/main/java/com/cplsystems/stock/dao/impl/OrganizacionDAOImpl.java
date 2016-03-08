@@ -1,32 +1,22 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao.impl;
-
-import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.OrganizacionDAO;
 import com.cplsystems.stock.domain.Organizacion;
-import com.cplsystems.stock.domain.Requisicion;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Repository
-public class OrganizacionDAOImpl extends HibernateDAOSuportUtil implements
-		OrganizacionDAO {
-
+public class OrganizacionDAOImpl extends HibernateDAOSuportUtil implements OrganizacionDAO {
 	@Transactional
 	public void save(Organizacion organizacion) {
 		getHibernateTemplate().saveOrUpdate(organizacion);
-
 	}
 
 	@Transactional
@@ -35,54 +25,46 @@ public class OrganizacionDAOImpl extends HibernateDAOSuportUtil implements
 	}
 
 	@Transactional(readOnly = true)
-	@SuppressWarnings("unchecked")
 	public List<Organizacion> getOrganizaciones() {
 		return getHibernateTemplate().find("FROM Organizacion as o");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<Organizacion> getCompaniasByNombreRFC(String compania,
-			String rfc) {
-		Criteria criteria = getHibernateTemplate().getSessionFactory()
-				.openSession().createCriteria(Organizacion.class);
+	public List<Organizacion> getCompaniasByNombreRFC(String compania, String rfc) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Organizacion.class);
+
 		criteria.add(Restrictions.like("nombre", "%" + compania + "%"));
 		criteria.add(Restrictions.like("rfc", "%" + rfc + "%"));
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Organizacion> getCompaniasByNombre(String compania) {
-		Criteria criteria = getHibernateTemplate().getSessionFactory()
-				.openSession().createCriteria(Organizacion.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Organizacion.class);
+
 		criteria.add(Restrictions.like("nombre", "%" + compania + "%"));
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Organizacion> getCompaniasByRFC(String rfc) {
-		Criteria criteria = getHibernateTemplate().getSessionFactory()
-				.openSession().createCriteria(Organizacion.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Organizacion.class);
+
 		criteria.add(Restrictions.like("rfc", "%" + rfc + "%"));
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
-	@Transactional(readOnly = true)	
+	@Transactional(readOnly = true)
 	public List<Organizacion> getAll() {
 		return getHibernateTemplate().find("FROM Organizacion as o");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Organizacion getById(Long idOrganizacion) {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Organizacion.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Organizacion.class);
+
 		criteria.add(Restrictions.eq("idOrganizacion", idOrganizacion));
 		List<Organizacion> lista = criteria.list();
-		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
+		return (lista != null) && (!lista.isEmpty()) ? (Organizacion) lista.get(0) : null;
 	}
-
 }

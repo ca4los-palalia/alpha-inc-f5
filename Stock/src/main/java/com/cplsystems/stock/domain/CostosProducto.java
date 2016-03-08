@@ -1,7 +1,6 @@
 package com.cplsystems.stock.domain;
 
 import java.util.Calendar;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +14,6 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class CostosProducto {
-
 	private Long idCostosProducto;
 	private Float reposicionUnitario;
 	private Float reposicionActualizado;
@@ -34,72 +32,80 @@ public class CostosProducto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	public Long getIdCostosProducto() {
-		return idCostosProducto;
+		return this.idCostosProducto;
 	}
 
 	public void setIdCostosProducto(Long idCostosProducto) {
 		this.idCostosProducto = idCostosProducto;
 	}
+
 	@Column
 	public Float getReposicionUnitario() {
-		return reposicionUnitario;
+		return this.reposicionUnitario;
 	}
 
 	public void setReposicionUnitario(Float reposicionUnitario) {
 		this.reposicionUnitario = reposicionUnitario;
 	}
+
 	@Column
 	public Float getReposicionActualizado() {
-		return reposicionActualizado;
+		return this.reposicionActualizado;
 	}
 
 	public void setReposicionActualizado(Float reposicionActualizado) {
 		this.reposicionActualizado = reposicionActualizado;
 	}
+
 	@Column
 	public Float getMaximoUnitario() {
-		return maximoUnitario;
+		return this.maximoUnitario;
 	}
 
 	public void setMaximoUnitario(Float maximoUnitario) {
 		this.maximoUnitario = maximoUnitario;
 	}
+
 	@Column
 	public Float getMaximoActualizado() {
-		return maximoActualizado;
+		return this.maximoActualizado;
 	}
 
 	public void setMaximoActualizado(Float maximoActualizado) {
 		this.maximoActualizado = maximoActualizado;
 	}
+
 	@Column
 	public Calendar getReposicionFecha() {
-		return reposicionFecha;
+		return this.reposicionFecha;
 	}
 
 	public void setReposicionFecha(Calendar reposicionFecha) {
 		this.reposicionFecha = reposicionFecha;
 	}
+
 	@Column
 	public Calendar getMaximoFecha() {
-		return maximoFecha;
+		return this.maximoFecha;
 	}
 
 	public void setMaximoFecha(Calendar maximoFecha) {
 		this.maximoFecha = maximoFecha;
 	}
+
 	@Column
 	public Float getCostoPromedio() {
-		return costoPromedio;
+		return this.costoPromedio;
 	}
 
 	public void setCostoPromedio(Float costoPromedio) {
 		this.costoPromedio = costoPromedio;
 	}
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
-		return producto;
+		return this.producto;
 	}
 
 	public void setProducto(Producto producto) {
@@ -108,7 +114,7 @@ public class CostosProducto {
 
 	@Column
 	public Float getCostoUltimo() {
-		return costoUltimo;
+		return this.costoUltimo;
 	}
 
 	public void setCostoUltimo(Float costoUltimo) {
@@ -117,7 +123,7 @@ public class CostosProducto {
 
 	@Column
 	public Calendar getCostoUltimoFecha() {
-		return costoUltimoFecha;
+		return this.costoUltimoFecha;
 	}
 
 	public void setCostoUltimoFecha(Calendar costoUltimoFecha) {
@@ -126,7 +132,7 @@ public class CostosProducto {
 
 	@Column
 	public Float getCostoCapa() {
-		return costoCapa;
+		return this.costoCapa;
 	}
 
 	public void setCostoCapa(Float costoCapa) {
@@ -135,11 +141,10 @@ public class CostosProducto {
 
 	@Column
 	public Calendar getCostoCapaFecha() {
-		return costoCapaFecha;
+		return this.costoCapaFecha;
 	}
 
 	public void setCostoCapaFecha(Calendar costoCapaFecha) {
 		this.costoCapaFecha = costoCapaFecha;
 	}
-	
 }

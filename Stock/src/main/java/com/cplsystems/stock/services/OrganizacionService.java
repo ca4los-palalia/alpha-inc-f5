@@ -1,56 +1,45 @@
-/**
- * 
- */
 package com.cplsystems.stock.services;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.OrganizacionDAO;
 import com.cplsystems.stock.domain.Organizacion;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Service
 public class OrganizacionService {
-
 	@Autowired
 	private OrganizacionDAO organizacionDAO;
 
-	public void save(final Organizacion organizacion) {
-		organizacionDAO.save(organizacion);
+	public void save(Organizacion organizacion) {
+		this.organizacionDAO.save(organizacion);
 	}
 
-	public void delete(final Organizacion organizacion) {
-		organizacionDAO.delete(organizacion);
+	public void delete(Organizacion organizacion) {
+		this.organizacionDAO.delete(organizacion);
 	}
 
 	public List<Organizacion> getOrganizaciones() {
-		return organizacionDAO.getOrganizaciones();
+		return this.organizacionDAO.getOrganizaciones();
 	}
 
-	public List<Organizacion> getCompaniasByNombreRFC(String compania,
-			String rfc) {
-		return organizacionDAO.getCompaniasByNombreRFC(compania, rfc);
+	public List<Organizacion> getCompaniasByNombreRFC(String compania, String rfc) {
+		return this.organizacionDAO.getCompaniasByNombreRFC(compania, rfc);
 	}
 
 	public List<Organizacion> getCompaniasByNombre(String compania) {
-		return organizacionDAO.getCompaniasByNombre(compania);
+		return this.organizacionDAO.getCompaniasByNombre(compania);
 	}
 
 	public List<Organizacion> getCompaniasByRFC(String rfc) {
-		return organizacionDAO.getCompaniasByRFC(rfc);
+		return this.organizacionDAO.getCompaniasByRFC(rfc);
 	}
 
 	public List<Organizacion> getAll() {
-		return organizacionDAO.getAll();
+		return this.organizacionDAO.getAll();
 	}
-	
-	public Organizacion getById(Long idOrganizacion){
-		return organizacionDAO.getById(idOrganizacion);
+
+	public Organizacion getById(Long idOrganizacion) {
+		return this.organizacionDAO.getById(idOrganizacion);
 	}
 }

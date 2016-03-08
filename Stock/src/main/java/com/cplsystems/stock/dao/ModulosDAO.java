@@ -1,22 +1,12 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Modulos;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Modulos;
+public abstract interface ModulosDAO {
+	public abstract void save(Modulos paramModulos);
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-public interface ModulosDAO {
+	public abstract void delete(Modulos paramModulos);
 
-	void save(Modulos modulos);
-
-	void delete(Modulos modulos);
-
-	List<Modulos> getAll();
-
+	public abstract List<Modulos> getAll();
 }

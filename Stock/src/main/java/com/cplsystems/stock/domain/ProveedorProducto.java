@@ -1,7 +1,6 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +14,6 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "proveedorProducto")
 public class ProveedorProducto implements Serializable {
-
 	private static final long serialVersionUID = -4209263282220593763L;
 	private Long idProveedorProdcuto;
 	private String cantidad;
@@ -30,7 +28,7 @@ public class ProveedorProducto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idProveedorProducto", length = 250)
 	public Long getIdProveedorProdcuto() {
-		return idProveedorProdcuto;
+		return this.idProveedorProdcuto;
 	}
 
 	public void setIdProveedorProdcuto(Long idProveedorProdcuto) {
@@ -39,7 +37,7 @@ public class ProveedorProducto implements Serializable {
 
 	@Column(name = "cantidad", length = 250)
 	public String getCantidad() {
-		return cantidad;
+		return this.cantidad;
 	}
 
 	public void setCantidad(String cantidad) {
@@ -48,7 +46,7 @@ public class ProveedorProducto implements Serializable {
 
 	@Column(name = "descuento", length = 250)
 	public String getDescuento() {
-		return descuento;
+		return this.descuento;
 	}
 
 	public void setDescuento(String descuento) {
@@ -57,7 +55,7 @@ public class ProveedorProducto implements Serializable {
 
 	@Column(name = "precio", length = 250)
 	public String getPrecio() {
-		return precio;
+		return this.precio;
 	}
 
 	public void setPrecio(String precio) {
@@ -66,7 +64,7 @@ public class ProveedorProducto implements Serializable {
 
 	@Column(name = "precioFinal", length = 250)
 	public String getPrecioFinal() {
-		return precioFinal;
+		return this.precioFinal;
 	}
 
 	public void setPrecioFinal(String precioFinal) {
@@ -74,10 +72,9 @@ public class ProveedorProducto implements Serializable {
 	}
 
 	@OneToOne
-	// @ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name = "proveedor")
 	public Proveedor getProveedor() {
-		return proveedor;
+		return this.proveedor;
 	}
 
 	public void setProveedor(Proveedor proveedor) {
@@ -85,10 +82,9 @@ public class ProveedorProducto implements Serializable {
 	}
 
 	@OneToOne
-	// @ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
-		return producto;
+		return this.producto;
 	}
 
 	public void setProducto(Producto producto) {
@@ -97,12 +93,10 @@ public class ProveedorProducto implements Serializable {
 
 	@Transient
 	public boolean isSeleccionar() {
-		return seleccionar;
+		return this.seleccionar;
 	}
 
 	public void setSeleccionar(boolean seleccionar) {
 		this.seleccionar = seleccionar;
 	}
-	
-	
 }

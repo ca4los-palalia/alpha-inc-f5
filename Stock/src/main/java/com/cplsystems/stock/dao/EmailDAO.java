@@ -1,23 +1,16 @@
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Email;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Direccion;
-import com.cplsystems.stock.domain.Email;
+public abstract interface EmailDAO {
+	public abstract void save(Email paramEmail);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void delete(Email paramEmail);
 
-public interface EmailDAO {
+	public abstract Email getById(Long paramLong);
 
-	public void save(Email email);
+	public abstract List<Email> getAll();
 
-	public void delete(Email email);
-
-	public Email getById(Long idEmail);
-
-	public List<Email> getAll();
-	
-	public Email getUltimoRegistroEmail();
+	public abstract Email getUltimoRegistroEmail();
 }

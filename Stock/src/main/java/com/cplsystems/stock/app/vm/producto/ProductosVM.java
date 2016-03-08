@@ -1,16 +1,39 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.producto;
 
+import com.cplsystems.stock.app.utils.AplicacionExterna;
+import com.cplsystems.stock.app.utils.ClasificacionPrecios;
+import com.cplsystems.stock.app.utils.SessionUtils;
+import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.app.vm.producto.utils.ModoDeBusqueda;
+import com.cplsystems.stock.domain.ClaveArmonizada;
+import com.cplsystems.stock.domain.CodigoBarrasProducto;
+import com.cplsystems.stock.domain.CostosProducto;
+import com.cplsystems.stock.domain.FamiliasProducto;
+import com.cplsystems.stock.domain.Moneda;
+import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.ProductoNaturaleza;
+import com.cplsystems.stock.domain.ProductoTipo;
+import com.cplsystems.stock.domain.Unidad;
+import com.cplsystems.stock.domain.Usuarios;
+import com.cplsystems.stock.services.ClaveArmonizadaService;
+import com.cplsystems.stock.services.CodigoBarrasProductoService;
+import com.cplsystems.stock.services.CostosProductoService;
+import com.cplsystems.stock.services.FamiliasProductoService;
+import com.cplsystems.stock.services.MonedaService;
+import com.cplsystems.stock.services.ProductoNaturalezaService;
+import com.cplsystems.stock.services.ProductoService;
+import com.cplsystems.stock.services.ProductoTipoService;
+import com.cplsystems.stock.services.UnidadService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -29,89 +52,55 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
-import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Progressmeter;
 import org.zkoss.zul.Window;
 
-import sun.net.ProgressEvent;
-
-import com.cplsystems.stock.app.utils.AplicacionExterna;
-import com.cplsystems.stock.app.utils.StockConstants;
-import com.cplsystems.stock.domain.CodigoBarrasProducto;
-import com.cplsystems.stock.domain.CostosProducto;
-import com.cplsystems.stock.domain.FamiliasProducto;
-import com.cplsystems.stock.domain.Moneda;
-import com.cplsystems.stock.domain.Producto;
-import com.cplsystems.stock.domain.ProductoNaturaleza;
-import com.cplsystems.stock.domain.Unidad;
-import com.cplsystems.stock.services.MonedaService;
-
-@VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
+@VariableResolver({ DelegatingVariableResolver.class })
 public class ProductosVM extends ProductoMetaClass {
-
 	private static final long serialVersionUID = 313977001812349337L;
-
 	private Button clasificacionButton;
-	private Button saveButton;
+	public Button saveButton;
 
 	@Init
 	public void init() {
 		super.init();
-		producto.setCambioNaturaleza(true);
-		progressValue = 0;
-
+		this.producto.setCambioNaturaleza(true);
+		this.progressValue = Integer.valueOf(0);
 	}
 
-	@Command("upload")
-	@NotifyChange("imagenProducto")
-	public void onImageUpload(
-			@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) {
+	@Command({ "upload" })
+	@NotifyChange({ "imagenProducto" })
+	public void onImageUpload(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) {
 		processImageUpload(ctx.getTriggerEvent());
 	}
 
 	@Command
-	public void onUploadExcel(
-			@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx)
-			throws IOException {
-		goProgress("Cargando archivo", 5);
-		boolean fileuploaded = false;
-		String filePath = "C:\\Stock\\LoadLayout\\";
-		UploadEvent upEvent = null;
-		Object objUploadEvent = ctx.getTriggerEvent();
-		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent)) {
-			upEvent = (UploadEvent) objUploadEvent;
-		}
-		if (upEvent != null) {
-			Media media = upEvent.getMedia();
-
-			File baseDir = new File(filePath);
-			if (!baseDir.exists()) {
-				baseDir.mkdirs();
+	public void onUploadExcel(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) throws IOException {
+		claveArmonizadaList = claveArmonizadaService.getAll();
+		unidadesDB = unidadService.getAll();
+		productosNaturalezas = productoNaturalezaService.getAll();
+		monedasDB = monedaService.getAll();
+		
+		productosDB = leerDatosDesdeExcel(getStreamMediaExcel(ctx));
+		if(productosDB.size() > 0){
+			for (Producto item : productosDB) {
+				productoService.save(item);
 			}
-
-			Files.copy(new File(filePath + media.getName()),
-					media.getStreamData());
-
-			File file = new File(filePath + media.getName());
-
-			leerDatosDesdeExcel(filePath + media.getName());
-
-			Messagebox.show("´Se han importado exitosamente productos del "
-					+ filePath + media.getName());
-		}
-		System.err.println("Importar excel");
+			Messagebox.show(productosDB.size() + " Productos Importados");
+		}else
+			Messagebox.show("No se importaron Productos. El documento esta vacio");
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void leerDatosDesdeExcel(String fileName) {
-		goProgress("Extrayendo informacion", 20);
+	private List<Producto> leerDatosDesdeExcel(InputStream inPutStream) {
 		List<Producto> productoNuevosExcel = new ArrayList<Producto>();
+		Usuarios usuario = (Usuarios) sessionUtils.getFromSession("usuario");
+		Organizacion organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
 		try {
-			FileInputStream fileInputStream = new FileInputStream(fileName);
-			XSSFWorkbook workBook = new XSSFWorkbook(fileInputStream);
+			XSSFWorkbook workBook = new XSSFWorkbook(inPutStream);
 			XSSFSheet hssfSheet = workBook.getSheetAt(0);
 			Iterator rowIterator = hssfSheet.rowIterator();
 			Integer i = 0;
@@ -119,1001 +108,838 @@ public class ProductosVM extends ProductoMetaClass {
 				Producto producto = new Producto();
 				XSSFRow hssfRow = (XSSFRow) rowIterator.next();
 				Iterator iterator = hssfRow.cellIterator();
-				List cellTempList = new ArrayList();
 				if (i > 0) {
 					int j = 0;
 					while (iterator.hasNext()) {
 						if (j < 25) {
 							XSSFCell hssfCell = (XSSFCell) iterator.next();
 							producto = crearProducto(producto, hssfCell, j);
-							// System.err.print(hssfCell + "\t\t\t");
 						} else
 							break;
 						j++;
 					}
+					producto.setUsuario(usuario);
+					producto.setOrganizacion(organizacion);
 					productoNuevosExcel.add(producto);
 				}
 				i++;
-			}
-			File borrarArchivo = new File(fileName);
-			if (borrarArchivo.delete()) {
-				goProgress("Guardando nuevos productos al sistema", 80);
-				for (Producto item : productoNuevosExcel) {
-					// productoService.save(item);
-				}
-
-				goProgress("Terminado", 100);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		// mostrarInformacionDeExcelLeer(cellDataList);
+		return productoNuevosExcel;
 
 	}
 
-	private Producto crearProducto(Producto producto,
-			XSSFCell valorDePropiedad, int indice) {
-		String valor = "";
-		String[] splitter;
+	@SuppressWarnings("null")
+	private Producto crearProducto(Producto producto, XSSFCell valorDePropiedad, int indice) {
+		String valor = String.valueOf(valorDePropiedad);
 		switch (indice) {
 		case 0:
-			producto.setClave(String.valueOf(valorDePropiedad));
+			if(valor != null && !valor.equals("NULL")){
+				if (valor.contains(".0")) {
+					valor = removerPuntoCero(valor);
+				}
+				
+				producto.setClaveArmonizada(getClaveArminizadaFromList(valor));
+				producto.setClave(valor);
+			}
 			break;
 		case 1:
-			producto.setNombre(String.valueOf(valorDePropiedad));
+			if(valor != null && !valor.equals("NULL"))
+				producto.setNombre(valor);
 			break;
 		case 2:
-			producto.setMarca(String.valueOf(valorDePropiedad));
+			if(valor != null && !valor.equals("NULL"))
+				producto.setMarca(valor);
 			break;
 		case 3:
-			producto.setModelo(String.valueOf(valorDePropiedad));
+			if(valor != null && !valor.equals("NULL"))
+				producto.setModelo(valor);
 			break;
 		case 4:
-			producto.setCodigoBarras(String.valueOf(valorDePropiedad));
+			if(valor != null && !valor.equals("NULL"))
+				producto.setCodigoBarras(valor);
 			break;
 		case 5:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor.contains(".0"))
-				valor = removerPuntoCero(valor);
-
-			Unidad unidad = unidadService.getById(Long.valueOf(valor));
-			producto.setUnidad(unidad);
+			if(valor != null && !valor.equals("NULL")){
+				if (valor.contains(".0")) {
+					valor = removerPuntoCero(valor);
+				}
+				producto.setUnidad(getUnidadFromList(Long.parseLong(valor)));
+			}
+				
 			break;
 		case 6:
-			producto.setDescripcion(String.valueOf(valorDePropiedad));
+			if(valor != null && !valor.equals("NULL"))
+				producto.setDescripcion(valor);
 			break;
 		case 7:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor.contains(".0"))
-				valor = removerPuntoCero(valor);
-
-			if (Integer.parseInt(valor) == 1)
-				producto.setActivo(true);
-			else
-				producto.setActivo(false);
+			if(valor != null || !valor.equals("NULL")){
+				if (valor.contains(".0")) {
+					valor = removerPuntoCero(valor);
+				}
+				if(valor.equals("1"))
+					producto.setActivo(true);
+				else
+					producto.setActivo(false);
+			}
+			
 			break;
 		case 8:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor.contains(".0")) {
-				splitter = valor.split(".0");
-				valor = splitter[0];
+			if(valor != null && !valor.equals("NULL")){
+				valor = String.valueOf(valorDePropiedad);
+				if (valor.contains(".0")) {
+					String[] splitter = valor.split(".0");
+					valor = splitter[0];
+				}
+				producto.setProductoNaturaleza(getProductoNaturalezaFromList(Long.parseLong(valor)));
 			}
-			ProductoNaturaleza productoNaturaleza = productoNaturalezaService
-					.getById(Long.valueOf(valor));
-			producto.setProductoNaturaleza(productoNaturaleza);
+				
 			break;
 		case 9:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor.contains(".0"))
-				valor = removerPuntoCero(valor);
-			producto.setEnExistencia(Integer.parseInt(valor));
+			if(valor != null && !valor.equals("NULL")){
+				if (valor.contains(".0")) {
+					valor = removerPuntoCero(valor);
+				}
+				producto.setEnExistencia(Integer.parseInt(valor));
+			}
+				
 			break;
+			
 		case 10:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor.contains(".0"))
-				valor = removerPuntoCero(valor);
-			producto.setMinimo(Long.valueOf(valor));
+			if(valor != null && !valor.equals("NULL")){
+				if (valor.contains(".0")) {
+					valor = removerPuntoCero(valor);
+				}
+				producto.setMinimo(Long.valueOf(valor));
+			}
 			break;
 		case 11:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor.contains(".0"))
-				valor = removerPuntoCero(valor);
-			producto.setMaximo(Long.valueOf(valor));
+			if(valor != null && !valor.equals("NULL")){
+				if (valor.contains(".0")) {
+					valor = removerPuntoCero(valor);
+				}
+				producto.setMaximo(Long.valueOf(valor));
+			}
 			break;
 		case 12:
-			// producto.setProducto PRODUCTO TIPO
+			if(valor != null && !valor.equals("NULL")){
+				//Clasificacion
+			}
 			break;
 		case 13:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor.contains(".0"))
-				valor = removerPuntoCero(valor);
-			Moneda moneda = monedaService.getById(Long.valueOf(valor));
-			producto.setMoneda(moneda);
+			if(valor != null && !valor.equals("NULL")){
+				valor = String.valueOf(valorDePropiedad);
+				if (valor.contains(".0")) {
+					String[] splitter = valor.split(".0");
+					valor = splitter[0];
+				}
+				producto.setMoneda(getMonedaFromList(Long.parseLong(valor)));
+			}
 			break;
 		case 14:
-			// producto.set
+			if(valor != null && !valor.equals("NULL")){
+				//EXCENTO
+			}
+			
 			break;
 		case 15:
-			// producto.set
+			if(valor != null && !valor.equals("NULL")){
+				// % Impuesto 1
+			}
+			
 			break;
 		case 16:
-			// producto.set
+			if(valor != null && !valor.equals("NULL")){
+				// % Impuesto 2
+			}
 			break;
 		case 17:
 			valor = String.valueOf(valorDePropiedad);
-			if (valor != null && !valor.isEmpty()
-					&& !valor.equalsIgnoreCase("NULL"))
-				producto.setPrecio(Float.parseFloat(String
-						.valueOf(valorDePropiedad)));
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+				producto.setPrecio(Float.valueOf(Float.parseFloat(String.valueOf(valorDePropiedad))));
+			}
 			break;
 		case 18:
 			valor = String.valueOf(valorDePropiedad);
-			if (valor != null && !valor.isEmpty()
-					&& !valor.equalsIgnoreCase("NULL"))
-				producto.setPrecio2(Float.parseFloat(String
-						.valueOf(valorDePropiedad)));
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+				producto.setPrecio2(Float.valueOf(Float.parseFloat(String.valueOf(valorDePropiedad))));
+			}
 			break;
 		case 19:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor != null && !valor.isEmpty()
-					&& !valor.equalsIgnoreCase("NULL"))
-				producto.setPrecio3(Float.parseFloat(String
-						.valueOf(valorDePropiedad)));
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+				producto.setPrecio3(Float.valueOf(Float.parseFloat(String.valueOf(valorDePropiedad))));
+			}
 			break;
 		case 20:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor != null && !valor.isEmpty()
-					&& !valor.equalsIgnoreCase("NULL"))
-				producto.setPrecio4(Float.parseFloat(String
-						.valueOf(valorDePropiedad)));
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+				producto.setPrecio4(Float.valueOf(Float.parseFloat(String.valueOf(valorDePropiedad))));
+			}
 			break;
 		case 21:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor != null && !valor.isEmpty()
-					&& !valor.equalsIgnoreCase("NULL"))
-				producto.setPrecio5(Float.parseFloat(String
-						.valueOf(valorDePropiedad)));
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+				producto.setPrecio5(Float.valueOf(Float.parseFloat(String.valueOf(valorDePropiedad))));
+			}
 			break;
 		case 22:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor != null && !valor.isEmpty()
-					&& !valor.equalsIgnoreCase("NULL"))
-				producto.setCostoMaximo(Float.parseFloat(String
-						.valueOf(valorDePropiedad)));
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+				producto.setCostoMaximo(Float.valueOf(Float.parseFloat(String.valueOf(valorDePropiedad))));
+			}
 			break;
 		case 23:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor != null && !valor.isEmpty()
-					&& !valor.equalsIgnoreCase("NULL"))
-				producto.setCostoReposicion(Float.parseFloat(String
-						.valueOf(valorDePropiedad)));
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+				producto.setCostoReposicion(Float.valueOf(Float.parseFloat(String.valueOf(valorDePropiedad))));
+			}
 			break;
 		case 24:
-			valor = String.valueOf(valorDePropiedad);
-			if (valor != null && !valor.isEmpty()
-					&& !valor.equalsIgnoreCase("NULL"))
-				producto.setCostoPromedio(Float.parseFloat(String
-						.valueOf(valorDePropiedad)));
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+				producto.setCostoPromedio(Float.valueOf(Float.parseFloat(String.valueOf(valorDePropiedad))));
+			}
 			break;
 		}
 		return producto;
 	}
 
-	private String removerPuntoCero(String valor) {
-		String salida = "";
-		for (int i = 0; i < valor.length(); i++) {
-			String caracter = valor.substring(i, (i + 1));
-			if (caracter.equals("."))
-				break;
-			else
-				salida += caracter;
-		}
-		return salida;
-	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	private void goProgress(String mensaje, Integer value) {
-		progressValueLabel = mensaje;
-		progressValue = value;
+		this.progressValueLabel = mensaje;
+		this.progressValue = value;
 	}
 
 	@Command
-	@NotifyChange("imagenProducto")
+	@NotifyChange({ "imagenProducto" })
 	public void generarBar() {
-		/*
-		 * BarCodeUtility barCodeUtil = new BarCodeUtility(); // This will
-		 * generate Bar-Code 3 of 9 format
-		 * barCodeUtil.createBarCode39("naeemgik - 12345");
-		 * 
-		 * // This will generate Bar-Code 128 format
-		 * barCodeUtil.createBarCode128("0123456789");
-		 */
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void nuevaCaptura() {
-		producto = new Producto();
-		productosDB = new ArrayList<Producto>();
-		enableComboBoxUnidades = false;
+		this.producto = new Producto();
+		this.claveArmonizada = new ClaveArmonizada();
+		this.productosDB = new ArrayList();
+		this.enableComboBoxUnidades = false;
+		this.producto.setClaveArmonizada(this.claveArmonizada);
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void newRecord() {
-
-		if (producto != null && producto.getIdProducto() == null) {
+		if ((this.producto != null) && (this.producto.getIdProducto() == null)) {
 			String validar = validarNuevoProducto();
 			if (validar.isEmpty()) {
+				Organizacion org = (Organizacion) this.sessionUtils.getFromSession("FIRMA");
 
-				productoService.save(producto);
-				for (FamiliasProducto fp : familiasProductos)
-					familiasProductoService.save(fp);
+				this.producto.setOrganizacion(org);
+				this.productoService.save(this.producto);
+				for (FamiliasProducto fp : this.familiasProductos) {
+					this.familiasProductoService.save(fp);
+				}
+				StockUtils.showSuccessmessage(
+						"Un nuevo producto con nombre " + this.producto.getNombre() + " ha sido creado.", "info",
+						Integer.valueOf(0), this.saveButton);
 
-				stockUtils.showSuccessmessage("Un nuevo producto con nombre "
-						+ producto.getNombre() + " ha sido creado.",
-						Clients.NOTIFICATION_TYPE_INFO, 0, saveButton);
-				producto = new Producto();
-				familiasProductos = new ArrayList<FamiliasProducto>();
-			} else
-				stockUtils.showSuccessmessage(validar,
-						Clients.NOTIFICATION_TYPE_WARNING, 0, saveButton);
-
+				this.producto = new Producto();
+				this.familiasProductos = new ArrayList();
+			} else {
+				Clients.showNotification(validar, "warning", this.saveButton, null, 0);
+			}
 		} else {
-
+			this.productoService.save(this.producto);
+			StockUtils.showSuccessmessage(this.producto.getNombre() + " ha sido actualizado.", "info",
+					Integer.valueOf(0), this.saveButton);
 		}
-
-		/*
-		 * if (producto != null && producto.getIdProducto() != null) {
-		 * Messagebox.show(
-		 * "Se han detectado cambios que no han sido confirmados, " +
-		 * "¿Está seguro de crear un nuevo registro?", "Question", Messagebox.OK
-		 * | Messagebox.CANCEL, Messagebox.QUESTION, new EventListener<Event>()
-		 * { public void onEvent(Event event) throws Exception { if (((Integer)
-		 * event.getData()).intValue() == Messagebox.OK) { Map<String, Object>
-		 * args = new HashMap<String, Object>();
-		 * args.put("productoSeleccionado", new Producto());
-		 * BindUtils.postGlobalCommand(null, null, "updateFromSelectedItem",
-		 * args); return; } } }); } if (producto == null) { producto = new
-		 * Producto(); }
-		 */
 	}
 
 	@Command
 	public void deleteRecord() {
-		if (producto.getIdProducto() == null) {
-			Messagebox.show("El producto no puede ser eliminado "
-					+ "Asegurese de haber seleccionado un producto");
+		if (this.producto.getIdProducto() == null) {
+			Messagebox.show("El producto no puede ser eliminado Asegurese de haber seleccionado un producto");
+
 			return;
-		} else {
-			String validarProducto = detectarEliminacionDeProducto(producto);
-			if (validarProducto.equals("")) {
-				Messagebox.show("¿Está seguro de remover este producto?, "
-						+ "esta acción es irreversible", "Question",
-						Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
-						new EventListener<Event>() {
-							@SuppressWarnings("static-access")
-							public void onEvent(Event event) throws Exception {
-								if (((Integer) event.getData()).intValue() == Messagebox.OK) {
-									/*
-									 * Map<String, Object> args = new
-									 * HashMap<String, Object>();
-									 * args.put("producto", producto);
-									 * BindUtils.postGlobalCommand(null, null,
-									 * "deleteProduct", args);
-									 */
-									productoService.delete(producto);
-									productoDB.remove(producto);
-
-									// +++++++++++++++++
-									familiasProductos = familiasProductoService
-											.getByProducto(producto);
-									if (familiasProductos != null) {
-										for (FamiliasProducto fp : familiasProductos)
-											familiasProductoService.delete(fp);
-									}
-									familiasProductos = new ArrayList<FamiliasProducto>();
-									// +++++++++++++++++
-									stockUtils.showSuccessmessage(
-											"el producto -"
-													+ producto.getNombre()
-													+ "- ha sido eliminado",
-											Clients.NOTIFICATION_TYPE_INFO, 0,
-											null);
-									producto = null;
-								} else {
-									stockUtils.showSuccessmessage(
-											"La eliminacion del producto -"
-													+ producto.getNombre()
-													+ "- ha sido cancelada",
-											Clients.NOTIFICATION_TYPE_INFO, 0,
-											null);
-									producto = productoService.getById(producto
-											.getIdProducto());
-								}
-							}
-						});
-			} else
-				stockUtils.showSuccessmessage(validarProducto,
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			producto = productoService.getById(producto.getIdProducto());
 		}
+		String validarProducto = detectarEliminacionDeProducto(this.producto);
+		if (validarProducto.equals("")) {
+			Messagebox.show("�Est� seguro de remover este producto?, esta acci�n es irreversible", "Question", 3,
+					"z-msgbox z-msgbox-question", new EventListener() {
+						public void onEvent(Event event) throws Exception {
+							if (((Integer) event.getData()).intValue() == 1) {
+								ProductosVM.this.productoService.delete(ProductosVM.this.producto);
+								ProductosVM.this.productoDB.remove(ProductosVM.this.producto);
 
+								ProductosVM.this.familiasProductos = ProductosVM.this.familiasProductoService
+										.getByProducto(ProductosVM.this.producto);
+								if (ProductosVM.this.familiasProductos != null) {
+									for (FamiliasProducto fp : ProductosVM.this.familiasProductos) {
+										ProductosVM.this.familiasProductoService.delete(fp);
+									}
+								}
+								ProductosVM.this.familiasProductos = new ArrayList();
+
+								StockUtils.showSuccessmessage(
+										"el producto -" + ProductosVM.this.producto.getNombre() + "- ha sido eliminado",
+										"info", Integer.valueOf(0), null);
+
+								ProductosVM.this.producto = null;
+							} else {
+								StockUtils.showSuccessmessage("La eliminacion del producto -"
+										+ ProductosVM.this.producto.getNombre() + "- ha sido cancelada", "info",
+										Integer.valueOf(0), null);
+
+								ProductosVM.this.producto = ProductosVM.this.productoService
+										.getById(ProductosVM.this.producto.getIdProducto());
+							}
+						}
+					});
+		} else {
+			StockUtils.showSuccessmessage(validarProducto, "info", Integer.valueOf(0), null);
+		}
+		this.producto = this.productoService.getById(this.producto.getIdProducto());
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("producto")
+	@NotifyChange({ "producto" })
 	public void saveChanges() {
-		if (producto != null && producto.getIdProducto() != null) {
-			/*
-			 * Messagebox.show(
-			 * "Se han detectado cambios que no han sido confirmados, " +
-			 * "¿Está seguro de crear un nuevo registro?", "Question",
-			 * Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION, new
-			 * EventListener<Event>() { public void onEvent(Event event) throws
-			 * Exception { if (((Integer) event.getData()).intValue() ==
-			 * Messagebox.OK) {
-			 */
-			/*
-			 * Map<String, Object> args = new HashMap<String, Object>();
-			 * args.put("productoSeleccionado", new Producto());
-			 * BindUtils.postGlobalCommand(null, null, "updateFromSelectedItem",
-			 * args);
-			 */
+		if ((this.producto != null) && (this.producto.getIdProducto() != null)) {
+			this.productoService.save(this.producto);
 
-			productoService.save(producto);
+			StockUtils.showSuccessmessage("el producto -" + this.producto.getNombre() + "- ha sido actualizado", "info",
+					Integer.valueOf(0), null);
 
-			/*
-			 * for (FamiliasProducto fp : familiasProductos) if
-			 * (fp.getIdFamiliasProducto() == null)
-			 * familiasProductoService.save(fp);
-			 */
-
-			stockUtils.showSuccessmessage(
-					"el producto -" + producto.getNombre()
-							+ "- ha sido actualizado",
-					Clients.NOTIFICATION_TYPE_INFO, 0, null);
 			return;
-			/*
-			 * } else { unidad = null; stockUtils.showSuccessmessage(
-			 * "La actualizacion para el producto -" + producto.getNombre() +
-			 * "- ha sido cancelada", Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			 * producto = productoService.getById(producto .getIdProducto()); }
-			 * } });
-			 */
 		}
-		if (producto == null) {
-			producto = new Producto();
+		if (this.producto == null) {
+			this.producto = new Producto();
 		}
-		/*
-		 * productoService.save(producto); stockUtils.showSuccessmessage(
-		 * "La información del producto " + producto.getNombre() +
-		 * " se ha actualizado correctamente", Clients.NOTIFICATION_TYPE_INFO,
-		 * 3000, null); producto = new Producto();
-		 */
 	}
 
 	@Command
 	public void search() {
-		Window productoModalView = stockUtils
-				.createModelDialog(StockConstants.MODAL_VIEW_PRODUCTOS);
+		Window productoModalView = this.stockUtils.createModelDialog("/modulos/productos/utils/buscarProducto.zul");
+
 		productoModalView.doModal();
 	}
 
 	@GlobalCommand
-	@NotifyChange("producto")
+	@NotifyChange({ "producto" })
 	public void deleteProduct(@BindingParam("producto") Producto producto) {
 		if (producto != null) {
-			productoService.delete(producto);
+			this.productoService.delete(producto);
 			newRecord();
 		}
 	}
 
 	@GlobalCommand
-	@NotifyChange("producto")
-	public void updateFromSelectedItem(
-			@BindingParam("productoSeleccionado") Producto productoSeleccionado) {
+	@NotifyChange({ "producto" })
+	public void updateFromSelectedItem(@BindingParam("productoSeleccionado") Producto productoSeleccionado) {
 		if (productoSeleccionado != null) {
-			producto = productoSeleccionado;
+			this.producto = productoSeleccionado;
 		}
 	}
 
-	@SuppressWarnings("static-access")
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	@Command
 	public void activarComboBoxUnidades() {
-		if (producto.getIdProducto() != null) {
-			if (producto.isSeleccionar())
-				enableComboBoxUnidades = false;
-			else {
-				unidad = null;
-				enableComboBoxUnidades = true;
-				if (producto.getIdProducto() != null)
-					producto.setUnidad(productoService.getById(
-							producto.getIdProducto()).getUnidad());
-				else
-					producto.setUnidad(null);
+		if (this.producto.getIdProducto() != null) {
+			if (this.producto.isSeleccionar()) {
+				this.enableComboBoxUnidades = false;
+			} else {
+				this.unidad = null;
+				this.enableComboBoxUnidades = true;
+				if (this.producto.getIdProducto() != null) {
+					this.producto.setUnidad(this.productoService.getById(this.producto.getIdProducto()).getUnidad());
+				} else {
+					this.producto.setUnidad(null);
+				}
 			}
 		} else {
-			producto.setSeleccionar(false);
-			stockUtils
-					.showSuccessmessage(
-							"No se puede realizar una modificacion sobre un producto que aun no existe",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			this.producto.setSeleccionar(false);
+			StockUtils.showSuccessmessage("No se puede realizar una modificacion sobre un producto que aun no existe",
+					"warning", Integer.valueOf(0), null);
 		}
-
 	}
 
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	@Command
 	public void actualizaNombreUnidad() {
-		if (unidad != null)
-			producto.setUnidad(unidad);
+		if (this.unidad != null) {
+			this.producto.setUnidad(this.unidad);
+		}
 	}
 
-	@SuppressWarnings("static-access")
+	@NotifyChange({ "*" })
 	@Command
-	@NotifyChange("*")
+	public void copiarClave() {
+		if ((this.producto != null) && (this.producto.getClaveArmonizada() != null)) {
+			String clave = String.valueOf(this.producto.getClaveArmonizada().getGrupo())
+					+ String.valueOf(this.producto.getClaveArmonizada().getSubGrupo())
+					+ String.valueOf(this.producto.getClaveArmonizada().getClase());
+			if ((this.producto.getClaveArmonizada().getSubclase() != null)
+					&& (this.producto.getClaveArmonizada().getTipoDeBien() != null)) {
+				clave = clave + this.producto.getClaveArmonizada().getSubclase()
+						+ this.producto.getClaveArmonizada().getTipoDeBien();
+			}
+			this.producto.setClave(clave);
+		}
+	}
+
+	@Command
+	@NotifyChange({ "*" })
 	public void findProductos() {
-		if (buscarProducto.getNombre() != null
-				&& !buscarProducto.getNombre().isEmpty()) {
-			if (buscarProducto.getNombre().equals("*")) {
-				// productosDB = productoService.getAll();
-			} else {
-				productoDB = productoService.getByClaveNombre(buscarProducto
-						.getNombre());
+		if ((this.buscarProducto.getNombre() != null) && (!this.buscarProducto.getNombre().isEmpty())) {
+			if (!this.buscarProducto.getNombre().equals("*")) {
+				this.productoDB = this.productoService.getByClaveNombre(this.buscarProducto.getNombre());
 			}
-
-			if (productoDB != null) {
+			if (this.productoDB != null) {
 				String mensaje = "";
-				if (productoDB.size() == 1)
+				if (this.productoDB.size() == 1) {
 					mensaje = "producto";
-				else if (productoDB.size() > 1)
+				} else if (this.productoDB.size() > 1) {
 					mensaje = "productos";
+				}
+				if (this.buscarProducto.getNombre().equals("*")) {
+					StockUtils.showSuccessmessage(
+							"Tu b�squeda -" + this.buscarProducto.getNombre() + "- no obtuvo ning�n resultado",
+							"warning", Integer.valueOf(0), null);
+				} else {
+					StockUtils.showSuccessmessage("Tu b�squeda -" + this.buscarProducto.getNombre() + "- obtuvo "
+							+ this.productoDB.size() + " " + mensaje, "info", Integer.valueOf(0), null);
+				}
+				this.buscarProducto.setDescripcion(String.valueOf(this.productoDB.size()));
 
-				if (buscarProducto.getNombre().equals("*"))
-					stockUtils.showSuccessmessage("Tu búsqueda -"
-							+ buscarProducto.getNombre()
-							+ "- no obtuvo ningún resultado",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
-				else
-					stockUtils.showSuccessmessage("Tu búsqueda -"
-							+ buscarProducto.getNombre() + "- obtuvo "
-							+ productoDB.size() + " " + mensaje,
-							Clients.NOTIFICATION_TYPE_INFO, 0, null);
-				buscarProducto
-						.setDescripcion(String.valueOf(productoDB.size()));
-				producto = new Producto();
-				enableComboBoxUnidades = true;
-
-			} else
-				stockUtils.showSuccessmessage(
-						"Tu búsqueda -" + buscarProducto.getNombre()
-								+ "- no obtuvo ningún resultado",
-						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
-
+				this.producto = new Producto();
+				this.enableComboBoxUnidades = true;
+			} else {
+				StockUtils.showSuccessmessage(
+						"Tu b�squeda -" + this.buscarProducto.getNombre() + "- no obtuvo ning�n resultado", "warning",
+						Integer.valueOf(0), null);
+			}
 		} else {
-			stockUtils.showSuccessmessage(
-					"Tu búsqueda no obtuvo ningún resultado",
-					Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			StockUtils.showSuccessmessage("Tu b�squeda no obtuvo ning�n resultado", "error", Integer.valueOf(0), null);
 		}
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void findProductoPrecioCosto() {
-		if (buscarProducto.getNombre() != null
-				&& !buscarProducto.getNombre().isEmpty()) {
-			if (buscarProducto.getNombre().equals("*")) {
-				// productosDB = productoService.getAll();
-			} else {
-				producto = productoService
-						.getByClaveNombrePrecioCosto(buscarProducto.getNombre());
+		if ((this.buscarProducto.getNombre() != null) && (!this.buscarProducto.getNombre().isEmpty())) {
+			if (!this.buscarProducto.getNombre().equals("*")) {
+				this.producto = this.productoService.getByClaveNombrePrecioCosto(this.buscarProducto.getNombre());
 			}
+			if (this.producto != null) {
+				this.codigosBarrasProductos = this.codigoBarrasProductoService.getByProducto(this.producto);
 
-			if (producto != null) {
-				codigosBarrasProductos = codigoBarrasProductoService
-						.getByProducto(producto);
 				String mensaje = "";
 
-				stockUtils.showSuccessmessage("-" + buscarProducto.getNombre()
-						+ "- Ha sido encontrado.",
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+				StockUtils.showSuccessmessage("-" + this.buscarProducto.getNombre() + "- Ha sido encontrado.", "info",
+						Integer.valueOf(0), null);
 
-				/*
-				 * buscarProducto
-				 * .setDescripcion(String.valueOf(productosDB.size()));
-				 */
-				costosProducto = costosProductoService.getByProducto(producto);
-				if (costosProducto == null)
-					costosProducto = new CostosProducto();
+				this.costosProducto = this.costosProductoService.getByProducto(this.producto);
+				if (this.costosProducto == null) {
+					this.costosProducto = new CostosProducto();
+				}
 			} else {
-				producto = new Producto();
-				stockUtils.showSuccessmessage(
-						"Tu búsqueda -" + buscarProducto.getNombre()
-								+ "- no obtuvo ningún resultado",
-						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+				this.producto = new Producto();
+				StockUtils.showSuccessmessage(
+						"Tu b�squeda -" + this.buscarProducto.getNombre() + "- no obtuvo ning�n resultado", "warning",
+						Integer.valueOf(0), null);
 			}
-
 		} else {
-			producto = new Producto();
-			stockUtils.showSuccessmessage(
-					"Tu búsqueda no obtuvo ningún resultado",
-					Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			this.producto = new Producto();
+			StockUtils.showSuccessmessage("Tu b�squeda no obtuvo ning�n resultado", "error", Integer.valueOf(0), null);
 		}
 	}
 
-	@SuppressWarnings("static-access")
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	@Command
 	public void changeComboClasificacion() {
+		String mensaje = "Ningun producto encontrado de tipo: " + this.productoTipoSelected.getNombre();
 
-		String mensaje = "Ningun producto encontrado de tipo: "
-				+ productoTipoSelected.getNombre();
-		familiasProductos = familiasProductoService
-				.getByFamilia(productoTipoSelected);
-
-		if (familiasProductos != null) {
-			if (familiasProductos.size() == 1)
-				mensaje = "Se encontro " + familiasProductos.size()
-						+ " producto de tipo "
-						+ productoTipoSelected.getNombre();
-			else
-				mensaje = "Se encontraron " + familiasProductos.size()
-						+ " productos de tipo "
-						+ productoTipoSelected.getNombre();
-
-			stockUtils.showSuccessmessage(mensaje,
-					Clients.NOTIFICATION_TYPE_INFO, 0, clasificacionButton);
+		this.familiasProductos = this.familiasProductoService.getByFamilia(this.productoTipoSelected);
+		if (this.familiasProductos != null) {
+			if (this.familiasProductos.size() == 1) {
+				mensaje = "Se encontro " + this.familiasProductos.size() + " producto de tipo "
+						+ this.productoTipoSelected.getNombre();
+			} else {
+				mensaje = "Se encontraron " + this.familiasProductos.size() + " productos de tipo "
+						+ this.productoTipoSelected.getNombre();
+			}
+			StockUtils.showSuccessmessage(mensaje, "info", Integer.valueOf(0), this.clasificacionButton);
+		} else {
+			StockUtils.showSuccessmessage(mensaje, "warning", Integer.valueOf(0), this.clasificacionButton);
 		}
-
-		else {
-			stockUtils.showSuccessmessage(mensaje,
-					Clients.NOTIFICATION_TYPE_WARNING, 0, clasificacionButton);
-		}
-
-		/*
-		 * String mensaje = "Ningun producto encontrado de tipo: " +
-		 * productoTipoSelected.getNombre();
-		 * 
-		 * productoDB = productoService.getByTipo(productoTipoSelected);
-		 * 
-		 * if (productoDB != null) { if (productoDB.size() == 1) mensaje =
-		 * "Se encontro " + productoDB.size() + " producto de tipo " +
-		 * productoTipoSelected.getNombre(); else mensaje = "Se encontraron " +
-		 * productoDB.size() + " productos de tipo " +
-		 * productoTipoSelected.getNombre();
-		 * 
-		 * stockUtils.showSuccessmessage(mensaje,
-		 * Clients.NOTIFICATION_TYPE_INFO, 0, clasificacionButton); }
-		 * 
-		 * else{ stockUtils.showSuccessmessage(mensaje,
-		 * Clients.NOTIFICATION_TYPE_WARNING, 0, clasificacionButton); }
-		 */
-
 	}
 
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	@Command
 	public void changeComboPrecio() {
-		if (precioSelected != null && precioSelected.getTipo().equals("MAX"))
-			productoDB = productoService.getPreciosMaximos();
-		else if (precioSelected != null
-				&& precioSelected.getTipo().equals("MIN"))
-			productoDB = productoService.getPreciosMinimos();
-		else if (precioSelected != null
-				&& precioSelected.getTipo().equals("PRO"))
-			productoDB = productoService.getPreciosPromedio();
+		if ((this.precioSelected != null) && (this.precioSelected.getTipo().equals("MAX"))) {
+			this.productoDB = this.productoService.getPreciosMaximos();
+		} else if ((this.precioSelected != null) && (this.precioSelected.getTipo().equals("MIN"))) {
+			this.productoDB = this.productoService.getPreciosMinimos();
+		} else if ((this.precioSelected != null) && (this.precioSelected.getTipo().equals("PRO"))) {
+			this.productoDB = this.productoService.getPreciosPromedio();
+		}
 	}
 
-	@SuppressWarnings("static-access")
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	@Command
 	public void buscarPorPrecioPersonalizado() {
-		if (precioSelected != null && precioSelected.getTipo() != null) {
+		if ((this.precioSelected != null) && (this.precioSelected.getTipo() != null)) {
+			if ((this.precioSelected.getTipo() != null) && (this.precioSelected.getTipo().equals("PER"))) {
+				String mensaje = "Ningun producto encontrado de tipo: " + this.productoTipoSelected.getNombre();
 
-			if (precioSelected.getTipo() != null
-					&& precioSelected.getTipo().equals("PER")) {
-				String mensaje = "Ningun producto encontrado de tipo: "
-						+ productoTipoSelected.getNombre();
 				boolean numeroAceptado = false;
-				if (precioSelected.getPrecio() != null) {
+				if (this.precioSelected.getPrecio() != null) {
 					try {
-						Integer.parseInt(precioSelected.getPrecio());
+						Integer.parseInt(this.precioSelected.getPrecio());
 						numeroAceptado = true;
 					} catch (Exception e) {
 					}
-
 					if (numeroAceptado) {
-						productoDB = productoService.getByPrecio(precioSelected
-								.getPrecio());
-						if (productoDB != null) {
-							if (productoDB.size() == 1)
-								mensaje = "Se encontro " + productoDB.size()
-										+ " producto con precio: "
-										+ precioSelected.getNombre();
-							else
-								mensaje = "Se encontraron " + productoDB.size()
-										+ " productos con precio "
-										+ precioSelected.getNombre();
-
+						this.productoDB = this.productoService.getByPrecio(this.precioSelected.getPrecio());
+						if (this.productoDB != null) {
+							if (this.productoDB.size() == 1) {
+								mensaje = "Se encontro " + this.productoDB.size() + " producto con precio: "
+										+ this.precioSelected.getNombre();
+							} else {
+								mensaje = "Se encontraron " + this.productoDB.size() + " productos con precio "
+										+ this.precioSelected.getNombre();
+							}
 						}
-						stockUtils.showSuccessmessage(mensaje,
-								Clients.NOTIFICATION_TYPE_INFO, 0, null);
-					} else
-						stockUtils
-								.showSuccessmessage(
-										"El valor debe ser numerico, INTENTE NUEVAMENTE",
-										Clients.NOTIFICATION_TYPE_ERROR, 0,
-										null);
-				} else
-					stockUtils.showSuccessmessage(
-							"Campo requerido para realizar la busqueda",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+						StockUtils.showSuccessmessage(mensaje, "info", Integer.valueOf(0), null);
+					} else {
+						StockUtils.showSuccessmessage("El valor debe ser numerico, INTENTE NUEVAMENTE", "error",
+								Integer.valueOf(0), null);
+					}
+				} else {
+					StockUtils.showSuccessmessage("Campo requerido para realizar la busqueda", "warning",
+							Integer.valueOf(0), null);
+				}
 			} else {
-				stockUtils
-						.showSuccessmessage(
-								"La busqueda que desea realizar corresponde solo a la categoria PRECIO PERSONALIZADO",
-								Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+				StockUtils.showSuccessmessage(
+						"La busqueda que desea realizar corresponde solo a la categoria PRECIO PERSONALIZADO",
+						"warning", Integer.valueOf(0), null);
 			}
-		} else
-			stockUtils
-					.showSuccessmessage(
-							"Es necesario seleccionar una de las categorias de los precios",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+		} else {
+			StockUtils.showSuccessmessage("Es necesario seleccionar una de las categorias de los precios", "warning",
+					Integer.valueOf(0), null);
+		}
 	}
 
-	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void reporteProductos() {
-		if (productoDB != null) {
-
+		if (this.productoDB != null) {
 			HashMap mapa = new HashMap();
-			mapa.put(StockConstants.REPORT_PROVEEDOR_PARAM1,
-					"REPORTE DE PRODUCTOS");
-			mapa.put(StockConstants.REPORT_PROVEEDOR_NOMBRE_EMPRESA,
-					"PROVEEDORA DE MATERIAL ELECTRICO Y PLOMERIA S.A. de C.V.");
-			List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
+			mapa.put("parameter1", "REPORTE DE PRODUCTOS");
+
+			mapa.put("empresaTitle", "PROVEEDORA DE MATERIAL ELECTRICO Y PLOMERIA S.A. de C.V.");
+
+			List<HashMap> listaHashsParametros = new ArrayList();
 			listaHashsParametros.add(mapa);
 
-			List<AplicacionExterna> aplicaciones = new ArrayList<AplicacionExterna>();
+			List<AplicacionExterna> aplicaciones = new ArrayList();
 			AplicacionExterna aplicacion = new AplicacionExterna();
 			aplicacion.setNombre("PDFXCview");
 			aplicaciones.add(aplicacion);
 
-			stockUtils.showSuccessmessage(
-					generarReportePrductos(listaHashsParametros, aplicaciones,
-							productoDB), Clients.NOTIFICATION_TYPE_INFO, 0,
-					null);
+			StockUtils.showSuccessmessage(generarReportePrductos(listaHashsParametros, aplicaciones, this.productoDB),
+					"info", Integer.valueOf(0), null);
 		} else {
-			stockUtils
-					.showSuccessmessage(
-							"NO existe algún resultado de busqueda para generar el reporte (PDF)",
-							Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			StockUtils.showSuccessmessage("NO existe alg�n resultado de busqueda para generar el reporte (PDF)",
+					"error", Integer.valueOf(0), null);
 		}
 	}
 
-	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void reporteProductosClasificacion() {
-		if (productoDB != null) {
-
+		if (this.productoDB != null) {
 			HashMap mapa = new HashMap();
-			mapa.put(StockConstants.REPORT_PROVEEDOR_PARAM1,
-					"REPORTE PRODUCTOS DE : ''"
-							+ productoTipoSelected.getNombre().toUpperCase()
-							+ "''");
-			mapa.put(StockConstants.REPORT_PROVEEDOR_NOMBRE_EMPRESA,
-					"PROVEEDORA DE MATERIAL ELECTRICO Y PLOMERIA S.A. de C.V.");
-			List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
+			mapa.put("parameter1",
+					"REPORTE PRODUCTOS DE : ''" + this.productoTipoSelected.getNombre().toUpperCase() + "''");
+
+			mapa.put("empresaTitle", "PROVEEDORA DE MATERIAL ELECTRICO Y PLOMERIA S.A. de C.V.");
+
+			List<HashMap> listaHashsParametros = new ArrayList();
 			listaHashsParametros.add(mapa);
 
-			List<AplicacionExterna> aplicaciones = new ArrayList<AplicacionExterna>();
+			List<AplicacionExterna> aplicaciones = new ArrayList();
 			AplicacionExterna aplicacion = new AplicacionExterna();
 			aplicacion.setNombre("PDFXCview");
 			aplicaciones.add(aplicacion);
 
-			// readJasper = getReadJasperReconstruccion(readJasper, file)
-
-			stockUtils.showSuccessmessage(
-					generarReportePrductos(listaHashsParametros, aplicaciones,
-							productoDB), Clients.NOTIFICATION_TYPE_INFO, 0,
-					null);
+			StockUtils.showSuccessmessage(generarReportePrductos(listaHashsParametros, aplicaciones, this.productoDB),
+					"info", Integer.valueOf(0), null);
 		} else {
-			stockUtils
-					.showSuccessmessage(
-							"NO existe algún resultado de busqueda para generar el reporte (PDF)",
-							Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			StockUtils.showSuccessmessage("NO existe alg�n resultado de busqueda para generar el reporte (PDF)",
+					"error", Integer.valueOf(0), null);
 		}
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void agregaFamiliaADerecha() {
-		if (productoTipoSelected != null
-				&& productoTipoSelected.getIdProductoTipo() != null) {
+		if ((this.productoTipoSelected != null) && (this.productoTipoSelected.getIdProductoTipo() != null)) {
 			boolean agregarProductoTipo = true;
-			if (familiasProductos != null && familiasProductos.size() > 0) {
-				for (int i = 0; i < familiasProductos.size(); i++) {
-					if (productoTipoSelected.equals(familiasProductos.get(i)
-							.getProductoTipo())) {
+			if ((this.familiasProductos != null) && (this.familiasProductos.size() > 0)) {
+				for (int i = 0; i < this.familiasProductos.size(); i++) {
+					if (this.productoTipoSelected
+							.equals(((FamiliasProducto) this.familiasProductos.get(i)).getProductoTipo())) {
 						agregarProductoTipo = false;
 						break;
 					}
 				}
-			} else {
 			}
-
 			if (agregarProductoTipo) {
-				if (familiasProductos == null)
-					familiasProductos = new ArrayList<FamiliasProducto>();
-				FamiliasProducto familiasProducto = new FamiliasProducto();
-				familiasProducto.setProductoTipo(productoTipoSelected);
-				familiasProducto.setProducto(producto);
-				familiasProductos.add(familiasProducto);
-			}
-
-		}
-	}
-
-	@Command
-	@NotifyChange("*")
-	public void quitarFamiliaAIzquierda() {
-
-		if (familiasProductos != null && familiasProductos.size() > 0) {
-			if (familiasProducto != null) {
-
-				if (familiasProducto.getIdFamiliasProducto() != null)
-					familiasProductoService.delete(familiasProducto);
-				familiasProductos.remove(familiasProducto);
-			}
-		}
-	}
-
-	@Command
-	@NotifyChange("*")
-	public void obtenerListaFamiliasProducto() {
-		if (producto != null)
-			familiasProductos = familiasProductoService.getByProducto(producto);
-	}
-
-	@SuppressWarnings("static-access")
-	@Command
-	@NotifyChange("*")
-	public void addNewItemCodigo() {
-		if (producto != null && producto.getIdProducto() != null) {
-			if (codigosBarrasProductos == null)
-				codigosBarrasProductos = new ArrayList<CodigoBarrasProducto>();
-
-			if (codigosBarrasProductos.size() > 0) {
-
-				if (codigosBarrasProductos.get(
-						codigosBarrasProductos.size() - 1)
-						.getIdCodigoBarrasProducto() == null
-						&& codigosBarrasProductos.get(
-								codigosBarrasProductos.size() - 1).getCodigo() == null) {
-
-				} else {
-					CodigoBarrasProducto nuevoItem = new CodigoBarrasProducto();
-					nuevoItem.setProducto(producto);
-					codigosBarrasProductos.add(nuevoItem);
+				if (this.familiasProductos == null) {
+					this.familiasProductos = new ArrayList();
 				}
+				FamiliasProducto familiasProducto = new FamiliasProducto();
+				familiasProducto.setProductoTipo(this.productoTipoSelected);
+				familiasProducto.setProducto(this.producto);
+				this.familiasProductos.add(familiasProducto);
+			}
+		}
+	}
 
+	@Command
+	@NotifyChange({ "*" })
+	public void quitarFamiliaAIzquierda() {
+		if ((this.familiasProductos != null) && (this.familiasProductos.size() > 0)
+				&& (this.familiasProducto != null)) {
+			if (this.familiasProducto.getIdFamiliasProducto() != null) {
+				this.familiasProductoService.delete(this.familiasProducto);
+			}
+			this.familiasProductos.remove(this.familiasProducto);
+		}
+	}
+
+	@Command
+	@NotifyChange({ "claveAr1" })
+	public void obtenerListaFamiliasProducto() {
+		if (this.producto != null) {
+			this.familiasProductos = this.familiasProductoService.getByProducto(this.producto);
+		}
+	}
+
+	@Command
+	@NotifyChange({ "*" })
+	public void addNewItemCodigo() {
+		if ((this.producto != null) && (this.producto.getIdProducto() != null)) {
+			if (this.codigosBarrasProductos == null) {
+				this.codigosBarrasProductos = new ArrayList();
+			}
+			if (this.codigosBarrasProductos.size() > 0) {
+				if ((((CodigoBarrasProducto) this.codigosBarrasProductos.get(this.codigosBarrasProductos.size() - 1))
+						.getIdCodigoBarrasProducto() != null)
+						|| (((CodigoBarrasProducto) this.codigosBarrasProductos
+								.get(this.codigosBarrasProductos.size() - 1)).getCodigo() != null)) {
+					CodigoBarrasProducto nuevoItem = new CodigoBarrasProducto();
+					nuevoItem.setProducto(this.producto);
+					this.codigosBarrasProductos.add(nuevoItem);
+				}
 			} else {
 				CodigoBarrasProducto nuevoItem = new CodigoBarrasProducto();
-				nuevoItem.setProducto(producto);
-				codigosBarrasProductos.add(nuevoItem);
+				nuevoItem.setProducto(this.producto);
+				this.codigosBarrasProductos.add(nuevoItem);
 			}
-
 		} else {
-			stockUtils
-					.showSuccessmessage(
-							"para poder agregar un codigo, asegurese de haber cargado un producto",
-							Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			StockUtils.showSuccessmessage("para poder agregar un codigo, asegurese de haber cargado un producto",
+					"error", Integer.valueOf(0), null);
 		}
-
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void delItemCodigo() {
-		if (codigoBarrasProducto != null && codigoBarrasProducto.isSelected()) {
-			if (codigosBarrasProductos.size() > 0) {
-				codigosBarrasProductos.remove(codigoBarrasProducto);
-				if (codigoBarrasProducto.getIdCodigoBarrasProducto() != null)
-					codigoBarrasProductoService.delete(codigoBarrasProducto);
-
-				if (codigoBarrasProducto.getCodigo() != null)
-					stockUtils.showSuccessmessage(
-							codigoBarrasProducto.getCodigo()
-									+ " ha sido eliminado",
-							Clients.NOTIFICATION_TYPE_INFO, 0, null);
-
-				codigoBarrasProducto = new CodigoBarrasProducto();
+		if ((this.codigoBarrasProducto != null) && (this.codigoBarrasProducto.isSelected())
+				&& (this.codigosBarrasProductos.size() > 0)) {
+			this.codigosBarrasProductos.remove(this.codigoBarrasProducto);
+			if (this.codigoBarrasProducto.getIdCodigoBarrasProducto() != null) {
+				this.codigoBarrasProductoService.delete(this.codigoBarrasProducto);
 			}
+			if (this.codigoBarrasProducto.getCodigo() != null) {
+				StockUtils.showSuccessmessage(this.codigoBarrasProducto.getCodigo() + " ha sido eliminado", "info",
+						Integer.valueOf(0), null);
+			}
+			this.codigoBarrasProducto = new CodigoBarrasProducto();
 		}
 	}
 
 	@Command
 	public void codigoSeleccionado() {
-		codigoBarrasProducto.setSelected(true);
-		codigoBarrasProducto.setProducto(producto);
+		this.codigoBarrasProducto.setSelected(true);
+		this.codigoBarrasProducto.setProducto(this.producto);
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void guardarCodigosBarras() {
-		if (codigosBarrasProductos != null && codigosBarrasProductos.size() > 0) {
-			for (CodigoBarrasProducto item : codigosBarrasProductos) {
-				item.setProducto(producto);
-				if (item.getCodigo() != null && !item.getCodigo().isEmpty()) {
+		if ((this.codigosBarrasProductos != null) && (this.codigosBarrasProductos.size() > 0)) {
+			for (CodigoBarrasProducto item : this.codigosBarrasProductos) {
+				item.setProducto(this.producto);
+				if ((item.getCodigo() != null) && (!item.getCodigo().isEmpty())) {
 					item.setCodigo(item.getCodigo().toUpperCase());
-					codigoBarrasProductoService.save(item);
+					this.codigoBarrasProductoService.save(item);
 				}
-
 			}
-			stockUtils.showSuccessmessage(
-					"Nuevos codigos han sido guardados para el producto "
-							+ producto.getNombre(),
-					Clients.NOTIFICATION_TYPE_INFO, 0, null);
-		} else
-			stockUtils.showSuccessmessage("No se llevo a cabo ningun cambio",
-					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			StockUtils.showSuccessmessage(
+					"Nuevos codigos han sido guardados para el producto " + this.producto.getNombre(), "info",
+					Integer.valueOf(0), null);
+		} else {
+			StockUtils.showSuccessmessage("No se llevo a cabo ningun cambio", "warning", Integer.valueOf(0), null);
+		}
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void actualizarPrecioCosto() {
-
-		if (producto != null && producto.getIdProducto() != null) {
+		if ((this.producto != null) && (this.producto.getIdProducto() != null)) {
 			String mensaje = "";
-			if (costosProductoNuevo.getReposicionUnitario() != null
-					&& costosProductoNuevo.getReposicionActualizado() != null
-					&& costosProductoNuevo.getMaximoUnitario() != null
-					&& costosProductoNuevo.getMaximoActualizado() != null) {
-				costosProductoNuevo.setProducto(producto);
-				costosProductoService.save(costosProductoNuevo);
-				mensaje += "costos";
+			if ((this.costosProductoNuevo.getReposicionUnitario() != null)
+					&& (this.costosProductoNuevo.getReposicionActualizado() != null)
+					&& (this.costosProductoNuevo.getMaximoUnitario() != null)
+					&& (this.costosProductoNuevo.getMaximoActualizado() != null)) {
+				this.costosProductoNuevo.setProducto(this.producto);
+				this.costosProductoService.save(this.costosProductoNuevo);
+				mensaje = mensaje + "costos";
 			}
+			if (!mensaje.equals("")) {
+				mensaje = mensaje + " y precios han sido actualizados";
+			} else {
+				mensaje = mensaje + " los precios han sido actualizados";
+			}
+			this.productoService.save(this.producto);
 
-			if (!mensaje.equals(""))
-				mensaje += " y precios han sido actualizados";
-			else
-				mensaje += " los precios han sido actualizados";
-			productoService.save(producto);
+			this.costosProducto = this.costosProductoService.getByProducto(this.producto);
+			if (this.costosProducto == null) {
+				this.costosProducto = new CostosProducto();
+			}
+			this.costosProductoNuevo = new CostosProducto();
 
-			costosProducto = costosProductoService.getByProducto(producto);
-			if (costosProducto == null)
-				costosProducto = new CostosProducto();
-
-			costosProductoNuevo = new CostosProducto();
-
-			stockUtils.showSuccessmessage(mensaje,
-					Clients.NOTIFICATION_TYPE_INFO, 0, null);
-
-		} else
-			stockUtils.showSuccessmessage(
-					"Asegurese de haber cargado primero un producto",
-					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			StockUtils.showSuccessmessage(mensaje, "info", Integer.valueOf(0), null);
+		} else {
+			StockUtils.showSuccessmessage("Asegurese de haber cargado primero un producto", "warning",
+					Integer.valueOf(0), null);
+		}
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void precioMasivoFamilia() {
-		if (productoTipoDB == null || productoTipoDB.size() == 0)
-			productoTipoDB = productoTipoService.getAll();
-		hiddeFamilia = true;
-		hiddeProveedor = false;
+		if ((this.productoTipoDB == null) || (this.productoTipoDB.size() == 0)) {
+			this.productoTipoDB = this.productoTipoService.getAll();
+		}
+		this.hiddeFamilia = true;
+		this.hiddeProveedor = false;
 
 		System.err.println("familia");
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void precioMasivoProveedor() {
 		System.err.println("proveedor");
-		hiddeFamilia = false;
-		hiddeProveedor = true;
+		this.hiddeFamilia = false;
+		this.hiddeProveedor = true;
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void seleccionNaturalezaProducto() {
-		if (productoNaturaleza != null) {
-			if (productoNaturaleza.getNombre().equals("Producto")) {
-				producto.setCambioNaturaleza(false);
-				producto.setEnExistencia(null);
+		if (this.productoNaturaleza != null) {
+			if (this.productoNaturaleza.getNombre().equals("Producto")) {
+				this.producto.setCambioNaturaleza(false);
+				this.producto.setEnExistencia(null);
 			} else {
-				producto.setCambioNaturaleza(true);
-				producto.setEnExistencia(null);
+				this.producto.setCambioNaturaleza(true);
+				this.producto.setEnExistencia(null);
 			}
-
 		}
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void buscarPorFamilia() {
-		modoDeBusqueda.setOcultarFamilia(false);
-		modoDeBusqueda.setOcultarPersonalizado(true);
-		modoDeBusqueda.setTipoFamilia(false);
-		modoDeBusqueda.setTipoPersonalizado(true);
-		familiasProductos = new ArrayList<FamiliasProducto>();
-		familiasProducto = new FamiliasProducto();
-		producto = new Producto();
+		this.modoDeBusqueda.setOcultarFamilia(false);
+		this.modoDeBusqueda.setOcultarPersonalizado(true);
+		this.modoDeBusqueda.setTipoFamilia(false);
+		this.modoDeBusqueda.setTipoPersonalizado(true);
+		this.familiasProductos = new ArrayList();
+		this.familiasProducto = new FamiliasProducto();
+		this.producto = new Producto();
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void buscarPorPerzonalizado() {
-		modoDeBusqueda.setOcultarFamilia(true);
-		modoDeBusqueda.setOcultarPersonalizado(false);
-		modoDeBusqueda.setTipoFamilia(true);
-		modoDeBusqueda.setTipoPersonalizado(false);
-		productoDB = new ArrayList<Producto>();
-		producto = new Producto();
+		this.modoDeBusqueda.setOcultarFamilia(true);
+		this.modoDeBusqueda.setOcultarPersonalizado(false);
+		this.modoDeBusqueda.setTipoFamilia(true);
+		this.modoDeBusqueda.setTipoPersonalizado(false);
+		this.productoDB = new ArrayList();
+		this.producto = new Producto();
 	}
 
-	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void reporteProductosClasificacionSubmenu() {
-		if (familiasProductos != null && familiasProductos.size() > 0) {
-			if (productoDB == null)
-				productoDB = new ArrayList<Producto>();
-
-			for (FamiliasProducto fp : familiasProductos) {
-				productoDB.add(fp.getProducto());
+		if ((this.familiasProductos != null) && (this.familiasProductos.size() > 0)) {
+			if (this.productoDB == null) {
+				this.productoDB = new ArrayList();
 			}
-			if (productoDB != null) {
-
+			for (FamiliasProducto fp : this.familiasProductos) {
+				this.productoDB.add(fp.getProducto());
+			}
+			if (this.productoDB != null) {
 				HashMap mapa = new HashMap();
-				mapa.put(StockConstants.REPORT_PROVEEDOR_PARAM1,
-						"REPORTE PRODUCTOS DE : ''"
-								+ productoTipoSelected.getNombre()
-										.toUpperCase() + "''");
-				mapa.put(StockConstants.REPORT_PROVEEDOR_NOMBRE_EMPRESA,
-						"PROVEEDORA DE MATERIAL ELECTRICO Y PLOMERIA S.A. de C.V.");
-				List<HashMap> listaHashsParametros = new ArrayList<HashMap>();
+				mapa.put("parameter1",
+						"REPORTE PRODUCTOS DE : ''" + this.productoTipoSelected.getNombre().toUpperCase() + "''");
+
+				mapa.put("empresaTitle", "PROVEEDORA DE MATERIAL ELECTRICO Y PLOMERIA S.A. de C.V.");
+
+				List<HashMap> listaHashsParametros = new ArrayList();
 				listaHashsParametros.add(mapa);
 
-				List<AplicacionExterna> aplicaciones = new ArrayList<AplicacionExterna>();
+				List<AplicacionExterna> aplicaciones = new ArrayList();
 				AplicacionExterna aplicacion = new AplicacionExterna();
 				aplicacion.setNombre("PDFXCview");
 				aplicaciones.add(aplicacion);
 
-				stockUtils.showSuccessmessage(
-						generarReportePrductos(listaHashsParametros,
-								aplicaciones, productoDB),
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
+				StockUtils.showSuccessmessage(
+						generarReportePrductos(listaHashsParametros, aplicaciones, this.productoDB), "info",
+						Integer.valueOf(0), null);
 			} else {
-				stockUtils
-						.showSuccessmessage(
-								"NO existe algún resultado de busqueda para generar el reporte (PDF)",
-								Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+				StockUtils.showSuccessmessage("NO existe alg�n resultado de busqueda para generar el reporte (PDF)",
+						"error", Integer.valueOf(0), null);
 			}
 		}
+	}
 
+	public Button getSaveButton() {
+		return this.saveButton;
+	}
+
+	public void setSaveButton(Button saveButton) {
+		this.saveButton = saveButton;
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void selectTabPrecio() {
-		/*monedasDB = new ArrayList<Moneda>();
-		monedasDB = monedaService.getAll();*/
 	}
 
+	@Command
+	@NotifyChange({ "*" })
+	public void cargarListaProductos() {
+		this.productoDB = this.productoService.getAll();
+		if (this.productoDB != null) {
+			this.modoDeBusqueda.setOcultarFamilia(true);
+		}
+	}
 }

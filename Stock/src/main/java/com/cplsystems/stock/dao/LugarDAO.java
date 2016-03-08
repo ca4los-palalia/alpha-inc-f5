@@ -1,28 +1,19 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Lugar;
 import com.cplsystems.stock.domain.Proyecto;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface LugarDAO {
+	public abstract void save(Lugar paramLugar);
 
-public interface LugarDAO {
+	public abstract void delete(Lugar paramLugar);
 
-	public void save(Lugar lugar);
+	public abstract Lugar getById(Long paramLong);
 
-	public void delete(Lugar lugar);
+	public abstract Lugar getByIdProyecto(Proyecto paramProyecto);
 
-	public Lugar getById(Long idLugar);
+	public abstract Lugar getByNombre(String paramString);
 
-	public Lugar getByIdProyecto(Proyecto proyecto);
-
-	public Lugar getByNombre(String nombre);
-
-	public List<Lugar> getAll();
+	public abstract List<Lugar> getAll();
 }

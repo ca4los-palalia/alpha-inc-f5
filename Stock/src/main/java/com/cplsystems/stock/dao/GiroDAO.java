@@ -1,26 +1,16 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Giro;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Giro;
+public abstract interface GiroDAO {
+	public abstract void save(Giro paramGiro);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void delete(Giro paramGiro);
 
-public interface GiroDAO {
+	public abstract Giro getById(Long paramLong);
 
-	public void save(Giro giro);
+	public abstract List<Giro> getAll();
 
-	public void delete(Giro giro);
-
-	public Giro getById(Long idGiro);
-
-	public List<Giro> getAll();
-	
-	public Giro getByNombre(String nombre);
-	
+	public abstract Giro getByNombre(String paramString);
 }

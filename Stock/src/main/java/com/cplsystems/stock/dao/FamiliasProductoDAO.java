@@ -1,32 +1,22 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.FamiliasProducto;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.ProductoTipo;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface FamiliasProductoDAO {
+	public abstract void save(FamiliasProducto paramFamiliasProducto);
 
-public interface FamiliasProductoDAO {
+	public abstract void update(FamiliasProducto paramFamiliasProducto);
 
-	public void save(FamiliasProducto familiasProducto);
-	
-	public void update(FamiliasProducto familiasProducto);
+	public abstract void delete(FamiliasProducto paramFamiliasProducto);
 
-	public void delete(FamiliasProducto familiasProducto);
+	public abstract FamiliasProducto getById(Long paramLong);
 
-	public FamiliasProducto getById(Long idFamiliasProducto);
+	public abstract List<FamiliasProducto> getAll();
 
-	public List<FamiliasProducto> getAll();
+	public abstract List<FamiliasProducto> getByProducto(Producto paramProducto);
 
-	public List<FamiliasProducto> getByProducto(Producto producto);
-	
-	public List<FamiliasProducto> getByFamilia(ProductoTipo productoTipo);
-
+	public abstract List<FamiliasProducto> getByFamilia(ProductoTipo paramProductoTipo);
 }

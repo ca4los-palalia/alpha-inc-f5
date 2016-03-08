@@ -1,29 +1,20 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.EstatusRequisicion;
 import java.util.List;
 
-import com.cplsystems.stock.domain.EstatusRequisicion;
+public abstract interface EstatusRequisicionDAO {
+	public abstract void save(EstatusRequisicion paramEstatusRequisicion);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void delete(EstatusRequisicion paramEstatusRequisicion);
 
-public interface EstatusRequisicionDAO {
+	public abstract EstatusRequisicion getById(Long paramLong);
 
-	public void save(EstatusRequisicion estatusRequisicion);
+	public abstract List<EstatusRequisicion> getAll();
 
-	public void delete(EstatusRequisicion estatusRequisicion);
+	public abstract EstatusRequisicion getByNombre(String paramString);
 
-	public EstatusRequisicion getById(Long idEstatusRequisicion);
+	public abstract EstatusRequisicion getByClave(String paramString);
 
-	public List<EstatusRequisicion> getAll();
-	
-	public EstatusRequisicion getByNombre(String nombre);
-	
-	public EstatusRequisicion getByClave(String clave);
-	
-	public EstatusRequisicion getByEstado(boolean estado);
+	public abstract EstatusRequisicion getByEstado(boolean paramBoolean);
 }

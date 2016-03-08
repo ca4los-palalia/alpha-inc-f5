@@ -1,7 +1,6 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,9 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "direccion")
 public class Direccion implements Serializable {
-
 	private static final long serialVersionUID = -46282038792540869L;
-	
 	private Long idDireccion;
 	private String calle;
 	private String colonia;
@@ -28,23 +25,21 @@ public class Direccion implements Serializable {
 	private Estado estado;
 	private Municipio municipio;
 	private Pais pais;
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	public Long getIdDireccion() {
-		return idDireccion;
+		return this.idDireccion;
 	}
 
 	public void setIdDireccion(Long idDireccion) {
 		this.idDireccion = idDireccion;
 	}
-	
 
 	@Column
 	public String getCalle() {
-		return calle;
+		return this.calle;
 	}
 
 	public void setCalle(String calle) {
@@ -53,7 +48,7 @@ public class Direccion implements Serializable {
 
 	@Column
 	public String getCuidad() {
-		return cuidad;
+		return this.cuidad;
 	}
 
 	public void setCuidad(String cuidad) {
@@ -62,7 +57,7 @@ public class Direccion implements Serializable {
 
 	@Column
 	public String getColonia() {
-		return colonia;
+		return this.colonia;
 	}
 
 	public void setColonia(String colonia) {
@@ -71,7 +66,7 @@ public class Direccion implements Serializable {
 
 	@Column
 	public String getCp() {
-		return cp;
+		return this.cp;
 	}
 
 	public void setCp(String cp) {
@@ -80,7 +75,7 @@ public class Direccion implements Serializable {
 
 	@Column
 	public String getNumExt() {
-		return numExt;
+		return this.numExt;
 	}
 
 	public void setNumExt(String numExt) {
@@ -89,43 +84,40 @@ public class Direccion implements Serializable {
 
 	@Column
 	public String getNumInt() {
-		return numInt;
+		return this.numInt;
 	}
 
 	public void setNumInt(String numInt) {
 		this.numInt = numInt;
 	}
-	
-	@OneToOne (fetch = FetchType.LAZY)
+
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "estado")
 	public Estado getEstado() {
-		return estado;
+		return this.estado;
 	}
-	
+
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
-	
-	@OneToOne (fetch = FetchType.LAZY)
+
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "municipio")
 	public Municipio getMunicipio() {
-		return municipio;
+		return this.municipio;
 	}
 
 	public void setMunicipio(Municipio municipio) {
 		this.municipio = municipio;
 	}
 
-	@OneToOne (fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pais")
 	public Pais getPais() {
-		return pais;
+		return this.pais;
 	}
-	
+
 	public void setPais(Pais pais) {
 		this.pais = pais;
 	}
-	
-	
-
 }

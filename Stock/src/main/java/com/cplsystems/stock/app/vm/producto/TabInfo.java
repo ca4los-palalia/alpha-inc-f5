@@ -3,14 +3,13 @@ package com.cplsystems.stock.app.vm.producto;
 import com.cplsystems.stock.domain.ProductoTipo;
 
 public class TabInfo {
-
 	private String path;
 	private String icono;
 	private ProductoTipo productoTipo;
 	private Integer index;
 
 	public String getPath() {
-		return path;
+		return this.path;
 	}
 
 	public void setPath(String path) {
@@ -18,7 +17,7 @@ public class TabInfo {
 	}
 
 	public String getIcono() {
-		return icono;
+		return this.icono;
 	}
 
 	public void setIcono(String icono) {
@@ -26,7 +25,7 @@ public class TabInfo {
 	}
 
 	public ProductoTipo getProductoTipo() {
-		return productoTipo;
+		return this.productoTipo;
 	}
 
 	public void setProductoTipo(ProductoTipo productoTipo) {
@@ -34,11 +33,10 @@ public class TabInfo {
 	}
 
 	public Integer getIndex() {
-		return index;
+		return this.index;
 	}
 
 	public void setIndex(Integer index) {
 		this.index = index;
 	}
-	
 }

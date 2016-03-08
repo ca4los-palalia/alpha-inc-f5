@@ -1,25 +1,16 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Proyecto;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Proyecto;
+public abstract interface ProyectoDAO {
+	public abstract void save(Proyecto paramProyecto);
 
-/**
- * @author Carlos Palalía López
- */
-public interface ProyectoDAO {
+	public abstract void delete(Proyecto paramProyecto);
 
-	public void save(Proyecto proyecto);
+	public abstract Proyecto getById(Long paramLong);
 
-	public void delete(Proyecto proyecto);
+	public abstract List<Proyecto> getAll();
 
-	public Proyecto getById(Long idProyecto);
-
-	public List<Proyecto> getAll();
-
-	public Proyecto getById(String nombre);
-
+	public abstract Proyecto getById(String paramString);
 }

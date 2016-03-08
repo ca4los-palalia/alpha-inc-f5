@@ -1,27 +1,18 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Area;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Area;
+public abstract interface AreaDAO {
+	public abstract void save(Area paramArea);
 
+	public abstract void update(Area paramArea);
 
-/**
- * @author Carlos Palalía López
- */
-public interface AreaDAO {
+	public abstract void delete(Area paramArea);
 
-	public void save(Area area);
-	
-	public void update(Area area);
+	public abstract Area getById(Long paramLong);
 
-	public void delete(Area area);
+	public abstract List<Area> getAll();
 
-	public Area getById(Long idArea);
-
-	public List<Area> getAll();
-	
-	public Area getByNombre(String nombre);
+	public abstract Area getByNombre(String paramString);
 }

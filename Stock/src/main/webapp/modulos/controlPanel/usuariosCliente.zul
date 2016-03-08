@@ -22,7 +22,7 @@
 							<button image="/images/toolbar/newDoc.png"
 								sclass="web_button" onClick="@command('nevoUsuarioCliente')"
 								tooltiptext="Registrar nuevo usuario para esta organización" />
-							<button image="/images/toolbar/update.png"
+							<button image="/images/toolbar/saveOff.png"
 								sclass="web_button" onClick="@command('saveChanges')"
 								tooltiptext="Guardar cambios" />
 							<button image="/images/toolbar/delete.png"

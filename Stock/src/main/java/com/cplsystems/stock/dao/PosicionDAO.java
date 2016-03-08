@@ -1,27 +1,18 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Posicion;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Posicion;
+public abstract interface PosicionDAO {
+	public abstract void saveOrUpdate(Posicion paramPosicion);
 
+	public abstract void update(Posicion paramPosicion);
 
-/**
- * @author Carlos Palalía López
- */
-public interface PosicionDAO {
+	public abstract void save(Posicion paramPosicion);
 
-	public void saveOrUpdate(Posicion posicion);
+	public abstract void delete(Posicion paramPosicion);
 
-	public void update(Posicion posicion);
-	
-	public void save(Posicion posicion);
-	
-	public void delete(Posicion posicion);
+	public abstract Posicion getById(Long paramLong);
 
-	public Posicion getById(Long idPosicion);
-
-	public List<Posicion> getAll();
+	public abstract List<Posicion> getAll();
 }

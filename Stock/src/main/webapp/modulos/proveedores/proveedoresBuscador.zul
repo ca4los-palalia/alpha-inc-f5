@@ -113,7 +113,7 @@
 						<tab label="Informacion general" />
 						<tab label="Contacto" />
 						<tab label="Contrato" />
-						<tab label="Cuenta pago" />
+						<tab label="Cuenta pago" onSelect="@command('selectTabCuentaPago')"/>
 						<tab label="Productos" />
 					</tabs>
 					<tabpanels>
@@ -169,12 +169,29 @@
 									<row
 										style="background-color:transparent; border: 0;">
 										<label value="*País:" />
-										<label
-											value="@bind(pvm.proveedorSelected.direccionFiscal.pais.nombre)" />
-	
+										
+										<combobox model="@bind(pvm.paises)"
+											autocomplete="true"
+											selectedItem="@bind(pvm.paisProveedor)"
+											width="100%">
+											<template name="model">
+												<comboitem
+													label="@load(each.nombre)" />
+											</template>
+										</combobox>
+										
+										
 										<label value="*Estado:" />
-										<label
-											value="@bind(pvm.proveedorSelected.direccionFiscal.estado.nombre)" />
+											
+										<combobox model="@bind(pvm.estados)"
+											autocomplete="true" onSelect="@command('seleccionarComboEstado')"
+											selectedItem="@bind(pvm.estadoProveedor)"
+											width="100%">
+											<template name="model">
+												<comboitem
+													label="@load(each.nombre)" />
+											</template>
+										</combobox>
 	
 									</row>
 									<row
@@ -184,8 +201,17 @@
 											value="@bind(pvm.proveedorSelected.direccionFiscal.cuidad)"
 											maxlength="20" width="100%" />
 										<label value="*Municipio:" />
-										<label
-											value="@bind(pvm.proveedorSelected.direccionFiscal.municipio.nombre)" />
+										<combobox model="@bind(pvm.municipios)"
+											autocomplete="true"
+											selectedItem="@bind(pvm.municipioProveedor)"
+											width="100%">
+											<template name="model">
+												<comboitem
+													label="@load(each.nombre)" />
+											</template>
+										</combobox>
+											
+											
 									</row>
 									<row
 										style="background-color:transparent; border: 0;">
@@ -338,24 +364,24 @@
 										style="background-color:transparent; border: 0;">
 										<label value="*Teléfono" />
 										<textbox
-											value="@bind(pvm.proveedorSelected.contacto.telefono.numero)"
+											value="@bind(pvm.proveedorSelected.representanteAteCliente.contacto.telefono.numero)"
 											maxlength="10" width="100%" />
 										<label value="Extensión:" />
 										<textbox
-											value="@bind(pvm.proveedorSelected.contacto.telefono.extension)"
+											value="@bind(pvm.proveedorSelected.representanteAteCliente.contacto.telefono.extension)"
 											maxlength="5" width="100%" />
 									</row>
 									<row
 										style="background-color:transparent; border: 0;">
 										<label value="*Email:" />
 										<textbox type="text"
-											value="@bind(pvm.proveedorSelected.contacto.email.email)"
+											value="@bind(pvm.proveedorSelected.representanteAteCliente.contacto.email.email)"
 											maxlength="27" width="100%"
 											constraint="/.+@.+\.[a-z]+/: por favor ingrése una direccion de correo" />
 	
 										<label value="Celular:" />
 										<textbox
-											value="@bind(pvm.proveedorSelected.contacto.telefono.celular)"
+											value="@bind(pvm.proveedorSelected.representanteAteCliente.contacto.telefono.celular)"
 											maxlength="10" width="100%" />
 									</row>
 								</rows>
@@ -420,18 +446,34 @@
 									<row
 										style="background-color:transparent; border: 0;">
 										<label value="*Moneda" />
-										<label
-											value="@bind(pvm.monedaSeleccionada.nombre)" />
+										
+										<combobox readonly="true"
+											model="@bind(pvm.monedasDB)" width="100%"
+											selectedItem="@bind(pvm.monedaSeleccionada)">
+											<template name="model" var="monedaVar">
+												<comboitem width="100%"
+													label="@bind(monedaVar.nombre)" />
+											</template>
+										</combobox>
 	
 										<label value="*Banco" />
-										<label
-											value="@bind(pvm.bancoSeleccionado.nombre)" />
+										<combobox readonly="true"
+											model="@bind(pvm.bancosDB)" width="100%"
+											selectedItem="@bind(pvm.bancoSeleccionado)">
+											<template name="model" var="monedaVar">
+												<comboitem width="100%"
+													label="@bind(monedaVar.nombre)" />
+											</template>
+										</combobox>
+										
 									</row>
 								</rows>
 							</grid>
 							<grid style="border: 0;">
 	
 								<columns>
+									<column width="20%" />
+									<column></column>
 									<column width="20%" />
 									<column></column>
 								</columns>
@@ -441,6 +483,10 @@
 										<label value="*Cuenta bancaria:" />
 										<textbox width="100%"
 											value="@bind(pvm.cuentaPago.cuentaBancaria)" maxlength="20" />
+											
+										<label value="*CLABE:" />
+										<textbox width="100%"
+											value="@bind(pvm.cuentaPago.clabe)" maxlength="20" />
 									</row>
 								</rows>
 							</grid>
@@ -453,13 +499,19 @@
 								model="@bind(pvm.proveedorProductos)">
 	
 								<listhead>
-	
+									<listheader label="Clave armonizada" align="center"
+										width="15%" />
 									<listheader label="Clave" align="center"
 										width="15%" />
 									<listheader label="Nombre" />
 								</listhead>
 								<template name="model" var="prodProv">
 									<listitem>
+										<listcell>
+											<label
+												value="@bind(prodProv.producto.claveArmonizada.clave)" width="100%"
+												sclass="fontSizeContentGrid" />
+										</listcell>
 										<listcell>
 											<label
 												value="@bind(prodProv.producto.clave)" width="100%"

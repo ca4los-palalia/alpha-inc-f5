@@ -1,26 +1,17 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.CostosProducto;
 import com.cplsystems.stock.domain.Producto;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface CostosProductoDAO {
+	public abstract void save(CostosProducto paramCostosProducto);
 
-public interface CostosProductoDAO {
+	public abstract void delete(CostosProducto paramCostosProducto);
 
-	public void save(CostosProducto costosProducto);
+	public abstract CostosProducto getById(Long paramLong);
 
-	public void delete(CostosProducto costosProducto);
+	public abstract List<CostosProducto> getAll();
 
-	public CostosProducto getById(Long idCostosProducto);
-
-	public List<CostosProducto> getAll();
-
-	public CostosProducto getByProducto(Producto producto);
+	public abstract CostosProducto getByProducto(Producto paramProducto);
 }

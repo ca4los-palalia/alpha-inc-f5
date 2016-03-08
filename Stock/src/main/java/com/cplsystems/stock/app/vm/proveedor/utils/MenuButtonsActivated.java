@@ -1,44 +1,39 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.proveedor.utils;
 
-/**
- * @author carlos Palalía López
- *
- */
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- *
- */
 public class MenuButtonsActivated {
-
 	private String nombre;
 	private String id;
 	private Integer numero;
 	private boolean visible;
-	
+
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
 	public String getId() {
-		return id;
+		return this.id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public Integer getNumero() {
-		return numero;
+		return this.numero;
 	}
+
 	public void setNumero(Integer numero) {
 		this.numero = numero;
 	}
+
 	public boolean isVisible() {
-		return visible;
+		return this.visible;
 	}
+
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}

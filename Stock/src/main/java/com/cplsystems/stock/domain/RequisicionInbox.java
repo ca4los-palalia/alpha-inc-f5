@@ -1,11 +1,7 @@
-/**
- * 
- */
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,33 +14,26 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
 import org.zkoss.bind.annotation.Command;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Entity
 @Table
 public class RequisicionInbox implements Serializable {
-
-	public final static String NUEVO = "/images/toolbar/newEmail.png";
-	public final static String LEIDO = "/images/toolbar/openedEmail.png";
+	public static final String NUEVO = "/images/toolbar/newEmail.png";
+	public static final String LEIDO = "/images/toolbar/openedEmail.png";
 	private static final long serialVersionUID = -9044125899772985818L;
 	private Long idRequsicionInbox;
 	private Requisicion requisicion;
 	private Boolean leido;
 	private Date fechaRegistro;
 	private String comentarios;
-
 	private String icono;
 
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdRequsicionInbox() {
-		return idRequsicionInbox;
+		return this.idRequsicionInbox;
 	}
 
 	public void setIdRequsicionInbox(Long idRequsicionInbox) {
@@ -54,7 +43,7 @@ public class RequisicionInbox implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "requisicion")
 	public Requisicion getRequisicion() {
-		return requisicion;
+		return this.requisicion;
 	}
 
 	public void setRequisicion(Requisicion requisicion) {
@@ -63,7 +52,7 @@ public class RequisicionInbox implements Serializable {
 
 	@Column
 	public Boolean getLeido() {
-		return leido;
+		return this.leido;
 	}
 
 	public void setLeido(Boolean leido) {
@@ -73,7 +62,7 @@ public class RequisicionInbox implements Serializable {
 	@Column
 	@Temporal(TemporalType.DATE)
 	public Date getFechaRegistro() {
-		return fechaRegistro;
+		return this.fechaRegistro;
 	}
 
 	public void setFechaRegistro(Date fechaRegistro) {
@@ -82,7 +71,7 @@ public class RequisicionInbox implements Serializable {
 
 	@Command
 	public String getComentarios() {
-		return comentarios;
+		return this.comentarios;
 	}
 
 	public void setComentarios(String comentarios) {
@@ -91,11 +80,10 @@ public class RequisicionInbox implements Serializable {
 
 	@Transient
 	public String getIcono() {
-		return icono;
+		return this.icono;
 	}
 
 	public void setIcono(String icono) {
 		this.icono = icono;
 	}
-
 }

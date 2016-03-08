@@ -1,632 +1,613 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.controlpanel;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-
-import org.zkoss.bind.annotation.BindingParam;
-import org.zkoss.bind.annotation.Command;
-import org.zkoss.bind.annotation.Init;
-import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.util.media.Media;
-import org.zkoss.zk.ui.select.annotation.VariableResolver;
-import org.zkoss.zk.ui.util.Clients;
-
 import com.cplsystems.stock.app.utils.SessionUtils;
-import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.controlpanel.utils.ControlPanelVariables;
 import com.cplsystems.stock.app.vm.controlpanel.utils.SelectedTabsControlPanel;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
 import com.cplsystems.stock.domain.Contrato;
+import com.cplsystems.stock.domain.Giro;
 import com.cplsystems.stock.domain.Moneda;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Posicion;
+import com.cplsystems.stock.domain.ProductoNaturaleza;
 import com.cplsystems.stock.domain.ProductoTipo;
 import com.cplsystems.stock.domain.Unidad;
 import com.cplsystems.stock.domain.Usuarios;
+import com.cplsystems.stock.services.AreaService;
+import com.cplsystems.stock.services.BancoService;
+import com.cplsystems.stock.services.ContratoService;
+import com.cplsystems.stock.services.GiroService;
+import com.cplsystems.stock.services.MonedaService;
+import com.cplsystems.stock.services.PosicionService;
+import com.cplsystems.stock.services.ProductoNaturalezaService;
+import com.cplsystems.stock.services.ProductoTipoService;
+import com.cplsystems.stock.services.UnidadService;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.zkoss.bind.BindContext;
+import org.zkoss.bind.annotation.BindingParam;
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.ContextParam;
+import org.zkoss.bind.annotation.ContextType;
+import org.zkoss.bind.annotation.Init;
+import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.io.Files;
+import org.zkoss.util.media.Media;
+import org.zkoss.zk.ui.Execution;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.Messagebox;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-
-@VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
+@VariableResolver({ DelegatingVariableResolver.class })
 public class ControlPanelVM extends ControlPanelVariables {
-
 	private static final long serialVersionUID = -8141487067470696501L;
 	private Media media;
-	
+	public Button clasificacionButton;
+	public Button saveButton;
+
 	@Init
 	public void init() {
-		selectTab = new SelectedTabsControlPanel();
-		selectTab.setVisibleButtonSave(true);
-
+		this.selectTab = new SelectedTabsControlPanel();
+		this.selectTab.setVisibleButtonSave(true);
 		activarBotonesAreas();
-		areas = areaService.getAll();
-		/*
-		 * recargarAreas(); recargarPosiciones(); recargarBanco();
-		 * recargarMonedas(); recargarProductoTipo();
-		 */
-
+		this.areas = this.areaService.getAll();
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void save() {
-
-		if (selectTab.isTabAreas())
+		if (this.selectTab.isTabAreas()) {
 			guardarArea();
-		else if (selectTab.isTabBancos())
+		} else if (this.selectTab.isTabBancos()) {
 			guardarBanco();
-		else if (selectTab.isTabConffya())
+		} else if (this.selectTab.isTabConffya()) {
 			guardarConffya();
-		else if (selectTab.isTabContratos())
+		} else if (this.selectTab.isTabContratos()) {
 			guardarContratos();
-		else if (selectTab.isTabDivisas())
+		} else if (this.selectTab.isTabDivisas()) {
 			guardarMoneda();
-		else if (selectTab.isTabProductos())
+		} else if (this.selectTab.isTabProductos()) {
 			guardarProductos();
-		else if (selectTab.isTabProveedores())
+		} else if (this.selectTab.isTabProveedores()) {
 			guardarProveedores();
-		else if (selectTab.isTabPuestos())
+		} else if (this.selectTab.isTabPuestos()) {
 			guardarPuesto();
-		else if (selectTab.isTabTipoProductos())
+		} else if (this.selectTab.isTabTipoProductos()) {
 			guardarProductoTipo();
-		else if (selectTab.isTabUnidades())
+		} else if (this.selectTab.isTabUnidades()) {
 			guardarUnidades();
+		} else if (this.selectTab.isTabGiros()) {
+			guardarGiros();
+		}
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void delete() {
-		/*
-		 * if(selectTab.isTab01()){ eliminarArea(); }else
-		 * if(selectTab.isTab02()){ eliminarPuesto(); }else
-		 * if(selectTab.isTab03()){ eliminarBanco(); }else
-		 * if(selectTab.isTab04()){ eliminarMoneda(); }else
-		 * if(selectTab.isTab05()){ eliminarTipoProducto(); }
-		 */
 	}
 
-	@SuppressWarnings("static-access")
 	private void guardarArea() {
-
-		for (Area areaRecord : areas) {
+		for (Area areaRecord : this.areas) {
 			try {
-				areaRecord.setToolTipIndice("Seleccionar área");
-				areaRecord
-						.setToolTipNombre("Clic sobre esta columna para editar nombre");
-
+				areaRecord.setToolTipIndice("Seleccionar �rea");
+				areaRecord.setToolTipNombre("Clic sobre esta columna para editar nombre");
 				if (areaRecord.isNuevoRegistro()) {
 					areaRecord.setNuevoRegistro(false);
 					areaRecord.setIdArea(null);
 
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
-					String date = sdf.format(stockUtils
-							.convertirCalendarToDate(Calendar.getInstance()));
+					String date = sdf.format(this.stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+
 					areaRecord.setFechaActualizacion(date);
-					areaRecord.setOrganizacion((Organizacion) sessionUtils
-							.getFromSession(SessionUtils.FIRMA));
-					areaRecord.setUsuario((Usuarios) sessionUtils
-							.getFromSession(SessionUtils.USUARIO));
+					areaRecord.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
 
-					areaService.save(areaRecord);
-				} else {
-					if (!areaRecord.getNombre().equals(""))
-						areaService.update(areaRecord);
+					areaRecord.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
+
+					this.areaService.save(areaRecord);
+				} else if (!areaRecord.getNombre().equals("")) {
+					this.areaService.update(areaRecord);
 				}
-
 			} catch (Exception e) {
 			}
 		}
-		areas.clear();
-		areas = areaService.getAll();
+		this.areas.clear();
+		this.areas = this.areaService.getAll();
 
-		if (!areas.get(areas.size() - 1).getNombre().equals(""))
-			areas.add(crearColumnaVaciaArea());
-
-		stockUtils.showSuccessmessage("Catalogo de áreas actualizado",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
-
+		StockUtils.showSuccessmessage("Catalogo de �reas actualizado", "info", Integer.valueOf(0), null);
 	}
 
-	@SuppressWarnings("static-access")
 	private void guardarBanco() {
-
 		for (Banco bancoRecord : bancosDB) {
 			try {
-				bancoRecord
-						.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_BANCO);
-				bancoRecord
-						.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
+				bancoRecord.setToolTipIndice("Seleccionar un banco");
 
-				if (bancoRecord.getNombre() != null
-						&& !bancoRecord.getNombre().isEmpty()) {
+				bancoRecord.setToolTipNombre("Clic sobre esta columna para editar nombre");
+				if ((bancoRecord.getNombre() != null) && (!bancoRecord.getNombre().isEmpty())) {
 					bancoRecord.setNuevoRegistro(false);
 
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
-					String date = sdf.format(stockUtils
-							.convertirCalendarToDate(Calendar.getInstance()));
+					String date = sdf.format(this.stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+
 					bancoRecord.setFechaActualizacion(date);
-					bancoRecord.setOrganizacion((Organizacion) sessionUtils
-							.getFromSession(SessionUtils.FIRMA));
-					bancoRecord.setUsuario((Usuarios) sessionUtils
-							.getFromSession(SessionUtils.USUARIO));
-					bancoService.save(bancoRecord);
+					bancoRecord.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
+
+					bancoRecord.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
+
+					this.bancoService.save(bancoRecord);
 				}
 			} catch (Exception e) {
 			}
 		}
 		bancosDB.clear();
-		bancosDB = bancoService.getAll();
+		bancosDB = this.bancoService.getAll();
 
-		if (!bancosDB.get(bancosDB.size() - 1).getNombre().equals(""))
-			bancosDB.add(crearColumnaVaciaBanco());
-
-		stockUtils.showSuccessmessage("Catalogo de bancos actualizados",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+		StockUtils.showSuccessmessage("Catalogo de bancos actualizados", "info", Integer.valueOf(0), null);
 	}
 
 	private void guardarConffya() {
-
 	}
 
-	@SuppressWarnings("static-access")
 	private void guardarContratos() {
-		for (Contrato contratoRecord : contratos) {
+		for (Contrato contratoRecord : this.contratos) {
 			try {
-				if (contratoRecord.getNombre() != null
-						&& !contratoRecord.getNombre().equals("")) {
+				if ((contratoRecord.getNombre() != null) && (!contratoRecord.getNombre().equals(""))) {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
-					String date = sdf.format(stockUtils
-							.convertirCalendarToDate(Calendar.getInstance()));
+					String date = sdf.format(this.stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+
 					contratoRecord.setFechaActualizacion(date);
-					contratoRecord.setOrganizacion((Organizacion) sessionUtils
-							.getFromSession(SessionUtils.FIRMA));
-					contratoRecord.setUsuario((Usuarios) sessionUtils
-							.getFromSession(SessionUtils.USUARIO));
-					contratoService.save(contratoRecord);
+					contratoRecord.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
+
+					contratoRecord.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
+
+					this.contratoService.save(contratoRecord);
 				}
 			} catch (Exception e) {
 			}
 		}
-		contratos.clear();
-		contratos = contratoService.getAll();
-		stockUtils.showSuccessmessage(
-				"El catalogo de contratos ha sido actualizado",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+		this.contratos.clear();
+		this.contratos = this.contratoService.getAll();
+		StockUtils.showSuccessmessage("El catalogo de contratos ha sido actualizado", "info", Integer.valueOf(0), null);
 	}
 
-	@SuppressWarnings("static-access")
 	private void guardarMoneda() {
-
-		for (Moneda monedaRecord : monedasDB) {
+		for (Moneda monedaRecord : this.monedasDB) {
 			try {
-				monedaRecord
-						.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_MONEDA);
-				monedaRecord
-						.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
+				monedaRecord.setToolTipIndice("Seleccionar una moneda");
 
-				if (monedaRecord.getNombre() != null
-						&& !monedaRecord.getNombre().equals("")) {
+				monedaRecord.setToolTipNombre("Clic sobre esta columna para editar nombre");
+				if ((monedaRecord.getNombre() != null) && (!monedaRecord.getNombre().equals(""))) {
 					monedaRecord.setNuevoRegistro(false);
 
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
-					String date = sdf.format(stockUtils
-							.convertirCalendarToDate(Calendar.getInstance()));
-					monedaRecord.setFechaActualizacion(date);
-					monedaRecord.setOrganizacion((Organizacion) sessionUtils
-							.getFromSession(SessionUtils.FIRMA));
-					monedaRecord.setUsuario((Usuarios) sessionUtils
-							.getFromSession(SessionUtils.USUARIO));
-					monedaService.save(monedaRecord);
-				}
+					String date = sdf.format(this.stockUtils.convertirCalendarToDate(Calendar.getInstance()));
 
+					monedaRecord.setFechaActualizacion(date);
+					monedaRecord.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
+
+					monedaRecord.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
+
+					this.monedaService.save(monedaRecord);
+				}
 			} catch (Exception e) {
 			}
 		}
-		monedasDB.clear();
-		monedasDB = monedaService.getAll();
-		stockUtils.showSuccessmessage(
-				"El catalogo de divisas ha sido actualizado",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+		this.monedasDB.clear();
+		this.monedasDB = this.monedaService.getAll();
+		StockUtils.showSuccessmessage("El catalogo de divisas ha sido actualizado", "info", Integer.valueOf(0), null);
 	}
 
 	private void guardarProductos() {
-
 	}
 
 	private void guardarProveedores() {
-
 	}
 
-	@SuppressWarnings("static-access")
 	private void guardarPuesto() {
-
-		for (Posicion posicionRecord : posiciones) {
+		for (Posicion posicionRecord : this.posiciones) {
 			try {
 				posicionRecord.setToolTipIndice("Seleccionar puesto");
-				posicionRecord
-						.setToolTipNombre("Clic sobre esta columna para editar nombre");
+				posicionRecord.setToolTipNombre("Clic sobre esta columna para editar nombre");
 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
-				String date = sdf.format(stockUtils
-						.convertirCalendarToDate(Calendar.getInstance()));
-				posicionRecord.setFechaActualizacion(date);
-				posicionRecord.setOrganizacion((Organizacion) sessionUtils
-						.getFromSession(SessionUtils.FIRMA));
-				posicionRecord.setUsuario((Usuarios) sessionUtils
-						.getFromSession(SessionUtils.USUARIO));
+				String date = sdf.format(this.stockUtils.convertirCalendarToDate(Calendar.getInstance()));
 
+				posicionRecord.setFechaActualizacion(date);
+				posicionRecord.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
+
+				posicionRecord.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
 				if (posicionRecord.isNuevoRegistro()) {
 					posicionRecord.setNuevoRegistro(false);
 					posicionRecord.setIdPosicion(null);
-					posicionService.save(posicionRecord);
-				} else {
-					if (!posicionRecord.getNombre().equals(""))
-						posicionService.update(posicionRecord);
+					this.posicionService.save(posicionRecord);
+				} else if (!posicionRecord.getNombre().equals("")) {
+					this.posicionService.update(posicionRecord);
 				}
-
 			} catch (Exception e) {
 			}
 		}
-		posiciones.clear();
-		posiciones = posicionService.getAll();
+		this.posiciones.clear();
+		this.posiciones = this.posicionService.getAll();
 
-		if (!posiciones.get(posiciones.size() - 1).getNombre().equals(""))
-			posiciones.add(crearColumnaVaciaP());
-
-		stockUtils.showSuccessmessage("Catalogo de puestos actualizados",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
-
+		StockUtils.showSuccessmessage("Catalogo de puestos actualizados", "info", Integer.valueOf(0), null);
 	}
 
-	@SuppressWarnings("static-access")
 	private void guardarProductoTipo() {
-
-		for (ProductoTipo productoTipoRecord : productoTipoDB) {
+		for (ProductoTipo productoTipoRecord : this.productoTipoDB) {
 			try {
-				productoTipoRecord
-						.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_TIPO_PRODUCTO);
-				productoTipoRecord
-						.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
+				productoTipoRecord.setToolTipIndice("Seleccionar un tipo de producto");
+
+				productoTipoRecord.setToolTipNombre("Clic sobre esta columna para editar nombre");
 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/M");
-				String date = sdf.format(stockUtils
-						.convertirCalendarToDate(Calendar.getInstance()));
-				productoTipoRecord.setFechaActualizacion(date);
-				productoTipoRecord.setOrganizacion((Organizacion) sessionUtils
-						.getFromSession(SessionUtils.FIRMA));
-				productoTipoRecord.setUsuario((Usuarios) sessionUtils
-						.getFromSession(SessionUtils.USUARIO));
+				String date = sdf.format(this.stockUtils.convertirCalendarToDate(Calendar.getInstance()));
 
+				productoTipoRecord.setFechaActualizacion(date);
+				productoTipoRecord.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
+
+				productoTipoRecord.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
 				if (productoTipoRecord.isNuevoRegistro()) {
 					productoTipoRecord.setNuevoRegistro(false);
 					productoTipoRecord.setIdProductoTipo(null);
-					productoTipoService.save(productoTipoRecord);
-				} else {
-					if (!productoTipoRecord.getNombre().equals(""))
-						productoTipoService.update(productoTipoRecord);
+					this.productoTipoService.save(productoTipoRecord);
+				} else if (!productoTipoRecord.getNombre().equals("")) {
+					this.productoTipoService.update(productoTipoRecord);
 				}
 			} catch (Exception e) {
 			}
 		}
-		productoTipoDB.clear();
-		productoTipoDB = productoTipoService.getAll();
+		this.productoTipoDB.clear();
+		this.productoTipoDB = this.productoTipoService.getAll();
 
-		if (!productoTipoDB.get(productoTipoDB.size() - 1).getNombre()
-				.equals(""))
-			productoTipoDB.add(crearColumnaVaciaTipoProducto());
-
-		stockUtils.showSuccessmessage(
-				"Catalogo de tipo de productos actualizado",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+		StockUtils.showSuccessmessage("Catalogo de tipo de productos actualizado", "info", Integer.valueOf(0), null);
 	}
 
-	@SuppressWarnings("static-access")
 	private void guardarUnidades() {
-		if (unidadesDB != null && unidadesDB.size() > 0) {
-			for (Unidad item : unidadesDB) {
-				if (item.getNombre() != null && !item.getNombre().isEmpty()) {
+		if ((this.unidadesDB != null) && (this.unidadesDB.size() > 0)) {
+			for (Unidad item : this.unidadesDB) {
+				if ((item.getNombre() != null) && (!item.getNombre().isEmpty())) {
 					item.setFechaActualizacion(Calendar.getInstance());
-					item.setOrganizacion((Organizacion) sessionUtils
-							.getFromSession(SessionUtils.FIRMA));
-					item.setUsuario((Usuarios) sessionUtils
-							.getFromSession(SessionUtils.USUARIO));
-					unidadService.save(item);
+					item.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
+
+					item.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
+
+					this.unidadService.save(item);
 				}
 			}
-			stockUtils
-					.showSuccessmessage(
-							"Se han realizado cambios en el catalogo de -Unidades de medida-",
-							Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			mensajeDeCambios = "";
-		} else {
-			stockUtils
-					.showSuccessmessage(
-							"No se puede llevar a cabo una actualizacion en el catalogo -Unidades de medida-, catalogo vacio",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
-		}
+			StockUtils.showSuccessmessage("Se han realizado cambios en el catalogo de -Unidades de medida-", "info",
+					Integer.valueOf(0), null);
 
+			this.mensajeDeCambios = "";
+		} else {
+			StockUtils.showSuccessmessage(
+					"No se puede llevar a cabo una actualizacion en el catalogo -Unidades de medida-, catalogo vacio",
+					"warning", Integer.valueOf(0), null);
+		}
 	}
 
-	@SuppressWarnings("static-access")
-	private void eliminarArea() {
-		if (area != null) {
-			/*
-			 * Messagebox .show(
-			 * "¿Está seguro de remover esta área?, esta acción es irreversible"
-			 * , "Question", Messagebox.OK | Messagebox.CANCEL,
-			 * Messagebox.QUESTION, new EventListener() { public void
-			 * onEvent(Event event) throws Exception { if (((Integer)
-			 * event.getData()).intValue() == Messagebox.OK) {
-			 */
-
-			areaService.delete(area);
-
-			areas.clear();
-			areas = areaService.getAll();
-			if (areas != null
-					&& !areas.get(areas.size() - 1).getNombre().equals(""))
-				areas.add(crearColumnaVaciaArea());
-			else {
-				Area nuevo = crearColumnaVaciaArea();
-				areas.add(nuevo);
+	private void guardarGiros() {
+		if ((this.giros != null) && (this.giros.size() > 0)) {
+			for (Giro item : this.giros) {
+				if ((item.getNombre() != null) && (!item.getNombre().isEmpty())) {
+					Organizacion org = (Organizacion) this.sessionUtils.getFromSession("FIRMA");
+					item.setOrganizacion(org);
+					this.giroService.save(item);
+				}
 			}
+			StockUtils.showSuccessmessage("Se han realizado cambios en el catalogo de -Giros-", "info",
+					Integer.valueOf(0), null);
 
-			stockUtils.showSuccessmessage(area.getNombre()
-					+ " ha sido eliminado", Clients.NOTIFICATION_TYPE_INFO, 0,
-					null);
-			/*
-			 * } } });
-			 */
+			this.mensajeDeCambios = "";
 		} else {
-			stockUtils
-					.showSuccessmessage(
-							"Debe seleccionar un área para proceder con la eliminación",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			StockUtils.showSuccessmessage("No se puede llevar la actualizacion en el catalogo -Giros-, catalogo vacio",
+					"warning", Integer.valueOf(0), null);
+		}
+	}
+
+	private void eliminarArea() {
+		if (this.area != null) {
+			this.areaService.delete(this.area);
+
+			this.areas.clear();
+			this.areas = this.areaService.getAll();
+			if ((this.areas != null) && (!((Area) this.areas.get(this.areas.size() - 1)).getNombre().equals(""))) {
+				this.areas.add(crearColumnaVaciaArea());
+			} else {
+				Area nuevo = crearColumnaVaciaArea();
+				this.areas.add(nuevo);
+			}
+			StockUtils.showSuccessmessage(this.area.getNombre() + " ha sido eliminado", "info", Integer.valueOf(0),
+					null);
+		} else {
+			StockUtils.showSuccessmessage("Debe seleccionar un �rea para proceder con la eliminaci�n", "warning",
+					Integer.valueOf(0), null);
 		}
 	}
 
 	@Command
-	@NotifyChange("*")
-	@SuppressWarnings("static-access")
+	@NotifyChange({ "*" })
+	public void eliminarAreaIndex(@BindingParam("index") Integer index) {
+		this.area = ((Area) this.areas.get(index.intValue()));
+		boolean continuarEliminacion = true;
+		if (this.areas != null) {
+			try {
+				this.areaService.delete(this.area);
+			} catch (Exception e) {
+				continuarEliminacion = false;
+			}
+			if (continuarEliminacion) {
+				this.areas.clear();
+				this.areas = this.areaService.getAll();
+
+				StockUtils.showSuccessmessage("El �rea -" + this.area.getNombre() + "- ha sido eliminado", "info",
+						Integer.valueOf(0), null);
+			} else {
+				StockUtils.showSuccessmessage(
+						"El Banco -" + this.area.getNombre() + "- esta siendo utilizado. No puede ser eliminado",
+						"error", Integer.valueOf(0), null);
+			}
+		} else {
+			StockUtils.showSuccessmessage("Debe seleccionar un �rea para proceder con la eliminaci�n", "warning",
+					Integer.valueOf(0), null);
+		}
+	}
+
+	@Command
+	@NotifyChange({ "*" })
 	public void eliminarBanco(@BindingParam("index") Integer index) {
-		bancoSeleccionado = bancosDB.get(index);
+		this.bancoSeleccionado = ((Banco) bancosDB.get(index.intValue()));
 		boolean continuarEliminacion = true;
 		if (bancosDB != null) {
 			try {
-				bancoService.delete(bancoSeleccionado);
+				this.bancoService.delete(this.bancoSeleccionado);
 			} catch (Exception e) {
 				continuarEliminacion = false;
 			}
-
 			if (continuarEliminacion) {
 				bancosDB.clear();
-				bancosDB = bancoService.getAll();
+				bancosDB = this.bancoService.getAll();
 
-				stockUtils.showSuccessmessage(
-						"El Banco -" + bancoSeleccionado.getNombre()
-								+ "- ha sido eliminado",
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-			} else
-				stockUtils
-						.showSuccessmessage(
-								"El Banco -"
-										+ bancoSeleccionado.getNombre()
-										+ "- esta siendo utilizado. No puede ser eliminado",
-								Clients.NOTIFICATION_TYPE_ERROR, 0, null);
-
+				StockUtils.showSuccessmessage("El Banco -" + this.bancoSeleccionado.getNombre() + "- ha sido eliminado",
+						"info", Integer.valueOf(0), null);
+			} else {
+				StockUtils.showSuccessmessage("El Banco -" + this.bancoSeleccionado.getNombre()
+						+ "- esta siendo utilizado. No puede ser eliminado", "error", Integer.valueOf(0), null);
+			}
 		} else {
-			stockUtils
-					.showSuccessmessage(
-							"Debe seleccionar un banco para proceder con la eliminación",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			StockUtils.showSuccessmessage("Debe seleccionar un banco para proceder con la eliminaci�n", "warning",
+					Integer.valueOf(0), null);
 		}
 	}
 
 	@Command
-	@NotifyChange("*")
-	@SuppressWarnings("static-access")
+	@NotifyChange({ "*" })
 	public void eliminarContrato(@BindingParam("index") Integer index) {
-		contrato = contratos.get(index);
+		this.contrato = ((Contrato) this.contratos.get(index.intValue()));
 		boolean continuarEliminacion = true;
-		if (contratos != null) {
-
+		if (this.contratos != null) {
 			try {
-				contratoService.delete(contrato);
+				this.contratoService.delete(this.contrato);
 			} catch (Exception e) {
 				continuarEliminacion = false;
 			}
-
 			if (continuarEliminacion) {
-				contratos.clear();
-				contratos = contratoService.getAll();
+				this.contratos.clear();
+				this.contratos = this.contratoService.getAll();
 
-				stockUtils.showSuccessmessage(
-						"El contrato -" + contrato.getNombre()
-								+ "- ha sido eliminado",
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-
-			} else
-				stockUtils
-						.showSuccessmessage(
-								"El Contrato -"
-										+ contrato.getNombre()
-										+ "- esta siendo utilizado. No puede ser eliminado",
-								Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+				StockUtils.showSuccessmessage("El contrato -" + this.contrato.getNombre() + "- ha sido eliminado",
+						"info", Integer.valueOf(0), null);
+			} else {
+				StockUtils.showSuccessmessage(
+						"El Contrato -" + this.contrato.getNombre() + "- esta siendo utilizado. No puede ser eliminado",
+						"error", Integer.valueOf(0), null);
+			}
 		} else {
-			stockUtils
-					.showSuccessmessage(
-							"Debe seleccionar un contrato para proceder con la eliminación",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			StockUtils.showSuccessmessage("Debe seleccionar un contrato para proceder con la eliminaci�n", "warning",
+					Integer.valueOf(0), null);
 		}
 	}
 
 	@Command
-	@NotifyChange("*")
-	@SuppressWarnings("static-access")
+	@NotifyChange({ "*" })
 	public void eliminarMoneda(@BindingParam("index") Integer index) {
-		monedaSeleccionada = monedasDB.get(index);
+		this.monedaSeleccionada = ((Moneda) this.monedasDB.get(index.intValue()));
 		boolean continuarEliminacion = true;
-		if (monedasDB != null) {
-
+		if (this.monedasDB != null) {
 			try {
-				monedaService.delete(monedaSeleccionada);
+				this.monedaService.delete(this.monedaSeleccionada);
 			} catch (Exception e) {
 				continuarEliminacion = false;
 			}
-
 			if (continuarEliminacion) {
-				monedasDB.clear();
-				monedasDB = monedaService.getAll();
+				this.monedasDB.clear();
+				this.monedasDB = this.monedaService.getAll();
 
-				stockUtils.showSuccessmessage("La divisa -"
-						+ monedaSeleccionada.getNombre()
-						+ "- ha sido eliminado",
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-
-			} else
-				stockUtils.showSuccessmessage("La divisa -"
-						+ monedaSeleccionada.getSimbolo() + " "
-						+ monedaSeleccionada.getNombre()
-						+ "- esta siendo utilizado. No puede ser eliminado",
-						Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+				StockUtils.showSuccessmessage(
+						"La divisa -" + this.monedaSeleccionada.getNombre() + "- ha sido eliminado", "info",
+						Integer.valueOf(0), null);
+			} else {
+				StockUtils.showSuccessmessage("La divisa -" + this.monedaSeleccionada.getSimbolo() + " "
+						+ this.monedaSeleccionada.getNombre() + "- esta siendo utilizado. No puede ser eliminado",
+						"error", Integer.valueOf(0), null);
+			}
 		} else {
-			stockUtils
-					.showSuccessmessage(
-							"Debe seleccionar una divisa para proceder con la eliminación",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			StockUtils.showSuccessmessage("Debe seleccionar una divisa para proceder con la eliminaci�n", "warning",
+					Integer.valueOf(0), null);
 		}
 	}
 
 	@Command
-	@NotifyChange("posiciones, mensajeDeCambios")
-	@SuppressWarnings("static-access")
+	@NotifyChange({ "*" })
 	public void eliminarPuesto(@BindingParam("index") Integer index) {
-		posicion = posiciones.get(index);
+		this.posicion = ((Posicion) this.posiciones.get(index.intValue()));
 		boolean continuarEliminacion = true;
-		if (posicion != null) {
+		if (this.posicion != null) {
 			try {
-				posicionService.delete(posicion);
+				this.posicionService.delete(this.posicion);
 			} catch (Exception e) {
 				continuarEliminacion = false;
 			}
-
 			if (continuarEliminacion) {
-				posiciones.clear();
-				posiciones = posicionService.getAll();
-				stockUtils.showSuccessmessage(posicion.getNombre()
-						+ " ha sido eliminado", Clients.NOTIFICATION_TYPE_INFO,
-						0, null);
-			} else
-				stockUtils
-						.showSuccessmessage(
-								"El puesto -"
-										+ posicion.getNombre()
-										+ "- esta siendo utilizado. No puede ser eliminado",
-								Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+				this.posiciones.clear();
+				this.posiciones = this.posicionService.getAll();
+				StockUtils.showSuccessmessage(this.posicion.getNombre() + " ha sido eliminado", "info",
+						Integer.valueOf(0), null);
+			} else {
+				StockUtils.showSuccessmessage(
+						"El puesto -" + this.posicion.getNombre() + "- esta siendo utilizado. No puede ser eliminado",
+						"error", Integer.valueOf(0), null);
+			}
 		} else {
-			stockUtils
-					.showSuccessmessage(
-							"Debe seleccionar un puesto para proceder con la eliminación",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			StockUtils.showSuccessmessage("Debe seleccionar un puesto para proceder con la eliminaci�n", "warning",
+					Integer.valueOf(0), null);
 		}
 	}
 
 	@Command
-	@NotifyChange("productoTipoDB, mensajeDeCambios")
-	@SuppressWarnings("static-access")
+	@NotifyChange({ "productoTipoDB, mensajeDeCambios" })
 	public void eliminarTipoProducto(@BindingParam("index") Integer index) {
-		productoTipoSelected = productoTipoDB.get(index);
+		this.productoTipoSelected = ((ProductoTipo) this.productoTipoDB.get(index.intValue()));
 		boolean continuarEliminacion = true;
-		if (productoTipoDB != null) {
+		if (this.productoTipoDB != null) {
 			try {
-				productoTipoService.delete(productoTipoSelected);
+				this.productoTipoService.delete(this.productoTipoSelected);
 			} catch (Exception e) {
 				continuarEliminacion = false;
 			}
-
 			if (continuarEliminacion) {
-				productoTipoDB.clear();
-				productoTipoDB = productoTipoService.getAll();
+				this.productoTipoDB.clear();
+				this.productoTipoDB = this.productoTipoService.getAll();
 
-				stockUtils.showSuccessmessage(productoTipoSelected.getNombre()
-						+ " ha sido eliminado", Clients.NOTIFICATION_TYPE_INFO,
-						0, null);
-			} else
-				stockUtils.showSuccessmessage("La familia -"
-						+ productoTipoSelected.getNombre()
-						+ "- esta siendo utilizado. No puede ser eliminado",
-						Clients.NOTIFICATION_TYPE_ERROR, 0, null);
-
+				StockUtils.showSuccessmessage(this.productoTipoSelected.getNombre() + " ha sido eliminado", "info",
+						Integer.valueOf(0), null);
+			} else {
+				StockUtils.showSuccessmessage("La familia -" + this.productoTipoSelected.getNombre()
+						+ "- esta siendo utilizado. No puede ser eliminado", "error", Integer.valueOf(0), null);
+			}
 		} else {
-			stockUtils
-					.showSuccessmessage(
-							"Debe seleccionar un tipo de producto para proceder con la eliminación",
-							Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			StockUtils.showSuccessmessage("Debe seleccionar un tipo de producto para proceder con la eliminaci�n",
+					"warning", Integer.valueOf(0), null);
 		}
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void removerUnidad(@BindingParam("index") Integer index) {
 		boolean continuarEliminacion = true;
-		unidad = unidadesDB.get(index);
+		this.unidad = ((Unidad) this.unidadesDB.get(index.intValue()));
 		try {
-			unidadService.delete(unidad);
+			this.unidadService.delete(this.unidad);
 		} catch (Exception e) {
 			continuarEliminacion = false;
 		}
 		if (continuarEliminacion) {
-			unidadesDB.remove(unidad);
-		} else
-			stockUtils
-					.showSuccessmessage(
-							"La unidad de medida -"
-									+ unidad.getNombre()
-									+ "- esta siendo utilizado. No puede ser eliminado",
-							Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+			this.unidadesDB.remove(this.unidad);
+			StockUtils.showSuccessmessage("La unidad de medida ha sido eliminada", "info", Integer.valueOf(0), null);
+		} else {
+			StockUtils.showSuccessmessage("La unidad de medida -" + this.unidad.getNombre()
+					+ "- esta siendo utilizado. No puede ser eliminado", "error", Integer.valueOf(0), null);
+		}
+	}
+
+	@Command
+	@NotifyChange({ "*" })
+	public void removerGiro(@BindingParam("index") Integer index) {
+		boolean continuarEliminacion = true;
+		this.giro = ((Giro) this.giros.get(index.intValue()));
+		try {
+			this.giroService.delete(this.giro);
+		} catch (Exception e) {
+			continuarEliminacion = false;
+		}
+		if (continuarEliminacion) {
+			this.giros.remove(this.giro);
+			this.giros = new ArrayList();
+			this.giros = this.giroService.getAll();
+			StockUtils.showSuccessmessage("El giro -" + this.giro.getNombre() + "- ha sido eliminado del catalogo",
+					"info", Integer.valueOf(0), null);
+		} else {
+			StockUtils.showSuccessmessage(
+					"El giro -" + this.giro.getNombre() + "- esta siendo utilizado. No puede ser eliminado", "error",
+					Integer.valueOf(0), null);
+		}
+	}
+
+	@Command
+	@NotifyChange({ "*" })
+	public void removerNaturaleza(@BindingParam("index") Integer index) {
+		boolean continuarEliminacion = true;
+		this.productoNaturaleza = ((ProductoNaturaleza) this.productosNaturalezas.get(index.intValue()));
+		try {
+			this.productoNaturalezaService.delete(this.productoNaturaleza);
+		} catch (Exception e) {
+			continuarEliminacion = false;
+		}
+		if (continuarEliminacion) {
+			this.productosNaturalezas.remove(this.productoNaturaleza);
+			this.productosNaturalezas = new ArrayList();
+			this.productosNaturalezas = this.productoNaturalezaService.getAll();
+			StockUtils.showSuccessmessage("La naturaleza producto -" + this.productoNaturaleza.getNombre()
+					+ "- ha sido eliminado del catalogo", "info", Integer.valueOf(0), null);
+		} else {
+			StockUtils.showSuccessmessage("La naturaleza producto -" + this.productoNaturaleza.getNombre()
+					+ "- esta siendo utilizado. No puede ser eliminado", "error", Integer.valueOf(0), null);
+		}
 	}
 
 	private Area crearColumnaVaciaArea() {
 		Area areaVacia = new Area();
-
-		if (areas != null)
-			areaVacia.setIdArea(Long.valueOf(String.valueOf(areas.size() + 1)));
-		else {
-			areas = new ArrayList<Area>();
-			areaVacia.setIdArea(1L);
+		if (this.areas != null) {
+			areaVacia.setIdArea(Long.valueOf(String.valueOf(this.areas.size() + 1)));
+		} else {
+			this.areas = new ArrayList();
+			areaVacia.setIdArea(Long.valueOf(1L));
 		}
-
 		areaVacia.setNuevoRegistro(true);
 		areaVacia.setNombre("");
-		areaVacia.setToolTipIndice("Seleccionar área");
-		areaVacia
-				.setToolTipNombre("Clic sobre esta columna para editar nombre");
+		areaVacia.setToolTipIndice("Seleccionar �rea");
+		areaVacia.setToolTipNombre("Clic sobre esta columna para editar nombre");
+
 		return areaVacia;
 	}
 
 	private Posicion crearColumnaVaciaP() {
 		Posicion objeto = new Posicion();
-
-		if (posiciones != null)
-			objeto.setIdPosicion(Long.valueOf(String.valueOf(posiciones.size() + 1)));
-		else {
-			posiciones = new ArrayList<Posicion>();
-			objeto.setIdPosicion(1L);
+		if (this.posiciones != null) {
+			objeto.setIdPosicion(Long.valueOf(String.valueOf(this.posiciones.size() + 1)));
+		} else {
+			this.posiciones = new ArrayList();
+			objeto.setIdPosicion(Long.valueOf(1L));
 		}
-
 		objeto.setNuevoRegistro(true);
 		objeto.setNombre("");
 		objeto.setToolTipIndice("Seleccionar una posicion");
+		objeto.setToolTipNombre("Clic sobre esta columna para editar nombre");
+		return objeto;
+	}
+
+	private Area crearColumnaVaciaAreaEstandar() {
+		Area objeto = new Area();
+
+		objeto.setNuevoRegistro(true);
+		objeto.setNombre("");
+		objeto.setToolTipIndice("Seleccionar un �rea");
 		objeto.setToolTipNombre("Clic sobre esta columna para editar nombre");
 		return objeto;
 	}
@@ -636,8 +617,8 @@ public class ControlPanelVM extends ControlPanelVariables {
 
 		objeto.setNuevoRegistro(true);
 		objeto.setNombre("");
-		objeto.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_BANCO);
-		objeto.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
+		objeto.setToolTipIndice("Seleccionar un banco");
+		objeto.setToolTipNombre("Clic sobre esta columna para editar nombre");
 		return objeto;
 	}
 
@@ -650,37 +631,33 @@ public class ControlPanelVM extends ControlPanelVariables {
 		Moneda objeto = new Moneda();
 		objeto.setNuevoRegistro(true);
 		objeto.setNombre("");
-		objeto.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_TIPO_PRODUCTO);
-		objeto.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
+		objeto.setToolTipIndice("Seleccionar un tipo de producto");
+		objeto.setToolTipNombre("Clic sobre esta columna para editar nombre");
 		return objeto;
 	}
 
 	private ProductoTipo crearColumnaVaciaTipoProducto() {
 		ProductoTipo objeto = new ProductoTipo();
-
-		if (productoTipoDB != null)
-			objeto.setIdProductoTipo(Long.valueOf(String.valueOf(productoTipoDB
-					.size() + 1)));
-		else {
-			productoTipoDB = new ArrayList<ProductoTipo>();
-			objeto.setIdProductoTipo(1L);
+		if (this.productoTipoDB != null) {
+			objeto.setIdProductoTipo(Long.valueOf(String.valueOf(this.productoTipoDB.size() + 1)));
+		} else {
+			this.productoTipoDB = new ArrayList();
+			objeto.setIdProductoTipo(Long.valueOf(1L));
 		}
 		objeto.setNuevoRegistro(true);
 		objeto.setNombre("");
-		objeto.setToolTipIndice(StockConstants.TOOL_TIP_ROW_SELECTED_TIPO_PRODUCTO);
-		objeto.setToolTipNombre(StockConstants.TOOL_TIP_ROW_EDICION_NOMBRE);
+		objeto.setToolTipIndice("Seleccionar un tipo de producto");
+		objeto.setToolTipNombre("Clic sobre esta columna para editar nombre");
 		return objeto;
 	}
 
-	// --------------------------
-
 	private void recargarAreas() {
-		if (areas == null) {
-			areas.add(crearColumnaVaciaArea());
+		if (this.areas == null) {
+			this.areas.add(crearColumnaVaciaArea());
 		} else {
 			try {
-				if (!areas.get(areas.size() - 1).getNombre().equals("")) {
-					areas.add(crearColumnaVaciaArea());
+				if (!((Area) this.areas.get(this.areas.size() - 1)).getNombre().equals("")) {
+					this.areas.add(crearColumnaVaciaArea());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -689,20 +666,18 @@ public class ControlPanelVM extends ControlPanelVariables {
 	}
 
 	private void recargarPosiciones() {
-		if (posiciones == null || posiciones.size() == 0) {
+		if ((this.posiciones == null) || (this.posiciones.size() == 0)) {
 			try {
-				posiciones = new ArrayList<Posicion>();
-				posiciones.add(crearColumnaVaciaP());
+				this.posiciones = new ArrayList();
+				this.posiciones.add(crearColumnaVaciaP());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
 			try {
-				if (!posiciones.get(posiciones.size() - 1).getNombre()
-						.equals("")) {
-					posiciones.add(crearColumnaVaciaP());
+				if (!((Posicion) this.posiciones.get(this.posiciones.size() - 1)).getNombre().equals("")) {
+					this.posiciones.add(crearColumnaVaciaP());
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -710,16 +685,16 @@ public class ControlPanelVM extends ControlPanelVariables {
 	}
 
 	private void recargarBanco() {
-		if (bancosDB == null || bancosDB.size() == 0) {
+		if ((bancosDB == null) || (bancosDB.size() == 0)) {
 			try {
-				bancosDB = new ArrayList<Banco>();
+				bancosDB = new ArrayList();
 				bancosDB.add(crearColumnaVaciaBanco());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
 			try {
-				if (!bancosDB.get(bancosDB.size() - 1).getNombre().equals("")) {
+				if (!((Banco) bancosDB.get(bancosDB.size() - 1)).getNombre().equals("")) {
 					bancosDB.add(crearColumnaVaciaBanco());
 				}
 			} catch (Exception e) {
@@ -729,17 +704,17 @@ public class ControlPanelVM extends ControlPanelVariables {
 	}
 
 	private void recargarMonedas() {
-		if (monedasDB == null || monedasDB.size() == 0) {
+		if ((this.monedasDB == null) || (this.monedasDB.size() == 0)) {
 			try {
-				monedasDB = new ArrayList<Moneda>();
-				monedasDB.add(crearColumnaVaciaMonedas());
+				this.monedasDB = new ArrayList();
+				this.monedasDB.add(crearColumnaVaciaMonedas());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
 			try {
-				if (!monedasDB.get(monedasDB.size() - 1).getNombre().equals("")) {
-					monedasDB.add(crearColumnaVaciaMonedas());
+				if (!((Moneda) this.monedasDB.get(this.monedasDB.size() - 1)).getNombre().equals("")) {
+					this.monedasDB.add(crearColumnaVaciaMonedas());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -748,18 +723,17 @@ public class ControlPanelVM extends ControlPanelVariables {
 	}
 
 	private void recargarProductoTipo() {
-		if (productoTipoDB == null || productoTipoDB.size() == 0) {
+		if ((this.productoTipoDB == null) || (this.productoTipoDB.size() == 0)) {
 			try {
-				productoTipoDB = new ArrayList<ProductoTipo>();
-				productoTipoDB.add(crearColumnaVaciaTipoProducto());
+				this.productoTipoDB = new ArrayList();
+				this.productoTipoDB.add(crearColumnaVaciaTipoProducto());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
 			try {
-				if (!productoTipoDB.get(productoTipoDB.size() - 1).getNombre()
-						.equals("")) {
-					productoTipoDB.add(crearColumnaVaciaTipoProducto());
+				if (!((ProductoTipo) this.productoTipoDB.get(this.productoTipoDB.size() - 1)).getNombre().equals("")) {
+					this.productoTipoDB.add(crearColumnaVaciaTipoProducto());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -768,319 +742,1005 @@ public class ControlPanelVM extends ControlPanelVariables {
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void selectTabArea() {
 		activarBotonesAreas();
-		areas = areaService.getAll();
+		this.areas = this.areaService.getAll();
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void selectTabBanco() {
 		activarBotonesBancos();
-		bancosDB = bancoService.getAll();
+		bancosDB = this.bancoService.getAll();
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void selectTabConffya() {
 		activarBotonesConffya();
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void selectTabContratos() {
 		activarBotonesContrato();
-		contratos = contratoService.getAll();
+		this.contratos = this.contratoService.getAll();
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void selectTabMoneda() {
 		activarBotonesMonedas();
-		monedasDB = monedaService.getAll();
+		this.monedasDB = this.monedaService.getAll();
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void selectTabProducto() {
 		activarBotonesProductos();
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void selectTabProveedores() {
 		activarBotonesProveedores();
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void selectTabPuesto() {
-		posiciones = posicionService.getAll();
+		this.posiciones = this.posicionService.getAll();
 		activarBotonesPuestos();
 	}
 
 	@Command
-	@NotifyChange("productoTipoDB")
+	@NotifyChange({ "productoTipoDB" })
 	public void selectTabTiposProducto() {
-		productoTipoDB = productoTipoService.getAll();
+		this.productoTipoDB = this.productoTipoService.getAll();
 		activarBotonesTiposProductos();
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void selectTabUnidades() {
 		activarBotonesUnidades();
-		// SessionUtils.USUARIO, usuario
-		unidadesDB = unidadService.getAll();
+
+		this.unidadesDB = this.unidadService.getAll();
+	}
+
+	@Command
+	@NotifyChange({ "*" })
+	public void selectTabGiro() {
+		activarBotonesGiros();
+		this.giros = this.giroService.getAll();
+	}
+
+	@Command
+	@NotifyChange({ "*" })
+	public void selectTabNaturaleza() {
+		activarBotonesNaturaleza();
+		this.productosNaturalezas = this.productoNaturalezaService.getAll();
 	}
 
 	private void activarBotonesAreas() {
-		selectTab.setTabAreas(true);
-		selectTab.setTabBancos(false);
-		selectTab.setTabConffya(false);
-		selectTab.setTabContratos(false);
-		selectTab.setTabDivisas(false);
-		selectTab.setTabProductos(false);
-		selectTab.setTabProveedores(false);
-		selectTab.setTabPuestos(false);
-		selectTab.setTabTipoProductos(false);
-		selectTab.setTabUnidades(false);
-		selectTab.setActivarButtonDelete(false);
-		selectTab.setActivarButtonSave(false);
-		selectTab.setVisibleButtonSave(true);
-		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_AREA);
-		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_AREA);
+		this.selectTab.setTabAreas(true);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setActivarButtonDelete(false);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(true);
+		this.selectTab.setToolTipSave("Actualizar/Guardar �rea");
+		this.selectTab.setToolTipDelete("Eliminar �rea");
 	}
 
 	private void activarBotonesBancos() {
-		selectTab.setTabAreas(false);
-		selectTab.setTabBancos(true);
-		selectTab.setTabConffya(false);
-		selectTab.setTabContratos(false);
-		selectTab.setTabDivisas(false);
-		selectTab.setTabProductos(false);
-		selectTab.setTabProveedores(false);
-		selectTab.setTabPuestos(false);
-		selectTab.setTabTipoProductos(false);
-		selectTab.setTabUnidades(false);
-		selectTab.setActivarButtonDelete(false);
-		selectTab.setActivarButtonSave(false);
-		selectTab.setVisibleButtonSave(true);
-		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_BANCO);
-		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_BANCO);
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(true);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setActivarButtonDelete(false);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(true);
+		this.selectTab.setToolTipSave("Actualizar/Guardar banco");
+		this.selectTab.setToolTipDelete("Eliminar banco");
 	}
 
 	private void activarBotonesConffya() {
-		selectTab.setTabAreas(false);
-		selectTab.setTabBancos(false);
-		selectTab.setTabConffya(true);
-		selectTab.setTabContratos(false);
-		selectTab.setTabDivisas(false);
-		selectTab.setTabProductos(false);
-		selectTab.setTabProveedores(false);
-		selectTab.setTabPuestos(false);
-		selectTab.setTabTipoProductos(false);
-		selectTab.setTabUnidades(false);
-		selectTab.setActivarButtonDelete(true);
-		selectTab.setActivarButtonSave(true);
-		selectTab.setVisibleButtonSave(false);
-		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_BANCO);
-		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_BANCO);
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(true);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setActivarButtonDelete(true);
+		this.selectTab.setActivarButtonSave(true);
+		this.selectTab.setVisibleButtonSave(false);
+		this.selectTab.setToolTipSave("Actualizar/Guardar banco");
+		this.selectTab.setToolTipDelete("Eliminar banco");
 	}
 
 	private void activarBotonesContrato() {
-		selectTab.setTabAreas(false);
-		selectTab.setTabBancos(false);
-		selectTab.setTabConffya(false);
-		selectTab.setTabContratos(true);
-		selectTab.setTabDivisas(false);
-		selectTab.setTabProductos(false);
-		selectTab.setTabProveedores(false);
-		selectTab.setTabPuestos(false);
-		selectTab.setTabTipoProductos(false);
-		selectTab.setTabUnidades(false);
-		selectTab.setActivarButtonDelete(false);
-		selectTab.setActivarButtonSave(false);
-		selectTab.setVisibleButtonSave(true);
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(true);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setActivarButtonDelete(false);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(true);
+		this.selectTab.setToolTipSave("Actualizar/Guardar contrato");
+		this.selectTab.setToolTipDelete("Eliminar contrato");
 	}
 
 	private void activarBotonesMonedas() {
-		selectTab.setTabAreas(false);
-		selectTab.setTabBancos(false);
-		selectTab.setTabConffya(false);
-		selectTab.setTabContratos(false);
-		selectTab.setTabDivisas(true);
-		selectTab.setTabProductos(false);
-		selectTab.setTabProveedores(false);
-		selectTab.setTabPuestos(false);
-		selectTab.setTabTipoProductos(false);
-		selectTab.setTabUnidades(false);
-		selectTab.setActivarButtonDelete(false);
-		selectTab.setActivarButtonSave(false);
-		selectTab.setVisibleButtonSave(true);
-		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_MONEDA);
-		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_MONEDA);
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(true);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setActivarButtonDelete(false);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(true);
+		this.selectTab.setToolTipSave("Actualizar/Guardar divisa");
+		this.selectTab.setToolTipDelete("Eliminar divisa");
 	}
 
 	private void activarBotonesProductos() {
-		selectTab.setTabAreas(false);
-		selectTab.setTabBancos(false);
-		selectTab.setTabConffya(false);
-		selectTab.setTabContratos(false);
-		selectTab.setTabDivisas(false);
-		selectTab.setTabProductos(true);
-		selectTab.setTabProveedores(false);
-		selectTab.setTabPuestos(false);
-		selectTab.setTabTipoProductos(false);
-		selectTab.setTabUnidades(false);
-		selectTab.setActivarButtonDelete(false);
-		selectTab.setActivarButtonSave(false);
-		selectTab.setVisibleButtonSave(false);
-		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_MONEDA);
-		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_MONEDA);
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(true);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setActivarButtonDelete(false);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(false);
 	}
 
 	private void activarBotonesProveedores() {
-		selectTab.setTabAreas(false);
-		selectTab.setTabBancos(false);
-		selectTab.setTabConffya(false);
-		selectTab.setTabContratos(false);
-		selectTab.setTabDivisas(false);
-		selectTab.setTabProductos(false);
-		selectTab.setTabProveedores(true);
-		selectTab.setTabPuestos(false);
-		selectTab.setTabTipoProductos(false);
-		selectTab.setTabUnidades(false);
-		selectTab.setActivarButtonDelete(false);
-		selectTab.setActivarButtonSave(false);
-		selectTab.setVisibleButtonSave(false);
-		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_MONEDA);
-		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_MONEDA);
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(true);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setActivarButtonDelete(false);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(false);
 	}
 
 	private void activarBotonesPuestos() {
-		selectTab.setTabAreas(false);
-		selectTab.setTabBancos(false);
-		selectTab.setTabConffya(false);
-		selectTab.setTabContratos(false);
-		selectTab.setTabDivisas(false);
-		selectTab.setTabProductos(false);
-		selectTab.setTabProveedores(false);
-		selectTab.setTabPuestos(true);
-		selectTab.setTabTipoProductos(false);
-		selectTab.setTabUnidades(false);
-		selectTab.setActivarButtonDelete(false);
-		selectTab.setActivarButtonSave(false);
-		selectTab.setVisibleButtonSave(true);
-		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_PUESTO);
-		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_PUESTO);
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(true);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setActivarButtonDelete(false);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(true);
+		this.selectTab.setToolTipSave("Actualizar/Guardar puesto");
+		this.selectTab.setToolTipDelete("Eliminar puesto");
 	}
 
 	private void activarBotonesTiposProductos() {
-		selectTab.setTabAreas(false);
-		selectTab.setTabBancos(false);
-		selectTab.setTabConffya(false);
-		selectTab.setTabContratos(false);
-		selectTab.setTabDivisas(false);
-		selectTab.setTabProductos(false);
-		selectTab.setTabProveedores(false);
-		selectTab.setTabPuestos(false);
-		selectTab.setTabTipoProductos(true);
-		selectTab.setTabUnidades(false);
-		selectTab.setActivarButtonDelete(false);
-		selectTab.setActivarButtonSave(false);
-		selectTab.setVisibleButtonSave(true);
-		selectTab.setToolTipSave(StockConstants.TOOL_TIP_SAVE_PRODUCTO);
-		selectTab.setToolTipDelete(StockConstants.TOOL_TIP_DELETE_PRODUCTO);
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(true);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setActivarButtonDelete(false);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(true);
+		this.selectTab.setToolTipSave("Actualizar/Guardar tipo de productos");
+		this.selectTab.setToolTipDelete("Eliminar productos");
 	}
 
 	private void activarBotonesUnidades() {
-		selectTab.setTabAreas(false);
-		selectTab.setTabBancos(false);
-		selectTab.setTabConffya(false);
-		selectTab.setTabContratos(false);
-		selectTab.setTabDivisas(false);
-		selectTab.setTabProductos(false);
-		selectTab.setTabProveedores(false);
-		selectTab.setTabPuestos(false);
-		selectTab.setTabTipoProductos(false);
-		selectTab.setTabUnidades(true);
-		selectTab.setActivarButtonDelete(true);
-		selectTab.setActivarButtonSave(false);
-		selectTab.setVisibleButtonSave(true);
-		selectTab.setToolTipSave("Salvar cambios en catalogo de unidades");
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(true);
+		this.selectTab.setActivarButtonDelete(true);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(true);
+		this.selectTab.setToolTipSave("Actualizar/Guardar unidad de medida");
+		this.selectTab.setToolTipDelete("Eliminar productos");
+	}
+
+	private void activarBotonesGiros() {
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setTabGiros(true);
+		this.selectTab.setActivarButtonDelete(true);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(true);
+		this.selectTab.setToolTipSave("Actualizar/Guardar giro");
+		this.selectTab.setToolTipDelete("Eliminar giro");
+	}
+
+	private void activarBotonesNaturaleza() {
+		this.selectTab.setTabAreas(false);
+		this.selectTab.setTabBancos(false);
+		this.selectTab.setTabConffya(false);
+		this.selectTab.setTabContratos(false);
+		this.selectTab.setTabDivisas(false);
+		this.selectTab.setTabProductos(false);
+		this.selectTab.setTabProveedores(false);
+		this.selectTab.setTabPuestos(false);
+		this.selectTab.setTabTipoProductos(false);
+		this.selectTab.setTabUnidades(false);
+		this.selectTab.setTabGiros(false);
+		this.selectTab.setTabNaturaleza(true);
+		this.selectTab.setActivarButtonDelete(true);
+		this.selectTab.setActivarButtonSave(false);
+		this.selectTab.setVisibleButtonSave(true);
+		this.selectTab.setToolTipSave("Actualizar/Guardar giro");
+		this.selectTab.setToolTipDelete("Eliminar giro");
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
+	public void agregarNuevaArea() {
+		if (this.areas == null) {
+			this.areas = new ArrayList();
+		}
+		this.areas.add(crearColumnaVaciaAreaEstandar());
+		this.mensajeDeCambios = "No olvide salvar sus cambios";
+	}
+
+	@Command
+	@NotifyChange({ "*" })
 	public void agregarNuevoBanco() {
-		if (bancosDB == null)
-			bancosDB = new ArrayList<Banco>();
+		if (bancosDB == null) {
+			bancosDB = new ArrayList();
+		}
 		bancosDB.add(crearColumnaVaciaBanco());
-		mensajeDeCambios = "No olvide salvar sus cambios";
+		this.mensajeDeCambios = "No olvide salvar sus cambios";
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void agregarNuevoContrato() {
-		if (contratos == null)
-			contratos = new ArrayList<Contrato>();
-		contratos.add(crearColumnaVaciaContrato());
-		mensajeDeCambios = "No olvide salvar sus cambios";
+		if (this.contratos == null) {
+			this.contratos = new ArrayList();
+		}
+		this.contratos.add(crearColumnaVaciaContrato());
+		this.mensajeDeCambios = "No olvide salvar sus cambios";
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void agregarNuevaDivisa() {
-		monedasDB.add(crearColumnaVaciaMonedas());
-		mensajeDeCambios = "No olvide salvar sus cambios";
+		if (this.monedasDB == null) {
+			this.monedasDB = new ArrayList();
+		}
+		this.monedasDB.add(crearColumnaVaciaMonedas());
+		this.mensajeDeCambios = "No olvide salvar sus cambios";
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void agregarNuevoPuesto() {
-		posiciones.add(crearColumnaVaciaP());
-		mensajeDeCambios = "No olvide salvar sus cambios";
+		if (this.posiciones == null) {
+			this.posiciones = new ArrayList();
+		}
+		this.posiciones.add(crearColumnaVaciaP());
+		this.mensajeDeCambios = "No olvide salvar sus cambios";
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void agregarNuevoTipoProducto() {
-		productoTipoDB.add(crearColumnaVaciaTipoProducto());
-		mensajeDeCambios = "No olvide salvar sus cambios";
+		if (this.productoTipoDB == null) {
+			this.productoTipoDB = new ArrayList();
+		}
+		this.productoTipoDB.add(crearColumnaVaciaTipoProducto());
+		this.mensajeDeCambios = "No olvide salvar sus cambios";
 	}
 
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
 	public void agregarNuevaUnidad() {
+		if (this.unidadesDB == null) {
+			this.unidadesDB = new ArrayList();
+		}
 		Unidad nuevaUnidad = new Unidad();
-		unidadesDB.add(nuevaUnidad);
-		mensajeDeCambios = "No olvide salvar sus cambios";
+		this.unidadesDB.add(nuevaUnidad);
+		this.mensajeDeCambios = "No olvide salvar sus cambios";
+	}
+
+	@Command
+	@NotifyChange({ "*" })
+	public void agregarNuevoGiro() {
+		if (this.giros == null) {
+			this.giros = new ArrayList();
+		}
+		Giro nueoGiro = new Giro();
+		this.giros.add(nueoGiro);
+		this.mensajeDeCambios = "No olvide salvar sus cambios";
+	}
+
+	@Command
+	@NotifyChange({ "*" })
+	public void agregarNuevaNaturaleza() {
+		if (this.productosNaturalezas == null) {
+			this.productosNaturalezas = new ArrayList();
+		}
+		ProductoNaturaleza nueoGiro = new ProductoNaturaleza();
+		this.productosNaturalezas.add(nueoGiro);
+		this.mensajeDeCambios = "No olvide salvar sus cambios";
+	}
+
+	@Command
+	public void openLayoutAreas() {
+		Execution exec = Executions.getCurrent();
+		try {
+			Filedownload.save(new File(exec.toAbsoluteURI(generarUrlString("layout/LayoutArea.xlsx"), false)), null);
+		} catch (FileNotFoundException e) {
+		}
+	}
+
+	@Command
+	public void openLayoutBancos() {
+		Execution exec = Executions.getCurrent();
+		try {
+			Filedownload.save(new File(exec.toAbsoluteURI(generarUrlString("layout/LayoutBanco.xlsx"), false)), null);
+		} catch (FileNotFoundException e) {
+		}
+	}
+
+	@Command
+	public void openLayoutGiros() {
+		Execution exec = Executions.getCurrent();
+		try {
+			Filedownload.save(new File(exec.toAbsoluteURI(generarUrlString("layout/LayoutGiro.xlsx"), false)), null);
+		} catch (FileNotFoundException e) {
+		}
+	}
+
+	@Command
+	public void openLayoutMonedas() {
+		Execution exec = Executions.getCurrent();
+		try {
+			Filedownload.save(new File(exec.toAbsoluteURI(generarUrlString("layout/LayoutMoneda.xlsx"), false)), null);
+		} catch (FileNotFoundException e) {
+		}
+	}
+
+	@Command
+	public void openLayoutPosiciones() {
+		Execution exec = Executions.getCurrent();
+		try {
+			Filedownload.save(
+					new File(exec.toAbsoluteURI(generarUrlString("layout/LayoutPosicion(Puestos).xlsx"), false)), null);
+		} catch (FileNotFoundException e) {
+		}
 	}
 
 	@Command
 	public void openLayoutProducto() {
-		File archivoProducto = new File(StockConstants.LAYOUT + "\\LayoutProductos.xlsx");
-		if(archivoProducto.exists())
-			openPdf(StockConstants.LAYOUT + "\\LayoutProductos.xlsx");
-		else
-			StockUtils
-			.showSuccessmessage(
-					"No existe el layout de Productos",
-					Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+		Execution exec = Executions.getCurrent();
+		try {
+			Filedownload.save(new File(exec.toAbsoluteURI(generarUrlString("layout/LayoutProductos.xlsx"), false)),
+					null);
+		} catch (FileNotFoundException e) {
+		}
+	}
+
+	@Command
+	public void openLayoutProductoTipo() {
+		Execution exec = Executions.getCurrent();
+		try {
+			Filedownload.save(new File(exec.toAbsoluteURI(generarUrlString("layout/LayoutProductoTipo.xlsx"), false)),
+					null);
+		} catch (FileNotFoundException e) {
+		}
 	}
 
 	@Command
 	public void openLayoutProveedores() {
-		File archivoProducto = new File(StockConstants.LAYOUT + "\\LayoutProveedores.xlsx");
-		if(archivoProducto.exists())
-			openPdf(StockConstants.LAYOUT + "\\LayoutProveedores.xlsx");
-		else
-			StockUtils
-			.showSuccessmessage(
-					"No existe el layout de Proveedores",
-					Clients.NOTIFICATION_TYPE_ERROR, 0, null);
+		Execution exec = Executions.getCurrent();
+		try {
+			Filedownload.save(new File(exec.toAbsoluteURI(generarUrlString("layout/LayoutProveedores.xlsx"), false)),
+					null);
+		} catch (FileNotFoundException e) {
+		}
 	}
 
+	@Command
+	public void openLayoutUnidades() {
+		Execution exec = Executions.getCurrent();
+		try {
+			Filedownload.save(new File(exec.toAbsoluteURI(generarUrlString("layout/LayoutUnidad.xlsx"), false)), null);
+		} catch (FileNotFoundException e) {
+		}
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	
+	private Area crearArea(Area area, XSSFCell valorDePropiedad, int indice) {
+		String valor = String.valueOf(valorDePropiedad);
+		switch (indice) {
+		case 0:
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+				area.setNombre(valor);
+		}
+		return area;
+	}
+	
+	private Banco crearBanco(Banco banco, XSSFCell valorDePropiedad, int indice) {
+		String valor = String.valueOf(valorDePropiedad);
+		switch (indice) {
+		case 0:
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+				banco.setNombre(valor);
+		}
+		return banco;
+	}
+	
+	private Moneda crearMoneda(Moneda moneda, XSSFCell valorDePropiedad, int indice) {
+		String valor = String.valueOf(valorDePropiedad);
+		switch (indice) {
+		case 0:
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+				moneda.setNombre(valor);
+			break;
+		case 1:
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+				moneda.setSimbolo(valor);
+		}
+		return moneda;
+	}
+	
+	private Posicion crearPosicion(Posicion puesto, XSSFCell valorDePropiedad, int indice) {
+		String valor = String.valueOf(valorDePropiedad);
+		switch (indice) {
+		case 0:
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+				puesto.setNombre(valor);
+			break;
+		case 1:
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+				puesto.setDescripcion(valor);
+		}
+		return puesto;
+	}
+
+	private ProductoTipo crearTipoProductos(ProductoTipo productoTipo, XSSFCell valorDePropiedad, int indice) {
+		String valor = String.valueOf(valorDePropiedad);
+		switch (indice) {
+		case 0:
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+				productoTipo.setNombre(valor);
+			break;
+		case 1:
+			if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+				productoTipo.setDescripcion(valor);
+		}
+		return productoTipo;
+	}
+	
+	private Unidad crearUnidadMedida(Unidad unidad, XSSFCell valorDePropiedad, int indice) {
+		String valor = String.valueOf(valorDePropiedad);
+		switch (indice) {
+			case 0:
+				if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+					unidad.setNombre(valor);
+				break;
+			case 1:
+				if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+					unidad.setAbreviatura(valor);
+		}
+		return unidad;
+	}
+	
+	private Giro crearGiro(Giro giro, XSSFCell valorDePropiedad, int indice) {
+		String valor = String.valueOf(valorDePropiedad);
+		switch (indice) {
+		
+			case 0:
+				break;
+			case 1:
+				if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+					giro.setNombre(valor);
+				break;
+			case 2:
+				if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+					giro.setDescripcion(valor);
+		}
+		return giro;
+	}
+	
+	private ProductoNaturaleza crearNaturaleza(ProductoNaturaleza productoNaturaleza, XSSFCell valorDePropiedad,
+			int indice) {
+		String valor = String.valueOf(valorDePropiedad);
+		switch (indice) {
+			case 0:
+				if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+					productoNaturaleza.setNombre(valor);
+				break;
+			case 1:
+				if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL")))
+					productoNaturaleza.setSimbolo(valor);
+				
+				break;
+		}
+		return productoNaturaleza;
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	
+	@NotifyChange({ "areas" })
+	@Command
+	public void onUploadExcelArea(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) throws IOException {
+		areas = leerDatosDesdeExcelArea(getStreamMediaExcel(ctx), 0);
+		if(areas.size() > 0){
+			for (Area item : areas) {
+				areaService.save(item);
+			}
+			Messagebox.show(areas.size() + " Areas Importadas");
+		}else
+			Messagebox.show("No se importaron areas. El documento esta vacio");
+	}
+
+	@Command
+	@NotifyChange({ "bancosDB" })
+	public void onUploadExcelBanco(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) throws IOException {
+		bancosDB = leerDatosDesdeExcelBanco(getStreamMediaExcel(ctx), 0);
+		if(bancosDB.size() > 0){
+			for (Banco item : bancosDB) {
+				bancoService.save(item);
+			}
+			Messagebox.show(bancosDB.size() + " Bancos Importados");
+		}else
+			Messagebox.show("No se importaron bancos. El documento esta vacio");	
+	}
+	
+	@Command
+	@NotifyChange({ "monedasDB" })
+	public void onUploadExcelMoneda(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) throws IOException {
+		monedasDB = leerDatosDesdeExcelMoneda(getStreamMediaExcel(ctx), 0);
+		if(monedasDB.size() > 0){
+			for (Moneda item : monedasDB) {
+				monedaService.save(item);
+			}
+			Messagebox.show(monedasDB.size() + " Divisas Importadas");
+		}else
+			Messagebox.show("No se importaron divisas. El documento esta vacio");
+	}
+	
+	@Command
+	@NotifyChange({ "posiciones" })
+	public void onUploadExcelPosicion(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) throws IOException {
+		posiciones = leerDatosDesdeExcelPosicion(getStreamMediaExcel(ctx), 0);
+		if(posiciones.size() > 0){
+			for (Posicion item : posiciones) {
+				posicionService.save(item);
+			}
+			Messagebox.show(posiciones.size() + " Puestos Importados");
+		}else
+			Messagebox.show("No se importaron posiciones. El documento esta vacio");
+	}
+	
+	@Command
+	@NotifyChange({ "productoTipoDB" })
+	public void onUploadExcelTipoProducto(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) throws IOException {
+		productoTipoDB = leerDatosDesdeExcelTipoProductos(getStreamMediaExcel(ctx), 0);
+		if(productoTipoDB.size() > 0){
+			for (ProductoTipo item : productoTipoDB) {
+				productoTipoService.save(item);
+			}
+			Messagebox.show(productoTipoDB.size() + " Tipos de producto Importados");
+		}else
+			Messagebox.show("No se importaron Tipos de producto. El documento esta vacio");
+	}
+	
+	@Command
+	@NotifyChange({ "unidadesDB" })
+	public void onUploadExcelUnidadMedida(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) throws IOException {
+		unidadesDB = leerDatosDesdeExcelUnidadMedida(getStreamMediaExcel(ctx), 0);
+		if(unidadesDB.size() > 0){
+			for (Unidad item : unidadesDB) {
+				unidadService.save(item);
+			}
+			Messagebox.show(unidadesDB.size() + " Unidades de medida Importados");
+		}else
+			Messagebox.show("No se importaron Unidades de medida. El documento esta vacio");
+	}
+	
+	@Command
+	@NotifyChange({ "giros" })
+	public void onUploadExcelGiro(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) throws IOException {
+		giros = leerDatosDesdeExcelGiros(getStreamMediaExcel(ctx), 0);
+		if(giros.size() > 0){
+			for (Giro item : giros) {
+				giroService.save(item);
+			}
+			Messagebox.show(giros.size() + " Giros Importados");
+		}else
+			Messagebox.show("No se importaron Giros. El documento esta vacio");
+	}
+	
+	@Command
+	@NotifyChange({ "productosNaturalezas" })
+	public void onUploadExcelNaturaleza(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) throws IOException {
+		productosNaturalezas = leerDatosDesdeExcelNaturaleza(getStreamMediaExcel(ctx), 0);
+		if(productosNaturalezas.size() > 0){
+			for (ProductoNaturaleza item : productosNaturalezas) {
+				productoNaturalezaService.save(item);
+			}
+			Messagebox.show(productosNaturalezas.size() + " Naturalezas de producto Importados");
+		}else
+			Messagebox.show("No se importaron Naturalezas de producto. El documento esta vacio");
+	}
+
+	//---------------------------------------------------------------------------------------------
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<Area> leerDatosDesdeExcelArea(InputStream inPutStream, int indiceSheet) {
+		Organizacion organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
+		List<Area> areaNuevosExcel = new ArrayList();
+		try {
+			XSSFWorkbook workBook = new XSSFWorkbook(inPutStream);
+			XSSFSheet hssfSheet = workBook.getSheetAt(indiceSheet);
+			Iterator rowIterator = hssfSheet.rowIterator();
+			Integer i = 0;
+			int j;
+			SimpleDateFormat sdf;
+			while (rowIterator.hasNext()) {
+				Area nuevoArea = new Area();
+				XSSFRow hssfRow = (XSSFRow) rowIterator.next();
+				Iterator iterator = hssfRow.cellIterator();
+				if (i > 0) {
+					j = 0;
+					while ((iterator.hasNext()) && (j < 1)) {
+						XSSFCell hssfCell = (XSSFCell) iterator.next();
+						nuevoArea = crearArea(nuevoArea, hssfCell, j);
+						j++;
+					}
+					nuevoArea.setOrganizacion(organizacion);
+					nuevoArea.setUsuario((Usuarios) sessionUtils.getFromSession("usuario"));
+
+					sdf = new SimpleDateFormat("yyyy/dd/M");
+					String date = sdf.format(this.stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+
+					nuevoArea.setFechaActualizacion(date);
+					nuevoArea.setToolTipIndice("Seleccionar Area");
+					nuevoArea.setToolTipNombre("Clic sobre esta columna para editar nombre");
+					areaNuevosExcel.add(nuevoArea);
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return areaNuevosExcel;
+	}
+		
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<Banco> leerDatosDesdeExcelBanco(InputStream inPutStream, int indiceSheet) {
+		Organizacion organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
+		List<Banco> bancoNuevosExcel = new ArrayList();
+		try {
+			XSSFWorkbook workBook = new XSSFWorkbook(inPutStream);
+			XSSFSheet hssfSheet = workBook.getSheetAt(indiceSheet);
+			Iterator rowIterator = hssfSheet.rowIterator();
+			Integer i = Integer.valueOf(0);
+			int j;
+			SimpleDateFormat sdf;
+			while (rowIterator.hasNext()) {
+				Banco nuevoBanco = new Banco();
+				XSSFRow hssfRow = (XSSFRow) rowIterator.next();
+				Iterator iterator = hssfRow.cellIterator();
+				if (i.intValue() > 0) {
+					j = 0;
+					while ((iterator.hasNext()) && (j < 1)) {
+						XSSFCell hssfCell = (XSSFCell) iterator.next();
+						nuevoBanco = crearBanco(nuevoBanco, hssfCell, j);
+						j++;
+					}
+					nuevoBanco.setOrganizacion(organizacion);
+					nuevoBanco.setUsuario((Usuarios) sessionUtils.getFromSession("usuario"));
+
+					sdf = new SimpleDateFormat("yyyy/dd/M");
+					String date = sdf.format(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+
+					nuevoBanco.setFechaActualizacion(date);
+					nuevoBanco.setToolTipIndice("Seleccionar moneda");
+					nuevoBanco.setToolTipNombre("Clic sobre esta columna para editar nombre");
+					bancoNuevosExcel.add(nuevoBanco);
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bancoNuevosExcel;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<Moneda> leerDatosDesdeExcelMoneda(InputStream inPutStream, int indiceSheet) {
+		Organizacion organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
+		List<Moneda> monedaNuevosExcel = new ArrayList();
+		try {
+			XSSFWorkbook workBook = new XSSFWorkbook(inPutStream);
+			XSSFSheet hssfSheet = workBook.getSheetAt(indiceSheet);
+			Iterator rowIterator = hssfSheet.rowIterator();
+			Integer i = Integer.valueOf(0);
+			int j;
+			SimpleDateFormat sdf;
+			while (rowIterator.hasNext()) {
+				Moneda nuevoMoneda = new Moneda();
+				XSSFRow hssfRow = (XSSFRow) rowIterator.next();
+				Iterator iterator = hssfRow.cellIterator();
+				if (i.intValue() > 0) {
+					j = 0;
+					while ((iterator.hasNext()) && (j < 2)) {
+						XSSFCell hssfCell = (XSSFCell) iterator.next();
+						nuevoMoneda = crearMoneda(nuevoMoneda, hssfCell, j);
+
+						j++;
+					}
+					nuevoMoneda.setOrganizacion(organizacion);
+					nuevoMoneda.setUsuario((Usuarios) sessionUtils.getFromSession("usuario"));
+
+					sdf = new SimpleDateFormat("yyyy/dd/M");
+					String date = sdf.format(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+
+					nuevoMoneda.setFechaActualizacion(date);
+					nuevoMoneda.setToolTipIndice("Seleccionar moneda");
+					nuevoMoneda.setToolTipNombre("Clic sobre esta columna para editar nombre");
+					monedaNuevosExcel.add(nuevoMoneda);
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return monedaNuevosExcel;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<Posicion> leerDatosDesdeExcelPosicion(InputStream inPutStream, int indiceSheet) {
+		Organizacion organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
+		List<Posicion> posicionNuevosExcel = new ArrayList();
+		try {
+			XSSFWorkbook workBook = new XSSFWorkbook(inPutStream);
+			XSSFSheet hssfSheet = workBook.getSheetAt(indiceSheet);
+			Iterator rowIterator = hssfSheet.rowIterator();
+			Integer i = Integer.valueOf(0);
+			int j;
+			SimpleDateFormat sdf;
+			while (rowIterator.hasNext()) {
+				Posicion nuevoPosicion = new Posicion();
+				XSSFRow hssfRow = (XSSFRow) rowIterator.next();
+				Iterator iterator = hssfRow.cellIterator();
+				if (i.intValue() > 0) {
+					j = 0;
+					while ((iterator.hasNext()) && (j < 2)) {
+						XSSFCell hssfCell = (XSSFCell) iterator.next();
+						nuevoPosicion = crearPosicion(nuevoPosicion, hssfCell, j);
+
+						j++;
+					}
+					nuevoPosicion.setOrganizacion(organizacion);
+					nuevoPosicion.setUsuario((Usuarios) sessionUtils.getFromSession("usuario"));
+
+					sdf = new SimpleDateFormat("yyyy/dd/M");
+					String date = sdf.format(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+
+					nuevoPosicion.setFechaActualizacion(date);
+					nuevoPosicion.setToolTipIndice("Seleccionar puesto");
+					nuevoPosicion.setToolTipNombre("Clic sobre esta columna para editar nombre");
+					posicionNuevosExcel.add(nuevoPosicion);
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return posicionNuevosExcel;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<ProductoTipo> leerDatosDesdeExcelTipoProductos(InputStream inPutStream, int indiceSheet) {
+		Organizacion organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
+		List<ProductoTipo> productoTipoNuevosExcel = new ArrayList();
+		try {
+			XSSFWorkbook workBook = new XSSFWorkbook(inPutStream);
+			XSSFSheet hssfSheet = workBook.getSheetAt(indiceSheet);
+			Iterator rowIterator = hssfSheet.rowIterator();
+			Integer i = Integer.valueOf(0);
+			int j;
+			SimpleDateFormat sdf;
+			while (rowIterator.hasNext()) {
+				ProductoTipo nuevoProductoTipo = new ProductoTipo();
+				XSSFRow hssfRow = (XSSFRow) rowIterator.next();
+				Iterator iterator = hssfRow.cellIterator();
+				if (i.intValue() > 0) {
+					j = 0;
+					while ((iterator.hasNext()) && (j < 2)) {
+						XSSFCell hssfCell = (XSSFCell) iterator.next();
+						nuevoProductoTipo = crearTipoProductos(nuevoProductoTipo, hssfCell, j);
+						j++;
+					}
+					nuevoProductoTipo.setOrganizacion(organizacion);
+					nuevoProductoTipo.setUsuario((Usuarios) sessionUtils.getFromSession("usuario"));
+
+					sdf = new SimpleDateFormat("yyyy/dd/M");
+					String date = sdf.format(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+
+					nuevoProductoTipo.setFechaActualizacion(date);
+					productoTipoNuevosExcel.add(nuevoProductoTipo);
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return productoTipoNuevosExcel;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<Unidad> leerDatosDesdeExcelUnidadMedida(InputStream inPutStream, int indiceSheet) {
+		Organizacion organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
+		List<Unidad> unidadNuevosExcel = new ArrayList();
+		try {
+			XSSFWorkbook workBook = new XSSFWorkbook(inPutStream);
+			XSSFSheet hssfSheet = workBook.getSheetAt(indiceSheet);
+			Iterator rowIterator = hssfSheet.rowIterator();
+			Integer i = Integer.valueOf(0);
+			int j;
+			XSSFCell hssfCell;
+			while (rowIterator.hasNext()) {
+				Unidad nuevoUnidad = new Unidad();
+				XSSFRow hssfRow = (XSSFRow) rowIterator.next();
+				Iterator iterator = hssfRow.cellIterator();
+				if (i.intValue() > 0) {
+					j = 0;
+					while ((iterator.hasNext()) && (j < 2)) {
+						hssfCell = (XSSFCell) iterator.next();
+						nuevoUnidad = crearUnidadMedida(nuevoUnidad, hssfCell, j);
+						j++;
+					}
+					nuevoUnidad.setOrganizacion(organizacion);
+					nuevoUnidad.setUsuario((Usuarios) sessionUtils.getFromSession("usuario"));
+					nuevoUnidad.setFechaActualizacion(Calendar.getInstance());
+					unidadNuevosExcel.add(nuevoUnidad);
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return unidadNuevosExcel;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<Giro> leerDatosDesdeExcelGiros(InputStream inPutStream, int indiceSheet) {
+		Organizacion organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
+		List<Giro> giroNuevosExcel = new ArrayList();
+		try {
+			XSSFWorkbook workBook = new XSSFWorkbook(inPutStream);
+			XSSFSheet hssfSheet = workBook.getSheetAt(indiceSheet);
+			Iterator rowIterator = hssfSheet.rowIterator();
+			Integer i = Integer.valueOf(0);
+			int j;
+			XSSFCell hssfCell;
+			while (rowIterator.hasNext()) {
+				Giro nuevoGiro = new Giro();
+				XSSFRow hssfRow = (XSSFRow) rowIterator.next();
+				Iterator iterator = hssfRow.cellIterator();
+				if (i.intValue() > 0) {
+					j = 0;
+					while ((iterator.hasNext()) && (j < 3)) {
+						hssfCell = (XSSFCell) iterator.next();
+						nuevoGiro = crearGiro(nuevoGiro, hssfCell, j);
+						j++;
+					}
+					nuevoGiro.setOrganizacion(organizacion);
+					giroNuevosExcel.add(nuevoGiro);
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return giroNuevosExcel;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<ProductoNaturaleza> leerDatosDesdeExcelNaturaleza(InputStream inPutStream, int indiceSheet) {
+		List<ProductoNaturaleza> productoNaturalezaNuevosExcel = new ArrayList();
+		try {
+			XSSFWorkbook workBook = new XSSFWorkbook(inPutStream);
+			XSSFSheet hssfSheet = workBook.getSheetAt(indiceSheet);
+			Iterator rowIterator = hssfSheet.rowIterator();
+			Integer i = Integer.valueOf(0);
+			int j;
+			XSSFCell hssfCell;
+			while (rowIterator.hasNext()) {
+				ProductoNaturaleza nuevoProductoNaturaleza = new ProductoNaturaleza();
+				XSSFRow hssfRow = (XSSFRow) rowIterator.next();
+				Iterator iterator = hssfRow.cellIterator();
+				if (i.intValue() > 0) {
+					j = 0;
+					while ((iterator.hasNext()) && (j < 3)) {
+						hssfCell = (XSSFCell) iterator.next();
+						nuevoProductoNaturaleza = crearNaturaleza(nuevoProductoNaturaleza, hssfCell, j);
+						j++;
+					}
+					productoNaturalezaNuevosExcel.add(nuevoProductoNaturaleza);
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return productoNaturalezaNuevosExcel;
+	}
+
+	//---------------------------------------------------------------------------------------------
+	
+	
 }

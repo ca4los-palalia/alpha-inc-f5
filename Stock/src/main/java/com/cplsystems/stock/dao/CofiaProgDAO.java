@@ -1,24 +1,14 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.CofiaProg;
 import java.util.List;
 
-import com.cplsystems.stock.domain.CofiaProg;
+public abstract interface CofiaProgDAO {
+	public abstract void save(CofiaProg paramCofiaProg);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void delete(CofiaProg paramCofiaProg);
 
-public interface CofiaProgDAO {
+	public abstract CofiaProg getById(Long paramLong);
 
-	public void save(CofiaProg cofiaProg);
-
-	public void delete(CofiaProg cofiaProg);
-	
-	public CofiaProg getById(Long idCofiaProg);
-
-	public List<CofiaProg> getAll();
-	
+	public abstract List<CofiaProg> getAll();
 }

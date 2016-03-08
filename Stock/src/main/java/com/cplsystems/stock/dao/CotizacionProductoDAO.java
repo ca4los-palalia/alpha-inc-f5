@@ -1,23 +1,14 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.CotizacionProducto;
 import java.util.List;
 
-import com.cplsystems.stock.domain.CotizacionProducto;
+public abstract interface CotizacionProductoDAO {
+	public abstract void save(CotizacionProducto paramCotizacionProducto);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void delete(CotizacionProducto paramCotizacionProducto);
 
-public interface CotizacionProductoDAO {
+	public abstract CotizacionProducto getById(Long paramLong);
 
-	public void save(CotizacionProducto cotizacionProducto);
-
-	public void delete(CotizacionProducto cotizacionProducto);
-
-	public CotizacionProducto getById(Long idCotizacion);
-
-	public List<CotizacionProducto> getAll();
+	public abstract List<CotizacionProducto> getAll();
 }

@@ -1,76 +1,61 @@
-/**
- * 
- */
 package com.cplsystems.stock.services;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.RequisicionDAO;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Requisicion;
-import com.cplsystems.stock.domain.RequisicionProducto;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Service
 public class RequisicionService {
-
 	@Autowired
 	private RequisicionDAO requisicionDAO;
 
-	public void save(final Requisicion requisicion) {
-		requisicionDAO.save(requisicion);
+	public void save(Requisicion requisicion) {
+		this.requisicionDAO.save(requisicion);
 	}
 
-	public void update(final Requisicion requisicion) {
-		requisicionDAO.update(requisicion);
+	public void update(Requisicion requisicion) {
+		this.requisicionDAO.update(requisicion);
 	}
 
-	public void delete(final Requisicion requisicion) {
-		requisicionDAO.delete(requisicion);
+	public void delete(Requisicion requisicion) {
+		this.requisicionDAO.delete(requisicion);
 	}
 
-	public Requisicion getById(final Long idRequisicion) {
-		return requisicionDAO.getById(idRequisicion);
+	public Requisicion getById(Long idRequisicion) {
+		return this.requisicionDAO.getById(idRequisicion);
 	}
 
-	public Requisicion getByPersona(final Persona persona) {
-		return requisicionDAO.getByPersona(persona);
+	public Requisicion getByPersona(Persona persona) {
+		return this.requisicionDAO.getByPersona(persona);
 	}
 
 	public String getUltimoFolio() {
-		return requisicionDAO.getUltimoFolio();
+		return this.requisicionDAO.getUltimoFolio();
 	}
 
 	public List<Requisicion> getAll() {
-		return requisicionDAO.getAll();
+		return this.requisicionDAO.getAll();
 	}
 
-	public List<Requisicion> getByEstatusRequisicion(
-			EstatusRequisicion estatusRequisicion) {
-		return requisicionDAO.getByEstatusRequisicion(estatusRequisicion);
+	public List<Requisicion> getByEstatusRequisicion(EstatusRequisicion estatusRequisicion) {
+		return this.requisicionDAO.getByEstatusRequisicion(estatusRequisicion);
 	}
-	
-	public Requisicion getByFolio(String folio){
-		return requisicionDAO.getByFolio(folio);
+
+	public Requisicion getByFolio(String folio) {
+		return this.requisicionDAO.getByFolio(folio);
 	}
-	
-	public List<Requisicion> getByUnidadResponsable(Area area){
-		return requisicionDAO.getByUnidadResponsable(area);
+
+	public List<Requisicion> getByUnidadResponsable(Area area) {
+		return this.requisicionDAO.getByUnidadResponsable(area);
 	}
-	
-	public List<Requisicion> getRequisicionesConListaDeEstatusFolioArea(
-			List<EstatusRequisicion> estatusRequisiciones, String folio,
-			Area area) {
-		return requisicionDAO
-				.getRequisicionesConListaDeEstatusFolioArea(
-						estatusRequisiciones, folio, area);
+
+	public List<Requisicion> getRequisicionesConListaDeEstatusFolioArea(List<EstatusRequisicion> estatusRequisiciones,
+			String folio, Area area) {
+		return this.requisicionDAO.getRequisicionesConListaDeEstatusFolioArea(estatusRequisiciones, folio, area);
 	}
 }

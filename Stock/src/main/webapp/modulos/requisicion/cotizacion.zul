@@ -6,7 +6,7 @@
 		viewModel="@id('rvm') @init('com.cplsystems.stock.app.vm.requisicion.CotizacionVM')">
 
 		<vlayout>
-
+			
 			<grid><!-- MENU DE ACCIONES-->
 				<columns>
 					<column />
@@ -32,73 +32,76 @@
 								tooltiptext="Cancelar cotización" sclass="web_button"
 								onClick="@command('abrirVentanaCancelacion')" />
 							<button image="/images/toolbar/pdf32.png"
-								sclass="web_button"
-								tooltiptext="Exportar PDF"
+								sclass="web_button" tooltiptext="Exportar PDF"
 								onClick="@command('imprimirCotizacion')" />
+							<button image="/images/toolbar/email32.png"
+								sclass="web_button" tooltiptext="Bandeja de notificaciones"
+								onClick="info.doPopup()" />
 						</hlayout>
 					</row>
 				</rows>
 			</grid>
 			<!-- END MENU DE ACCIONES-->
-
+			<window id="info" visible="false" width="50%"
+				border="normal" position="parent">
+				<groupbox mold="3d" open="true">
+					<caption label="Bandeja de cotizaciones"
+						image="/images/toolbar/mailColor16.png" />
+					<listbox model="@load(rvm.cotizacionesInbox)"
+						selectedItem="@bind(rvm.cotizacionInboxSeleccionada)"
+						emptyMessage="No hay cotizaciones" mold="paging" pageSize="6"
+						height="100%">
+						<listhead>
+							<listheader align="center" width="5%"
+								style="font-size:smaller;" />
+							<listheader label="Folio" align="center"
+								width="7%" style="font-size:smaller;" />
+							<listheader label="Comentarios"
+								align="center" width="30%" style="font-size:smaller;" />
+							<listheader label="Proveedor" align="center"
+								width="25%" style="font-size:smaller;" />
+							<listheader label="Total" align="center"
+								style="font-size:smaller;" />
+							<listheader label="Estado" align="center"
+								width="23%" style="font-size:smaller;" />
+						</listhead>
+						<template name="model" var="cotizacion">
+							<listitem>
+								<listcell style="font-size:smaller;"
+									onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)">
+									<image
+										src="@load(cotizacion.icono)" />
+								</listcell>
+								<listcell style="font-size:smaller;"
+									onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+									label="${cotizacion.cotizacion.requisicion.folio}" />
+								<listcell style="font-size:smaller;"
+									onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+									label="${cotizacion.comentarios}" />
+								<listcell style="font-size:smaller;"
+									onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+									label="${cotizacion.cotizacion.proveedor.nombre}" />
+								<listcell style="font-size:smaller;"
+									onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
+									label="${cotizacion.cotizacion.total}" />
+								<listcell
+									onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)">
+									<hlayout>
+										<button disabled="true"
+											style="${cotizacion.cotizacion.estatusRequisicion.color}" />
+										<label
+											style="font-size:smaller;"
+											value="${cotizacion.cotizacion.estatusRequisicion.nombre}" />
+									</hlayout>
+								</listcell>
+							</listitem>
+						</template>
+					</listbox>
+				</groupbox>
+			</window>
 			<separator />
-			
-			<groupbox mold="3d" open="false">
-				<caption label="Bandeja de cotizaciones"
-					image="/images/toolbar/mailColor16.png" />
-				<listbox model="@load(rvm.cotizacionesInbox)"
-					selectedItem="@bind(rvm.cotizacionInboxSeleccionada)"
-					emptyMessage="No hay cotizaciones" mold="paging" pageSize="6"
-					height="100%">
-					<listhead>
-						<listheader align="center" width="5%"
-							style="font-size:smaller;" />
-						<listheader label="Folio" align="center"
-							width="7%" style="font-size:smaller;" />
-						<listheader label="Comentarios" align="center"
-							width="30%" style="font-size:smaller;" />
-						<listheader label="Proveedor" align="center"
-							width="25%" style="font-size:smaller;" />
-						<listheader label="Total" align="center"
-							style="font-size:smaller;" />
-						<listheader label="Estado" align="center"
-							width="23%" style="font-size:smaller;" />
-					</listhead>
-					<template name="model" var="cotizacion">
-						<listitem>
-							<listcell style="font-size:smaller;"
-								onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)">
-								<image src="@load(cotizacion.icono)" />
-							</listcell>
-							<listcell style="font-size:smaller;"
-								onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
-								label="${cotizacion.cotizacion.requisicion.folio}" />
-							<listcell style="font-size:smaller;"
-								onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
-								label="${cotizacion.comentarios}" />
-							<listcell style="font-size:smaller;"
-								onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
-								label="${cotizacion.cotizacion.proveedor.nombre}" />
-							<listcell style="font-size:smaller;"
-								onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)"
-								label="${cotizacion.cotizacion.total}" />
-							<listcell
-								onClick="@command('transferirCotizacionToFormular', index=cotizacionStatus.index)">
-								<hlayout>
-									<button disabled="true"
-										style="${cotizacion.cotizacion.estatusRequisicion.color}" />
-									<label style="font-size:smaller;"
-										value="${cotizacion.cotizacion.estatusRequisicion.nombre}" />
-								</hlayout>
-							</listcell>
-						</listitem>
-					</template>
-				</listbox>
-			</groupbox>
-			
-			<separator />
 
-			<groupbox mold="3d" open="false"
+			<groupbox mold="3d" open="true"
 				tooltiptext="Clic para ver formulario de busqueda">
 				<caption label="Buscar"
 					image="/images/toolbar/find16x16.png" />
@@ -161,7 +164,7 @@
 						<listheader label="Estatus" width="12%"
 							sort="auto(estatusRequisicion.nombre)" />
 						<listheader width="6%" />
-						<listheader width="6%" visible="false"/>
+						<listheader width="6%" visible="false" />
 					</listhead>
 					<template name="model" var="cotizacionVar">
 						<listitem>
@@ -213,7 +216,7 @@
 
 			<separator />
 
-			<groupbox mold="3d" open="false">
+			<groupbox mold="3d" open="true">
 				<caption label="Informacion de la cotización"
 					image="/images/toolbar/info16.png" />
 
@@ -377,7 +380,8 @@
 									style="font-size:smaller;" />
 							</listcell>
 							<listcell>
-								<label value="@bind(each.requisicionProducto.cantidad)" />
+								<label
+									value="@bind(each.requisicionProducto.cantidad)" />
 							</listcell>
 							<listcell>
 								<label

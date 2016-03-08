@@ -1,33 +1,24 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Persona;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface PersonaDAO {
+	public abstract void save(Persona paramPersona);
 
-public interface PersonaDAO {
+	public abstract void delete(Persona paramPersona);
 
-	public void save(Persona persona);
+	public abstract List<Persona> getByDireccion(Direccion paramDireccion);
 
-	public void delete(Persona persona);
+	public abstract List<Persona> getByContacto(Contacto paramContacto);
 
-	public List<Persona> getByDireccion(Direccion direccion);
+	public abstract Persona getById(Long paramLong);
 
-	public List<Persona> getByContacto(Contacto contacto);
+	public abstract List<Persona> getAll();
 
-	public Persona getById(Long persona);
+	public abstract List<Persona> getBySexo(Long paramLong);
 
-	public List<Persona> getAll();
-
-	public List<Persona> getBySexo(Long sexo);
-
-	public Persona getUltimoRegistroPersona();
+	public abstract Persona getUltimoRegistroPersona();
 }

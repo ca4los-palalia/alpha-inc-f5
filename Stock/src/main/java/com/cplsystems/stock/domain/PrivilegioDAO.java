@@ -1,24 +1,14 @@
-/**
- * 
- */
 package com.cplsystems.stock.domain;
 
+import com.cplsystems.stock.app.utils.UserPrivileges;
 import java.util.List;
 
-import com.cplsystems.stock.app.utils.UserPrivileges;
+public abstract interface PrivilegioDAO {
+	public abstract void save(Privilegios paramPrivilegios);
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-public interface PrivilegioDAO {
+	public abstract void delete(Privilegios paramPrivilegios);
 
-	void save(Privilegios privilegios);
+	public abstract List<Privilegios> getPrivilegiosByUsuario(Usuarios paramUsuarios);
 
-	void delete(Privilegios privilegios);
-
-	List<Privilegios> getPrivilegiosByUsuario(Usuarios usuarios);
-
-	List<Privilegios> getUsuariosByPrivilegio(UserPrivileges cotizarAutorizar);
-
+	public abstract List<Privilegios> getUsuariosByPrivilegio(UserPrivileges paramUserPrivileges);
 }

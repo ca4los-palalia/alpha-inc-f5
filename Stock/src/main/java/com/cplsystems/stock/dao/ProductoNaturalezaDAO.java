@@ -1,24 +1,20 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.ProductoNaturaleza;
 import java.util.List;
 
-import com.cplsystems.stock.domain.ProductoNaturaleza;
+public abstract interface ProductoNaturalezaDAO {
+	public abstract void save(ProductoNaturaleza paramProductoNaturaleza);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void update(ProductoNaturaleza paramProductoNaturaleza);
 
-public interface ProductoNaturalezaDAO {
+	public abstract void delete(ProductoNaturaleza paramProductoNaturaleza);
 
-	public void save(final ProductoNaturaleza productoNaturaleza);
-	public void update(final ProductoNaturaleza productoNaturaleza);
-	public void delete(final ProductoNaturaleza productoNaturaleza);
-	public ProductoNaturaleza getById(final Long idProductoNaturaleza);
-	public List<ProductoNaturaleza> getAll();
-	public ProductoNaturaleza getByNombre(final String nombre);
-	public ProductoNaturaleza getBySimbolo(final String simbolo);
+	public abstract ProductoNaturaleza getById(Long paramLong);
 
+	public abstract List<ProductoNaturaleza> getAll();
+
+	public abstract ProductoNaturaleza getByNombre(String paramString);
+
+	public abstract ProductoNaturaleza getBySimbolo(String paramString);
 }

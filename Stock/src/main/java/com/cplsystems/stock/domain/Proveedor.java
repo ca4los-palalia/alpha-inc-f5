@@ -2,7 +2,6 @@ package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
 import java.util.Calendar;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +17,6 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "provedor")
 public class Proveedor implements Serializable {
-
 	private static final long serialVersionUID = 5955369590591544443L;
 	private Long idProveedor;
 	private String comentario;
@@ -32,7 +30,6 @@ public class Proveedor implements Serializable {
 	private Long cuentaCargo;
 	private Calendar fechaActualizacion;
 	private String paginaWeb;
-
 	private Contacto contacto;
 	private Contrato contrato;
 	private Direccion direccionDevolucion;
@@ -43,15 +40,15 @@ public class Proveedor implements Serializable {
 	private Persona representanteLegal;
 	private Persona representanteAteCliente;
 	private Giro giro;
-	private CuentaPago cuentaPago; 
+	private CuentaPago cuentaPago;
 	private Organizacion organizacion;
 	private Usuarios usuario;
-	
+
 	@Id
 	@Column(name = "idProveedor", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdProveedor() {
-		return idProveedor;
+		return this.idProveedor;
 	}
 
 	public void setIdProveedor(Long idProveedor) {
@@ -60,7 +57,7 @@ public class Proveedor implements Serializable {
 
 	@Column
 	public String getClave() {
-		return clave;
+		return this.clave;
 	}
 
 	public void setClave(String clave) {
@@ -69,7 +66,7 @@ public class Proveedor implements Serializable {
 
 	@Column
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
@@ -78,7 +75,7 @@ public class Proveedor implements Serializable {
 
 	@Column
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {
@@ -87,7 +84,7 @@ public class Proveedor implements Serializable {
 
 	@Column
 	public String getRazonSocial() {
-		return razonSocial;
+		return this.razonSocial;
 	}
 
 	public void setRazonSocial(String razonSocial) {
@@ -96,7 +93,7 @@ public class Proveedor implements Serializable {
 
 	@Column
 	public String getRfc() {
-		return rfc;
+		return this.rfc;
 	}
 
 	public void setRfc(String rfc) {
@@ -105,7 +102,7 @@ public class Proveedor implements Serializable {
 
 	@Column
 	public Long getCuentaCargo() {
-		return cuentaCargo;
+		return this.cuentaCargo;
 	}
 
 	public void setCuentaCargo(Long cuentaCargo) {
@@ -114,7 +111,7 @@ public class Proveedor implements Serializable {
 
 	@Column
 	public String getStatus() {
-		return status;
+		return this.status;
 	}
 
 	public void setStatus(String status) {
@@ -123,7 +120,7 @@ public class Proveedor implements Serializable {
 
 	@Column
 	public String getComentario() {
-		return comentario;
+		return this.comentario;
 	}
 
 	public void setComentario(String comentario) {
@@ -132,7 +129,7 @@ public class Proveedor implements Serializable {
 
 	@Column
 	public boolean isProveedorActivo() {
-		return proveedorActivo;
+		return this.proveedorActivo;
 	}
 
 	public void setProveedorActivo(boolean proveedorActivo) {
@@ -142,7 +139,7 @@ public class Proveedor implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column
 	public Calendar getFechaActualizacion() {
-		return fechaActualizacion;
+		return this.fechaActualizacion;
 	}
 
 	public void setFechaActualizacion(Calendar fechaActualizacion) {
@@ -151,7 +148,7 @@ public class Proveedor implements Serializable {
 
 	@Column
 	public String getPaginaWeb() {
-		return paginaWeb;
+		return this.paginaWeb;
 	}
 
 	public void setPaginaWeb(String paginaWeb) {
@@ -161,7 +158,7 @@ public class Proveedor implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "contacto")
 	public Contacto getContacto() {
-		return contacto;
+		return this.contacto;
 	}
 
 	public void setContacto(Contacto contacto) {
@@ -171,7 +168,7 @@ public class Proveedor implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "contrato")
 	public Contrato getContrato() {
-		return contrato;
+		return this.contrato;
 	}
 
 	public void setContrato(Contrato contrato) {
@@ -179,10 +176,9 @@ public class Proveedor implements Serializable {
 	}
 
 	@OneToOne
-	// @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "direccionDevolucion")
 	public Direccion getDireccionDevolucion() {
-		return direccionDevolucion;
+		return this.direccionDevolucion;
 	}
 
 	public void setDireccionDevolucion(Direccion direccionDevolucion) {
@@ -190,10 +186,9 @@ public class Proveedor implements Serializable {
 	}
 
 	@OneToOne
-	// @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "direccionFiscal")
 	public Direccion getDireccionFiscal() {
-		return direccionFiscal;
+		return this.direccionFiscal;
 	}
 
 	public void setDireccionFiscal(Direccion direccionFiscal) {
@@ -201,10 +196,9 @@ public class Proveedor implements Serializable {
 	}
 
 	@OneToOne
-	// (fetch = FetchType.LAZY)
 	@JoinColumn(name = "director")
 	public Persona getDirector() {
-		return director;
+		return this.director;
 	}
 
 	public void setDirector(Persona director) {
@@ -214,7 +208,7 @@ public class Proveedor implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "gerenteFinanzas")
 	public Persona getGerenteFinanzas() {
-		return gerenteFinanzas;
+		return this.gerenteFinanzas;
 	}
 
 	public void setGerenteFinanzas(Persona gerenteFinanzas) {
@@ -224,7 +218,7 @@ public class Proveedor implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "gerenteVentas")
 	public Persona getGerenteVentas() {
-		return gerenteVentas;
+		return this.gerenteVentas;
 	}
 
 	public void setGerenteVentas(Persona gerenteVentas) {
@@ -232,10 +226,9 @@ public class Proveedor implements Serializable {
 	}
 
 	@OneToOne
-	// @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "representanteLegal")
 	public Persona getRepresentanteLegal() {
-		return representanteLegal;
+		return this.representanteLegal;
 	}
 
 	public void setRepresentanteLegal(Persona representanteLegal) {
@@ -243,10 +236,9 @@ public class Proveedor implements Serializable {
 	}
 
 	@OneToOne
-	// @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "representanteAteCliente")
 	public Persona getRepresentanteAteCliente() {
-		return representanteAteCliente;
+		return this.representanteAteCliente;
 	}
 
 	public void setRepresentanteAteCliente(Persona representanteAteCliente) {
@@ -256,42 +248,39 @@ public class Proveedor implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "giro")
 	public Giro getGiro() {
-		return giro;
+		return this.giro;
 	}
 
 	public void setGiro(Giro giro) {
 		this.giro = giro;
 	}
-	
-	
-	
-	
+
 	@OneToOne
 	@JoinColumn(name = "organizacion")
 	public Organizacion getOrganizacion() {
-		return organizacion;
+		return this.organizacion;
 	}
+
 	public void setOrganizacion(Organizacion organizacion) {
 		this.organizacion = organizacion;
 	}
-	
+
 	@OneToOne
 	@JoinColumn(name = "usuario")
 	public Usuarios getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
+
 	public void setUsuario(Usuarios usuario) {
 		this.usuario = usuario;
 	}
 
 	@Transient
 	public CuentaPago getCuentaPago() {
-		return cuentaPago;
+		return this.cuentaPago;
 	}
 
 	public void setCuentaPago(CuentaPago cuentaPago) {
 		this.cuentaPago = cuentaPago;
 	}
-	
-	
 }

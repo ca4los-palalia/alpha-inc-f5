@@ -1,30 +1,24 @@
 package com.cplsystems.stock.dao;
 
-import java.util.List;
-
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Email;
 import com.cplsystems.stock.domain.Telefono;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface ContactoDAO {
+	public abstract void save(Contacto paramContacto);
 
-public interface ContactoDAO {
+	public abstract void delete(Contacto paramContacto);
 
-	public void save(Contacto contacto);
+	public abstract Contacto getById(Long paramLong);
 
-	public void delete(Contacto contacto);
+	public abstract Contacto getByTelefono(Telefono paramTelefono);
 
-	public Contacto getById(Long idContacto);
+	public abstract Contacto getByIdEmail(Email paramEmail);
 
-	public Contacto getByTelefono(Telefono telefono);
+	public abstract List<Contacto> getAll();
 
-	public Contacto getByIdEmail(Email email);
+	public abstract Contacto getUltimoRegistroContacto();
 
-	public List<Contacto> getAll();
-
-	public Contacto getUltimoRegistroContacto();
-
-	public Contacto getContactoByEmail(Email email);
+	public abstract Contacto getContactoByEmail(Email paramEmail);
 }

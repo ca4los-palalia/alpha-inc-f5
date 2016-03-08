@@ -1,31 +1,22 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Estado;
 import com.cplsystems.stock.domain.Municipio;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface DireccionDAO {
+	public abstract void save(Direccion paramDireccion);
 
-public interface DireccionDAO {
+	public abstract Direccion getById(Long paramLong);
 
-	public void save(Direccion direccion);
+	public abstract Direccion getUltimoRegistroDireccion();
 
-	public Direccion getById(Long direccion);
-	
-	public Direccion getUltimoRegistroDireccion();
+	public abstract List<Direccion> getByCodigoPostalId(String paramString);
 
-	public List<Direccion> getByCodigoPostalId(String codigoPostal);
+	public abstract List<Direccion> getByEstado(Estado paramEstado);
 
-	public List<Direccion> getByEstado(Estado estado);
+	public abstract List<Direccion> getByMunicipio(Municipio paramMunicipio);
 
-	public List<Direccion> getByMunicipio(Municipio municipio);
-
-	public List<Direccion> getAll();
+	public abstract List<Direccion> getAll();
 }

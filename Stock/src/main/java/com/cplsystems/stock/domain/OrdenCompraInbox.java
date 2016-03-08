@@ -1,11 +1,7 @@
-/**
- * 
- */
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,16 +15,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Entity
 @Table
 public class OrdenCompraInbox implements Serializable {
-
-	public final static String NUEVO = "/images/toolbar/newEmail.png";
-	public final static String LEIDO = "/images/toolbar/openedEmail.png";
+	public static final String NUEVO = "/images/toolbar/newEmail.png";
+	public static final String LEIDO = "/images/toolbar/openedEmail.png";
 	private static final long serialVersionUID = -4541521928529012130L;
 	private Long idOrdenCompraInbox;
 	private OrdenCompra ordenCompra;
@@ -41,7 +32,7 @@ public class OrdenCompraInbox implements Serializable {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdOrdenCompraInbox() {
-		return idOrdenCompraInbox;
+		return this.idOrdenCompraInbox;
 	}
 
 	public void setIdOrdenCompraInbox(Long idOrdenCompraInbox) {
@@ -51,7 +42,7 @@ public class OrdenCompraInbox implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ordenCompra")
 	public OrdenCompra getOrdenCompra() {
-		return ordenCompra;
+		return this.ordenCompra;
 	}
 
 	public void setOrdenCompra(OrdenCompra ordenCompra) {
@@ -60,7 +51,7 @@ public class OrdenCompraInbox implements Serializable {
 
 	@Column
 	public Boolean getLeido() {
-		return leido;
+		return this.leido;
 	}
 
 	public void setLeido(Boolean leido) {
@@ -70,7 +61,7 @@ public class OrdenCompraInbox implements Serializable {
 	@Column
 	@Temporal(TemporalType.DATE)
 	public Date getFechaCreacion() {
-		return fechaCreacion;
+		return this.fechaCreacion;
 	}
 
 	public void setFechaCreacion(Date fechaCreacion) {
@@ -79,7 +70,7 @@ public class OrdenCompraInbox implements Serializable {
 
 	@Transient
 	public String getIcono() {
-		return icono;
+		return this.icono;
 	}
 
 	public void setIcono(String icono) {
@@ -88,7 +79,7 @@ public class OrdenCompraInbox implements Serializable {
 
 	@Column
 	public String getComentarios() {
-		return comentarios;
+		return this.comentarios;
 	}
 
 	public void setComentarios(String comentarios) {

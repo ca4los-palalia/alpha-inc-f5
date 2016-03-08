@@ -1,13 +1,9 @@
-/**
- * 
- */
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,15 +19,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-
 @Entity
 @Table
 public class Usuarios implements Serializable {
-
 	private static final long serialVersionUID = 7367612078810564830L;
 	private Long idUsuario;
 	private String benutzer;
@@ -40,20 +30,19 @@ public class Usuarios implements Serializable {
 	private Persona persona;
 	private Organizacion organizacion;
 	private String retypeKennwort;
-	private Boolean owner = false;
-	private Boolean client = false;
-
+	private Boolean owner = Boolean.valueOf(false);
+	private Boolean client = Boolean.valueOf(false);
 	private List<Privilegios> privilegios;
 
 	public Usuarios() {
-		privilegios = new ArrayList<Privilegios>();
+		this.privilegios = new ArrayList();
 	}
 
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdUsuario() {
-		return idUsuario;
+		return this.idUsuario;
 	}
 
 	public void setIdUsuario(Long idUsuario) {
@@ -62,7 +51,7 @@ public class Usuarios implements Serializable {
 
 	@Column
 	public String getBenutzer() {
-		return benutzer;
+		return this.benutzer;
 	}
 
 	public void setBenutzer(String benutzer) {
@@ -71,7 +60,7 @@ public class Usuarios implements Serializable {
 
 	@Column
 	public String getKennwort() {
-		return kennwort;
+		return this.kennwort;
 	}
 
 	public void setKennwort(String kennwort) {
@@ -81,7 +70,7 @@ public class Usuarios implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "persona")
 	public Persona getPersona() {
-		return persona;
+		return this.persona;
 	}
 
 	public void setPersona(Persona persona) {
@@ -91,7 +80,7 @@ public class Usuarios implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column
 	public Date getFechaCaducidad() {
-		return fechaCaducidad;
+		return this.fechaCaducidad;
 	}
 
 	public void setFechaCaducidad(Date fechaCaducidad) {
@@ -100,7 +89,7 @@ public class Usuarios implements Serializable {
 
 	@Transient
 	public String getRetypeKennwort() {
-		return retypeKennwort;
+		return this.retypeKennwort;
 	}
 
 	public void setRetypeKennwort(String retypeKennwort) {
@@ -110,7 +99,7 @@ public class Usuarios implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organizacion")
 	public Organizacion getOrganizacion() {
-		return organizacion;
+		return this.organizacion;
 	}
 
 	public void setOrganizacion(Organizacion organizacion) {
@@ -119,7 +108,7 @@ public class Usuarios implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuarios")
 	public List<Privilegios> getPrivilegios() {
-		return privilegios;
+		return this.privilegios;
 	}
 
 	public void setPrivilegios(List<Privilegios> privilegios) {
@@ -128,7 +117,7 @@ public class Usuarios implements Serializable {
 
 	@Column
 	public Boolean getOwner() {
-		return owner;
+		return this.owner;
 	}
 
 	public void setOwner(Boolean owner) {
@@ -136,11 +125,10 @@ public class Usuarios implements Serializable {
 	}
 
 	public Boolean getClient() {
-		return client;
+		return this.client;
 	}
 
 	public void setClient(Boolean client) {
 		this.client = client;
 	}
-
 }

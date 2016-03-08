@@ -1,10 +1,6 @@
-/**
- * 
- */
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,14 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Entity
 @Table
 public class Modulos implements Serializable {
-
 	private static final long serialVersionUID = 8169420556975935653L;
 	private Long idModulo;
 	private String nombre;
@@ -30,7 +21,7 @@ public class Modulos implements Serializable {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdModulo() {
-		return idModulo;
+		return this.idModulo;
 	}
 
 	public void setIdModulo(Long idModulo) {
@@ -39,7 +30,7 @@ public class Modulos implements Serializable {
 
 	@Column
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
@@ -48,7 +39,7 @@ public class Modulos implements Serializable {
 
 	@Column
 	public String getDescripcion() {
-		return descripcion;
+		return this.descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
@@ -57,11 +48,10 @@ public class Modulos implements Serializable {
 
 	@Column
 	public String getRuta() {
-		return ruta;
+		return this.ruta;
 	}
 
 	public void setRuta(String ruta) {
 		this.ruta = ruta;
 	}
-
 }

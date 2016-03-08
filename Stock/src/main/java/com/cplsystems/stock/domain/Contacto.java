@@ -1,7 +1,6 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +14,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "contacto")
 public class Contacto implements Serializable {
-
 	private static final long serialVersionUID = -7065704145995755117L;
 	private Long idContacto;
 	private Telefono telefono;
@@ -25,31 +23,30 @@ public class Contacto implements Serializable {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdContacto() {
-		return idContacto;
+		return this.idContacto;
 	}
 
 	public void setIdContacto(Long idContacto) {
 		this.idContacto = idContacto;
 	}
 
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "telefono")
 	public Telefono getTelefono() {
-		return telefono;
+		return this.telefono;
 	}
 
 	public void setTelefono(Telefono telefono) {
 		this.telefono = telefono;
 	}
 
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "email")
 	public Email getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(Email email) {
 		this.email = email;
 	}
-
 }

@@ -1,23 +1,16 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Telefono;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Telefono;
+public abstract interface TelefonoDAO {
+	public abstract void save(Telefono paramTelefono);
 
-/**
- * @author Carlos Palalía López
- */
-public interface TelefonoDAO {
-	public void save(Telefono telefono);
+	public abstract void delete(Telefono paramTelefono);
 
-	public void delete(Telefono telefono);
+	public abstract Telefono getById(Long paramLong);
 
-	public Telefono getById(Long idTelefono);
+	public abstract List<Telefono> getAll();
 
-	public List<Telefono> getAll();
-	
-	public Telefono getUltimoregistroEmail();
+	public abstract Telefono getUltimoregistroEmail();
 }

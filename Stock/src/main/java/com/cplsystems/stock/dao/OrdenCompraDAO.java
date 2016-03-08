@@ -1,37 +1,28 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.Calendar;
-import java.util.List;
 
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
 import com.cplsystems.stock.domain.OrdenCompra;
-import com.cplsystems.stock.domain.Proveedor;
+import java.util.Calendar;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
-public interface OrdenCompraDAO {
+public abstract interface OrdenCompraDAO {
+	public abstract void save(OrdenCompra paramOrdenCompra);
 
-	public void save(OrdenCompra ordenCompra);
+	public abstract void delete(OrdenCompra paramOrdenCompra);
 
-	public void delete(OrdenCompra ordenCompra);
+	public abstract OrdenCompra getById(Long paramLong);
 
-	public OrdenCompra getById(Long idOrdenCompra);
+	public abstract List<OrdenCompra> getAll();
 
-	public List<OrdenCompra> getAll();
+	public abstract List<OrdenCompra> getByCotizacion(Cotizacion paramCotizacion);
 
-	public List<OrdenCompra> getByCotizacion(Cotizacion cotizacion);
-	
-	public OrdenCompra getByCodigo(String codigo);
-	
-	public List<OrdenCompra> getByFechaOrden(Calendar fechaOrden);
+	public abstract OrdenCompra getByCodigo(String paramString);
 
-	public String getCodigoDeOrden();
-	
-	public List<OrdenCompra> getOrdenesByEstatusAndFolioOr(
-			String folioOrdenCompra, List<EstatusRequisicion> estatus);
+	public abstract List<OrdenCompra> getByFechaOrden(Calendar paramCalendar);
+
+	public abstract String getCodigoDeOrden();
+
+	public abstract List<OrdenCompra> getOrdenesByEstatusAndFolioOr(String paramString,
+			List<EstatusRequisicion> paramList);
 }

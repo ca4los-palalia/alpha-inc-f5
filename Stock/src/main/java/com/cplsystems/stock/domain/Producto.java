@@ -2,7 +2,6 @@ package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
 import java.util.Calendar;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,11 +15,8 @@ import javax.persistence.Transient;
 @Entity
 @Table
 public class Producto implements Serializable {
-
 	private static final long serialVersionUID = 8065024909123508528L;
-
 	private Long idProducto;
-
 	private boolean activo;
 	private String clave;
 	private String codigoBarras;
@@ -58,15 +54,15 @@ public class Producto implements Serializable {
 	private Float margen8;
 	private Float margen9;
 	private Float margen10;
-	private Float costoMaximo;// ELIMINAR
-	private Calendar costoMaximoFecha;// ELIMINAR
-	private Float costoReposicion;// ELIMINAR
-	private Calendar costoReposicionFecha;// ELIMINAR
-	private Float costoCapa;// ELIMINAR
-	private Calendar costoCapaFecha;// ELIMINAR
-	private Float costoUltimo;// ELIMINAR
-	private Calendar costoUltimoFecha;// ELIMINAR
-	private Float costoPromedio;// ELIMINAR
+	private Float costoMaximo;
+	private Calendar costoMaximoFecha;
+	private Float costoReposicion;
+	private Calendar costoReposicionFecha;
+	private Float costoCapa;
+	private Calendar costoCapaFecha;
+	private Float costoUltimo;
+	private Calendar costoUltimoFecha;
+	private Float costoPromedio;
 	private Float precioPublico;
 	private boolean seleccionar;
 	private boolean cambioNaturaleza;
@@ -76,16 +72,16 @@ public class Producto implements Serializable {
 	private Moneda moneda;
 	private Long minimo;
 	private Long maximo;
-	
 	private Organizacion organizacion;
 	private Usuarios usuario;
 	private String fechaActualizacion;
+	private ClaveArmonizada claveArmonizada;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idProducto", nullable = false)
 	public Long getIdProducto() {
-		return idProducto;
+		return this.idProducto;
 	}
 
 	public void setIdProducto(Long idProducto) {
@@ -94,7 +90,7 @@ public class Producto implements Serializable {
 
 	@Column(name = "clave", length = 250)
 	public String getClave() {
-		return clave;
+		return this.clave;
 	}
 
 	public void setClave(String clave) {
@@ -103,7 +99,7 @@ public class Producto implements Serializable {
 
 	@Column(name = "descripcion", columnDefinition = "TEXT")
 	public String getDescripcion() {
-		return descripcion;
+		return this.descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
@@ -112,7 +108,7 @@ public class Producto implements Serializable {
 
 	@Column(name = "nombre", length = 250)
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
@@ -121,7 +117,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecio() {
-		return precio;
+		return this.precio;
 	}
 
 	public void setPrecio(Float precio) {
@@ -130,7 +126,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public String getMarca() {
-		return marca;
+		return this.marca;
 	}
 
 	public void setMarca(String marca) {
@@ -139,7 +135,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public String getModelo() {
-		return modelo;
+		return this.modelo;
 	}
 
 	public void setModelo(String modelo) {
@@ -148,7 +144,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public String getCodigoBarras() {
-		return codigoBarras;
+		return this.codigoBarras;
 	}
 
 	public void setCodigoBarras(String codigoBarras) {
@@ -157,7 +153,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public boolean getActivo() {
-		return activo;
+		return this.activo;
 	}
 
 	public void setActivo(boolean activo) {
@@ -166,7 +162,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getEnExistencia() {
-		return enExistencia;
+		return this.enExistencia;
 	}
 
 	public void setEnExistencia(Integer enExistencia) {
@@ -175,7 +171,7 @@ public class Producto implements Serializable {
 
 	@Transient
 	public boolean isSeleccionar() {
-		return seleccionar;
+		return this.seleccionar;
 	}
 
 	public void setSeleccionar(boolean seleccionar) {
@@ -184,7 +180,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecio2() {
-		return precio2;
+		return this.precio2;
 	}
 
 	public void setPrecio2(Float precio2) {
@@ -193,7 +189,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecio3() {
-		return precio3;
+		return this.precio3;
 	}
 
 	public void setPrecio3(Float precio3) {
@@ -202,7 +198,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecio4() {
-		return precio4;
+		return this.precio4;
 	}
 
 	public void setPrecio4(Float precio4) {
@@ -211,7 +207,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecio5() {
-		return precio5;
+		return this.precio5;
 	}
 
 	public void setPrecio5(Float precio5) {
@@ -220,7 +216,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecio6() {
-		return precio6;
+		return this.precio6;
 	}
 
 	public void setPrecio6(Float precio6) {
@@ -229,7 +225,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecio7() {
-		return precio7;
+		return this.precio7;
 	}
 
 	public void setPrecio7(Float precio7) {
@@ -238,7 +234,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecio8() {
-		return precio8;
+		return this.precio8;
 	}
 
 	public void setPrecio8(Float precio8) {
@@ -247,7 +243,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecio9() {
-		return precio9;
+		return this.precio9;
 	}
 
 	public void setPrecio9(Float precio9) {
@@ -256,7 +252,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecio10() {
-		return precio10;
+		return this.precio10;
 	}
 
 	public void setPrecio10(Float precio10) {
@@ -265,7 +261,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getFactor1() {
-		return factor1;
+		return this.factor1;
 	}
 
 	public void setFactor1(Integer factor1) {
@@ -274,7 +270,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getFactor2() {
-		return factor2;
+		return this.factor2;
 	}
 
 	public void setFactor2(Integer factor2) {
@@ -283,7 +279,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getFactor3() {
-		return factor3;
+		return this.factor3;
 	}
 
 	public void setFactor3(Integer factor3) {
@@ -292,7 +288,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getFactor4() {
-		return factor4;
+		return this.factor4;
 	}
 
 	public void setFactor4(Integer factor4) {
@@ -301,7 +297,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getFactor5() {
-		return factor5;
+		return this.factor5;
 	}
 
 	public void setFactor5(Integer factor5) {
@@ -310,7 +306,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getFactor6() {
-		return factor6;
+		return this.factor6;
 	}
 
 	public void setFactor6(Integer factor6) {
@@ -319,7 +315,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getFactor7() {
-		return factor7;
+		return this.factor7;
 	}
 
 	public void setFactor7(Integer factor7) {
@@ -328,7 +324,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getFactor8() {
-		return factor8;
+		return this.factor8;
 	}
 
 	public void setFactor8(Integer factor8) {
@@ -337,7 +333,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getFactor9() {
-		return factor9;
+		return this.factor9;
 	}
 
 	public void setFactor9(Integer factor9) {
@@ -346,7 +342,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Integer getFactor10() {
-		return factor10;
+		return this.factor10;
 	}
 
 	public void setFactor10(Integer factor10) {
@@ -355,7 +351,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getMargen1() {
-		return margen1;
+		return this.margen1;
 	}
 
 	public void setMargen1(Float margen1) {
@@ -364,7 +360,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getMargen2() {
-		return margen2;
+		return this.margen2;
 	}
 
 	public void setMargen2(Float margen2) {
@@ -373,7 +369,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getMargen3() {
-		return margen3;
+		return this.margen3;
 	}
 
 	public void setMargen3(Float margen3) {
@@ -382,7 +378,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getMargen4() {
-		return margen4;
+		return this.margen4;
 	}
 
 	public void setMargen4(Float margen4) {
@@ -391,7 +387,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getMargen5() {
-		return margen5;
+		return this.margen5;
 	}
 
 	public void setMargen5(Float margen5) {
@@ -400,7 +396,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getMargen6() {
-		return margen6;
+		return this.margen6;
 	}
 
 	public void setMargen6(Float margen6) {
@@ -409,7 +405,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getMargen7() {
-		return margen7;
+		return this.margen7;
 	}
 
 	public void setMargen7(Float margen7) {
@@ -418,7 +414,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getMargen8() {
-		return margen8;
+		return this.margen8;
 	}
 
 	public void setMargen8(Float margen8) {
@@ -427,7 +423,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getMargen9() {
-		return margen9;
+		return this.margen9;
 	}
 
 	public void setMargen9(Float margen9) {
@@ -436,7 +432,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getMargen10() {
-		return margen10;
+		return this.margen10;
 	}
 
 	public void setMargen10(Float margen10) {
@@ -445,7 +441,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getCostoMaximo() {
-		return costoMaximo;
+		return this.costoMaximo;
 	}
 
 	public void setCostoMaximo(Float costoMaximo) {
@@ -454,7 +450,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Calendar getCostoMaximoFecha() {
-		return costoMaximoFecha;
+		return this.costoMaximoFecha;
 	}
 
 	public void setCostoMaximoFecha(Calendar costoMaximoFecha) {
@@ -463,7 +459,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getCostoReposicion() {
-		return costoReposicion;
+		return this.costoReposicion;
 	}
 
 	public void setCostoReposicion(Float costoReposicion) {
@@ -472,7 +468,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Calendar getCostoReposicionFecha() {
-		return costoReposicionFecha;
+		return this.costoReposicionFecha;
 	}
 
 	public void setCostoReposicionFecha(Calendar costoReposicionFecha) {
@@ -481,7 +477,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getCostoCapa() {
-		return costoCapa;
+		return this.costoCapa;
 	}
 
 	public void setCostoCapa(Float costoCapa) {
@@ -490,7 +486,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Calendar getCostoCapaFecha() {
-		return costoCapaFecha;
+		return this.costoCapaFecha;
 	}
 
 	public void setCostoCapaFecha(Calendar costoCapaFecha) {
@@ -499,7 +495,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getCostoUltimo() {
-		return costoUltimo;
+		return this.costoUltimo;
 	}
 
 	public void setCostoUltimo(Float costoUltimo) {
@@ -508,7 +504,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Calendar getCostoUltimoFecha() {
-		return costoUltimoFecha;
+		return this.costoUltimoFecha;
 	}
 
 	public void setCostoUltimoFecha(Calendar costoUltimoFecha) {
@@ -517,7 +513,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getCostoPromedio() {
-		return costoPromedio;
+		return this.costoPromedio;
 	}
 
 	public void setCostoPromedio(Float costoPromedio) {
@@ -526,7 +522,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Float getPrecioPublico() {
-		return precioPublico;
+		return this.precioPublico;
 	}
 
 	public void setPrecioPublico(Float precioPublico) {
@@ -535,7 +531,7 @@ public class Producto implements Serializable {
 
 	@Transient
 	public boolean isCambioNaturaleza() {
-		return cambioNaturaleza;
+		return this.cambioNaturaleza;
 	}
 
 	public void setCambioNaturaleza(boolean cambioNaturaleza) {
@@ -545,7 +541,7 @@ public class Producto implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "unidad")
 	public Unidad getUnidad() {
-		return unidad;
+		return this.unidad;
 	}
 
 	public void setUnidad(Unidad unidad) {
@@ -555,7 +551,7 @@ public class Producto implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "productoNaturaleza")
 	public ProductoNaturaleza getProductoNaturaleza() {
-		return productoNaturaleza;
+		return this.productoNaturaleza;
 	}
 
 	public void setProductoNaturaleza(ProductoNaturaleza productoNaturaleza) {
@@ -565,7 +561,7 @@ public class Producto implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "moneda")
 	public Moneda getMoneda() {
-		return moneda;
+		return this.moneda;
 	}
 
 	public void setMoneda(Moneda moneda) {
@@ -574,7 +570,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Long getMinimo() {
-		return minimo;
+		return this.minimo;
 	}
 
 	public void setMinimo(Long minimo) {
@@ -583,7 +579,7 @@ public class Producto implements Serializable {
 
 	@Column
 	public Long getMaximo() {
-		return maximo;
+		return this.maximo;
 	}
 
 	public void setMaximo(Long maximo) {
@@ -593,26 +589,39 @@ public class Producto implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "organizacion")
 	public Organizacion getOrganizacion() {
-		return organizacion;
+		return this.organizacion;
 	}
+
 	public void setOrganizacion(Organizacion organizacion) {
 		this.organizacion = organizacion;
 	}
-	
+
 	@OneToOne
 	@JoinColumn(name = "usuario")
 	public Usuarios getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
+
 	public void setUsuario(Usuarios usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	@Column
 	public String getFechaActualizacion() {
-		return fechaActualizacion;
+		return this.fechaActualizacion;
 	}
+
 	public void setFechaActualizacion(String fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "claveArmonizada")
+	public ClaveArmonizada getClaveArmonizada() {
+		return this.claveArmonizada;
+	}
+
+	public void setClaveArmonizada(ClaveArmonizada claveArmonizada) {
+		this.claveArmonizada = claveArmonizada;
 	}
 }

@@ -1,24 +1,14 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.CofiaPy;
 import java.util.List;
 
-import com.cplsystems.stock.domain.CofiaPy;
+public abstract interface CofiaPyDAO {
+	public abstract void save(CofiaPy paramCofiaPy);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void delete(CofiaPy paramCofiaPy);
 
-public interface CofiaPyDAO {
+	public abstract CofiaPy getById(Long paramLong);
 
-	public void save(CofiaPy cofiaPy);
-
-	public void delete(CofiaPy cofiaPy);
-	
-	public CofiaPy getById(Long idCofiaPy);
-
-	public List<CofiaPy> getAll();
-	
+	public abstract List<CofiaPy> getAll();
 }

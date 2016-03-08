@@ -1,30 +1,4 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.producto;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.view.JasperViewer;
-
-import org.zkoss.bind.BindContext;
-import org.zkoss.bind.annotation.ContextParam;
-import org.zkoss.bind.annotation.ContextType;
-import org.zkoss.bind.annotation.Init;
-import org.zkoss.image.AImage;
-import org.zkoss.image.Image;
-import org.zkoss.io.Files;
-import org.zkoss.util.media.Media;
-import org.zkoss.zk.ui.event.UploadEvent;
-import org.zkoss.zul.Fileupload;
 
 import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.ClasificacionPrecios;
@@ -32,19 +6,39 @@ import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.producto.utils.FuncionesModificacion;
 import com.cplsystems.stock.app.vm.producto.utils.ModoDeBusqueda;
 import com.cplsystems.stock.app.vm.producto.utils.ProductoVariables;
+import com.cplsystems.stock.domain.ClaveArmonizada;
 import com.cplsystems.stock.domain.CodigoBarrasProducto;
 import com.cplsystems.stock.domain.CostosProducto;
-import com.cplsystems.stock.domain.Cotizacion;
-import com.cplsystems.stock.domain.FamiliasProducto;
 import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.ProductoNaturaleza;
 import com.cplsystems.stock.domain.ProductoTipo;
+import com.cplsystems.stock.services.ClaveArmonizadaService;
+import com.cplsystems.stock.services.CodigoBarrasProductoService;
+import com.cplsystems.stock.services.CostosProductoService;
+import com.cplsystems.stock.services.FamiliasProductoService;
+import com.cplsystems.stock.services.MonedaService;
+import com.cplsystems.stock.services.ProductoNaturalezaService;
+import com.cplsystems.stock.services.ProductoTipoService;
+import com.cplsystems.stock.services.ProveedorProductoService;
+import com.cplsystems.stock.services.RequisicionProductoService;
+import com.cplsystems.stock.services.UnidadService;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.zkoss.bind.annotation.Init;
+import org.zkoss.image.AImage;
+import org.zkoss.image.Image;
+import org.zkoss.io.Files;
+import org.zkoss.util.media.Media;
+import org.zkoss.zk.ui.event.UploadEvent;
 
-/**
- * @author Carlos Palalia
- * 
- */
 public abstract class ProductoMetaClass extends ProductoVariables {
-
 	private static final long serialVersionUID = -4078164796340868446L;
 
 	@Init
@@ -54,70 +48,73 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 	}
 
 	public void initObjects() {
-		producto = new Producto();
-		buscarProducto = new Producto();
-		productoTipoSelected = new ProductoTipo();
-		cotizacionDB = new ArrayList<Cotizacion>();
-		precios = new ArrayList<ClasificacionPrecios>();
-		precioSelected = new ClasificacionPrecios();
-		familiasProductos = new ArrayList<FamiliasProducto>();
-		codigosBarrasProductos = new ArrayList<CodigoBarrasProducto>();
-		codigoBarrasProducto = new CodigoBarrasProducto();
-		costosProductoNuevo = new CostosProducto();
-		costosProductos = new ArrayList<CostosProducto>();
-		modoDeBusqueda = new ModoDeBusqueda();
+		this.producto = new Producto();
+		this.buscarProducto = new Producto();
+		this.productoTipoSelected = new ProductoTipo();
+		this.cotizacionDB = new ArrayList();
+		this.precios = new ArrayList();
+		this.precioSelected = new ClasificacionPrecios();
+		this.familiasProductos = new ArrayList();
+		this.codigosBarrasProductos = new ArrayList();
+		this.codigoBarrasProducto = new CodigoBarrasProducto();
+		this.costosProductoNuevo = new CostosProducto();
+		this.costosProductos = new ArrayList();
+		this.modoDeBusqueda = new ModoDeBusqueda();
+		this.claveArmonizada = new ClaveArmonizada();
 	}
 
 	public void initProperties() {
-		monedasDB = monedaService.getAll();
-		productoTipoDB = productoTipoService.getAll();
-		unidadesDB = unidadService.getAll();
-		productosNaturalezas = productoNaturalezaService.getAll();
-		readJasper = generarUrlString("jasperTemplates/reportProduct.jasper");
-		// enableComboBoxUnidades = true;
+		this.claveArmonizadaList = this.claveArmonizadaService.getAll();
+		this.monedasDB = this.monedaService.getAll();
+		this.productoTipoDB = this.productoTipoService.getAll();
+		this.unidadesDB = this.unidadService.getAll();
+		this.productosNaturalezas = this.productoNaturalezaService.getAll();
+		this.readJasper = generarUrlString("jasperTemplates/reportProduct.jasper");
+
+		this.producto.setClaveArmonizada(this.claveArmonizada);
 		cargarListaPrecios();
 		crearFuncionesModificaciones();
-		modoDeBusqueda.setTipoFamilia(true);
-		modoDeBusqueda.setTipoPersonalizado(true);
+		this.modoDeBusqueda.setTipoFamilia(true);
+		this.modoDeBusqueda.setTipoPersonalizado(true);
 	}
 
 	private void crearFuncionesModificaciones() {
-		funcionesModificaciones = new ArrayList<FuncionesModificacion>();
+		this.funcionesModificaciones = new ArrayList();
 		FuncionesModificacion item1 = new FuncionesModificacion();
-		item1.setIdentificador(1);
+		item1.setIdentificador(Integer.valueOf(1));
 		item1.setNombre("Margen o factor");
 
 		FuncionesModificacion item2 = new FuncionesModificacion();
-		item2.setIdentificador(2);
+		item2.setIdentificador(Integer.valueOf(2));
 		item2.setNombre("Precio");
 
 		FuncionesModificacion item3 = new FuncionesModificacion();
-		item3.setIdentificador(3);
-		item3.setNombre("Máximo costo");
+		item3.setIdentificador(Integer.valueOf(3));
+		item3.setNombre("M�ximo costo");
 
 		FuncionesModificacion item4 = new FuncionesModificacion();
-		item4.setIdentificador(4);
+		item4.setIdentificador(Integer.valueOf(4));
 		item4.setNombre("Incremento precio por porcentaje");
 
 		FuncionesModificacion item5 = new FuncionesModificacion();
-		item5.setIdentificador(5);
+		item5.setIdentificador(Integer.valueOf(5));
 		item5.setNombre("Incrementar precios en valor");
 
 		FuncionesModificacion item6 = new FuncionesModificacion();
-		item6.setIdentificador(6);
-		item6.setNombre("Incrementar máximo costo por porcentaje");
+		item6.setIdentificador(Integer.valueOf(6));
+		item6.setNombre("Incrementar m�ximo costo por porcentaje");
 
 		FuncionesModificacion item7 = new FuncionesModificacion();
-		item7.setIdentificador(7);
-		item7.setNombre("Incrementar máximo costo en valor");
+		item7.setIdentificador(Integer.valueOf(7));
+		item7.setNombre("Incrementar m�ximo costo en valor");
 
-		funcionesModificaciones.add(item1);
-		funcionesModificaciones.add(item2);
-		funcionesModificaciones.add(item3);
-		funcionesModificaciones.add(item4);
-		funcionesModificaciones.add(item5);
-		funcionesModificaciones.add(item6);
-		funcionesModificaciones.add(item7);
+		this.funcionesModificaciones.add(item1);
+		this.funcionesModificaciones.add(item2);
+		this.funcionesModificaciones.add(item3);
+		this.funcionesModificaciones.add(item4);
+		this.funcionesModificaciones.add(item5);
+		this.funcionesModificaciones.add(item6);
+		this.funcionesModificaciones.add(item7);
 	}
 
 	private void cargarListaPrecios() {
@@ -134,79 +131,76 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 		precioPersonalizado.setNombre("Precio Personalizado");
 		precioPersonalizado.setTipo("PER");
 
-		precios.add(precioMinimo);
-		precios.add(precioMaximo);
-		precios.add(precioPromedio);
-		precios.add(precioPersonalizado);
-
+		this.precios.add(precioMinimo);
+		this.precios.add(precioMaximo);
+		this.precios.add(precioPromedio);
+		this.precios.add(precioPersonalizado);
 	}
 
 	public String validarNuevoProducto() {
 		String validacion = "";
-		if (producto.getClave() != null && !producto.getClave().isEmpty())
-			if (producto.getNombre() != null && !producto.getNombre().isEmpty())
-				if (producto.getMarca() != null
-						&& !producto.getMarca().isEmpty())
-					if (producto.getModelo() != null
-							&& !producto.getModelo().isEmpty())
-						if (producto.getUnidad() != null)
-							if (producto.getActivo())
-								if (producto.getProductoNaturaleza() != null) {
-
-									if (producto.getProductoNaturaleza()
-											.getSimbolo().equals("PRO")) {
-										if ((producto.getMaximo() != null && producto
-												.getMaximo() > 0)
-												&& (producto.getMinimo() != null && producto
-														.getMinimo() > 0)) {
-											if (producto.getMaximo() < producto
-													.getMinimo())
+		if ((this.producto.getClave() != null) && (!this.producto.getClave().isEmpty())) {
+			if ((this.producto.getNombre() != null) && (!this.producto.getNombre().isEmpty())) {
+				if ((this.producto.getMarca() != null) && (!this.producto.getMarca().isEmpty())) {
+					if ((this.producto.getModelo() != null) && (!this.producto.getModelo().isEmpty())) {
+						if (this.producto.getUnidad() != null) {
+							if (this.producto.getActivo()) {
+								if (this.producto.getProductoNaturaleza() != null) {
+									if (this.producto.getProductoNaturaleza().getSimbolo().equals("PRO")) {
+										if ((this.producto.getMaximo() != null)
+												&& (this.producto.getMaximo().longValue() > 0L)
+												&& (this.producto.getMinimo() != null)
+												&& (this.producto.getMinimo().longValue() > 0L)) {
+											if (this.producto.getMaximo().longValue() < this.producto.getMinimo()
+													.longValue()) {
 												validacion = "Existencia maxima no puede ser menor al minimo";
-											else if (producto.getMinimo() > producto
-													.getMaximo())
+											} else if (this.producto.getMinimo().longValue() > this.producto.getMaximo()
+													.longValue()) {
 												validacion = "Existencia minima no puede ser mayor al maximo";
-										} else
+											}
+										} else {
 											validacion = "Es requerido el minimo y maximo de existencia para un producto";
+										}
 									}
-
 									if (validacion.isEmpty()) {
-										if (familiasProductos != null
-												&& familiasProductos.size() > 0) {
-
-											if ((producto.getPrecio() != null && producto
-													.getPrecio() > 1)
-													|| (producto.getPrecio2() != null && producto
-															.getPrecio2() > 1)
-													|| (producto.getPrecio3() != null && producto
-															.getPrecio3() > 1)
-													|| (producto.getPrecio4() != null && producto
-															.getPrecio4() > 1)
-													|| (producto.getPrecio5() != null && producto
-															.getPrecio5() > 1)
-
-											) {
-
-											} else
+										if ((this.familiasProductos != null) && (this.familiasProductos.size() > 0)) {
+											if (((this.producto.getPrecio() == null)
+													|| (this.producto.getPrecio().floatValue() <= 1.0F))
+													&& ((this.producto.getPrecio2() == null)
+															|| (this.producto.getPrecio2().floatValue() <= 1.0F))
+													&& ((this.producto.getPrecio3() == null)
+															|| (this.producto.getPrecio3().floatValue() <= 1.0F))
+													&& ((this.producto.getPrecio4() == null)
+															|| (this.producto.getPrecio4().floatValue() <= 1.0F))
+													&& ((this.producto.getPrecio5() == null)
+															|| (this.producto.getPrecio5().floatValue() <= 1.0F))) {
 												validacion = "Es necesario asignar al menos un precio para el articulo/servicio";
-										} else
+											}
+										} else {
 											validacion = "El nuevo registro debe ser agregado al menos a una familia";
+										}
 									}
-
-								} else
+								} else {
 									validacion = "Es necesario marcar la naturaleza del nuevo registro (producto/servicio)";
-							else
+								}
+							} else {
 								validacion = "Es necesario marcar com producto activo";
-						else
+							}
+						} else {
 							validacion = "La unidad de medida del producto es requerido";
-					else
+						}
+					} else {
 						validacion = "El modelo del producto es requerido";
-				else
+					}
+				} else {
 					validacion = "La marca del producto es requerido";
-			else
+				}
+			} else {
 				validacion = "El nombre del producto es requerido";
-		else
+			}
+		} else {
 			validacion = "La clave del producto es requerido";
-
+		}
 		return validacion;
 	}
 
@@ -214,47 +208,40 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 		String nuevaUrl = "";
 
 		String[] numerosComoArray = urlInicial.split("/");
-
 		for (int i = 0; i < numerosComoArray.length; i++) {
-			if (i == (numerosComoArray.length - 1))
-				nuevaUrl += file;
-			else
-				nuevaUrl += numerosComoArray[i];
+			if (i == numerosComoArray.length - 1) {
+				nuevaUrl = nuevaUrl + file;
+			} else {
+				nuevaUrl = nuevaUrl + numerosComoArray[i];
+			}
 		}
-
 		return nuevaUrl;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String generarReportePrductos(List<HashMap> listaHashsParametros,
-			List<AplicacionExterna> aplicaciones, List<Producto> lista) {
+	public String generarReportePrductos(List<HashMap> listaHashsParametros, List<AplicacionExterna> aplicaciones,
+			List<Producto> lista) {
 		String mensaje = "";
 
 		HashMap hashParametros = construirHashMapParametros(listaHashsParametros);
-
 		try {
-
-			print = JasperFillManager.fillReport(readJasper, hashParametros,
+			this.print = JasperFillManager.fillReport(this.readJasper, hashParametros,
 					new JRBeanCollectionDataSource(lista));
-			
-			JasperExportManager.exportReportToPdfFile(print,
-					StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE);
+
+			JasperExportManager.exportReportToPdfFile(this.print, StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE);
+
 			openPdf(StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE);
-			mensaje = "PDF del reporte generado: "
-					+ StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE;
-
+			mensaje = "PDF del reporte generado: " + StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE;
 		} catch (JRException e) {
-
 			e.printStackTrace();
-			for (AplicacionExterna aplicacion : aplicaciones)
+			for (AplicacionExterna aplicacion : aplicaciones) {
 				closePdf(aplicacion.getNombre());
-
+			}
 			try {
-				JasperExportManager.exportReportToPdfFile(print,
+				JasperExportManager.exportReportToPdfFile(this.print,
 						StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE);
+
 				openPdf(StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE);
-				mensaje = "PDF del reporte generado: "
-						+ StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE;
+				mensaje = "PDF del reporte generado: " + StockConstants.REPORT_VARIABLE_PRODUCTO_NAME_FILE;
 			} catch (JRException e1) {
 			}
 		}
@@ -262,36 +249,25 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 	}
 
 	public void processImageUpload(Object event) {
-
 		boolean processFile = false;
 
 		UploadEvent upEvent = null;
 		Object objUploadEvent = event;
-		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent)) {
+		if ((objUploadEvent != null) && ((objUploadEvent instanceof UploadEvent))) {
 			upEvent = (UploadEvent) objUploadEvent;
 		}
 		if (upEvent != null) {
 			Media media = upEvent.getMedia();
 			int lengthofImage = media.getByteData().length;
-			if (media instanceof Image) {
-				/*
-				 * if (lengthofSignature > 500 * 1024) {
-				 * showInfo("Please Select a Image of size less than 500Kb.");
-				 * return; } else {
-				 */
-				imagenProducto = (AImage) media;// Initialize the bind object to
-				// show image in zul page and
-				// Notify it also
+			if ((media instanceof Image)) {
+				this.imagenProducto = ((AImage) media);
 
-				copiarArchivo(media, "C:\\Stock\\Users\\"
-						+ upEvent.getMedia().getName());
-				// }
+				copiarArchivo(media, "C:\\Stock\\Users\\" + upEvent.getMedia().getName());
 			}
 		}
 	}
 
 	public void copiarArchivo(Media media, String destino) {
-
 		try {
 			File dst = new File(destino);
 			Files.copy(dst, media.getStreamData());
@@ -302,32 +278,21 @@ public abstract class ProductoMetaClass extends ProductoVariables {
 
 	public String detectarEliminacionDeProducto(Producto producto) {
 		String mensaje = "";
-
-		if (requisicionProductoService.getByProducto(producto) != null)
-			mensaje = producto.getNombre()
-					+ " se encuentra en el catalogo de requisicion producto";
-
-		if (mensaje.equals(""))
-			if (proveedorProductoService.getByProducto(producto) != null)
-				mensaje = producto.getNombre()
-						+ " se encuentra en el catalogo de proveedor producto";
-
-		if (mensaje.equals(""))
-			if (familiasProductoService.getByProducto(producto) != null)
-				mensaje = producto.getNombre()
-						+ " esta asignado al catalogo familias";
-
-		if (mensaje.equals(""))
-			if (codigoBarrasProductoService.getByProducto(producto) != null)
-				mensaje = producto.getNombre()
-						+ " tiene asignado codigos de barras";
-
-		if (mensaje.equals(""))
-			if (costosProductoService.getByProducto(producto) != null)
-				mensaje = producto.getNombre() + " tiene asignado costos";
-
-		// ELIMMINAR DEL PRODUCTO LOS CATALOGO DE COSTOS
-		// CODIGOS DE BARRAS
+		if (this.requisicionProductoService.getByProducto(producto) != null) {
+			mensaje = producto.getNombre() + " se encuentra en el catalogo de requisicion producto";
+		}
+		if ((mensaje.equals("")) && (this.proveedorProductoService.getByProducto(producto) != null)) {
+			mensaje = producto.getNombre() + " se encuentra en el catalogo de proveedor producto";
+		}
+		if ((mensaje.equals("")) && (this.familiasProductoService.getByProducto(producto) != null)) {
+			mensaje = producto.getNombre() + " esta asignado al catalogo familias";
+		}
+		if ((mensaje.equals("")) && (this.codigoBarrasProductoService.getByProducto(producto) != null)) {
+			mensaje = producto.getNombre() + " tiene asignado codigos de barras";
+		}
+		if ((mensaje.equals("")) && (this.costosProductoService.getByProducto(producto) != null)) {
+			mensaje = producto.getNombre() + " tiene asignado costos";
+		}
 		return mensaje;
 	}
 }

@@ -1,26 +1,16 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.requisicion.utils;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.zkoss.zul.ListModel;
 
 import com.cplsystems.stock.app.vm.BasicStructure;
 import com.cplsystems.stock.domain.CotizacionInbox;
 import com.cplsystems.stock.domain.RequisicionInbox;
 import com.cplsystems.stock.domain.RequisicionProducto;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import org.zkoss.zul.ListModel;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 public class RequisicionVariables extends BasicStructure {
-
 	private static final long serialVersionUID = -5741444614581908156L;
 	protected List<RequisicionProducto> requisicionProductos;
 	protected RequisicionProducto requisicionProductoSeleccionado;
@@ -28,7 +18,7 @@ public class RequisicionVariables extends BasicStructure {
 	protected ListModel<String> productosModel;
 	protected String productoClaveSelectedItem;
 	protected String importeTotal = "0.0";
-	protected Integer itemsOnList = 0;
+	protected Integer itemsOnList = Integer.valueOf(0);
 	protected Date fecha;
 	protected Calendar fechaCalendar;
 	protected DesgloceTotal desgloceTotal;
@@ -40,34 +30,31 @@ public class RequisicionVariables extends BasicStructure {
 	protected RequisicionInbox requisicionInboxSeleccionada;
 	protected boolean readOnly = false;
 	protected String rutaPdfGenerado;
-
 	protected List<CotizacionInbox> cotizacionesInbox;
 	protected CotizacionInbox cotizacionInboxSeleccionada;
 
 	public RequisicionVariables() {
-		requisicionProductos = new ArrayList<RequisicionProducto>();
+		this.requisicionProductos = new ArrayList();
 	}
 
 	public List<RequisicionProducto> getRequisicionProductos() {
-		return requisicionProductos;
+		return this.requisicionProductos;
 	}
 
-	public void setRequisicionProductos(
-			List<RequisicionProducto> requisicionProductos) {
+	public void setRequisicionProductos(List<RequisicionProducto> requisicionProductos) {
 		this.requisicionProductos = requisicionProductos;
 	}
 
 	public RequisicionProducto getRequisicionProductoSeleccionado() {
-		return requisicionProductoSeleccionado;
+		return this.requisicionProductoSeleccionado;
 	}
 
-	public void setRequisicionProductoSeleccionado(
-			RequisicionProducto requisicionProductoSeleccionado) {
+	public void setRequisicionProductoSeleccionado(RequisicionProducto requisicionProductoSeleccionado) {
 		this.requisicionProductoSeleccionado = requisicionProductoSeleccionado;
 	}
 
 	public ListModel<String> getProductosModel() {
-		return productosModel;
+		return this.productosModel;
 	}
 
 	public void setProductosModel(ListModel<String> productosModel) {
@@ -75,7 +62,7 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public String getProductoClaveSelectedItem() {
-		return productoClaveSelectedItem;
+		return this.productoClaveSelectedItem;
 	}
 
 	public void setProductoClaveSelectedItem(String productoClaveSelectedItem) {
@@ -83,7 +70,7 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public String getImporteTotal() {
-		return importeTotal;
+		return this.importeTotal;
 	}
 
 	public void setImporteTotal(String importeTotal) {
@@ -91,7 +78,7 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public Integer getItemsOnList() {
-		return itemsOnList;
+		return this.itemsOnList;
 	}
 
 	public void setItemsOnList(Integer itemsOnList) {
@@ -100,27 +87,27 @@ public class RequisicionVariables extends BasicStructure {
 
 	public Date getFecha() {
 		Calendar cal = Calendar.getInstance();
-		return fecha = cal.getTime();
+		return this.fecha = cal.getTime();
 	}
 
 	public void setFecha(Date fecha) {
 		if (fecha != null) {
-			fechaCalendar = Calendar.getInstance();
-			fechaCalendar.setTime(fecha);
+			this.fechaCalendar = Calendar.getInstance();
+			this.fechaCalendar.setTime(fecha);
 		}
 		this.fecha = fecha;
 	}
 
 	public DesgloceTotal getDesgloceTotal() {
-		return desgloceTotal;
+		return this.desgloceTotal;
 	}
 
 	public void setDesgloceTotal(DesgloceTotal desgloceTotal) {
 		this.desgloceTotal = desgloceTotal;
 	}
-	
+
 	public boolean isCheckBuscarNueva() {
-		return checkBuscarNueva;
+		return this.checkBuscarNueva;
 	}
 
 	public void setCheckBuscarNueva(boolean checkBuscarNueva) {
@@ -128,7 +115,7 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public boolean isCheckBuscarCancelada() {
-		return checkBuscarCancelada;
+		return this.checkBuscarCancelada;
 	}
 
 	public void setCheckBuscarCancelada(boolean checkBuscarCancelada) {
@@ -136,7 +123,7 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public boolean isCheckBuscarEnviada() {
-		return checkBuscarEnviada;
+		return this.checkBuscarEnviada;
 	}
 
 	public void setCheckBuscarEnviada(boolean checkBuscarEnviada) {
@@ -144,7 +131,7 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public boolean isCheckBuscarAceptada() {
-		return checkBuscarAceptada;
+		return this.checkBuscarAceptada;
 	}
 
 	public void setCheckBuscarAceptada(boolean checkBuscarAceptada) {
@@ -152,7 +139,7 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public boolean isReadOnly() {
-		return readOnly;
+		return this.readOnly;
 	}
 
 	public void setReadOnly(boolean readOnly) {
@@ -160,7 +147,7 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public List<RequisicionInbox> getRequisicionesInbox() {
-		return requisicionesInbox;
+		return this.requisicionesInbox;
 	}
 
 	public void setRequisicionesInbox(List<RequisicionInbox> requisicionesInbox) {
@@ -168,16 +155,15 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public RequisicionInbox getRequisicionInboxSeleccionada() {
-		return requisicionInboxSeleccionada;
+		return this.requisicionInboxSeleccionada;
 	}
 
-	public void setRequisicionInboxSeleccionada(
-			RequisicionInbox requisicionInboxSeleccionada) {
+	public void setRequisicionInboxSeleccionada(RequisicionInbox requisicionInboxSeleccionada) {
 		this.requisicionInboxSeleccionada = requisicionInboxSeleccionada;
 	}
 
 	public List<CotizacionInbox> getCotizacionesInbox() {
-		return cotizacionesInbox;
+		return this.cotizacionesInbox;
 	}
 
 	public void setCotizacionesInbox(List<CotizacionInbox> cotizacionesInbox) {
@@ -185,12 +171,10 @@ public class RequisicionVariables extends BasicStructure {
 	}
 
 	public CotizacionInbox getCotizacionInboxSeleccionada() {
-		return cotizacionInboxSeleccionada;
+		return this.cotizacionInboxSeleccionada;
 	}
 
-	public void setCotizacionInboxSeleccionada(
-			CotizacionInbox cotizacionInboxSeleccionada) {
+	public void setCotizacionInboxSeleccionada(CotizacionInbox cotizacionInboxSeleccionada) {
 		this.cotizacionInboxSeleccionada = cotizacionInboxSeleccionada;
 	}
-
 }

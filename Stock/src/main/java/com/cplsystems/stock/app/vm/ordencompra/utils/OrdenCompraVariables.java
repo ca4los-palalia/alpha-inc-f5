@@ -1,21 +1,12 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.ordencompra.utils;
 
+import com.cplsystems.stock.app.vm.BasicStructure;
+import com.cplsystems.stock.domain.OrdenCompraInbox;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.cplsystems.stock.app.vm.BasicStructure;
-import com.cplsystems.stock.domain.OrdenCompraInbox;
-
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 public class OrdenCompraVariables extends BasicStructure {
-
 	private static final long serialVersionUID = -5741444614581908156L;
 	protected List<OrdenCompraInbox> ordenesCompraInbox;
 	protected OrdenCompraInbox ordenCompraInboxSeleccionada;
@@ -29,7 +20,7 @@ public class OrdenCompraVariables extends BasicStructure {
 	protected Integer numeroProductos;
 
 	public List<OrdenCompraInbox> getOrdenesCompraInbox() {
-		return ordenesCompraInbox;
+		return this.ordenesCompraInbox;
 	}
 
 	public void setOrdenesCompraInbox(List<OrdenCompraInbox> ordenesCompraInbox) {
@@ -37,16 +28,15 @@ public class OrdenCompraVariables extends BasicStructure {
 	}
 
 	public OrdenCompraInbox getOrdenCompraInboxSeleccionada() {
-		return ordenCompraInboxSeleccionada;
+		return this.ordenCompraInboxSeleccionada;
 	}
 
-	public void setOrdenCompraInboxSeleccionada(
-			OrdenCompraInbox ordenCompraInboxSeleccionada) {
+	public void setOrdenCompraInboxSeleccionada(OrdenCompraInbox ordenCompraInboxSeleccionada) {
 		this.ordenCompraInboxSeleccionada = ordenCompraInboxSeleccionada;
 	}
-	
+
 	public Calendar getFechaCalendar() {
-		return fechaCalendar;
+		return this.fechaCalendar;
 	}
 
 	public void setFechaCalendar(Calendar fechaCalendar) {
@@ -55,19 +45,19 @@ public class OrdenCompraVariables extends BasicStructure {
 
 	public Date getFecha() {
 		Calendar cal = Calendar.getInstance();
-		return fecha = cal.getTime();
+		return this.fecha = cal.getTime();
 	}
 
 	public void setFecha(Date fecha) {
 		if (fecha != null) {
-			fechaCalendar = Calendar.getInstance();
-			fechaCalendar.setTime(fecha);
+			this.fechaCalendar = Calendar.getInstance();
+			this.fechaCalendar.setTime(fecha);
 		}
 		this.fecha = fecha;
 	}
 
 	public boolean isCheckBuscarNueva() {
-		return checkBuscarNueva;
+		return this.checkBuscarNueva;
 	}
 
 	public void setCheckBuscarNueva(boolean checkBuscarNueva) {
@@ -75,7 +65,7 @@ public class OrdenCompraVariables extends BasicStructure {
 	}
 
 	public boolean isCheckBuscarCancelada() {
-		return checkBuscarCancelada;
+		return this.checkBuscarCancelada;
 	}
 
 	public void setCheckBuscarCancelada(boolean checkBuscarCancelada) {
@@ -83,7 +73,7 @@ public class OrdenCompraVariables extends BasicStructure {
 	}
 
 	public boolean isCheckBuscarEnviada() {
-		return checkBuscarEnviada;
+		return this.checkBuscarEnviada;
 	}
 
 	public void setCheckBuscarEnviada(boolean checkBuscarEnviada) {
@@ -91,7 +81,7 @@ public class OrdenCompraVariables extends BasicStructure {
 	}
 
 	public boolean isCheckBuscarAceptada() {
-		return checkBuscarAceptada;
+		return this.checkBuscarAceptada;
 	}
 
 	public void setCheckBuscarAceptada(boolean checkBuscarAceptada) {
@@ -99,7 +89,7 @@ public class OrdenCompraVariables extends BasicStructure {
 	}
 
 	public Float getPrecioTotal() {
-		return precioTotal;
+		return this.precioTotal;
 	}
 
 	public void setPrecioTotal(Float precioTotal) {
@@ -107,11 +97,10 @@ public class OrdenCompraVariables extends BasicStructure {
 	}
 
 	public Integer getNumeroProductos() {
-		return numeroProductos;
+		return this.numeroProductos;
 	}
 
 	public void setNumeroProductos(Integer numeroProductos) {
 		this.numeroProductos = numeroProductos;
 	}
-	
 }

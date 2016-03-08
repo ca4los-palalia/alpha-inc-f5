@@ -1,14 +1,10 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm;
-
-import org.zkoss.zk.ui.select.annotation.WireVariable;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.services.AreaService;
 import com.cplsystems.stock.services.BancoService;
+import com.cplsystems.stock.services.ClaveArmonizadaService;
 import com.cplsystems.stock.services.CodigoBarrasProductoService;
 import com.cplsystems.stock.services.CofiaFuenteFinanciamientoService;
 import com.cplsystems.stock.services.CofiaPartidaGenericaService;
@@ -47,155 +43,104 @@ import com.cplsystems.stock.services.RequisicionService;
 import com.cplsystems.stock.services.TelefonoService;
 import com.cplsystems.stock.services.UnidadService;
 import com.cplsystems.stock.services.UsuarioService;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 public abstract class ServiceLayer extends DataLayer {
-
 	private static final long serialVersionUID = 2608753945339387415L;
-
 	@WireVariable
 	protected StockUtils stockUtils;
-
 	@WireVariable
 	protected PersonaService personaService;
-
 	@WireVariable
 	protected SessionUtils sessionUtils;
-
 	@WireVariable
 	protected UsuarioService usuarioService;
-
 	@WireVariable
 	protected ProductoService productoService;
-
 	@WireVariable
 	protected ProductoTipoService productoTipoService;
-
 	@WireVariable
 	protected EstadoService estadoService;
-
 	@WireVariable
 	protected ProveedorService proveedorService;
-
 	@WireVariable
 	protected ContratoService contratoService;
-
 	@WireVariable
 	protected PaisService paisService;
-
 	@WireVariable
 	protected DireccionService direccionService;
-
 	@WireVariable
 	protected MunicipioService municipioService;
-
 	@WireVariable
 	protected EmailService emailService;
-
 	@WireVariable
 	protected ContactoService contactoService;
-
 	@WireVariable
 	protected TelefonoService telefonoService;
-
 	@WireVariable
 	protected RequisicionService requisicionService;
-
 	@WireVariable
 	protected RequisicionProductoService requisicionProductoService;
-
 	@WireVariable
 	protected BancoService bancoService;
-
 	@WireVariable
 	protected MonedaService monedaService;
-
 	@WireVariable
 	protected CuentasPagoService cuentasPagoService;
-
 	@WireVariable
 	protected ProveedorProductoService proveedorProductoService;
-
 	@WireVariable
 	protected CotizacionService cotizacionService;
-
 	@WireVariable
 	protected PosicionService posicionService;
-
 	@WireVariable
 	protected AreaService areaService;
-
 	@WireVariable
 	protected UnidadService unidadService;
-
 	@WireVariable
 	protected ProductoNaturalezaService productoNaturalezaService;
-
 	@WireVariable
 	protected FamiliasProductoService familiasProductoService;
-
 	@WireVariable
 	protected CodigoBarrasProductoService codigoBarrasProductoService;
-
 	@WireVariable
 	protected CostosProductoService costosProductoService;
-
 	@WireVariable
 	protected GiroService giroService;
-
 	@WireVariable
 	protected CofiaPartidaGenericaService cofiaPartidaGenericaService;
-
 	@WireVariable
 	protected CofiaProgService cofiaProgService;
-
 	@WireVariable
 	protected CofiaPyService cofiaPyService;
-
 	@WireVariable
 	protected CofiaFuenteFinanciamientoService cofiaFuenteFinanciamientoService;
-
 	@WireVariable
 	protected EstatusRequisicionService estatusRequisicionService;
-
 	@WireVariable
 	protected OrganizacionService organizacionService;
-
 	@WireVariable
 	protected PrivilegioService privilegioService;
-
 	@WireVariable
 	protected RequisicionInboxService requisicionInboxService;
-
 	@WireVariable
 	protected CotizacionInboxService cotizacionInboxService;
-
 	@WireVariable
-	protected OrdenCompraService compraService; 
-	
+	protected OrdenCompraService compraService;
 	@WireVariable
 	protected OrdenCompraInboxService ordenCompraInboxService;
-
 	@WireVariable
 	protected MailService mailService;
-	
 	@WireVariable
 	protected OrdenCompraService ordenCompraService;
+	@WireVariable
+	protected ClaveArmonizadaService claveArmonizadaService;
 
-	/**
-	 * REQUERIDO PARA OBTENER EL SERVICIO DESDE UNA CLASE QUE NO PUEDE SER
-	 * CABLEADA COMO REPOSITORIO Y NO DEBE EXTENDER DE LA CAPA BÁSICA
-	 */
 	public UsuarioService getUsuarioService() {
-		return usuarioService;
+		return this.usuarioService;
 	}
 
 	public void setUsuarioService(UsuarioService usuarioService) {
 		this.usuarioService = usuarioService;
 	}
-	
-
 }

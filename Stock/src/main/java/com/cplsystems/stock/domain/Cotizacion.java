@@ -1,25 +1,18 @@
-/**
- * 
- */
 package com.cplsystems.stock.domain;
 
 import java.util.Calendar;
-
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Cotizacion")
 public class Cotizacion {
-
 	private Long idCotizacion;
 	private String detallesExtras;
 	private Calendar fechaEnvioCotizacion;
@@ -38,15 +31,15 @@ public class Cotizacion {
 	private String excelFile;
 	private String cancelarDescripcion;
 	private String folioCotizacion;
-	
 	private Organizacion organizacion;
 	private Usuarios usuario;
-	
+	private Almacen almacen;
+
 	@Id
 	@Column(name = "idcotizacion", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdCotizacion() {
-		return idCotizacion;
+		return this.idCotizacion;
 	}
 
 	public void setIdCotizacion(Long idCotizacion) {
@@ -55,7 +48,7 @@ public class Cotizacion {
 
 	@Column(name = "detallesExtras", length = 250)
 	public String getDetallesExtras() {
-		return detallesExtras;
+		return this.detallesExtras;
 	}
 
 	public void setDetallesExtras(String detallesExtras) {
@@ -64,7 +57,7 @@ public class Cotizacion {
 
 	@Column(name = "fechaEnvioCotizacion", length = 250)
 	public Calendar getFechaEnvioCotizacion() {
-		return fechaEnvioCotizacion;
+		return this.fechaEnvioCotizacion;
 	}
 
 	public void setFechaEnvioCotizacion(Calendar fechaEnvioCotizacion) {
@@ -73,7 +66,7 @@ public class Cotizacion {
 
 	@Column(name = "fechaResolucion", length = 250)
 	public Calendar getFechaResolucion() {
-		return fechaResolucion;
+		return this.fechaResolucion;
 	}
 
 	public void setFechaResolucion(Calendar fechaResolucion) {
@@ -82,7 +75,7 @@ public class Cotizacion {
 
 	@Column(name = "impuestos", length = 250)
 	public Float getImpuestos() {
-		return impuestos;
+		return this.impuestos;
 	}
 
 	public void setImpuestos(Float impuestos) {
@@ -91,7 +84,7 @@ public class Cotizacion {
 
 	@Column(name = "retencion", length = 250)
 	public Float getRetencion() {
-		return retencion;
+		return this.retencion;
 	}
 
 	public void setRetencion(Float retencion) {
@@ -100,7 +93,7 @@ public class Cotizacion {
 
 	@Column(name = "subTotal", length = 250)
 	public Float getSubTotal() {
-		return subTotal;
+		return this.subTotal;
 	}
 
 	public void setSubTotal(Float subTotal) {
@@ -109,7 +102,7 @@ public class Cotizacion {
 
 	@Column(name = "total", length = 250)
 	public Float getTotal() {
-		return total;
+		return this.total;
 	}
 
 	public void setTotal(Float total) {
@@ -118,7 +111,7 @@ public class Cotizacion {
 
 	@Column(name = "extras", length = 250)
 	public Float getExtras() {
-		return extras;
+		return this.extras;
 	}
 
 	public void setExtras(Float extras) {
@@ -128,7 +121,7 @@ public class Cotizacion {
 	@OneToOne
 	@JoinColumn(name = "proveedor")
 	public Proveedor getProveedor() {
-		return proveedor;
+		return this.proveedor;
 	}
 
 	public void setProveedor(Proveedor proveedor) {
@@ -138,24 +131,26 @@ public class Cotizacion {
 	@OneToOne
 	@JoinColumn(name = "requisicion")
 	public Requisicion getRequisicion() {
-		return requisicion;
+		return this.requisicion;
 	}
 
 	public void setRequisicion(Requisicion requisicion) {
 		this.requisicion = requisicion;
 	}
+
 	@Column
 	public Integer getStatusPago() {
-		return statusPago;
+		return this.statusPago;
 	}
 
 	public void setStatusPago(Integer statusPago) {
 		this.statusPago = statusPago;
 	}
+
 	@OneToOne
 	@JoinColumn(name = "estatusRequisicion")
 	public EstatusRequisicion getEstatusRequisicion() {
-		return estatusRequisicion;
+		return this.estatusRequisicion;
 	}
 
 	public void setEstatusRequisicion(EstatusRequisicion estatusRequisicion) {
@@ -164,7 +159,7 @@ public class Cotizacion {
 
 	@Column
 	public String getFolioCotizacion() {
-		return folioCotizacion;
+		return this.folioCotizacion;
 	}
 
 	public void setFolioCotizacion(String folioCotizacion) {
@@ -173,17 +168,17 @@ public class Cotizacion {
 
 	@Column
 	public String getExcelFile() {
-		return excelFile;
+		return this.excelFile;
 	}
 
 	public void setExcelFile(String excelFile) {
 		this.excelFile = excelFile;
 	}
-	
+
 	@OneToOne
 	@JoinColumn(name = "organizacion")
 	public Organizacion getOrganizacion() {
-		return organizacion;
+		return this.organizacion;
 	}
 
 	public void setOrganizacion(Organizacion organizacion) {
@@ -193,7 +188,7 @@ public class Cotizacion {
 	@OneToOne
 	@JoinColumn(name = "usuario")
 	public Usuarios getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
 
 	public void setUsuario(Usuarios usuario) {
@@ -202,7 +197,7 @@ public class Cotizacion {
 
 	@Column
 	public String getCancelarDescripcion() {
-		return cancelarDescripcion;
+		return this.cancelarDescripcion;
 	}
 
 	public void setCancelarDescripcion(String cancelarDescripcion) {
@@ -212,7 +207,7 @@ public class Cotizacion {
 	@OneToOne
 	@JoinColumn(name = "producto")
 	public Producto getProducto() {
-		return producto;
+		return this.producto;
 	}
 
 	public void setProducto(Producto producto) {
@@ -222,12 +217,20 @@ public class Cotizacion {
 	@OneToOne
 	@JoinColumn(name = "requisicionProducto")
 	public RequisicionProducto getRequisicionProducto() {
-		return requisicionProducto;
+		return this.requisicionProducto;
 	}
 
 	public void setRequisicionProducto(RequisicionProducto requisicionProducto) {
 		this.requisicionProducto = requisicionProducto;
 	}
-	
-	
+
+	@OneToOne
+	@JoinColumn(name = "almacen")
+	public Almacen getAlmacen() {
+		return this.almacen;
+	}
+
+	public void setAlmacen(Almacen almacen) {
+		this.almacen = almacen;
+	}
 }

@@ -12,7 +12,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "direccion_entrega")
 public class DireccionEntrega {
-
 	private Long idDireccionEntrega;
 	private Direccion direccion;
 
@@ -20,24 +19,20 @@ public class DireccionEntrega {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_direccion_entrega", nullable = false)
 	public Long getIdDireccionEntrega() {
-		return idDireccionEntrega;
+		return this.idDireccionEntrega;
 	}
 
 	public void setIdDireccionEntrega(Long idDireccionEntrega) {
 		this.idDireccionEntrega = idDireccionEntrega;
 	}
 
-
 	@OneToOne
 	@JoinColumn(name = "direccion")
 	public Direccion getDireccion() {
-		return direccion;
+		return this.direccion;
 	}
 
 	public void setDireccion(Direccion direccion) {
 		this.direccion = direccion;
 	}
-	
-	
-
 }

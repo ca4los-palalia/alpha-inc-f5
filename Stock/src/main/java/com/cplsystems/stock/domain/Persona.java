@@ -1,7 +1,6 @@
 package com.cplsystems.stock.domain;
 
 import java.util.Calendar;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +16,6 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "persona")
 public class Persona {
-
 	private Long idPersona;
 	private String apellidoPaterno;
 	private String apellidoMaterno;
@@ -28,14 +26,13 @@ public class Persona {
 	private Contacto contacto;
 	private String rfc;
 	private String curp;
-
 	private String nombreCompleto;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idPersona")
 	public Long getIdPersona() {
-		return idPersona;
+		return this.idPersona;
 	}
 
 	public void setIdPersona(Long idPersona) {
@@ -44,7 +41,7 @@ public class Persona {
 
 	@Column
 	public String getApellidoPaterno() {
-		return apellidoPaterno;
+		return this.apellidoPaterno;
 	}
 
 	public void setApellidoPaterno(String apellidoPaterno) {
@@ -53,7 +50,7 @@ public class Persona {
 
 	@Column
 	public String getApellidoMaterno() {
-		return apellidoMaterno;
+		return this.apellidoMaterno;
 	}
 
 	public void setApellidoMaterno(String apellidoMaterno) {
@@ -63,7 +60,7 @@ public class Persona {
 	@Temporal(TemporalType.DATE)
 	@Column
 	public Calendar getFechaNacimiento() {
-		return fechaNacimiento;
+		return this.fechaNacimiento;
 	}
 
 	public void setFechaNacimiento(Calendar fechaNacimiento) {
@@ -72,7 +69,7 @@ public class Persona {
 
 	@Column
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
@@ -81,7 +78,7 @@ public class Persona {
 
 	@Column
 	public Long getSexo() {
-		return sexo;
+		return this.sexo;
 	}
 
 	public void setSexo(Long sexo) {
@@ -91,7 +88,7 @@ public class Persona {
 	@OneToOne
 	@JoinColumn(name = "direccion")
 	public Direccion getDireccion() {
-		return direccion;
+		return this.direccion;
 	}
 
 	public void setDireccion(Direccion direccion) {
@@ -101,7 +98,7 @@ public class Persona {
 	@OneToOne
 	@JoinColumn(name = "contacto")
 	public Contacto getContacto() {
-		return contacto;
+		return this.contacto;
 	}
 
 	public void setContacto(Contacto contacto) {
@@ -110,7 +107,7 @@ public class Persona {
 
 	@Column
 	public String getRfc() {
-		return rfc;
+		return this.rfc;
 	}
 
 	public void setRfc(String rfc) {
@@ -119,7 +116,7 @@ public class Persona {
 
 	@Column
 	public String getCurp() {
-		return curp;
+		return this.curp;
 	}
 
 	public void setCurp(String curp) {
@@ -128,8 +125,6 @@ public class Persona {
 
 	@Transient
 	public String getNombreCompleto() {
-		return nombreCompleto = apellidoPaterno + " " + apellidoMaterno + " "
-				+ nombre;
+		return this.nombreCompleto = this.apellidoPaterno + " " + this.apellidoMaterno + " " + this.nombre;
 	}
-
 }

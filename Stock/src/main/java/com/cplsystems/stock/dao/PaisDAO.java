@@ -1,20 +1,14 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Pais;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Pais;
+public abstract interface PaisDAO {
+	public abstract void save(Pais paramPais);
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- *
- */
-public interface PaisDAO {
+	public abstract void delete(Pais paramPais);
 
-	public void save(Pais pais);
-	public void delete(Pais pais);
-	public List<Pais> getAll();
-	public Pais findById(Long idPais);
+	public abstract List<Pais> getAll();
+
+	public abstract Pais findById(Long paramLong);
 }

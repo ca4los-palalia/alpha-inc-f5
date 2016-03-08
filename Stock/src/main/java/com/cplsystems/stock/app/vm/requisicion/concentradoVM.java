@@ -1,21 +1,4 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.requisicion;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.zkoss.bind.annotation.BindingParam;
-import org.zkoss.bind.annotation.Command;
-import org.zkoss.bind.annotation.Init;
-import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.zk.ui.select.annotation.VariableResolver;
-import org.zkoss.zk.ui.util.Clients;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
@@ -33,14 +16,30 @@ import com.cplsystems.stock.domain.ProveedorProducto;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
 import com.cplsystems.stock.domain.Usuarios;
+import com.cplsystems.stock.services.AreaService;
+import com.cplsystems.stock.services.CofiaPartidaGenericaService;
+import com.cplsystems.stock.services.CotizacionInboxService;
+import com.cplsystems.stock.services.CotizacionService;
+import com.cplsystems.stock.services.EstatusRequisicionService;
+import com.cplsystems.stock.services.ProductoService;
+import com.cplsystems.stock.services.ProveedorProductoService;
+import com.cplsystems.stock.services.RequisicionProductoService;
+import com.cplsystems.stock.services.RequisicionService;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
+import org.zkoss.bind.annotation.BindingParam;
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.Init;
+import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
+import org.zkoss.zul.Messagebox;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-@VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
+@VariableResolver({ DelegatingVariableResolver.class })
 public class concentradoVM extends RequisicionVariables {
-
 	private static final long serialVersionUID = 2584088569805199520L;
 	public static final String REQUISICION_GLOBALCOMMAND_NAME_FOR_UPDATE = "updateCommandFromItemFinder";
 
@@ -48,6 +47,8 @@ public class concentradoVM extends RequisicionVariables {
 	public void init() {
 		super.init();
 		requisicion = new Requisicion();
+		areas = areaService.getAll();
+		areaBuscar = new Area();
 	}
 
 	@Command
@@ -81,17 +82,22 @@ public class concentradoVM extends RequisicionVariables {
 						}
 					}
 				}
-			}// END nuevo codigo
+			}else{
+				StockUtils.showSuccessmessage(
+						"No hay proveedores que surtan este producto",
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+				// END nuevo codigo
+			}
 		}
 	}
 
 	@Command
-	@NotifyChange("requisicionProductos")
+	@NotifyChange({ "requisicionProductos" })
 	public void seleccionarProveedor() {
-		if (proveedorProducto != null) {
-			for (RequisicionProducto item : requisicionProductos) {
-				if (requisicionProductoSeleccionado.equals(item)) {
-					item.setProveedor(proveedorProducto.getProveedor());
+		if (this.proveedorProducto != null) {
+			for (RequisicionProducto item : this.requisicionProductos) {
+				if (this.requisicionProductoSeleccionado.equals(item)) {
+					item.setProveedor(this.proveedorProducto.getProveedor());
 					break;
 				}
 			}
@@ -100,172 +106,166 @@ public class concentradoVM extends RequisicionVariables {
 
 	private List<RequisicionProducto> buscarPorClaveProducto(String buscar) {
 		List<RequisicionProducto> rp = null;
-		Producto pr = productoService.getByClave(buscar);
-		if (pr != null)
-			rp = requisicionProductoService.getByProducto(pr);
+		Producto pr = this.productoService.getByClave(buscar);
+		if (pr != null) {
+			rp = this.requisicionProductoService.getByProducto(pr);
+		}
 		return rp;
 	}
 
 	private List<RequisicionProducto> buscarPorFolioRequisicion(String buscar) {
 		List<RequisicionProducto> rp = null;
-		Requisicion rq = requisicionService.getByFolio(buscar);
-		if (rq != null)
-			rp = requisicionProductoService.getByRequisicion(rq);
+		Requisicion rq = this.requisicionService.getByFolio(buscar);
+		if (rq != null) {
+			rp = this.requisicionProductoService.getByRequisicion(rq);
+		}
 		return rp;
 	}
 
 	private List<RequisicionProducto> buscarPorPartidaGenerica(String buscar) {
 		List<RequisicionProducto> rp = null;
-		CofiaPartidaGenerica cpg = cofiaPartidaGenericaService
-				.getByNombre(buscar);
-		if (cpg != null)
-			rp = requisicionProductoService
-
-			.getByConfiaPartidaGenerica(cpg);
-		return rp;
-	}
-
-	private List<RequisicionProducto> buscarPorAreaUr(String buscar) {
-		List<RequisicionProducto> rp = null;
-		Area areaBuscar = areaService.getByNombre(buscar);
-		if (areaBuscar != null) {
-			Requisicion rq = requisicionService.getByFolio(buscar);
-			rq = requisicionService.getByUnidadResponsable(areaBuscar).get(0);
-			requisicionProductos = requisicionProductoService
-					.getByRequisicion(rq);
+		CofiaPartidaGenerica cpg = this.cofiaPartidaGenericaService.getByNombre(buscar);
+		if (cpg != null) {
+			rp = this.requisicionProductoService.getByConfiaPartidaGenerica(cpg);
 		}
 		return rp;
 	}
 
-	@SuppressWarnings("static-access")
+	
 	@Command
-	@NotifyChange("requisicionProductos")
-	public void filtrarProductoPorRequisicion() {
-		String mensaje = "";
-		if (requisicion == null)
-			requisicion = new Requisicion();
-
-		if (requisicion.getBuscarRequisicion() != null
-				&& !requisicion.getBuscarRequisicion().isEmpty()) {
-
-			requisicionProductos = buscarPorClaveProducto(requisicion
-					.getBuscarRequisicion());
-
-			if (requisicionProductos == null) {
-				requisicionProductos = buscarPorFolioRequisicion(requisicion
-						.getBuscarRequisicion());
-
-				if (requisicionProductos == null) {
-					requisicionProductos = buscarPorPartidaGenerica(requisicion
-							.getBuscarRequisicion());
-					if (requisicionProductos == null) {
-						requisicionProductos = buscarPorAreaUr(requisicion
-								.getBuscarRequisicion());
+	@NotifyChange({ "requisicionProductos" })
+	public void buscarPorArearequisicion(){
+		List<RequisicionProducto> rp = null;
+		
+		List<Requisicion> requisicionesTemp = requisicionService.getByUnidadResponsable(areaBuscar);
+		if(requisicionesTemp != null){
+			requisicionProductos = new ArrayList<RequisicionProducto>();
+			List<RequisicionProducto> productosTemp = new ArrayList<RequisicionProducto>();
+			for (Requisicion item : requisicionesTemp) {
+				productosTemp = this.requisicionProductoService.getByRequisicion(item);
+				if(productosTemp != null){
+					for (RequisicionProducto item2 : productosTemp) {
+						requisicionProductos.add(item2);
 					}
 				}
 			}
-			if (requisicionProductos == null)
-				stockUtils.showSuccessmessage(
-						"Tu busqueda -" + requisicion.getBuscarRequisicion()
-								+ "- no encontro resultados",
-						Clients.NOTIFICATION_TYPE_INFO, 0, null);
-		} else
-			stockUtils
-					.showSuccessmessage(
-							"No se ingreso algun parametro de busque, asegurese de escribir alguna de las formas de busqueda recomendadas",
-							Clients.NOTIFICATION_TYPE_INFO, 0, null);
-
+			if(requisicionProductos.size() == 0){
+				requisicionProductos = new ArrayList<RequisicionProducto>();
+				StockUtils.showSuccessmessage(
+						"No se Encontraron productos en las requisiciones",
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			}
+		}else{
+			requisicionProductos = new ArrayList<RequisicionProducto>();
+			StockUtils.showSuccessmessage(
+					"No Encontraron productos para el area de " + areaBuscar.getNombre(),
+					Clients.NOTIFICATION_TYPE_WARNING, Integer.valueOf(0), null);
+		}
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
-	public void removerProductoDeListaGeneralDeProductos(
-			@BindingParam("index") Integer index) {
-		if (requisicionProductoSeleccionado == null)
-			requisicionProductoSeleccionado = requisicionProductos.get(index);
-
-		requisicionProductoService.delete(requisicionProductoSeleccionado);
-		requisicionProductos.remove(requisicionProductoSeleccionado);
-
-		stockUtils.showSuccessmessage("El producto -"
-				+ requisicionProductoSeleccionado.getProducto().getNombre()
-				+ "- ha sido removido de la requisición -"
-				+ requisicionProductoSeleccionado.getRequisicion().getFolio()
-				+ "-", Clients.NOTIFICATION_TYPE_INFO, 0, null);
+	@NotifyChange({ "requisicionProductos" })
+	public void filtrarProductoPorRequisicion() {
+		String mensaje = "";
+		if (requisicion == null) {
+			requisicion = new Requisicion();
+		}
+		if ((requisicion.getBuscarRequisicion() != null) && (!requisicion.getBuscarRequisicion().isEmpty())) {
+			requisicionProductos = buscarPorClaveProducto(requisicion.getBuscarRequisicion());
+			if (requisicionProductos == null) {
+				requisicionProductos = buscarPorFolioRequisicion(requisicion.getBuscarRequisicion());
+				if (requisicionProductos == null) {
+					requisicionProductos = buscarPorPartidaGenerica(requisicion.getBuscarRequisicion());
+				}
+			}
+			if (requisicionProductos == null) {
+				StockUtils.showSuccessmessage(
+						"Tu busqueda -" + requisicion.getBuscarRequisicion() + "- no encontro resultados", "info",
+						Integer.valueOf(0), null);
+			}
+		} else {
+			StockUtils.showSuccessmessage(
+					"No se ingreso algun parametro de busque, asegurese de escribir alguna de las formas de busqueda recomendadas",
+					"info", Integer.valueOf(0), null);
+		}
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
-	@NotifyChange("*")
+	@NotifyChange({ "*" })
+	public void removerProductoDeListaGeneralDeProductos(@BindingParam("index") Integer index) {
+		if (this.requisicionProductoSeleccionado == null) {
+			this.requisicionProductoSeleccionado = ((RequisicionProducto) this.requisicionProductos
+					.get(index.intValue()));
+		}
+		this.requisicionProductoService.delete(this.requisicionProductoSeleccionado);
+		this.requisicionProductos.remove(this.requisicionProductoSeleccionado);
+
+		StockUtils.showSuccessmessage(
+				"El producto -" + this.requisicionProductoSeleccionado.getProducto().getNombre()
+						+ "- ha sido removido de la requisici�n -"
+						+ this.requisicionProductoSeleccionado.getRequisicion().getFolio() + "-",
+				"info", Integer.valueOf(0), null);
+	}
+
+	@Command
+	@NotifyChange({ "*" })
 	public void cancelarRequisicion() {
-		EstatusRequisicion estado = estatusRequisicionService
-				.getByClave(StockConstants.ESTADO_REQUISICION_CANCELADA);
-		Requisicion rq = requisicionProductoSeleccionado.getRequisicion();
-		rq.setEstatusRequisicion(estado);
-		requisicionService.save(rq);
+		EstatusRequisicion estado = this.estatusRequisicionService.getByClave("RQC");
 
-		stockUtils.showSuccessmessage("La requisición -"
-				+ requisicionProductoSeleccionado.getRequisicion().getFolio()
-				+ "- ha sido cancelada", Clients.NOTIFICATION_TYPE_INFO, 0,
-				null);
-		estado = estatusRequisicionService
-				.getByClave(StockConstants.ESTADO_REQUISICION_NUEVA);
-		requisiciones = requisicionService.getByEstatusRequisicion(estado);
-		requisicionProductos = requisicionProductoService
-				.getRequisicionesConEstadoEspecifico(estado);
+		Requisicion rq = this.requisicionProductoSeleccionado.getRequisicion();
+		rq.setEstatusRequisicion(estado);
+		this.requisicionService.save(rq);
+
+		StockUtils.showSuccessmessage("La requisici�n -"
+				+ this.requisicionProductoSeleccionado.getRequisicion().getFolio() + "- ha sido cancelada", "info",
+				Integer.valueOf(0), null);
+
+		estado = this.estatusRequisicionService.getByClave("RQN");
+
+		this.requisiciones = this.requisicionService.getByEstatusRequisicion(estado);
+		this.requisicionProductos = this.requisicionProductoService.getRequisicionesConEstadoEspecifico(estado);
 	}
 
-	@NotifyChange("proveedorProducto")
+	@NotifyChange({ "proveedorProducto" })
 	@Command
 	public void proveedorCheckBox(@BindingParam("index") Integer index) {
-		ProveedorProducto pp = proveedorProductos.get(index);
-		if (cotizacionesList == null)
-			cotizacionesList = new ArrayList<Cotizacion>();
-
+		ProveedorProducto pp = (ProveedorProducto) this.proveedorProductos.get(index.intValue());
+		if (this.cotizacionesList == null) {
+			this.cotizacionesList = new ArrayList();
+		}
 		Cotizacion nuevaCotizacion = new Cotizacion();
-		nuevaCotizacion.setRequisicion(requisicionProductoSeleccionado
-				.getRequisicion());
+		nuevaCotizacion.setRequisicion(this.requisicionProductoSeleccionado.getRequisicion());
+
 		nuevaCotizacion.setProveedor(pp.getProveedor());
-		nuevaCotizacion.setProducto(requisicionProductoSeleccionado
-				.getProducto());
-		nuevaCotizacion.setRequisicionProducto(requisicionProductoSeleccionado);
-		
+		nuevaCotizacion.setProducto(this.requisicionProductoSeleccionado.getProducto());
+
+		nuevaCotizacion.setRequisicionProducto(this.requisicionProductoSeleccionado);
+
 		boolean agregar = true;
 		if (pp.isSeleccionar()) {
-			for (Cotizacion item : cotizacionesList) {
-				if (item.getProveedor().equals(nuevaCotizacion.getProveedor())
-						&& item.getRequisicion().equals(
-								nuevaCotizacion.getRequisicion())
-						&& nuevaCotizacion.getProducto().equals(
-								requisicionProductoSeleccionado.getProducto())) {
+			for (Cotizacion item : this.cotizacionesList) {
+				if ((item.getProveedor().equals(nuevaCotizacion.getProveedor()))
+						&& (item.getRequisicion().equals(nuevaCotizacion.getRequisicion()))
+						&& (nuevaCotizacion.getProducto().equals(this.requisicionProductoSeleccionado.getProducto()))) {
 					agregar = false;
 					break;
 				}
 			}
 		}
-
-		if (agregar && pp.isSeleccionar())
-			cotizacionesList.add(nuevaCotizacion);
+		if ((agregar) && (pp.isSeleccionar())) {
+			this.cotizacionesList.add(nuevaCotizacion);
+		}
 		if (!pp.isSeleccionar()) {
-			for (Cotizacion item : cotizacionesList) {
-				if (item.getProveedor().getNombre()
-						.equals(nuevaCotizacion.getProveedor().getNombre())
-						&& item.getRequisicion()
-								.getFolio()
-								.equals(nuevaCotizacion.getRequisicion()
-										.getFolio())
-						&& nuevaCotizacion
-								.getProducto()
-								.getNombre()
-								.equals(requisicionProductoSeleccionado
-										.getProducto().getNombre())) {
-					cotizacionesList.remove(item);
+			for (Cotizacion item : this.cotizacionesList) {
+				if ((item.getProveedor().getNombre().equals(nuevaCotizacion.getProveedor().getNombre()))
+						&& (item.getRequisicion().getFolio().equals(nuevaCotizacion.getRequisicion().getFolio()))
+						&& (nuevaCotizacion.getProducto().getNombre()
+								.equals(this.requisicionProductoSeleccionado.getProducto().getNombre()))) {
+					this.cotizacionesList.remove(item);
 					break;
 				}
 			}
 		}
-
 	}
 
 	private List<Cotizacion> salvarCotizacion() {
@@ -346,19 +346,18 @@ public class concentradoVM extends RequisicionVariables {
 		return cotizacionReturn;
 	}
 
-	private String obtenerFolio(List<Cotizacion> listaCotizacionesFolio, Cotizacion cotizacionEntrada){
-		String folio = ""; 
+	private String obtenerFolio(List<Cotizacion> listaCotizacionesFolio, Cotizacion cotizacionEntrada) {
+		String folio = "";
 		for (Cotizacion item : listaCotizacionesFolio) {
-			if(item.getProveedor().getNombre().equals(cotizacionEntrada.getProveedor().getNombre())){
-				folio =item.getFolioCotizacion();
+			if (item.getProveedor().getNombre().equals(cotizacionEntrada.getProveedor().getNombre())) {
+				folio = item.getFolioCotizacion();
 				break;
 			}
 		}
 		return folio;
 	}
-	
-	private Cotizacion obtenerCotizacion(Proveedor proRequisicion,
-			List<Cotizacion> prosCotizaciones) {
+
+	private Cotizacion obtenerCotizacion(Proveedor proRequisicion, List<Cotizacion> prosCotizaciones) {
 		Cotizacion resultado = null;
 		for (Cotizacion cotizacion : prosCotizaciones) {
 			if (cotizacion.getProveedor().equals(proRequisicion)) {
@@ -372,15 +371,15 @@ public class concentradoVM extends RequisicionVariables {
 	private String generarFolioCotizacion(Long countRows) {
 		String folio = null;
 		if (countRows != null) {
-			folio = StockConstants.CLAVE_FOLIO_COTIZACION;
-			if (String.valueOf(countRows.toString().length()).equals("1"))
-				folio += "00" + countRows;
-			else if (String.valueOf(countRows.toString().length()).equals("2"))
-				folio += "0" + countRows;
-			else if (String.valueOf(countRows.toString().length()).equals("3"))
-				folio += countRows;
+			folio = "FCO";
+			if (String.valueOf(countRows.toString().length()).equals("1")) {
+				folio = folio + "00" + countRows;
+			} else if (String.valueOf(countRows.toString().length()).equals("2")) {
+				folio = folio + "0" + countRows;
+			} else if (String.valueOf(countRows.toString().length()).equals("3")) {
+				folio = folio + countRows;
+			}
 		}
-
 		return folio;
 	}
 
@@ -389,14 +388,11 @@ public class concentradoVM extends RequisicionVariables {
 		salvarCotizacion();
 	}
 
-	@SuppressWarnings("static-access")
 	@Command
 	public void guardarCambios() {
-		for (RequisicionProducto item : requisicionProductos) {
-			requisicionProductoService.save(item);
+		for (RequisicionProducto item : this.requisicionProductos) {
+			this.requisicionProductoService.save(item);
 		}
-		stockUtils.showSuccessmessage("Los cambios han sido guardados",
-				Clients.NOTIFICATION_TYPE_INFO, 0, null);
+		StockUtils.showSuccessmessage("Los cambios han sido guardados", "info", Integer.valueOf(0), null);
 	}
-
 }

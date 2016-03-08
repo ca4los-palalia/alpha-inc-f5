@@ -1,8 +1,18 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.controlpanel;
 
+import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.app.utils.UserPrivileges;
+import com.cplsystems.stock.app.vm.controlpanel.utils.UsuariosClientesVariables;
+import com.cplsystems.stock.domain.Contacto;
+import com.cplsystems.stock.domain.Persona;
+import com.cplsystems.stock.domain.Privilegios;
+import com.cplsystems.stock.domain.Usuarios;
+import com.cplsystems.stock.services.ContactoService;
+import com.cplsystems.stock.services.EmailService;
+import com.cplsystems.stock.services.PersonaService;
+import com.cplsystems.stock.services.PrivilegioService;
+import com.cplsystems.stock.services.UsuarioService;
+import java.util.List;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -12,363 +22,356 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
-import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Messagebox;
 
-import com.cplsystems.stock.app.utils.StockUtils;
-import com.cplsystems.stock.app.utils.UserPrivileges;
-import com.cplsystems.stock.app.vm.controlpanel.utils.UsuariosClientesVariables;
-import com.cplsystems.stock.domain.Privilegios;
-import com.cplsystems.stock.domain.Usuarios;
-
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-@VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class UsuariosClientesVM extends UsuariosClientesVariables {
-
-	private static final long serialVersionUID = -6187792714156559485L;
-
-	@Init
-	public void init() {
-		super.init();
-	}
-
-	@NotifyChange("*")
-	@Command
-	public void nevoUsuarioCliente() {
-		super.init();
-	}
-
-	@NotifyChange({ "usuarioSeleccionado", "privilegioRequision",
-			"privilegioConcentrado", "privilegioCotizacionAutorizacion",
-			"privilegioOrdenCompra" })
-	@Command
-	public void prepareUsuarioForEdition(@BindingParam("index") Integer index) {
-		if (index != null) {
-			usuarioSeleccionado = usuarios.get(index);
-			privilegioRequision = false;
-			privilegioConcentrado = false;
-			privilegioCotizacionAutorizacion = false;
-			privilegioOrdenCompra = false;
-			for (Privilegios privilegio : usuarioSeleccionado.getPrivilegios()) {
-				switch (privilegio.getUserPrivileges()) {
-				case REQUISION:
-					privilegioRequision = true;
-					break;
-				case CONCENTRAR:
-					privilegioConcentrado = true;
-					break;
-				case COTIZAR_AUTORIZAR:
-					privilegioCotizacionAutorizacion = true;
-					break;
-				case ORDEN_COMPRA:
-					privilegioOrdenCompra = true;
-					break;
-				}
-			}
-
-		}
-	}
-
-	@NotifyChange({ "usuarios", "usuarioSeleccionado", "privilegioRequision",
-			"privilegioConcentrado", "privilegioCotizacionAutorizacion",
-			"privilegioOrdenCompra" })
-	@Command
-	public void saveChanges() {
-		privilegioRequision = false;
-		privilegioConcentrado = false;
-		privilegioCotizacionAutorizacion = false;
-		privilegioOrdenCompra = false;
-		if (!usuarios.contains(usuarioSeleccionado)) {
-			usuarios.add(usuarioSeleccionado);
-		}
-		for (Usuarios usuario : usuarios) {
-			emailService.save(usuario.getPersona().getContacto().getEmail());
-			contactoService.save(usuario.getPersona().getContacto());
-			personaService.save(usuario.getPersona());
-			usuarioService.save(usuario);
-			for (Privilegios privilegios : usuario.getPrivilegios()) {
-				privilegioService.save(privilegios);
-			}
-		}
-		super.init();
-		StockUtils.showSuccessmessage(
-				"La información se ha guardado correctamente",
-				Clients.NOTIFICATION_TYPE_INFO, 1000, null);
-	}
-
-	@Command
-	public void delete() {
-		if (usuarioSeleccionado != null) {
-			if (usuarioSeleccionado.getIdUsuario() != null) {
-				Messagebox.show("¿Está seguro de remover a "
-						+ usuarioSeleccionado.getPersona().getNombreCompleto()
-						+ "?. Esta acción es irreversible ", "Question",
-						Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
-						new EventListener<Event>() {
-							public void onEvent(Event event) throws Exception {
-								if (((Integer) event.getData()).intValue() == Messagebox.OK) {
-									for (Privilegios privilegios : usuarioSeleccionado
-											.getPrivilegios()) {
-										privilegioService.delete(privilegios);
-									}
-									usuarioService.delete(usuarioSeleccionado);
-									personaService.delete(usuarioSeleccionado
-											.getPersona());
-									contactoService.delete(usuarioSeleccionado
-											.getPersona().getContacto());
-									emailService.delete(usuarioSeleccionado
-											.getPersona().getContacto()
-											.getEmail());
-									usuarios.remove(usuarioSeleccionado);
-									privilegioRequision = false;
-									privilegioConcentrado = false;
-									privilegioCotizacionAutorizacion = false;
-									privilegioOrdenCompra = false;
-									UsuariosClientesVM.this.init();
-									BindUtils.postGlobalCommand(null, null,
-											"refreshPrivilegios", null);
-								}
-							}
-						});
-			}
-		}
-	}
-
-	@NotifyChange({ "usuarioSeleccionado", "addConcentradosPrivilege" })
-	@Command
-	public void addRequisicionPrivilege() {
-		if (privilegioRequision) {
-			boolean agregarPrivilegio = true;
-			for (Privilegios privilegio : usuarioSeleccionado.getPrivilegios()) {
-				if (privilegio.getUserPrivileges().equals(
-						UserPrivileges.REQUISION)) {
-					agregarPrivilegio = false;
-					break;
-				}
-			}
-			if (agregarPrivilegio) {
-				Privilegios privilegios = new Privilegios();
-				privilegios.setUsuarios(usuarioSeleccionado);
-				privilegios.setUserPrivileges(UserPrivileges.REQUISION);
-				privilegios.setIcono(Privilegios.RQ_ICON);
-				privilegios.setPathLocationModule(Privilegios.REQUISION);
-				usuarioSeleccionado.getPrivilegios().add(privilegios);
-			}
-		} else {
-			for (Privilegios privilegio : usuarioSeleccionado.getPrivilegios()) {
-				if (privilegio.getUserPrivileges().equals(
-						UserPrivileges.REQUISION)) {
-					toRemove = privilegio;
-					break;
-				}
-			}
-			if (usuarioSeleccionado.getPrivilegios().contains(toRemove)) {
-				if (toRemove.getIdPrivilegio() != null) {
-					Messagebox.show(
-							"¿Está seguro de remover este privilegio para "
-									+ usuarioSeleccionado.getPersona()
-											.getNombreCompleto() + "?",
-							"Question", Messagebox.OK | Messagebox.CANCEL,
-							Messagebox.QUESTION, new EventListener<Event>() {
-								public void onEvent(Event event)
-										throws Exception {
-									if (((Integer) event.getData()).intValue() == Messagebox.OK) {
-										privilegioService.delete(toRemove);
-										usuarioSeleccionado.getPrivilegios()
-												.remove(toRemove);
-									} else {
-										privilegioRequision = true;
-									}
-									BindUtils.postGlobalCommand(null, null,
-											"refreshPrivilegios", null);
-								}
-							});
-				} else {
-					usuarioSeleccionado.getPrivilegios().remove(toRemove);
-				}
-			}
-		}
-	}
-
-	@NotifyChange({ "usuarios", "usuarioSeleccionado", "privilegioRequision",
-			"privilegioConcentrado", "privilegioCotizacionAutorizacion",
-			"privilegioOrdenCompra" })
-	@GlobalCommand
-	public void refreshPrivilegios() {
-
-	}
-
-	@NotifyChange({ "usuarioSeleccionado", "addConcentradosPrivilege" })
-	@Command
-	public void addConcentradosPrivilege() {
-		if (privilegioConcentrado) {
-			boolean agregarPrivilegio = true;
-			for (Privilegios privilegio : usuarioSeleccionado.getPrivilegios()) {
-				if (privilegio.getUserPrivileges().equals(
-						UserPrivileges.CONCENTRAR)) {
-					agregarPrivilegio = false;
-					break;
-				}
-			}
-			if (agregarPrivilegio) {
-				Privilegios privilegios = new Privilegios();
-				privilegios.setUsuarios(usuarioSeleccionado);
-				privilegios.setUserPrivileges(UserPrivileges.CONCENTRAR);
-				privilegios.setIcono(Privilegios.CN_ICON);
-				privilegios.setPathLocationModule(Privilegios.CONCENTRADO);
-				usuarioSeleccionado.getPrivilegios().add(privilegios);
-			}
-		} else {
-			for (Privilegios privilegio : usuarioSeleccionado.getPrivilegios()) {
-				if (privilegio.getUserPrivileges().equals(
-						UserPrivileges.CONCENTRAR)) {
-					toRemove = privilegio;
-					break;
-				}
-			}
-			if (usuarioSeleccionado.getPrivilegios().contains(toRemove)) {
-				if (toRemove.getIdPrivilegio() != null) {
-					Messagebox.show(
-							"¿Está seguro de remover este privilegio para "
-									+ usuarioSeleccionado.getPersona()
-											.getNombreCompleto() + "?",
-							"Question", Messagebox.OK | Messagebox.CANCEL,
-							Messagebox.QUESTION, new EventListener<Event>() {
-								public void onEvent(Event event)
-										throws Exception {
-									if (((Integer) event.getData()).intValue() == Messagebox.OK) {
-										privilegioService.delete(toRemove);
-										usuarioSeleccionado.getPrivilegios()
-												.remove(toRemove);
-									} else {
-										privilegioConcentrado = true;
-									}
-									BindUtils.postGlobalCommand(null, null,
-											"refreshPrivilegios", null);
-								}
-							});
-				} else {
-					usuarioSeleccionado.getPrivilegios().remove(toRemove);
-				}
-			}
-		}
-	}
-
-	@NotifyChange({ "usuarioSeleccionado", "addConcentradosPrivilege" })
-	@Command
-	public void addCotizaAutorizaPrivilege() {
-		if (privilegioCotizacionAutorizacion) {
-			boolean agregarPrivilegio = true;
-			for (Privilegios privilegio : usuarioSeleccionado.getPrivilegios()) {
-				if (privilegio.getUserPrivileges().equals(
-						UserPrivileges.COTIZAR_AUTORIZAR)) {
-					agregarPrivilegio = false;
-					break;
-				}
-			}
-			if (agregarPrivilegio) {
-				Privilegios privilegios = new Privilegios();
-				privilegios.setUsuarios(usuarioSeleccionado);
-				privilegios.setUserPrivileges(UserPrivileges.COTIZAR_AUTORIZAR);
-				privilegios.setIcono(Privilegios.CTAT_ICON);
-				privilegios
-						.setPathLocationModule(Privilegios.COTIZACION_AUTORIZACION);
-				usuarioSeleccionado.getPrivilegios().add(privilegios);
-			}
-		} else {
-			for (Privilegios privilegio : usuarioSeleccionado.getPrivilegios()) {
-				if (privilegio.getUserPrivileges().equals(
-						UserPrivileges.COTIZAR_AUTORIZAR)) {
-					toRemove = privilegio;
-					break;
-				}
-			}
-			if (usuarioSeleccionado.getPrivilegios().contains(toRemove)) {
-				if (toRemove.getIdPrivilegio() != null) {
-					Messagebox.show(
-							"¿Está seguro de remover este privilegio para "
-									+ usuarioSeleccionado.getPersona()
-											.getNombreCompleto() + "?",
-							"Question", Messagebox.OK | Messagebox.CANCEL,
-							Messagebox.QUESTION, new EventListener<Event>() {
-								public void onEvent(Event event)
-										throws Exception {
-									if (((Integer) event.getData()).intValue() == Messagebox.OK) {
-										privilegioService.delete(toRemove);
-										usuarioSeleccionado.getPrivilegios()
-												.remove(toRemove);
-									} else {
-										privilegioCotizacionAutorizacion = true;
-									}
-									BindUtils.postGlobalCommand(null, null,
-											"refreshPrivilegios", null);
-								}
-							});
-				} else {
-					usuarioSeleccionado.getPrivilegios().remove(toRemove);
-				}
-			}
-		}
-
-	}
-
-	@NotifyChange({ "usuarioSeleccionado", "addConcentradosPrivilege" })
-	@Command
-	public void addOrdenCompraPrivilege() {
-		if (privilegioOrdenCompra) {
-			boolean agregarPrivilegio = true;
-			for (Privilegios privilegio : usuarioSeleccionado.getPrivilegios()) {
-				if (privilegio.getUserPrivileges().equals(
-						UserPrivileges.ORDEN_COMPRA)) {
-					agregarPrivilegio = false;
-					break;
-				}
-			}
-			if (agregarPrivilegio) {
-				Privilegios privilegios = new Privilegios();
-				privilegios.setUsuarios(usuarioSeleccionado);
-				privilegios.setUserPrivileges(UserPrivileges.ORDEN_COMPRA);
-				privilegios.setIcono(Privilegios.OC_ICON);
-				privilegios.setPathLocationModule(Privilegios.ORDEN_COMPRA);
-				usuarioSeleccionado.getPrivilegios().add(privilegios);
-			}
-		} else {
-			for (Privilegios privilegio : usuarioSeleccionado.getPrivilegios()) {
-				if (privilegio.getUserPrivileges().equals(
-						UserPrivileges.ORDEN_COMPRA)) {
-					toRemove = privilegio;
-					break;
-				}
-			}
-			if (usuarioSeleccionado.getPrivilegios().contains(toRemove)) {
-				if (toRemove.getIdPrivilegio() != null) {
-					Messagebox.show(
-							"¿Está seguro de remover este privilegio para "
-									+ usuarioSeleccionado.getPersona()
-											.getNombreCompleto() + "?",
-							"Question", Messagebox.OK | Messagebox.CANCEL,
-							Messagebox.QUESTION, new EventListener<Event>() {
-								public void onEvent(Event event)
-										throws Exception {
-									if (((Integer) event.getData()).intValue() == Messagebox.OK) {
-										privilegioService.delete(toRemove);
-										usuarioSeleccionado.getPrivilegios()
-												.remove(toRemove);
-									} else {
-										privilegioOrdenCompra = true;
-									}
-									BindUtils.postGlobalCommand(null, null,
-											"refreshPrivilegios", null);
-								}
-							});
-				} else {
-					usuarioSeleccionado.getPrivilegios().remove(toRemove);
-				}
-			}
-		}
-
-	}
+@VariableResolver({DelegatingVariableResolver.class})
+public class UsuariosClientesVM
+  extends UsuariosClientesVariables
+{
+  private static final long serialVersionUID = -6187792714156559485L;
+  
+  @Init
+  public void init()
+  {
+    super.init();
+  }
+  
+  @NotifyChange({"*"})
+  @Command
+  public void nevoUsuarioCliente()
+  {
+    super.init();
+  }
+  
+  @NotifyChange({"usuarioSeleccionado", "privilegioRequision", "privilegioConcentrado", "privilegioCotizacionAutorizacion", "privilegioOrdenCompra"})
+  @Command
+  public void prepareUsuarioForEdition(@BindingParam("index") Integer index)
+  {
+    if (index != null)
+    {
+      this.usuarioSeleccionado = ((Usuarios)this.usuarios.get(index.intValue()));
+      this.privilegioRequision = Boolean.valueOf(false);
+      this.privilegioConcentrado = Boolean.valueOf(false);
+      this.privilegioCotizacionAutorizacion = Boolean.valueOf(false);
+      this.privilegioOrdenCompra = Boolean.valueOf(false);
+      for (Privilegios privilegio : this.usuarioSeleccionado.getPrivilegios()) {
+        switch (privilegio.getUserPrivileges())
+        {
+        case REQUISION: 
+          this.privilegioRequision = Boolean.valueOf(true);
+          break;
+        case CONCENTRAR: 
+          this.privilegioConcentrado = Boolean.valueOf(true);
+          break;
+        case COTIZAR_AUTORIZAR: 
+          this.privilegioCotizacionAutorizacion = Boolean.valueOf(true);
+          break;
+        case ORDEN_COMPRA: 
+          this.privilegioOrdenCompra = Boolean.valueOf(true);
+        }
+      }
+    }
+  }
+  
+  @NotifyChange({"usuarios", "usuarioSeleccionado", "privilegioRequision", "privilegioConcentrado", "privilegioCotizacionAutorizacion", "privilegioOrdenCompra"})
+  @Command
+  public void saveChanges()
+  {
+    this.privilegioRequision = Boolean.valueOf(false);
+    this.privilegioConcentrado = Boolean.valueOf(false);
+    this.privilegioCotizacionAutorizacion = Boolean.valueOf(false);
+    this.privilegioOrdenCompra = Boolean.valueOf(false);
+    if (!this.usuarios.contains(this.usuarioSeleccionado)) {
+      this.usuarios.add(this.usuarioSeleccionado);
+    }
+    for (Usuarios usuario : this.usuarios)
+    {
+      this.emailService.save(usuario.getPersona().getContacto().getEmail());
+      this.contactoService.save(usuario.getPersona().getContacto());
+      this.personaService.save(usuario.getPersona());
+      this.usuarioService.save(usuario);
+      for (Privilegios privilegios : usuario.getPrivilegios()) {
+        this.privilegioService.save(privilegios);
+      }
+    }
+    super.init();
+    StockUtils.showSuccessmessage("La informaci�n se ha guardado correctamente", "info", Integer.valueOf(1000), null);
+  }
+  
+  @Command
+  public void delete()
+  {
+    if ((this.usuarioSeleccionado != null) && 
+      (this.usuarioSeleccionado.getIdUsuario() != null)) {
+      Messagebox.show("�Est� seguro de remover a " + this.usuarioSeleccionado.getPersona().getNombreCompleto() + "?. Esta acci�n es irreversible ", "Question", 3, "z-msgbox z-msgbox-question", new EventListener()
+      {
+        public void onEvent(Event event)
+          throws Exception
+        {
+          if (((Integer)event.getData()).intValue() == 1)
+          {
+            for (Privilegios privilegios : UsuariosClientesVM.this.usuarioSeleccionado.getPrivilegios()) {
+              UsuariosClientesVM.this.privilegioService.delete(privilegios);
+            }
+            UsuariosClientesVM.this.usuarioService.delete(UsuariosClientesVM.this.usuarioSeleccionado);
+            UsuariosClientesVM.this.personaService.delete(UsuariosClientesVM.this.usuarioSeleccionado.getPersona());
+            
+            UsuariosClientesVM.this.contactoService.delete(UsuariosClientesVM.this.usuarioSeleccionado.getPersona().getContacto());
+            
+            UsuariosClientesVM.this.emailService.delete(UsuariosClientesVM.this.usuarioSeleccionado.getPersona().getContacto().getEmail());
+            
+            UsuariosClientesVM.this.usuarios.remove(UsuariosClientesVM.this.usuarioSeleccionado);
+            UsuariosClientesVM.this.privilegioRequision = Boolean.valueOf(false);
+            UsuariosClientesVM.this.privilegioConcentrado = Boolean.valueOf(false);
+            UsuariosClientesVM.this.privilegioCotizacionAutorizacion = Boolean.valueOf(false);
+            UsuariosClientesVM.this.privilegioOrdenCompra = Boolean.valueOf(false);
+            UsuariosClientesVM.this.init();
+            BindUtils.postGlobalCommand(null, null, "refreshPrivilegios", null);
+          }
+        }
+      });
+    }
+  }
+  
+  @NotifyChange({"usuarioSeleccionado", "addConcentradosPrivilege"})
+  @Command
+  public void addRequisicionPrivilege()
+  {
+    if (this.privilegioRequision.booleanValue())
+    {
+      boolean agregarPrivilegio = true;
+      for (Privilegios privilegio : this.usuarioSeleccionado.getPrivilegios()) {
+        if (privilegio.getUserPrivileges().equals(UserPrivileges.REQUISION))
+        {
+          agregarPrivilegio = false;
+          break;
+        }
+      }
+      if (agregarPrivilegio)
+      {
+        Privilegios privilegios = new Privilegios();
+        privilegios.setUsuarios(this.usuarioSeleccionado);
+        privilegios.setUserPrivileges(UserPrivileges.REQUISION);
+        privilegios.setIcono("/images/toolbar/linedpaperpencil32.png");
+        privilegios.setPathLocationModule("/modulos/requisicion/requisicion.zul");
+        this.usuarioSeleccionado.getPrivilegios().add(privilegios);
+      }
+    }
+    else
+    {
+      for (Privilegios privilegio : this.usuarioSeleccionado.getPrivilegios()) {
+        if (privilegio.getUserPrivileges().equals(UserPrivileges.REQUISION))
+        {
+          this.toRemove = privilegio;
+          break;
+        }
+      }
+      if (this.usuarioSeleccionado.getPrivilegios().contains(this.toRemove)) {
+        if (this.toRemove.getIdPrivilegio() != null) {
+          Messagebox.show("�Est� seguro de remover este privilegio para " + this.usuarioSeleccionado.getPersona().getNombreCompleto() + "?", "Question", 3, "z-msgbox z-msgbox-question", new EventListener()
+          {
+            public void onEvent(Event event)
+              throws Exception
+            {
+              if (((Integer)event.getData()).intValue() == 1)
+              {
+                UsuariosClientesVM.this.privilegioService.delete(UsuariosClientesVM.this.toRemove);
+                UsuariosClientesVM.this.usuarioSeleccionado.getPrivilegios().remove(UsuariosClientesVM.this.toRemove);
+              }
+              else
+              {
+                UsuariosClientesVM.this.privilegioRequision = Boolean.valueOf(true);
+              }
+              BindUtils.postGlobalCommand(null, null, "refreshPrivilegios", null);
+            }
+          });
+        } else {
+          this.usuarioSeleccionado.getPrivilegios().remove(this.toRemove);
+        }
+      }
+    }
+  }
+  
+  @NotifyChange({"usuarios", "usuarioSeleccionado", "privilegioRequision", "privilegioConcentrado", "privilegioCotizacionAutorizacion", "privilegioOrdenCompra"})
+  @GlobalCommand
+  public void refreshPrivilegios() {}
+  
+  @NotifyChange({"usuarioSeleccionado", "addConcentradosPrivilege"})
+  @Command
+  public void addConcentradosPrivilege()
+  {
+    if (this.privilegioConcentrado.booleanValue())
+    {
+      boolean agregarPrivilegio = true;
+      for (Privilegios privilegio : this.usuarioSeleccionado.getPrivilegios()) {
+        if (privilegio.getUserPrivileges().equals(UserPrivileges.CONCENTRAR))
+        {
+          agregarPrivilegio = false;
+          break;
+        }
+      }
+      if (agregarPrivilegio)
+      {
+        Privilegios privilegios = new Privilegios();
+        privilegios.setUsuarios(this.usuarioSeleccionado);
+        privilegios.setUserPrivileges(UserPrivileges.CONCENTRAR);
+        privilegios.setIcono("/images/toolbar/linedpaperplus32.png");
+        privilegios.setPathLocationModule("/modulos/requisicion/concentrado.zul");
+        this.usuarioSeleccionado.getPrivilegios().add(privilegios);
+      }
+    }
+    else
+    {
+      for (Privilegios privilegio : this.usuarioSeleccionado.getPrivilegios()) {
+        if (privilegio.getUserPrivileges().equals(UserPrivileges.CONCENTRAR))
+        {
+          this.toRemove = privilegio;
+          break;
+        }
+      }
+      if (this.usuarioSeleccionado.getPrivilegios().contains(this.toRemove)) {
+        if (this.toRemove.getIdPrivilegio() != null) {
+          Messagebox.show("�Est� seguro de remover este privilegio para " + this.usuarioSeleccionado.getPersona().getNombreCompleto() + "?", "Question", 3, "z-msgbox z-msgbox-question", new EventListener()
+          {
+            public void onEvent(Event event)
+              throws Exception
+            {
+              if (((Integer)event.getData()).intValue() == 1)
+              {
+                UsuariosClientesVM.this.privilegioService.delete(UsuariosClientesVM.this.toRemove);
+                UsuariosClientesVM.this.usuarioSeleccionado.getPrivilegios().remove(UsuariosClientesVM.this.toRemove);
+              }
+              else
+              {
+                UsuariosClientesVM.this.privilegioConcentrado = Boolean.valueOf(true);
+              }
+              BindUtils.postGlobalCommand(null, null, "refreshPrivilegios", null);
+            }
+          });
+        } else {
+          this.usuarioSeleccionado.getPrivilegios().remove(this.toRemove);
+        }
+      }
+    }
+  }
+  
+  @NotifyChange({"usuarioSeleccionado", "addConcentradosPrivilege"})
+  @Command
+  public void addCotizaAutorizaPrivilege()
+  {
+    if (this.privilegioCotizacionAutorizacion.booleanValue())
+    {
+      boolean agregarPrivilegio = true;
+      for (Privilegios privilegio : this.usuarioSeleccionado.getPrivilegios()) {
+        if (privilegio.getUserPrivileges().equals(UserPrivileges.COTIZAR_AUTORIZAR))
+        {
+          agregarPrivilegio = false;
+          break;
+        }
+      }
+      if (agregarPrivilegio)
+      {
+        Privilegios privilegios = new Privilegios();
+        privilegios.setUsuarios(this.usuarioSeleccionado);
+        privilegios.setUserPrivileges(UserPrivileges.COTIZAR_AUTORIZAR);
+        privilegios.setIcono("/images/toolbar/notecheck32.png");
+        privilegios.setPathLocationModule("/modulos/requisicion/cotizacion.zul");
+        
+        this.usuarioSeleccionado.getPrivilegios().add(privilegios);
+      }
+    }
+    else
+    {
+      for (Privilegios privilegio : this.usuarioSeleccionado.getPrivilegios()) {
+        if (privilegio.getUserPrivileges().equals(UserPrivileges.COTIZAR_AUTORIZAR))
+        {
+          this.toRemove = privilegio;
+          break;
+        }
+      }
+      if (this.usuarioSeleccionado.getPrivilegios().contains(this.toRemove)) {
+        if (this.toRemove.getIdPrivilegio() != null) {
+          Messagebox.show("�Est� seguro de remover este privilegio para " + this.usuarioSeleccionado.getPersona().getNombreCompleto() + "?", "Question", 3, "z-msgbox z-msgbox-question", new EventListener()
+          {
+            public void onEvent(Event event)
+              throws Exception
+            {
+              if (((Integer)event.getData()).intValue() == 1)
+              {
+                UsuariosClientesVM.this.privilegioService.delete(UsuariosClientesVM.this.toRemove);
+                UsuariosClientesVM.this.usuarioSeleccionado.getPrivilegios().remove(UsuariosClientesVM.this.toRemove);
+              }
+              else
+              {
+                UsuariosClientesVM.this.privilegioCotizacionAutorizacion = Boolean.valueOf(true);
+              }
+              BindUtils.postGlobalCommand(null, null, "refreshPrivilegios", null);
+            }
+          });
+        } else {
+          this.usuarioSeleccionado.getPrivilegios().remove(this.toRemove);
+        }
+      }
+    }
+  }
+  
+  @NotifyChange({"usuarioSeleccionado", "addConcentradosPrivilege"})
+  @Command
+  public void addOrdenCompraPrivilege()
+  {
+    if (this.privilegioOrdenCompra.booleanValue())
+    {
+      boolean agregarPrivilegio = true;
+      for (Privilegios privilegio : this.usuarioSeleccionado.getPrivilegios()) {
+        if (privilegio.getUserPrivileges().equals(UserPrivileges.ORDEN_COMPRA))
+        {
+          agregarPrivilegio = false;
+          break;
+        }
+      }
+      if (agregarPrivilegio)
+      {
+        Privilegios privilegios = new Privilegios();
+        privilegios.setUsuarios(this.usuarioSeleccionado);
+        privilegios.setUserPrivileges(UserPrivileges.ORDEN_COMPRA);
+        privilegios.setIcono("/images/toolbar/shoppingcart32.png");
+        privilegios.setPathLocationModule("/modulos/ordenCompra/ordenCompra.zul");
+        this.usuarioSeleccionado.getPrivilegios().add(privilegios);
+      }
+    }
+    else
+    {
+      for (Privilegios privilegio : this.usuarioSeleccionado.getPrivilegios()) {
+        if (privilegio.getUserPrivileges().equals(UserPrivileges.ORDEN_COMPRA))
+        {
+          this.toRemove = privilegio;
+          break;
+        }
+      }
+      if (this.usuarioSeleccionado.getPrivilegios().contains(this.toRemove)) {
+        if (this.toRemove.getIdPrivilegio() != null) {
+          Messagebox.show("�Est� seguro de remover este privilegio para " + this.usuarioSeleccionado.getPersona().getNombreCompleto() + "?", "Question", 3, "z-msgbox z-msgbox-question", new EventListener()
+          {
+            public void onEvent(Event event)
+              throws Exception
+            {
+              if (((Integer)event.getData()).intValue() == 1)
+              {
+                UsuariosClientesVM.this.privilegioService.delete(UsuariosClientesVM.this.toRemove);
+                UsuariosClientesVM.this.usuarioSeleccionado.getPrivilegios().remove(UsuariosClientesVM.this.toRemove);
+              }
+              else
+              {
+                UsuariosClientesVM.this.privilegioOrdenCompra = Boolean.valueOf(true);
+              }
+              BindUtils.postGlobalCommand(null, null, "refreshPrivilegios", null);
+            }
+          });
+        } else {
+          this.usuarioSeleccionado.getPrivilegios().remove(this.toRemove);
+        }
+      }
+    }
+  }
 }

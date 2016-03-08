@@ -1,8 +1,8 @@
 package com.cplsystems.stock.domain;
 
+import com.cplsystems.stock.app.utils.StockUtils;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,12 +15,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.cplsystems.stock.app.utils.StockUtils;
-
 @Entity
 @Table(name = "contrato")
 public class Contrato {
-
 	private Long idContrato;
 	private String nombre;
 	private Long diasPago;
@@ -29,9 +26,7 @@ public class Contrato {
 	private Calendar fechaVigenciaInicio;
 	private Date fechaVigenciaFinDate;
 	private Date fechaVigenciaInicioDate;
-	
 	private String descripcion;
-	
 	private Organizacion organizacion;
 	private Usuarios usuario;
 	private String fechaActualizacion;
@@ -40,7 +35,7 @@ public class Contrato {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	public Long getIdContrato() {
-		return idContrato;
+		return this.idContrato;
 	}
 
 	public void setIdContrato(Long idContrato) {
@@ -49,7 +44,7 @@ public class Contrato {
 
 	@Column(name = "diaspago")
 	public Long getDiasPago() {
-		return diasPago;
+		return this.diasPago;
 	}
 
 	public void setDiasPago(Long diasPago) {
@@ -59,7 +54,7 @@ public class Contrato {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha")
 	public Calendar getFecha() {
-		return fecha;
+		return this.fecha;
 	}
 
 	public void setFecha(Calendar fecha) {
@@ -69,7 +64,7 @@ public class Contrato {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fechaVigenciaFin")
 	public Calendar getFechaVigenciaFin() {
-		return fechaVigenciaFin;
+		return this.fechaVigenciaFin;
 	}
 
 	public void setFechaVigenciaFin(Calendar fechaVigenciaFin) {
@@ -79,7 +74,7 @@ public class Contrato {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fechaVigenciaInicio")
 	public Calendar getFechaVigenciaInicio() {
-		return fechaVigenciaInicio;
+		return this.fechaVigenciaInicio;
 	}
 
 	public void setFechaVigenciaInicio(Calendar fechaVigenciaInicio) {
@@ -88,17 +83,18 @@ public class Contrato {
 
 	@Column
 	public String getDescripcion() {
-		return descripcion;
+		return this.descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	
+
 	@Column
 	public String getFechaActualizacion() {
-		return fechaActualizacion;
+		return this.fechaActualizacion;
 	}
+
 	public void setFechaActualizacion(String fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
 	}
@@ -106,24 +102,26 @@ public class Contrato {
 	@OneToOne
 	@JoinColumn(name = "organizacion")
 	public Organizacion getOrganizacion() {
-		return organizacion;
+		return this.organizacion;
 	}
+
 	public void setOrganizacion(Organizacion organizacion) {
 		this.organizacion = organizacion;
 	}
-	
+
 	@OneToOne
 	@JoinColumn(name = "usuario")
 	public Usuarios getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
+
 	public void setUsuario(Usuarios usuario) {
 		this.usuario = usuario;
 	}
 
 	@Column
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
@@ -132,29 +130,31 @@ public class Contrato {
 
 	@Transient
 	public Date getFechaVigenciaFinDate() {
-		
-		if(fechaVigenciaFin != null)
-			fechaVigenciaFinDate = new StockUtils().convertirCalendarToDate(fechaVigenciaFin);
-		
-		return fechaVigenciaFinDate;
+		if (this.fechaVigenciaFin != null) {
+			this.fechaVigenciaFinDate = new StockUtils().convertirCalendarToDate(this.fechaVigenciaFin);
+		}
+		return this.fechaVigenciaFinDate;
 	}
 
 	public void setFechaVigenciaFinDate(Date fechaVigenciaFinDate) {
-		if(fechaVigenciaFinDate != null)
-			fechaVigenciaFin = new StockUtils().convertirDateToCalendar(fechaVigenciaFinDate);
+		if (fechaVigenciaFinDate != null) {
+			this.fechaVigenciaFin = new StockUtils().convertirDateToCalendar(fechaVigenciaFinDate);
+		}
 		this.fechaVigenciaFinDate = fechaVigenciaFinDate;
 	}
+
 	@Transient
 	public Date getFechaVigenciaInicioDate() {
-		if(fechaVigenciaInicio != null)
-			fechaVigenciaInicioDate = new StockUtils().convertirCalendarToDate(fechaVigenciaInicio);
-		return fechaVigenciaInicioDate;
+		if (this.fechaVigenciaInicio != null) {
+			this.fechaVigenciaInicioDate = new StockUtils().convertirCalendarToDate(this.fechaVigenciaInicio);
+		}
+		return this.fechaVigenciaInicioDate;
 	}
 
 	public void setFechaVigenciaInicioDate(Date fechaVigenciaInicioDate) {
-		if(fechaVigenciaInicioDate != null)
-			fechaVigenciaInicio = new StockUtils().convertirDateToCalendar(fechaVigenciaInicioDate);
+		if (fechaVigenciaInicioDate != null) {
+			this.fechaVigenciaInicio = new StockUtils().convertirDateToCalendar(fechaVigenciaInicioDate);
+		}
 		this.fechaVigenciaInicioDate = fechaVigenciaInicioDate;
 	}
-	
 }

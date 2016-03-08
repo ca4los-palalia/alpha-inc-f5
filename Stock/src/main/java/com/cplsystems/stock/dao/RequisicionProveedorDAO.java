@@ -1,27 +1,20 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProveedor;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
-public interface RequisicionProveedorDAO {
-	public void save(RequisicionProveedor requisicionProveedor);
+public abstract interface RequisicionProveedorDAO {
+	public abstract void save(RequisicionProveedor paramRequisicionProveedor);
 
-	public void delete(RequisicionProveedor requisicionProveedor);
+	public abstract void delete(RequisicionProveedor paramRequisicionProveedor);
 
-	public RequisicionProveedor getById(Long idRequisicionProveedor);
+	public abstract RequisicionProveedor getById(Long paramLong);
 
-	public List<RequisicionProveedor> getByRequisicion(Requisicion requisicion);
+	public abstract List<RequisicionProveedor> getByRequisicion(Requisicion paramRequisicion);
 
-	public List<RequisicionProveedor> getByProveedor(Proveedor Proveedor);
+	public abstract List<RequisicionProveedor> getByProveedor(Proveedor paramProveedor);
 
-	public List<RequisicionProveedor> getAll();
+	public abstract List<RequisicionProveedor> getAll();
 }

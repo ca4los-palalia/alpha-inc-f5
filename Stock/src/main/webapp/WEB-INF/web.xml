@@ -1,20 +1,20 @@
 <!DOCTYPE web-app PUBLIC
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+ "http://java.sun.com/dtd/web-app_3_0.dtd" >
 
 <web-app>
-  <display-name>Stock Application</display-name>
-  <context-param>
-  <param-name>contextConfigLocation</param-name>
-  <param-value>/WEB-INF/applicationContext.xml</param-value>
-  </context-param>
-  
-  <listener>
-  <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-  
-  <servlet>
-  		<servlet-name>zkLoader</servlet-name>
+	<display-name>Stock Application</display-name>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>zkLoader</servlet-name>
 		<servlet-class>
 			org.zkoss.zk.ui.http.DHtmlLayoutServlet
 		</servlet-class>
@@ -23,17 +23,17 @@
 			<param-value>/zkau</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
-  </servlet>
-  
+	</servlet>
+
 	<servlet>
 		<servlet-name>auEngine</servlet-name>
 		<servlet-class>
 			org.zkoss.zk.au.http.DHtmlUpdateServlet
 		</servlet-class>
-		<init-param>       
-	      <param-name>extension0</param-name>       
-	      <param-value>/upload=com.bit.cfdi.web.utils.MyUploader</param-value>    
-	   </init-param>
+		<init-param>
+			<param-name>extension0</param-name>
+			<param-value>/upload=com.bit.cfdi.web.utils.MyUploader</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>zkLoader</servlet-name>
@@ -48,8 +48,8 @@
 		<servlet-name>auEngine</servlet-name>
 		<url-pattern>/zkau/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<welcome-file-list>
-        <welcome-file>home.zul</welcome-file>
-    </welcome-file-list>  
+		<welcome-file>home.zul</welcome-file>
+	</welcome-file-list>
 </web-app>

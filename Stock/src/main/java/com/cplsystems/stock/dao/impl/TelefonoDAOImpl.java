@@ -1,28 +1,20 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao.impl;
-
-import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.TelefonoDAO;
-import com.cplsystems.stock.domain.Direccion;
 import com.cplsystems.stock.domain.Telefono;
-
-/**
- * @author Carlos Palalía López
- */
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class TelefonoDAOImpl extends HibernateDAOSuportUtil implements TelefonoDAO{
-
+public class TelefonoDAOImpl extends HibernateDAOSuportUtil implements TelefonoDAO {
 	@Transactional
 	public void save(Telefono telefono) {
 		getHibernateTemplate().saveOrUpdate(telefono);
@@ -38,38 +30,32 @@ public class TelefonoDAOImpl extends HibernateDAOSuportUtil implements TelefonoD
 		getHibernateTemplate().delete(telefono);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Telefono getById(Long idTelefono) {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Telefono.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Telefono.class);
+
 		criteria.add(Restrictions.eq("idTelefono", idTelefono));
 		criteria.setMaxResults(1);
 		List<Telefono> lista = criteria.list();
-		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
+		return (lista != null) && (!lista.isEmpty()) ? (Telefono) lista.get(0) : null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Telefono> getAll() {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Telefono.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Telefono.class);
+
 		criteria.setMaxResults(1);
 		List<Telefono> lista = criteria.list();
-		return lista != null && !lista.isEmpty() ? lista : null;
+		return (lista != null) && (!lista.isEmpty()) ? lista : null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Telefono getUltimoregistroEmail() {
-		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().
-				createCriteria(Telefono.class);
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Telefono.class);
+
 		criteria.addOrder(Order.desc("idTelefono"));
 		criteria.setMaxResults(1);
 		List<Telefono> lista = criteria.list();
-		return lista != null && !lista.isEmpty() ? lista.get(0) : null;
+		return (lista != null) && (!lista.isEmpty()) ? (Telefono) lista.get(0) : null;
 	}
-
-
-   
 }

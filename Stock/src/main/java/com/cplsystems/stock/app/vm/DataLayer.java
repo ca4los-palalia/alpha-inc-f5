@@ -1,24 +1,10 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.Serializable;
-import java.util.List;
-
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.image.AImage;
 
 import com.cplsystems.stock.app.utils.SistemaOperativo;
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
+import com.cplsystems.stock.domain.ClaveArmonizada;
 import com.cplsystems.stock.domain.CodigoBarrasProducto;
 import com.cplsystems.stock.domain.CofiaFuenteFinanciamiento;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;
@@ -51,15 +37,18 @@ import com.cplsystems.stock.domain.RequisicionProducto;
 import com.cplsystems.stock.domain.Telefono;
 import com.cplsystems.stock.domain.Unidad;
 import com.cplsystems.stock.domain.Usuarios;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.Serializable;
+import java.util.List;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.image.AImage;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 public class DataLayer implements Serializable {
-
 	private static final long serialVersionUID = -828756372536148348L;
-	
 	protected Banco bancoSeleccionado;
 	protected Contacto contactoContacto;
 	protected Contacto contactoProveedor;
@@ -80,6 +69,7 @@ public class DataLayer implements Serializable {
 	protected MenuButtonsActivated botonMuenu8;
 	protected Moneda monedaSeleccionada;
 	protected Municipio municipioProveedor;
+	protected Pais pais;
 	protected Proveedor buscarProveedor;
 	protected Proveedor buscarProveedorAsociar;
 	protected Proveedor nuevoProveedor;
@@ -115,19 +105,16 @@ public class DataLayer implements Serializable {
 	protected Giro giro;
 	protected EstatusRequisicion estatusRequisicion;
 	protected SistemaOperativo sistemaOperativo;
-	
-	
+	protected ClaveArmonizada claveArmonizada;
 	protected HSSFWorkbook libro;
 	protected FileInputStream fileInputStream;
 	protected FileOutputStream fileOutputStream;
-	
 	protected String readJasper;
 	protected String readLayoutProductos;
 	protected String readLayoutProveedores;
 	protected JasperPrint print;
 	protected JasperViewer jviewer;
 	protected AImage imagenProducto;
-	
 	protected List<CofiaFuenteFinanciamiento> cofiaFuenteFinanciamientos;
 	protected List<CofiaPartidaGenerica> cofiaPartidaGenericas;
 	protected List<CofiaProg> cofiaProgs;
@@ -158,383 +145,490 @@ public class DataLayer implements Serializable {
 	protected List<ProductoNaturaleza> productosNaturalezas;
 	protected List<Giro> giros;
 	protected List<OrdenCompra> ordenesCompras;
-	
+	protected List<ClaveArmonizada> claveArmonizadaList;
+	protected List<Direccion> direccionesList;
 	public Producto getProducto() {
-		return producto;
+		return this.producto;
 	}
-	
+
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
+
 	public List<Proveedor> getProveedoresLista() {
-		return proveedoresLista;
+		return this.proveedoresLista;
 	}
+
 	public void setProveedoresLista(List<Proveedor> proveedoresLista) {
 		this.proveedoresLista = proveedoresLista;
 	}
+
 	public Contrato getContrato() {
-		return contrato;
+		return this.contrato;
 	}
+
 	public void setContrato(Contrato contrato) {
 		this.contrato = contrato;
 	}
+
 	public Proveedor getProveedorSelected() {
-		
-		/*if(proveedorSelected != null && proveedorSelected.getProveedorProducto() != null){
-			List<ProductoTipo> tipo = new ArrayList<ProductoTipo>();
-			
-			for (ProveedorProducto pp : proveedorSelected.getProveedorProducto()) {
-				if(!tipo.contains(pp.getProducto().getProductoTipo()))
-					tipo.add(pp.getProducto().getProductoTipo());
-			}
-			proveedorSelected.setTipoProductos(tipo);
-		}*/
-		return proveedorSelected;
+		return this.proveedorSelected;
 	}
+
 	public void setProveedorSelected(Proveedor proveedorSelected) {
 		this.proveedorSelected = proveedorSelected;
 	}
+
 	public Requisicion getRequisicion() {
-		return requisicion;
+		return this.requisicion;
 	}
+
 	public void setRequisicion(Requisicion requisicion) {
 		this.requisicion = requisicion;
 	}
+
 	public Municipio getMunicipioProveedor() {
-		return municipioProveedor;
+		return this.municipioProveedor;
 	}
+
 	public void setMunicipioProveedor(Municipio municipioProveedor) {
 		this.municipioProveedor = municipioProveedor;
 	}
+
 	public Estado getEstadoProveedor() {
-		return estadoProveedor;
+		return this.estadoProveedor;
 	}
+
 	public void setEstadoProveedor(Estado estadoProveedor) {
 		this.estadoProveedor = estadoProveedor;
 	}
+
 	public Pais getPaisProveedor() {
-		return paisProveedor;
+		return this.paisProveedor;
 	}
+
 	public void setPaisProveedor(Pais paisProveedor) {
 		this.paisProveedor = paisProveedor;
 	}
+
 	public Telefono getTelefonoProveedor() {
-		return telefonoProveedor;
+		return this.telefonoProveedor;
 	}
+
 	public void setTelefonoProveedor(Telefono telefonoProveedor) {
 		this.telefonoProveedor = telefonoProveedor;
 	}
+
 	public Email getEmailProveedor() {
-		return emailProveedor;
+		return this.emailProveedor;
 	}
+
 	public void setEmailProveedor(Email emailProveedor) {
 		this.emailProveedor = emailProveedor;
 	}
+
 	public Contacto getContactoProveedor() {
-		return contactoProveedor;
+		return this.contactoProveedor;
 	}
+
 	public void setContactoProveedor(Contacto contactoProveedor) {
 		this.contactoProveedor = contactoProveedor;
 	}
+
 	public Direccion getDireccionProveedor() {
-		return direccionProveedor;
+		return this.direccionProveedor;
 	}
+
 	public void setDireccionProveedor(Direccion direccionProveedor) {
 		this.direccionProveedor = direccionProveedor;
 	}
+
 	public Proveedor getNuevoProveedor() {
-		return nuevoProveedor;
+		return this.nuevoProveedor;
 	}
+
 	public void setNuevoProveedor(Proveedor nuevoProveedor) {
 		this.nuevoProveedor = nuevoProveedor;
 	}
+
 	public Persona getRepresentanteLegal() {
-		return representanteLegal;
+		return this.representanteLegal;
 	}
+
 	public void setRepresentanteLegal(Persona representanteLegal) {
 		this.representanteLegal = representanteLegal;
 	}
+
 	public Persona getPersonaContacto() {
-		return personaContacto;
+		return this.personaContacto;
 	}
+
 	public void setPersonaContacto(Persona personaContacto) {
 		this.personaContacto = personaContacto;
 	}
+
 	public Email getEmailContacto() {
-		return emailContacto;
+		return this.emailContacto;
 	}
+
 	public void setEmailContacto(Email emailContacto) {
 		this.emailContacto = emailContacto;
 	}
+
 	public Telefono getTelefonoContacto() {
-		return telefonoContacto;
+		return this.telefonoContacto;
 	}
+
 	public void setTelefonoContacto(Telefono telefonoContacto) {
 		this.telefonoContacto = telefonoContacto;
 	}
+
 	public Usuarios getUsuarioProveedor() {
-		return usuarioProveedor;
+		return this.usuarioProveedor;
 	}
+
 	public void setUsuarioProveedor(Usuarios usuarioProveedor) {
 		this.usuarioProveedor = usuarioProveedor;
 	}
+
 	public Contacto getContactoContacto() {
-		return contactoContacto;
+		return this.contactoContacto;
 	}
+
 	public void setContactoContacto(Contacto contactoContacto) {
 		this.contactoContacto = contactoContacto;
 	}
+
 	public List<ProductoTipo> getProductoTipoDB() {
-		return productoTipoDB;
+		return this.productoTipoDB;
 	}
+
 	public void setProductoTipoDB(List<ProductoTipo> productoTipoDB) {
 		this.productoTipoDB = productoTipoDB;
 	}
+
 	public ProductoTipo getProductoTipoSelected() {
-		return productoTipoSelected;
+		return this.productoTipoSelected;
 	}
+
 	public void setProductoTipoSelected(ProductoTipo productoTipoSelected) {
 		this.productoTipoSelected = productoTipoSelected;
 	}
+
 	public Banco getBancoSeleccionado() {
-		return bancoSeleccionado;
+		return this.bancoSeleccionado;
 	}
+
 	public void setBancoSeleccionado(Banco bancoSeleccionado) {
 		this.bancoSeleccionado = bancoSeleccionado;
 	}
+
 	public Moneda getMonedaSeleccionada() {
-		return monedaSeleccionada;
+		return this.monedaSeleccionada;
 	}
+
 	public void setMonedaSeleccionada(Moneda monedaSeleccionada) {
 		this.monedaSeleccionada = monedaSeleccionada;
 	}
+
 	public List<Banco> getBancosDB() {
 		return bancosDB;
 	}
+
 	public void setBancosDB(List<Banco> bancosDB) {
-		this.bancosDB = bancosDB;
+		bancosDB = bancosDB;
 	}
+
 	public List<Moneda> getMonedasDB() {
-		return monedasDB;
+		return this.monedasDB;
 	}
+
 	public void setMonedasDB(List<Moneda> monedasDB) {
 		this.monedasDB = monedasDB;
 	}
+
 	public CuentaPago getCuentaPago() {
-		return cuentaPago;
+		return this.cuentaPago;
 	}
+
 	public void setCuentaPago(CuentaPago cuentaPago) {
 		this.cuentaPago = cuentaPago;
 	}
+
 	public List<Contrato> getContratos() {
-		return contratos;
+		return this.contratos;
 	}
+
 	public void setContratos(List<Contrato> contratos) {
 		this.contratos = contratos;
 	}
+
 	public List<Estado> getEstados() {
-		return estados;
+		return this.estados;
 	}
+
 	public void setEstados(List<Estado> estados) {
 		this.estados = estados;
 	}
+
 	public List<Pais> getPaises() {
-		return paises;
+		return this.paises;
 	}
+
 	public void setPaises(List<Pais> paises) {
 		this.paises = paises;
 	}
+
 	public List<Municipio> getMunicipios() {
-		return municipios;
+		return this.municipios;
 	}
+
 	public void setMunicipios(List<Municipio> municipios) {
 		this.municipios = municipios;
 	}
+
 	public List<Producto> getProductosDB() {
-		return productosDB;
+		return this.productosDB;
 	}
+
 	public void setProductosDB(List<Producto> productosDB) {
 		this.productosDB = productosDB;
 	}
+
 	public List<Proveedor> getProveedoresAsociacion() {
-		return proveedoresAsociacion;
+		return this.proveedoresAsociacion;
 	}
+
 	public void setProveedoresAsociacion(List<Proveedor> proveedoresAsociacion) {
 		this.proveedoresAsociacion = proveedoresAsociacion;
 	}
+
 	public Proveedor getProveedoresAsociacionSelected() {
-		return proveedoresAsociacionSelected;
+		return this.proveedoresAsociacionSelected;
 	}
-	public void setProveedoresAsociacionSelected(
-			Proveedor proveedoresAsociacionSelected) {
+
+	public void setProveedoresAsociacionSelected(Proveedor proveedoresAsociacionSelected) {
 		this.proveedoresAsociacionSelected = proveedoresAsociacionSelected;
 	}
+
 	public Proveedor getBuscarProveedor() {
-		return buscarProveedor;
+		return this.buscarProveedor;
 	}
+
 	public void setBuscarProveedor(Proveedor buscarProveedor) {
 		this.buscarProveedor = buscarProveedor;
 	}
+
 	public Producto getBuscarProducto() {
-		return buscarProducto;
+		return this.buscarProducto;
 	}
+
 	public void setBuscarProducto(Producto buscarProducto) {
 		this.buscarProducto = buscarProducto;
 	}
+
 	public ProveedorProducto getProveedorProducto() {
-		return proveedorProducto;
+		return this.proveedorProducto;
 	}
+
 	public void setProveedorProducto(ProveedorProducto proveedorProducto) {
 		this.proveedorProducto = proveedorProducto;
 	}
+
 	public List<ProveedorProducto> getProveedorProductos() {
-		return proveedorProductos;
+		return this.proveedorProductos;
 	}
+
 	public void setProveedorProductos(List<ProveedorProducto> proveedorProductos) {
 		this.proveedorProductos = proveedorProductos;
 	}
+
 	public Proveedor getBuscarProveedorAsociar() {
-		return buscarProveedorAsociar;
+		return this.buscarProveedorAsociar;
 	}
+
 	public void setBuscarProveedorAsociar(Proveedor buscarProveedorAsociar) {
 		this.buscarProveedorAsociar = buscarProveedorAsociar;
 	}
+
 	public MenuButtonsActivated getBotonMuenu1() {
-		return botonMuenu1;
+		return this.botonMuenu1;
 	}
+
 	public void setBotonMuenu1(MenuButtonsActivated botonMuenu1) {
 		this.botonMuenu1 = botonMuenu1;
 	}
+
 	public MenuButtonsActivated getBotonMuenu2() {
-		return botonMuenu2;
+		return this.botonMuenu2;
 	}
+
 	public void setBotonMuenu2(MenuButtonsActivated botonMuenu2) {
 		this.botonMuenu2 = botonMuenu2;
 	}
+
 	public MenuButtonsActivated getBotonMuenu3() {
-		return botonMuenu3;
+		return this.botonMuenu3;
 	}
+
 	public void setBotonMuenu3(MenuButtonsActivated botonMuenu3) {
 		this.botonMuenu3 = botonMuenu3;
 	}
+
 	public MenuButtonsActivated getBotonMuenu4() {
-		return botonMuenu4;
+		return this.botonMuenu4;
 	}
+
 	public void setBotonMuenu4(MenuButtonsActivated botonMuenu4) {
 		this.botonMuenu4 = botonMuenu4;
 	}
+
 	public MenuButtonsActivated getBotonMuenu5() {
-		return botonMuenu5;
+		return this.botonMuenu5;
 	}
+
 	public void setBotonMuenu5(MenuButtonsActivated botonMuenu5) {
 		this.botonMuenu5 = botonMuenu5;
 	}
+
 	public MenuButtonsActivated getBotonMuenu6() {
-		return botonMuenu6;
+		return this.botonMuenu6;
 	}
+
 	public void setBotonMuenu6(MenuButtonsActivated botonMuenu6) {
 		this.botonMuenu6 = botonMuenu6;
 	}
+
 	public MenuButtonsActivated getBotonMuenu7() {
-		return botonMuenu7;
+		return this.botonMuenu7;
 	}
+
 	public void setBotonMuenu7(MenuButtonsActivated botonMuenu7) {
 		this.botonMuenu7 = botonMuenu7;
 	}
+
 	public Area getArea() {
-		return area;
+		return this.area;
 	}
+
 	public void setArea(Area area) {
 		this.area = area;
 	}
+
 	public Posicion getPosicion() {
-		return posicion;
+		return this.posicion;
 	}
+
 	public void setPosicion(Posicion posicion) {
 		this.posicion = posicion;
 	}
+
 	public List<Area> getAreas() {
-		return areas;
+		return this.areas;
 	}
+
 	public void setAreas(List<Area> areas) {
 		this.areas = areas;
 	}
+
 	public List<Posicion> getPosiciones() {
-		return posiciones;
+		return this.posiciones;
 	}
+
 	public void setPosiciones(List<Posicion> posiciones) {
 		this.posiciones = posiciones;
 	}
+
 	public MenuButtonsActivated getBotonMuenu8() {
-		return botonMuenu8;
+		return this.botonMuenu8;
 	}
+
 	public void setBotonMuenu8(MenuButtonsActivated botonMuenu8) {
 		this.botonMuenu8 = botonMuenu8;
 	}
+
 	public String getReadJasper() {
-		return readJasper;
+		return this.readJasper;
 	}
+
 	public void setReadJasper(String readJasper) {
 		this.readJasper = readJasper;
 	}
+
 	public List<ProductoTipo> getProductoTipo() {
-		return productoTipo;
+		return this.productoTipo;
 	}
+
 	public void setProductoTipo(List<ProductoTipo> productoTipo) {
 		this.productoTipo = productoTipo;
 	}
+
 	public JasperPrint getPrint() {
-		return print;
+		return this.print;
 	}
+
 	public void setPrint(JasperPrint print) {
 		this.print = print;
 	}
+
 	public JasperViewer getJviewer() {
-		return jviewer;
+		return this.jviewer;
 	}
+
 	public void setJviewer(JasperViewer jviewer) {
 		this.jviewer = jviewer;
 	}
+
 	public List<RequisicionProducto> getRequisicionProductos() {
-		return requisicionProductos;
+		return this.requisicionProductos;
 	}
-	public void setRequisicionProductos(
-			List<RequisicionProducto> requisicionProductos) {
+
+	public void setRequisicionProductos(List<RequisicionProducto> requisicionProductos) {
 		this.requisicionProductos = requisicionProductos;
 	}
+
 	public RequisicionProducto getRequisicionProducto() {
-		return requisicionProducto;
+		return this.requisicionProducto;
 	}
+
 	public void setRequisicionProducto(RequisicionProducto requisicionProducto) {
 		this.requisicionProducto = requisicionProducto;
 	}
+
 	public List<Requisicion> getRequisiciones() {
-		return requisiciones;
+		return this.requisiciones;
 	}
+
 	public void setRequisiciones(List<Requisicion> requisiciones) {
 		this.requisiciones = requisiciones;
 	}
+
 	public Unidad getUnidadSelected() {
-		return unidadSelected;
+		return this.unidadSelected;
 	}
+
 	public void setUnidadSelected(Unidad unidadSelected) {
 		this.unidadSelected = unidadSelected;
 	}
+
 	public List<Unidad> getUnidadesDB() {
-		return unidadesDB;
+		return this.unidadesDB;
 	}
+
 	public void setUnidadesDB(List<Unidad> unidadesDB) {
 		this.unidadesDB = unidadesDB;
 	}
+
 	public Unidad getUnidad() {
-		return unidad;
+		return this.unidad;
 	}
+
 	public void setUnidad(Unidad unidad) {
 		this.unidad = unidad;
 	}
 
 	public ProductoNaturaleza getProductoNaturaleza() {
-		return productoNaturaleza;
+		return this.productoNaturaleza;
 	}
 
 	public void setProductoNaturaleza(ProductoNaturaleza productoNaturaleza) {
@@ -542,27 +636,27 @@ public class DataLayer implements Serializable {
 	}
 
 	public List<ProductoNaturaleza> getProductosNaturalezas() {
-		return productosNaturalezas;
+		return this.productosNaturalezas;
 	}
 
-	public void setProductosNaturalezas(
-			List<ProductoNaturaleza> productosNaturalezas) {
+	public void setProductosNaturalezas(List<ProductoNaturaleza> productosNaturalezas) {
 		this.productosNaturalezas = productosNaturalezas;
 	}
 
 	public FamiliasProducto getFamiliasProducto() {
-		return familiasProducto;
+		return this.familiasProducto;
 	}
 
-	@NotifyChange("producto")
+	@NotifyChange({ "producto" })
 	public void setFamiliasProducto(FamiliasProducto familiasProducto) {
-		if(familiasProducto != null)
-			producto = familiasProducto.getProducto();
+		if (familiasProducto != null) {
+			this.producto = familiasProducto.getProducto();
+		}
 		this.familiasProducto = familiasProducto;
 	}
 
 	public List<FamiliasProducto> getFamiliasProductos() {
-		return familiasProductos;
+		return this.familiasProductos;
 	}
 
 	public void setFamiliasProductos(List<FamiliasProducto> familiasProductos) {
@@ -570,7 +664,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public CodigoBarrasProducto getCodigoBarrasProducto() {
-		return codigoBarrasProducto;
+		return this.codigoBarrasProducto;
 	}
 
 	public void setCodigoBarrasProducto(CodigoBarrasProducto codigoBarrasProducto) {
@@ -578,16 +672,15 @@ public class DataLayer implements Serializable {
 	}
 
 	public List<CodigoBarrasProducto> getCodigosBarrasProductos() {
-		return codigosBarrasProductos;
+		return this.codigosBarrasProductos;
 	}
 
-	public void setCodigosBarrasProductos(
-			List<CodigoBarrasProducto> codigosBarrasProductos) {
+	public void setCodigosBarrasProductos(List<CodigoBarrasProducto> codigosBarrasProductos) {
 		this.codigosBarrasProductos = codigosBarrasProductos;
 	}
 
 	public CostosProducto getCostosProducto() {
-		return costosProducto;
+		return this.costosProducto;
 	}
 
 	public void setCostosProducto(CostosProducto costosProducto) {
@@ -595,7 +688,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public List<CostosProducto> getCostosProductos() {
-		return costosProductos;
+		return this.costosProductos;
 	}
 
 	public void setCostosProductos(List<CostosProducto> costosProductos) {
@@ -603,7 +696,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public CostosProducto getCostosProductoNuevo() {
-		return costosProductoNuevo;
+		return this.costosProductoNuevo;
 	}
 
 	public void setCostosProductoNuevo(CostosProducto costosProductoNuevo) {
@@ -611,7 +704,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public AImage getImagenProducto() {
-		return imagenProducto;
+		return this.imagenProducto;
 	}
 
 	public void setImagenProducto(AImage imagenProducto) {
@@ -619,7 +712,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public Giro getGiro() {
-		return giro;
+		return this.giro;
 	}
 
 	public void setGiro(Giro giro) {
@@ -627,7 +720,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public List<Giro> getGiros() {
-		return giros;
+		return this.giros;
 	}
 
 	public void setGiros(List<Giro> giros) {
@@ -635,7 +728,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public CofiaPartidaGenerica getCofiaPartidaGenerica() {
-		return cofiaPartidaGenerica;
+		return this.cofiaPartidaGenerica;
 	}
 
 	public void setCofiaPartidaGenerica(CofiaPartidaGenerica cofiaPartidaGenerica) {
@@ -643,7 +736,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public CofiaProg getCofiaProg() {
-		return cofiaProg;
+		return this.cofiaProg;
 	}
 
 	public void setCofiaProg(CofiaProg cofiaProg) {
@@ -651,7 +744,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public CofiaPy getCofiaPy() {
-		return cofiaPy;
+		return this.cofiaPy;
 	}
 
 	public void setCofiaPy(CofiaPy cofiaPy) {
@@ -659,16 +752,15 @@ public class DataLayer implements Serializable {
 	}
 
 	public List<CofiaPartidaGenerica> getCofiaPartidaGenericas() {
-		return cofiaPartidaGenericas;
+		return this.cofiaPartidaGenericas;
 	}
 
-	public void setCofiaPartidaGenericas(
-			List<CofiaPartidaGenerica> cofiaPartidaGenericas) {
+	public void setCofiaPartidaGenericas(List<CofiaPartidaGenerica> cofiaPartidaGenericas) {
 		this.cofiaPartidaGenericas = cofiaPartidaGenericas;
 	}
 
 	public List<CofiaProg> getCofiaProgs() {
-		return cofiaProgs;
+		return this.cofiaProgs;
 	}
 
 	public void setCofiaProgs(List<CofiaProg> cofiaProgs) {
@@ -676,7 +768,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public List<CofiaPy> getCofiaPys() {
-		return cofiaPys;
+		return this.cofiaPys;
 	}
 
 	public void setCofiaPys(List<CofiaPy> cofiaPys) {
@@ -684,25 +776,23 @@ public class DataLayer implements Serializable {
 	}
 
 	public CofiaFuenteFinanciamiento getCofiaFuenteFinanciamiento() {
-		return cofiaFuenteFinanciamiento;
+		return this.cofiaFuenteFinanciamiento;
 	}
 
-	public void setCofiaFuenteFinanciamiento(
-			CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento) {
+	public void setCofiaFuenteFinanciamiento(CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento) {
 		this.cofiaFuenteFinanciamiento = cofiaFuenteFinanciamiento;
 	}
 
 	public List<CofiaFuenteFinanciamiento> getCofiaFuenteFinanciamientos() {
-		return cofiaFuenteFinanciamientos;
+		return this.cofiaFuenteFinanciamientos;
 	}
 
-	public void setCofiaFuenteFinanciamientos(
-			List<CofiaFuenteFinanciamiento> cofiaFuenteFinanciamientos) {
+	public void setCofiaFuenteFinanciamientos(List<CofiaFuenteFinanciamiento> cofiaFuenteFinanciamientos) {
 		this.cofiaFuenteFinanciamientos = cofiaFuenteFinanciamientos;
 	}
 
 	public Area getAreaBuscar() {
-		return areaBuscar;
+		return this.areaBuscar;
 	}
 
 	public void setAreaBuscar(Area areaBuscar) {
@@ -710,7 +800,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public Cotizacion getCotizacionSelected() {
-		return cotizacionSelected;
+		return this.cotizacionSelected;
 	}
 
 	public void setCotizacionSelected(Cotizacion cotizacionSelected) {
@@ -718,7 +808,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public List<Cotizacion> getCotizacionesList() {
-		return cotizacionesList;
+		return this.cotizacionesList;
 	}
 
 	public void setCotizacionesList(List<Cotizacion> cotizacionesList) {
@@ -726,7 +816,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public OrdenCompra getOrdenCompra() {
-		return ordenCompra;
+		return this.ordenCompra;
 	}
 
 	public void setOrdenCompra(OrdenCompra ordenCompra) {
@@ -734,7 +824,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public List<OrdenCompra> getOrdenesCompras() {
-		return ordenesCompras;
+		return this.ordenesCompras;
 	}
 
 	public void setOrdenesCompras(List<OrdenCompra> ordenesCompras) {
@@ -742,14 +832,43 @@ public class DataLayer implements Serializable {
 	}
 
 	public List<Cotizacion> getCotizacionesConProductos() {
-		return cotizacionesConProductos;
+		return this.cotizacionesConProductos;
 	}
 
-	public void setCotizacionesConProductos(
-			List<Cotizacion> cotizacionesConProductos) {
+	public void setCotizacionesConProductos(List<Cotizacion> cotizacionesConProductos) {
 		this.cotizacionesConProductos = cotizacionesConProductos;
 	}
-	
-	
+
+	public Pais getPais() {
+		return this.pais;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
+	}
+
+	public ClaveArmonizada getClaveArmonizada() {
+		return this.claveArmonizada;
+	}
+
+	public void setClaveArmonizada(ClaveArmonizada claveArmonizada) {
+		this.claveArmonizada = claveArmonizada;
+	}
+
+	public List<ClaveArmonizada> getClaveArmonizadaList() {
+		return this.claveArmonizadaList;
+	}
+
+	public void setClaveArmonizadaList(List<ClaveArmonizada> claveArmonizadaList) {
+		this.claveArmonizadaList = claveArmonizadaList;
+	}
+
+	public List<Direccion> getDireccionesList() {
+		return direccionesList;
+	}
+
+	public void setDireccionesList(List<Direccion> direccionesList) {
+		this.direccionesList = direccionesList;
+	}
 	
 }

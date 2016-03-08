@@ -1,31 +1,25 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Usuarios;
+import java.util.List;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-public interface UsuarioDAO {
+public abstract interface UsuarioDAO {
+	public abstract Usuarios getUsuarioByCredentials(String paramString1, String paramString2);
 
-	Usuarios getUsuarioByCredentials(String usuario, String password);
+	public abstract void save(Usuarios paramUsuarios);
 
-	void save(Usuarios usuarios);
+	public abstract void delete(Usuarios paramUsuarios);
 
-	void delete(Usuarios usuario);
+	public abstract List<Usuarios> getUsuariosByOrganizacion(Organizacion paramOrganizacion);
 
-	List<Usuarios> getUsuariosByOrganizacion(Organizacion organizacion);
+	public abstract boolean verificarNombreUsuario(String paramString, Long paramLong);
 
-	boolean verificarNombreUsuario(String benutzer, Long idUsuario);
+	public abstract Usuarios getClienteByOrganizacion(Organizacion paramOrganizacion);
 
-	Usuarios getClienteByOrganizacion(Organizacion organizacion);
+	public abstract Usuarios getOwner(Organizacion paramOrganizacion);
 
-	Usuarios getOwner(Organizacion organizacion);
+	public abstract List<Usuarios> getUsuariosByOrganizacionAll(Organizacion paramOrganizacion);
 
+	public abstract List<Usuarios> getAll();
 }

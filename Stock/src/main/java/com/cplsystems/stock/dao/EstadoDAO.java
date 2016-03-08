@@ -1,21 +1,14 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Estado;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Estado;
+public abstract interface EstadoDAO {
+	public abstract void save(Estado paramEstado);
 
-/**
- * @author Carlos Palalía López
- */
-public interface EstadoDAO {
-	public void save(Estado estado);
+	public abstract void delete(Estado paramEstado);
 
-	public void delete(Estado estado);
+	public abstract Estado getById(Long paramLong);
 
-	public Estado getById(Long idEstado);
-
-	public List<Estado> getAll();
+	public abstract List<Estado> getAll();
 }

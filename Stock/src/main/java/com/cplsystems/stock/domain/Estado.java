@@ -1,41 +1,74 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
+/**
+ * @author Carlos
+ *
+ */
 @Entity
-@Table (name= "Estado")
+@Table(name = "Estado")
 public class Estado implements Serializable {
-	
 	private static final long serialVersionUID = -6891447220002443668L;
 	private long idEstado;
 	private String nombre;
+
+	private String capital;
+	private String abreviatura;
+	private String simbolo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column (name = "id_estado" , nullable =false)
+	@Column(name = "id_estado", nullable = false)
 	public long getIdEstado() {
-		return idEstado;
+		return this.idEstado;
 	}
+
 	public void setIdEstado(long idEstado) {
 		this.idEstado = idEstado;
 	}
-	
+
 	@Column(name = "nombre", length = 30)
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+	@Column
+	public String getCapital() {
+		return capital;
+	}
+
+	public void setCapital(String capital) {
+		this.capital = capital;
+	}
+
+	@Column
+	public String getAbreviatura() {
+		return abreviatura;
+	}
+
+	public void setAbreviatura(String abreviatura) {
+		this.abreviatura = abreviatura;
+	}
+
+	@Column
+	public String getSimbolo() {
+		return simbolo;
+	}
+
+	public void setSimbolo(String simbolo) {
+		this.simbolo = simbolo;
+	}
+	
 	
 }

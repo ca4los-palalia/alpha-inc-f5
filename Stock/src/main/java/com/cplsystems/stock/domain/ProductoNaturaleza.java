@@ -10,33 +10,36 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class ProductoNaturaleza {
-
 	private Long idProductoNaturaleza;
 	private String nombre;
 	private String simbolo;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	public Long getIdProductoNaturaleza() {
-		return idProductoNaturaleza;
+		return this.idProductoNaturaleza;
 	}
+
 	public void setIdProductoNaturaleza(Long idProductoNaturaleza) {
 		this.idProductoNaturaleza = idProductoNaturaleza;
 	}
+
 	@Column
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
 	@Column
 	public String getSimbolo() {
-		return simbolo;
+		return this.simbolo;
 	}
+
 	public void setSimbolo(String simbolo) {
 		this.simbolo = simbolo;
 	}
-	
 }

@@ -1,31 +1,22 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
-
-import java.util.List;
 
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.ProveedorProducto;
+import java.util.List;
 
-/**
- * @author Carlos Palalía López
- */
+public abstract interface ProveedorProductoDAO {
+	public abstract void save(ProveedorProducto paramProveedorProducto);
 
-public interface ProveedorProductoDAO {
+	public abstract void delete(ProveedorProducto paramProveedorProducto);
 
-	public void save(ProveedorProducto proveedorProducto);
+	public abstract ProveedorProducto getById(Long paramLong);
 
-	public void delete(ProveedorProducto proveedorProducto);
+	public abstract List<ProveedorProducto> getByProveedor(Proveedor paramProveedor);
 
-	public ProveedorProducto getById(Long idProveedorProducto);
+	public abstract List<ProveedorProducto> getByProducto(Producto paramProducto);
 
-	public List<ProveedorProducto> getByProveedor(Proveedor producto);
+	public abstract List<ProveedorProducto> getByProductoProveedor(Producto paramProducto, Proveedor paramProveedor);
 
-	public List<ProveedorProducto> getByProducto(Producto producto);
-	
-	public List<ProveedorProducto> getByProductoProveedor(Producto producto, Proveedor proveedor);
-
-	public List<ProveedorProducto> getAll();
+	public abstract List<ProveedorProducto> getAll();
 }

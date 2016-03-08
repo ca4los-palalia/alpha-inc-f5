@@ -1,26 +1,16 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao.impl;
-
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
 import com.cplsystems.stock.dao.RequisicionInboxDAO;
 import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.RequisicionInbox;
+import java.util.List;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Repository
-public class RequisicionInboxDAOImpl extends HibernateDAOSuportUtil implements
-		RequisicionInboxDAO {
-
+public class RequisicionInboxDAOImpl extends HibernateDAOSuportUtil implements RequisicionInboxDAO {
 	@Transactional
 	public void save(RequisicionInbox requisicionInbox) {
 		getHibernateTemplate().saveOrUpdate(requisicionInbox);
@@ -31,22 +21,16 @@ public class RequisicionInboxDAOImpl extends HibernateDAOSuportUtil implements
 		getHibernateTemplate().delete(requisicionInbox);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<RequisicionInbox> getAllNews(final Organizacion organizacion) {
-		return getHibernateTemplate()
-				.find("FROM RequisicionInbox as r "
-						+ "LEFT JOIN FETCH r.requisicion as e WHERE r.leido = ?"
-						+ "AND e.organizacion = ?", false, organizacion);
+	public List<RequisicionInbox> getAllNews(Organizacion organizacion) {
+		return getHibernateTemplate().find(
+				"FROM RequisicionInbox as r LEFT JOIN FETCH r.requisicion as e WHERE r.leido = ?AND e.organizacion = ?",
+				new Object[] { Boolean.valueOf(false), organizacion });
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<RequisicionInbox> getAll(final Organizacion organizacion) {
-		return getHibernateTemplate()
-				.find("FROM RequisicionInbox as r "
-						+ "LEFT JOIN FETCH r.requisicion as e WHERE e.organizacion = ?",
-						organizacion);
+	public List<RequisicionInbox> getAll(Organizacion organizacion) {
+		return getHibernateTemplate().find(
+				"FROM RequisicionInbox as r LEFT JOIN FETCH r.requisicion as e WHERE e.organizacion = ?", organizacion);
 	}
-
 }

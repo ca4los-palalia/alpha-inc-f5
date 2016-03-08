@@ -1,40 +1,30 @@
-/**
- * 
- */
 package com.cplsystems.stock.services;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.cplsystems.stock.dao.OrdenCompraInboxDAO;
 import com.cplsystems.stock.domain.OrdenCompraInbox;
 import com.cplsystems.stock.domain.Organizacion;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- *
- */
 @Service
 public class OrdenCompraInboxService {
-
 	@Autowired
 	private OrdenCompraInboxDAO ordenCompraInboxDAO;
-	
-	public void save(final OrdenCompraInbox ordenCompraInbox) {
-		ordenCompraInboxDAO.save(ordenCompraInbox);
+
+	public void save(OrdenCompraInbox ordenCompraInbox) {
+		this.ordenCompraInboxDAO.save(ordenCompraInbox);
 	}
-	
-	public void delete(final OrdenCompraInbox ordenCompraInbox) {
-		ordenCompraInboxDAO.delete(ordenCompraInbox);
+
+	public void delete(OrdenCompraInbox ordenCompraInbox) {
+		this.ordenCompraInboxDAO.delete(ordenCompraInbox);
 	}
-	
-	public List<OrdenCompraInbox> getAllNews(final Organizacion organizacion) {
-		return ordenCompraInboxDAO.getAllNews(organizacion);
+
+	public List<OrdenCompraInbox> getAllNews(Organizacion organizacion) {
+		return this.ordenCompraInboxDAO.getAllNews(organizacion);
 	}
-	
-	public List<OrdenCompraInbox> getAll(final Organizacion organizacion) {
-		return ordenCompraInboxDAO.getAll(organizacion);
+
+	public List<OrdenCompraInbox> getAll(Organizacion organizacion) {
+		return this.ordenCompraInboxDAO.getAll(organizacion);
 	}
 }

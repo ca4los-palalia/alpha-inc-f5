@@ -1,24 +1,14 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.CofiaFuenteFinanciamiento;
 import java.util.List;
 
-import com.cplsystems.stock.domain.CofiaFuenteFinanciamiento;
+public abstract interface CofiaFuenteFinanciamientoDAO {
+	public abstract void save(CofiaFuenteFinanciamiento paramCofiaFuenteFinanciamiento);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void delete(CofiaFuenteFinanciamiento paramCofiaFuenteFinanciamiento);
 
-public interface CofiaFuenteFinanciamientoDAO {
+	public abstract CofiaFuenteFinanciamiento getById(Long paramLong);
 
-	public void save(CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento);
-
-	public void delete(CofiaFuenteFinanciamiento cofiaFuenteFinanciamiento);
-	
-	public CofiaFuenteFinanciamiento getById(Long idCofiaFuenteFinanciamiento);
-
-	public List<CofiaFuenteFinanciamiento> getAll();
-	
+	public abstract List<CofiaFuenteFinanciamiento> getAll();
 }

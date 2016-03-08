@@ -1,26 +1,16 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.CofiaPartidaGenerica;
 import java.util.List;
 
-import com.cplsystems.stock.domain.CofiaPartidaGenerica;
+public abstract interface CofiaPartidaGenericaDAO {
+	public abstract void save(CofiaPartidaGenerica paramCofiaPartidaGenerica);
 
-/**
- * @author Carlos Palalía López
- */
+	public abstract void delete(CofiaPartidaGenerica paramCofiaPartidaGenerica);
 
-public interface CofiaPartidaGenericaDAO {
+	public abstract CofiaPartidaGenerica getById(Long paramLong);
 
-	public void save(CofiaPartidaGenerica cofiaPartidaGenerica);
+	public abstract List<CofiaPartidaGenerica> getAll();
 
-	public void delete(CofiaPartidaGenerica cofiaPartidaGenerica);
-	
-	public CofiaPartidaGenerica getById(Long idCofiaPartidaGenerica);
-
-	public List<CofiaPartidaGenerica> getAll();
-	
-	public CofiaPartidaGenerica getByNombre(String nombre);
-	
+	public abstract CofiaPartidaGenerica getByNombre(String paramString);
 }

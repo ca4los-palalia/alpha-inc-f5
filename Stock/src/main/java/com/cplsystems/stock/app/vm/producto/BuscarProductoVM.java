@@ -1,12 +1,12 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.producto;
 
+import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.app.vm.BasicStructure;
+import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.services.ProductoService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
@@ -19,20 +19,11 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Window;
 
-import com.cplsystems.stock.app.vm.BasicStructure;
-import com.cplsystems.stock.app.vm.requisicion.RequisicionVM;
-import com.cplsystems.stock.domain.Producto;
-
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-@VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
+@VariableResolver({ DelegatingVariableResolver.class })
 public class BuscarProductoVM extends BasicStructure {
-
 	private static final long serialVersionUID = 3098239433101641553L;
 	@Wire("#productosModalDialog")
 	private Window productosModalDialog;
@@ -43,10 +34,8 @@ public class BuscarProductoVM extends BasicStructure {
 	private String globalCommandName;
 
 	@Init
-	public void init(
-			@ContextParam(ContextType.VIEW) Component view,
-			@ExecutionArgParam(RequisicionVM.REQUISICION_GLOBALCOMMAND_NAME_FOR_UPDATE) 
-			String updateCommandFromItemFinder) {
+	public void init(@ContextParam(ContextType.VIEW) Component view,
+			@ExecutionArgParam("updateCommandFromItemFinder") String updateCommandFromItemFinder) {
 		Selectors.wireComponents(view, this, false);
 		this.globalCommandName = updateCommandFromItemFinder;
 	}
@@ -56,45 +45,39 @@ public class BuscarProductoVM extends BasicStructure {
 		Selectors.wireComponents(view, this, false);
 	}
 
-	@SuppressWarnings("static-access")
-	@NotifyChange("productos")
+	@NotifyChange({ "productos" })
 	@Command
 	public void searchItemByKeyOrName() {
-		productos = productoService.getItemByKeyOrName(claveProducto,
-				nombreProducto);
-		if (productos == null) {
-			stockUtils.showSuccessmessage("Los parametros especificados "
-					+ "no generaron ningún resultado",
-					Clients.NOTIFICATION_TYPE_WARNING, 2000, null);
-		} else {
-
+		this.productos = this.productoService.getItemByKeyOrName(this.claveProducto, this.nombreProducto);
+		if (this.productos == null) {
+			StockUtils.showSuccessmessage("Los parametros especificados no generaron ning�n resultado", "warning",
+					Integer.valueOf(2000), null);
 		}
 	}
 
 	@Command
 	public void transferProduct() {
-		if (productoSeleccionado != null) {
-			productosModalDialog.detach();
-			Map<String, Object> args = new HashMap<String, Object>();
-			args.put("productoSeleccionado", productoSeleccionado);
-			if (globalCommandName != null && !globalCommandName.isEmpty()) {
-				BindUtils.postGlobalCommand(null, null, globalCommandName, args);
+		if (this.productoSeleccionado != null) {
+			this.productosModalDialog.detach();
+			Map<String, Object> args = new HashMap();
+			args.put("productoSeleccionado", this.productoSeleccionado);
+			if ((this.globalCommandName != null) && (!this.globalCommandName.isEmpty())) {
+				BindUtils.postGlobalCommand(null, null, this.globalCommandName, args);
 			} else {
-				BindUtils.postGlobalCommand(null, null,
-						"updateFromSelectedItem", args);
+				BindUtils.postGlobalCommand(null, null, "updateFromSelectedItem", args);
 			}
 		}
 	}
 
 	@Command
 	public void closeDialog() {
-		if (productosModalDialog != null) {
-			productosModalDialog.detach();
+		if (this.productosModalDialog != null) {
+			this.productosModalDialog.detach();
 		}
 	}
 
 	public String getClaveProducto() {
-		return claveProducto;
+		return this.claveProducto;
 	}
 
 	public void setClaveProducto(String claveProducto) {
@@ -102,7 +85,7 @@ public class BuscarProductoVM extends BasicStructure {
 	}
 
 	public String getNombreProducto() {
-		return nombreProducto;
+		return this.nombreProducto;
 	}
 
 	public void setNombreProducto(String nombreProducto) {
@@ -110,7 +93,7 @@ public class BuscarProductoVM extends BasicStructure {
 	}
 
 	public Producto getProductoSeleccionado() {
-		return productoSeleccionado;
+		return this.productoSeleccionado;
 	}
 
 	public void setProductoSeleccionado(Producto productoSeleccionado) {
@@ -118,11 +101,10 @@ public class BuscarProductoVM extends BasicStructure {
 	}
 
 	public List<Producto> getProductos() {
-		return productos;
+		return this.productos;
 	}
 
 	public void setProductos(List<Producto> productos) {
 		this.productos = productos;
 	}
-
 }

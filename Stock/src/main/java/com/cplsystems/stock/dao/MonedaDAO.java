@@ -1,23 +1,14 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Moneda;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Moneda;
+public abstract interface MonedaDAO {
+	public abstract void save(Moneda paramMoneda);
 
+	public abstract void delete(Moneda paramMoneda);
 
-/**
- * @author Carlos Palalía López
- */
-public interface MonedaDAO {
-	
-	public void save(Moneda moneda);
+	public abstract Moneda getById(Long paramLong);
 
-	public void delete(Moneda moneda);
-
-	public Moneda getById(Long idMoneda);
-
-	public List<Moneda> getAll();
+	public abstract List<Moneda> getAll();
 }

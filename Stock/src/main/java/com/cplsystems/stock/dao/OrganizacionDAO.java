@@ -1,32 +1,22 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Organizacion;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Organizacion;
+public abstract interface OrganizacionDAO {
+	public abstract void save(Organizacion paramOrganizacion);
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
-public interface OrganizacionDAO {
+	public abstract void delete(Organizacion paramOrganizacion);
 
-	void save(Organizacion organizacion);
+	public abstract Organizacion getById(Long paramLong);
 
-	void delete(Organizacion organizacion);
+	public abstract List<Organizacion> getOrganizaciones();
 
-	Organizacion getById(Long idOrganizacion);
-	
-	List<Organizacion> getOrganizaciones();
+	public abstract List<Organizacion> getCompaniasByNombreRFC(String paramString1, String paramString2);
 
-	List<Organizacion> getCompaniasByNombreRFC(String compania, String rfc);
+	public abstract List<Organizacion> getCompaniasByNombre(String paramString);
 
-	List<Organizacion> getCompaniasByNombre(String compania);
+	public abstract List<Organizacion> getCompaniasByRFC(String paramString);
 
-	List<Organizacion> getCompaniasByRFC(String rfc);
-
-	List<Organizacion> getAll();
-
+	public abstract List<Organizacion> getAll();
 }

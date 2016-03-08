@@ -1,10 +1,6 @@
-/**
- * 
- */
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,14 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 @Entity
 @Table
 public class Organizacion implements Serializable {
-
 	private static final long serialVersionUID = 4373490847821834679L;
 	private Long idOrganizacion;
 	private String nombre;
@@ -33,7 +24,7 @@ public class Organizacion implements Serializable {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdOrganizacion() {
-		return idOrganizacion;
+		return this.idOrganizacion;
 	}
 
 	public void setIdOrganizacion(Long idOrganizacion) {
@@ -42,7 +33,7 @@ public class Organizacion implements Serializable {
 
 	@Column
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
@@ -51,7 +42,7 @@ public class Organizacion implements Serializable {
 
 	@Column
 	public String getRfc() {
-		return rfc;
+		return this.rfc;
 	}
 
 	public void setRfc(String rfc) {
@@ -60,7 +51,7 @@ public class Organizacion implements Serializable {
 
 	@Column
 	public String getLogotipo() {
-		return logotipo;
+		return this.logotipo;
 	}
 
 	public void setLogotipo(String logotipo) {
@@ -69,7 +60,7 @@ public class Organizacion implements Serializable {
 
 	@Column
 	public String getCalle() {
-		return calle;
+		return this.calle;
 	}
 
 	public void setCalle(String calle) {
@@ -78,7 +69,7 @@ public class Organizacion implements Serializable {
 
 	@Column
 	public String getCodigoPostal() {
-		return codigoPostal;
+		return this.codigoPostal;
 	}
 
 	public void setCodigoPostal(String codigoPostal) {
@@ -87,11 +78,10 @@ public class Organizacion implements Serializable {
 
 	@Column
 	public String getPais() {
-		return pais;
+		return this.pais;
 	}
 
 	public void setPais(String pais) {
 		this.pais = pais;
 	}
-
 }

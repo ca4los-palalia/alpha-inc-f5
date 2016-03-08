@@ -1,34 +1,22 @@
-/**
- * 
- */
 package com.cplsystems.stock.app.vm.producto.utils;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.zkoss.bind.Validator;
-import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.zul.TreeModel;
 
 import com.cplsystems.stock.app.utils.ClasificacionPrecios;
 import com.cplsystems.stock.app.vm.BasicStructure;
 import com.cplsystems.stock.app.vm.producto.TabInfo;
 import com.cplsystems.stock.domain.Cotizacion;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.ProductoTipo;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import org.zkoss.bind.Validator;
+import org.zkoss.bind.annotation.NotifyChange;
 
-/**
- * @author César Palalía López (csr.plz@aisa-automation.com)
- * 
- */
 public abstract class ProductoVariables extends BasicStructure {
-
 	private static final long serialVersionUID = -6626407102060983517L;
-
 	protected String claveProducto;
 	protected String nombreProducto;
-	
 	protected boolean hiddeFamilia;
 	protected boolean hiddeProveedor;
 	protected List<Producto> productoDB;
@@ -46,15 +34,12 @@ public abstract class ProductoVariables extends BasicStructure {
 	protected ModoDeBusqueda modoDeBusqueda;
 	protected Integer progressValue;
 	protected String progressValueLabel;
-	
-	//protected List<TabInfo> tabListClasificacionProductos;
 	protected TabInfo tabSelected;
 	protected Validator productoValidator;
-	
-	
-	
+	protected Organizacion organizacion;
+
 	public String getClaveProducto() {
-		return claveProducto;
+		return this.claveProducto;
 	}
 
 	public void setClaveProducto(String claveProducto) {
@@ -62,7 +47,7 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public String getNombreProducto() {
-		return nombreProducto;
+		return this.nombreProducto;
 	}
 
 	public void setNombreProducto(String nombreProducto) {
@@ -70,7 +55,7 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public List<Producto> getProductoDB() {
-		return productoDB;
+		return this.productoDB;
 	}
 
 	public void setProductoDB(List<Producto> productoDB) {
@@ -78,7 +63,7 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public Producto getProductoSeleccionado() {
-		return productoSeleccionado;
+		return this.productoSeleccionado;
 	}
 
 	public void setProductoSeleccionado(Producto productoSeleccionado) {
@@ -86,29 +71,28 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public Validator getProductoValidator() {
-		return productoValidator;
+		return this.productoValidator;
 	}
-	
+
 	public List<ProductoTipo> getProductoTipoDB() {
-		return productoTipoDB;
+		return this.productoTipoDB;
 	}
-	
+
 	public void setProductoTipoDB(List<ProductoTipo> productoTipoDB) {
 		this.productoTipoDB = productoTipoDB;
 	}
+
 	public void setTabSelected(TabInfo tabSelected) {
 		this.tabSelected = tabSelected;
 	}
-	
-	@NotifyChange("*")
+
+	@NotifyChange({ "*" })
 	public TabInfo getTabSelected() {
-		/*if(tabSelected != null)
-			productoDB = productoService.getByTipo(tabSelected.getProductoTipo());*/
-		return tabSelected;
+		return this.tabSelected;
 	}
 
 	public List<Cotizacion> getCotizacionDB() {
-		return cotizacionDB;
+		return this.cotizacionDB;
 	}
 
 	public void setCotizacionDB(List<Cotizacion> cotizacionDB) {
@@ -116,7 +100,7 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public List<ClasificacionPrecios> getPrecios() {
-		return precios;
+		return this.precios;
 	}
 
 	public void setPrecios(List<ClasificacionPrecios> precios) {
@@ -124,87 +108,69 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public ClasificacionPrecios getPrecioSelected() {
-		return precioSelected;
+		return this.precioSelected;
 	}
 
 	public void setPrecioSelected(ClasificacionPrecios precioSelected) {
 		this.precioSelected = precioSelected;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public Date getCostoMaximoFechaDate() {
-		Calendar cal=Calendar.getInstance();
-		return costoMaximoFechaDate;
+		Calendar cal = Calendar.getInstance();
+		return this.costoMaximoFechaDate;
 	}
 
 	public void setCostoMaximoFechaDate(Date costoMaximoFechaDate) {
-		if(costoMaximoFechaDate != null){
-			Calendar 
-				fechaCalendar = Calendar.getInstance();
+		if (costoMaximoFechaDate != null) {
+			Calendar fechaCalendar = Calendar.getInstance();
 			fechaCalendar.setTime(costoMaximoFechaDate);
-			producto.setCostoMaximoFecha(fechaCalendar);
-		}	
+			this.producto.setCostoMaximoFecha(fechaCalendar);
+		}
 		this.costoMaximoFechaDate = costoMaximoFechaDate;
 	}
 
 	public Date getCostoReposicionFechaDate() {
-		Calendar cal=Calendar.getInstance();
-		return costoReposicionFechaDate;
+		Calendar cal = Calendar.getInstance();
+		return this.costoReposicionFechaDate;
 	}
 
 	public void setCostoReposicionFechaDate(Date costoReposicionFechaDate) {
-		if(costoReposicionFechaDate != null){
-			Calendar 
-				fechaCalendar = Calendar.getInstance();
+		if (costoReposicionFechaDate != null) {
+			Calendar fechaCalendar = Calendar.getInstance();
 			fechaCalendar.setTime(costoReposicionFechaDate);
-			producto.setCostoReposicionFecha(fechaCalendar);
+			this.producto.setCostoReposicionFecha(fechaCalendar);
 		}
 		this.costoReposicionFechaDate = costoReposicionFechaDate;
 	}
 
 	public Date getCostoCapaFechaDate() {
-		/*Calendar cal=Calendar.getInstance();
-		return costoCapaFechaDate = cal.getTime();*/
-		return costoCapaFechaDate;
+		return this.costoCapaFechaDate;
 	}
 
 	public void setCostoCapaFechaDate(Date costoCapaFechaDate) {
-		if(costoCapaFechaDate != null){
-			Calendar 
-				fechaCalendar = Calendar.getInstance();
+		if (costoCapaFechaDate != null) {
+			Calendar fechaCalendar = Calendar.getInstance();
 			fechaCalendar.setTime(costoCapaFechaDate);
-			producto.setCostoCapaFecha(fechaCalendar);
+			this.producto.setCostoCapaFecha(fechaCalendar);
 		}
 		this.costoCapaFechaDate = costoCapaFechaDate;
 	}
 
 	public Date getCostoUltimoFechaDate() {
-		/*Calendar cal=Calendar.getInstance();
-		return costoUltimoFechaDate = cal.getTime();*/
-		return costoUltimoFechaDate;
+		return this.costoUltimoFechaDate;
 	}
 
 	public void setCostoUltimoFechaDate(Date costoUltimoFechaDate) {
-		if(costoUltimoFechaDate != null){
-			Calendar 
-				fechaCalendar = Calendar.getInstance();
+		if (costoUltimoFechaDate != null) {
+			Calendar fechaCalendar = Calendar.getInstance();
 			fechaCalendar.setTime(costoUltimoFechaDate);
-			producto.setCostoUltimoFecha(fechaCalendar);
+			this.producto.setCostoUltimoFecha(fechaCalendar);
 		}
 		this.costoUltimoFechaDate = costoUltimoFechaDate;
 	}
 
 	public boolean isEnableComboBoxUnidades() {
-		return enableComboBoxUnidades;
+		return this.enableComboBoxUnidades;
 	}
 
 	public void setEnableComboBoxUnidades(boolean enableComboBoxUnidades) {
@@ -212,7 +178,7 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public boolean isHiddeFamilia() {
-		return hiddeFamilia;
+		return this.hiddeFamilia;
 	}
 
 	public void setHiddeFamilia(boolean hiddeFamilia) {
@@ -220,7 +186,7 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public boolean isHiddeProveedor() {
-		return hiddeProveedor;
+		return this.hiddeProveedor;
 	}
 
 	public void setHiddeProveedor(boolean hiddeProveedor) {
@@ -228,25 +194,23 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public List<FuncionesModificacion> getFuncionesModificaciones() {
-		return funcionesModificaciones;
+		return this.funcionesModificaciones;
 	}
 
-	public void setFuncionesModificaciones(
-			List<FuncionesModificacion> funcionesModificaciones) {
+	public void setFuncionesModificaciones(List<FuncionesModificacion> funcionesModificaciones) {
 		this.funcionesModificaciones = funcionesModificaciones;
 	}
 
 	public FuncionesModificacion getFuncionesModificacione() {
-		return funcionesModificacione;
+		return this.funcionesModificacione;
 	}
 
-	public void setFuncionesModificacione(
-			FuncionesModificacion funcionesModificacione) {
+	public void setFuncionesModificacione(FuncionesModificacion funcionesModificacione) {
 		this.funcionesModificacione = funcionesModificacione;
 	}
 
 	public ModoDeBusqueda getModoDeBusqueda() {
-		return modoDeBusqueda;
+		return this.modoDeBusqueda;
 	}
 
 	public void setModoDeBusqueda(ModoDeBusqueda modoDeBusqueda) {
@@ -254,7 +218,7 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public Integer getProgressValue() {
-		return progressValue;
+		return this.progressValue;
 	}
 
 	public void setProgressValue(Integer progressValue) {
@@ -262,12 +226,10 @@ public abstract class ProductoVariables extends BasicStructure {
 	}
 
 	public String getProgressValueLabel() {
-		return progressValueLabel;
+		return this.progressValueLabel;
 	}
 
 	public void setProgressValueLabel(String progressValueLabel) {
 		this.progressValueLabel = progressValueLabel;
 	}
-	
-	
 }

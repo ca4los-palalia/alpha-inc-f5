@@ -48,7 +48,7 @@
 
 						<button id="saveButton"
 							image="/images/toolbar/saveOff.png" sclass="web_button"
-							onClick="@command('saveChanges')"
+							onClick="@command('newRecord')"
 							tooltiptext="Guardar/actualizar producto" />
 						<button image="/images/toolbar/delete.png"
 							sclass="web_button" onClick="@command('deleteRecord')"
@@ -69,7 +69,7 @@
 		</grid>
 
 		<separator />
-		<groupbox mold="3d" open="false"
+		<groupbox mold="3d" open="false" onClick="@command('cargarListaProductos')"
 			tooltiptext="Clic para ver formulario de busqueda">
 			<caption label="Buscar"
 				image="/images/toolbar/find16x16.png" />
@@ -136,7 +136,7 @@
 
 			<listbox visible="@bind(pvm.modoDeBusqueda.ocultarFamilia)"
 				onSelect="@command('obtenerListaFamiliasProducto')"
-				emptyMessage="No se encontro ningun producto" rows="3"
+				emptyMessage="No se encontro ningun producto" rows="5"
 				sclass="heightGrid" model="@load(pvm.productoDB)"
 				selectedItem="@bind(pvm.producto)">
 				<!-- RESULTADOS DE BUSQUEDA PERSONALIZADA -->
@@ -210,6 +210,38 @@
 					<tabpanels>
 						<tabpanel>
 							<vlayout><!-- DETALLES DEL PRODUCTO -->
+								
+								
+								<grid style="border: 0;">
+									<columns>
+										<column width="13%" />
+										<column/>
+									</columns>
+									<rows>
+										<row style="background-color:transparent; border: 0;">
+											<hlayout>
+												<label value="*"
+													style="color:red" />
+												<label value="Clave armonizada:"
+													width="100%" />
+											</hlayout>
+											
+											<combobox id="claveAr1"
+												model="@load(pvm.claveArmonizadaList)"  mold="rounded"
+												onChange="@command('copiarClave')"
+												selectedItem="@bind(pvm.producto.claveArmonizada)" readonly="true"
+												width="100%" autodrop="true" >
+												<template
+													name="model">
+													<comboitem
+														label="@load(each.clave)" />
+												</template>
+											</combobox>
+										</row>
+									</rows>
+								</grid>
+								
+								
 								<grid style="border: 0;">
 									<columns>
 										<column width="13%" />

@@ -10,235 +10,324 @@
 		<vlayout>
 
 
-			<grid>
-				<columns>
-					<column />
-					<column width="15%" zclass="shadowMenuActions" />
-				</columns>
-				<rows>
-					<row zclass="shadowMenuActions">
-						<div style="margin:5px">
-							<button label="Requisiciones > concentrado"
-								image="/images/toolbar/home32.png"
-								zclass="panelInfoItemMenuTitle" />
-						</div>
-						<hlayout
-							style="margin:5px ">
-							
-							<button image="/images/toolbar/saveOff.png"
-								sclass="web_button" tooltiptext="Guardar cambios"
-								onClick="@command('guardarCambios')" />
-								
-							<button
-								image="/images/toolbar/generate32.png" sclass="web_button"
-								tooltiptext="Generar cotización"
-								onClick="@command('autorizar')" />							
 
-						</hlayout>
-					</row>
-				</rows>
-			</grid>
+			<borderlayout style="height:100vh;">
+				<north height="7%">
+					<grid>
+						<columns>
+							<column />
+							<column width="15%"
+								zclass="shadowMenuActions" />
+						</columns>
+						<rows>
+							<row zclass="shadowMenuActions">
+								<div style="margin:5px">
+									<button
+										label="Requisiciones > concentrado"
+										image="/images/toolbar/home32.png"
+										zclass="panelInfoItemMenuTitle" />
+								</div>
+								<hlayout style="margin:5px ">
 
-			<grid style="border: 0;">
-				<columns>
-					<column />
-					<column width="8%" />
-				</columns>
-				<rows>
-					<row
-						style="background-color:transparent; border: 0;">
-						<textbox id="buscadorConcentradoId" onOK="@command('filtrarProductoPorRequisicion')"
-							value="@bind(rvm.requisicion.buscarRequisicion)" width="100%" />
-						<hlayout style="text-align:center">
+									<button
+										image="/images/toolbar/saveOff.png" sclass="web_button"
+										tooltiptext="Guardar cambios"
+										onClick="@command('guardarCambios')" />
 
-							<button
-								image="/images/toolbar/find16x16.png" zclass="find_button"
-								onClick="@command('filtrarProductoPorRequisicion')"
-								tooltiptext="Buscar" />
-						</hlayout>
-					</row>
-				</rows>
-			</grid>
+									<button
+										image="/images/toolbar/generate32.png" sclass="web_button"
+										tooltiptext="Generar cotización"
+										onClick="@command('autorizar')" />
 
+								</hlayout>
+							</row>
+						</rows>
+					</grid>
 
+				</north>
+				<west maxsize="600" size="30%" vflex="1" border="0"
+					splittable="true">
+					<div>
+						<vbox spacing="0" width="100%">
+							<groupbox mold="3d" open="true"
+								visible="true">
+								<caption label="Buscar"
+									image="/images/toolbar/find16x16.png" />
+								<grid style="border: 0;">
+									<columns>
+										<column width="20%" />
+										<column />
+									</columns>
+									<rows>
+										<row
+											style="background-color: transparent; border: 0;">
+											<label
+												style="font-size: 90%;" value="Area(UR): " />
+											<combobox readonly="true"
+												model="@load(rvm.areas)" width="100%"
+												selectedItem="@bind(rvm.areaBuscar)"
+												onSelect="@command('buscarPorArearequisicion')">
+												<template name="model"
+													var="area">
+													<comboitem
+														width="100%" label="@bind(area.nombre)" />
+												</template>
+											</combobox>
+										</row>
+									</rows>
+								</grid>
 
-			<listbox rows="8" model="@load(rvm.requisicionProductos)"
-				onSelect="@command('cargarProveedoresProducto')"
-				selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
-				emptyMessage="No hay elementos en la requisición">
-				<listhead>
-					<listheader label="Remover" width="9%"
-						style="text-align:center" />
-					<listheader label="Requisicion" width="11%"
-						tooltiptext="Foliio de la requisición" />
-					<listheader label="Área(UR)" width="20%"
-						tooltiptext="Foliio de la requisición" />
-					<listheader label="Clave" width="10%"
-						tooltiptext="Clave del producto" />
-					<listheader label="Cantidad" width="10%" />
-					<listheader label="Descripcion" />
-					<listheader label="Proveedor" visible="false"/>
-					<listheader label="Importe" visible="false" width="10%" />
-					<listheader label="Total" visible="false" width="10%" />
+								<grid style="border: 0;">
+									<columns>
+										<column />
+										<column width="14%" />
+									</columns>
+									<rows>
+										<row
+											style="background-color:transparent; border: 0;">
+											<textbox
+												id="buscadorConcentradoId"
+												onOK="@command('filtrarProductoPorRequisicion')"
+												value="@bind(rvm.requisicion.buscarRequisicion)"
+												width="100%" />
+											<hlayout
+												style="text-align:center">
 
-				</listhead>
-				<template name="model" var="requisicionProducto">
-					<listitem>
-						<listcell>
-							<button image="/images/toolbar/remove16.png"
-								onClick="@command('removerProductoDeListaGeneralDeProductos', index=requisicionProductoStatus.index)"
-								zclass="find_button" tooltiptext="Quitar producto de la lista" />
-						</listcell>
-						<listcell>
-							<label tooltiptext="Foliio de requisición"
-								style="font-size:smaller;"
-								value="@bind(requisicionProducto.requisicion.folio)" />
-						</listcell>
-						<listcell>
-							<label tooltiptext="Foliio de requisición"
-								style="font-size:smaller;"
-								value="@bind(requisicionProducto.requisicion.area.nombre)" />
-						</listcell>
-						<listcell>
-							<label
-								tooltiptext="@bind(requisicionProducto.producto.nombre)"
-								style="font-size:smaller;"
-								value="@bind(requisicionProducto.producto.clave)" />
-						</listcell>
-						<listcell>
-							<intbox tooltiptext="cantidad de productos"
-								style="font-size:smaller;" inplace="true"
-								value="@bind(requisicionProducto.cantidad)" />
-						</listcell>
-						<listcell>
-							<label
-								value="@bind(requisicionProducto.descripcion)"
-								style="font-size:smaller;" />
-						</listcell>
-
-						<listcell>
-							<label
-								value="@bind(requisicionProducto.proveedor.nombre)" width="100%"
-								style="font-size:smaller;" />
-						</listcell>
-
-						<listcell>
-							<label
-								tooltiptext="precio unitario del producto"
-								style="font-size:smaller;"
-								value="@bind(requisicionProducto.producto.precio)" />
-						</listcell>
-						<listcell>
-							<label
-								value="@bind(requisicionProducto.totalProductoPorUnidad)"
-								style="font-size:smaller;" />
-						</listcell>
-					</listitem>
-				</template>
+												<button
+													image="/images/toolbar/find16x16.png" zclass="find_button"
+													onClick="@command('filtrarProductoPorRequisicion')"
+													tooltiptext="Buscar" />
+											</hlayout>
+										</row>
+									</rows>
+								</grid>
 
 
-				<listfoot style="height:20px" visible="false">
-					<listfooter style="text-align:right" span="8">
+								<listbox rows="12"
+									model="@load(rvm.requisicionProductos)"
+									onSelect="@command('cargarProveedoresProducto')"
+									selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
+									emptyMessage="No hay elementos en la requisición">
+									<listhead>
+										<listheader width="14%"
+											style="text-align:center" />
+										<listheader width="27%"
+											label="folio Req"
+											style="font-size:smaller; text-align:center" />
+										<listheader label="UR"
+											style="font-size:smaller; text-align:center" />
+										<listheader label="clv pr"
+											tooltiptext="Clave del producto"
+											style="font-size:smaller; text-align:center" />
+										<listheader label="Cant"
+											style="font-size:smaller; text-align:center" width="14%" />
 
-						<grid style="border: 0;">
-							<columns>
-								<column style="text-align:left"
-									width="7%" />
-								<column style="text-align:right" />
-								<column width="10%"
-									style="text-align:right" />
-							</columns>
-							<rows>
-								<row valign="top"
-									style="background-color:transparent; border: 0;">
-									<hlayout>
-										<button
-											image="/images/toolbar/add16.png" visible="false"
-											zclass="find_button"
-											tooltiptext="Agregar producto a la lista"
-											onClick="@command('addNewItemToBill')" />
-										<button
-											image="/images/toolbar/remove16.png" zclass="find_button"
-											tooltiptext="Quitar producto de la lista"
-											onClick="@command('removerProductoDeListaGeneralDeProductos')" />
-									</hlayout>
+									</listhead>
+									<template name="model"
+										var="requisicionProducto">
+										<listitem>
+											<listcell>
+												<button
+													image="/images/toolbar/remove16.png"
+													onClick="@command('removerProductoDeListaGeneralDeProductos', index=requisicionProductoStatus.index)"
+													zclass="find_button"
+													tooltiptext="Quitar producto de la lista" />
+											</listcell>
+											<listcell>
+												<label
+													tooltiptext="Folio de requisición"
+													style="font-size:smaller;"
+													value="@bind(requisicionProducto.requisicion.folio)" />
+											</listcell>
+											<listcell>
+												<label
+													tooltiptext="Clave del area" style="font-size:smaller;"
+													value="@bind(requisicionProducto.requisicion.area.nombre)" />
+											</listcell>
+											<listcell>
+												<label
+													tooltiptext="@bind(requisicionProducto.producto.nombre)"
+													style="font-size:smaller;"
+													value="@bind(requisicionProducto.producto.clave)" />
+											</listcell>
+											<listcell>
+												<intbox
+													tooltiptext="cantidad de productos"
+													style="font-size:smaller;" inplace="true"
+													value="@bind(requisicionProducto.cantidad)" />
+											</listcell>
 
-									<label value="Subtotal"
-										width="100%" />
-									<label
-										value="@bind(rvm.desgloceTotal.subtotal)" />
-								</row>
-								<row
-									style="background-color:transparent; border: 0;">
-									<label value="" />
-									<label value="Iva" />
-									<label
-										value="@bind(rvm.desgloceTotal.iva)" />
-								</row>
-								<row
-									style="background-color:transparent; border: 0;">
-									<label value="" />
-									<label value="Total" />
-									<label
-										value="@bind(rvm.desgloceTotal.total)" />
-								</row>
-							</rows>
-						</grid>
-					</listfooter>
-				</listfoot>
-			</listbox>
+										</listitem>
+									</template>
+
+								</listbox>
+							</groupbox>
+
+						</vbox>
+					</div>
+				</west>
+				<center>
+					<groupbox mold="3d" open="true" visible="true">
+						<caption
+							label="Proveedores que surten este artículo"
+							image="/images/toolbar/info16.png" />
+
+						<!--  LISTA DE POROVEEDORES -->
+						<listbox model="@load(rvm.proveedorProductos)"
+							rows="4" selectedItem="@bind(rvm.proveedorProducto)"
+							onSelect="@command('seleccionarProveedor')">
+							<listhead>
+								<listheader width="40px" label="" />
+								<listheader
+									label="Proveedor"
+									sclass="invoiceLabel" />
+								<listheader label="Arículo"
+									sclass="invoiceLabel" />
+								<listheader label="Precio" width="10%"
+									sclass="invoiceLabel" />
+								<listheader label="Stock" width="7%"
+									sclass="invoiceLabel" />
+
+
+							</listhead>
+							<template name="model" var="proveedor">
+								<listitem>
+									<listcell>
+										<checkbox
+											checked="@bind(proveedor.seleccionar)"
+											onCheck="@command('proveedorCheckBox', index=proveedorStatus.index)" />
+									</listcell>
+									<listcell>
+										<label width="100%"
+											style="font-size:smaller;"
+											value="@bind(proveedor.proveedor.nombre)" />
+									</listcell>
+
+									<listcell>
+										<label width="100%"
+											style="font-size:smaller;"
+											value="@bind(proveedor.producto.nombre)" />
+									</listcell>
+									<listcell>
+										<doublebox width="100%"
+											style="font-size:smaller;" format="###,###,###.00"
+											readonly="true" value="@bind(proveedor.producto.precio)" />
+									</listcell>
+									<listcell>
+										<label width="100%"
+											style="font-size:smaller;"
+											value="@bind(proveedor.producto.enExistencia)" />
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+						<!--  END LISTA DE POROVEEDORES -->
+
+
+
+					</groupbox>
+				</center>
+			</borderlayout>
 
 
 
 
-			<!--  LISTA DE POROVEEDORES -->
-			<listbox model="@load(rvm.proveedorProductos)" rows="4"
-				selectedItem="@bind(rvm.proveedorProducto)"
-				onSelect="@command('seleccionarProveedor')">
-				<listhead>
-					<listheader width="40px"
-						label=""/>
-					<listheader
-						label="Proveedores que surten este artículo"
-						sclass="invoiceLabel" />
-					<listheader label="Arículo" sclass="invoiceLabel" />
-					<listheader label="Precio" width="10%"
-						sclass="invoiceLabel" />
-					<listheader label="Stock" width="7%"
-						sclass="invoiceLabel" />
 
 
-				</listhead>
-				<template name="model" var="proveedor">
-					<listitem>
-						<listcell>
-							<checkbox checked="@bind(proveedor.seleccionar)" onCheck="@command('proveedorCheckBox', index=proveedorStatus.index)"/>
-						</listcell>
-						<listcell>
-							<label width="100%"
-								style="font-size:smaller;"
-								value="@bind(proveedor.proveedor.nombre)" />
-						</listcell>
 
-						<listcell>
-							<label width="100%"
-								style="font-size:smaller;"
-								value="@bind(proveedor.producto.nombre)" />
-						</listcell>
-						<listcell>
-							<doublebox width="100%"
-								style="font-size:smaller;" format="###,###,###.00"
-								readonly="true" value="@bind(proveedor.producto.precio)" />
-						</listcell>
-						<listcell>
-							<label width="100%"
-								style="font-size:smaller;"
-								value="@bind(proveedor.producto.enExistencia)" />
-						</listcell>
-					</listitem>
-				</template>
-			</listbox>
-			<!--  END LISTA DE POROVEEDORES -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		</vlayout>
 
 

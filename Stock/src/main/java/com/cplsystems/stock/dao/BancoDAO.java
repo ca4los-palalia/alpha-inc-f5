@@ -1,23 +1,14 @@
-/**
- * 
- */
 package com.cplsystems.stock.dao;
 
+import com.cplsystems.stock.domain.Banco;
 import java.util.List;
 
-import com.cplsystems.stock.domain.Banco;
+public abstract interface BancoDAO {
+	public abstract void save(Banco paramBanco);
 
+	public abstract void delete(Banco paramBanco);
 
-/**
- * @author Carlos Palalía López
- */
-public interface BancoDAO {
+	public abstract Banco getById(Long paramLong);
 
-	public void save(Banco banco);
-
-	public void delete(Banco banco);
-
-	public Banco getById(Long idBanco);
-
-	public List<Banco> getAll();
+	public abstract List<Banco> getAll();
 }

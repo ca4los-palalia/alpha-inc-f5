@@ -24,5 +24,9 @@ zk.afterMount(function() {
 });
 
 zk.afterMount(function() {
-    jq("$buscadorConcentradoId").Watermark("Buscar clave del producto, Area(UR) o folio de la requicición","gray");
+    jq("$buscadorConcentradoId").Watermark("clave productos o folio de requicición","gray");
+});
+
+zk.afterMount(function() {
+    jq("$buscadorRequisicionId").Watermark("Ingrese folio de requisicion","gray");
 });
