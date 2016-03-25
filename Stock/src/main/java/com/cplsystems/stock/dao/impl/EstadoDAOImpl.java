@@ -33,6 +33,7 @@ public class EstadoDAOImpl extends HibernateDAOSuportUtil implements EstadoDAO {
 		return (lista != null) && (!lista.isEmpty()) ? (Estado) lista.get(0) : null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Estado> getAll() {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Estado.class);
@@ -44,5 +45,15 @@ public class EstadoDAOImpl extends HibernateDAOSuportUtil implements EstadoDAO {
 
 	public void delete(Estado estado) {
 		getHibernateTemplate().delete(estado);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Estado getByName(String name) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Estado.class);
+
+		criteria.add(Restrictions.eq("nombre", name));
+		List<Estado> lista = criteria.list();
+		return (lista != null) && (!lista.isEmpty()) ? (Estado) lista.get(0) : null;
 	}
 }

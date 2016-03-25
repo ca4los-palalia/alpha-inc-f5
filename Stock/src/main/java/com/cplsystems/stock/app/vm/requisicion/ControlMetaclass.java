@@ -1,21 +1,28 @@
 package com.cplsystems.stock.app.vm.requisicion;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
-import com.cplsystems.stock.app.utils.SessionUtils;
-import com.cplsystems.stock.app.utils.StockConstants;
-import com.cplsystems.stock.app.utils.StockUtils;
-import com.cplsystems.stock.domain.Cotizacion;
-import com.cplsystems.stock.domain.OrdenCompraInbox;
-import com.cplsystems.stock.domain.Organizacion;
-import com.cplsystems.stock.services.OrdenCompraInboxService;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.Init;
+
+import com.cplsystems.stock.app.utils.AplicacionExterna;
+import com.cplsystems.stock.app.utils.StockConstants;
+import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.domain.Almacen;
+import com.cplsystems.stock.domain.AlmacenEntrada;
+import com.cplsystems.stock.domain.Area;
+import com.cplsystems.stock.domain.Cotizacion;
+import com.cplsystems.stock.domain.OrdenCompra;
+import com.cplsystems.stock.domain.OrdenCompraInbox;
+import com.cplsystems.stock.domain.Organizacion;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.zkoss.bind.annotation.Command;
-import org.zkoss.bind.annotation.Init;
 
 public class ControlMetaclass extends ControlVariables {
 	private static final long serialVersionUID = 5093877120990395398L;
@@ -46,32 +53,7 @@ public class ControlMetaclass extends ControlVariables {
 		}
 	}
 
-	@Command
-	public void checkNueva() {
-		if (!this.checkBuscarNueva) {
-			this.checkBuscarNueva = true;
-		} else {
-			this.checkBuscarNueva = false;
-		}
-	}
-
-	@Command
-	public void checkCancelada() {
-		if (!this.checkBuscarCancelada) {
-			this.checkBuscarCancelada = true;
-		} else {
-			this.checkBuscarCancelada = false;
-		}
-	}
-
-	@Command
-	public void checkAceptada() {
-		if (!this.checkBuscarAceptada) {
-			this.checkBuscarAceptada = true;
-		} else {
-			this.checkBuscarAceptada = false;
-		}
-	}
+	
 
 	@Command
 	public String generarOrdenCompraJasper(List<HashMap> listaHashsParametros, List<AplicacionExterna> aplicaciones,
@@ -102,5 +84,47 @@ public class ControlMetaclass extends ControlVariables {
 			}
 		}
 		return mensaje;
+	}
+	
+	public AlmacenEntrada crearAlmacenEntradaVacia(Cotizacion cotiz, OrdenCompra ordCompra) {
+		AlmacenEntrada objeto = new AlmacenEntrada();
+		objeto.setFechaEntrada(Calendar.getInstance());
+		objeto.setArea(new Area());
+		objeto.setAlmacen(new Almacen());
+		objeto.setCotizacion(cotiz);
+		objeto.setActivarCantidad(true);
+		objeto.setOrdenCompra(ordCompra);
+		if(cotiz.getProducto() != null)
+			objeto.setProducto(cotiz.getProducto());
+		return objeto;
+	}
+	
+	public Area getAreaFromList(Long id){
+		Area extraccion = null;
+		for (Area item : areas) {
+			if(item.getIdArea().equals(id)){
+				extraccion = item;
+				break;
+			}
+		}
+		return extraccion;
+	}
+	public Almacen getAlmacenFromList(Long id, List<Almacen> almacenList){
+		Almacen extraccion = null;
+		for (Almacen item : almacenList) {
+			if(item.getIdAlmacen().equals(id)){
+				extraccion = item;
+				break;
+			}
+		}
+		return extraccion;
+	}
+	public List<Almacen> getAlmacenesByAreaFromList(List<Almacen> almacenList, Area area){
+		List<Almacen> extraccion = new ArrayList<>();
+		for (Almacen item : almacenList) {
+			if(item.getArea().getIdArea().equals(area.getIdArea()))
+				extraccion.add(item);
+		}
+		return extraccion;
 	}
 }

@@ -30,6 +30,10 @@ public class MunicipioService {
 	}
 
 	public List<Municipio> getByEstado(Estado estado) throws DataAccessException {
-		return this.municipioDAO.getByEstado(estado);
+		return municipioDAO.getByEstado(estado);
+	}
+	
+	public Municipio getByName(String name){
+		return municipioDAO.getByName(name);
 	}
 }

@@ -19,7 +19,8 @@ public class Almacen implements Serializable {
 	private String descripcion;
 	private Area area;
 	private Direccion direccion;
-
+	private Organizacion organizacion;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
@@ -48,7 +49,8 @@ public class Almacen implements Serializable {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-
+	
+	
 	@OneToOne
 	@JoinColumn(name = "area")
 	public Area getArea() {
@@ -67,5 +69,15 @@ public class Almacen implements Serializable {
 
 	public void setDireccion(Direccion direccion) {
 		this.direccion = direccion;
+	}
+	
+	@OneToOne
+	@JoinColumn(name = "organizacion")
+	public Organizacion getOrganizacion() {
+		return this.organizacion;
+	}
+
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
 	}
 }

@@ -1,0 +1,66 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+	<window apply="org.zkoss.bind.BindComposer" id="fileModalDialog"
+		viewModel="@id('fevm') @init('com.cplsystems.stock.app.utils.FileExplorerVM')"
+		width="50%" height="80%" position="center,center"
+		closable="true">
+
+
+
+		<borderlayout>
+			<north title="Abrir archivo" maxsize="300" size="94%">
+				<borderlayout>
+					<center border="none" flex="true">
+						<div>
+							<window height="100%" width="100%">
+								<tree id="tree" vflex="1"
+									model="@bind(fevm.directoryModel)"
+									onSelect="@command('updateSelectedDirectory')">
+									<treecols>
+										<treecol/>
+									</treecols>
+									<template name="model" var="node"
+										status="s">
+										<treeitem
+											open="@load(node.open)">
+											<treerow>
+												<treecell
+													image="@bind(node.data._icon)"
+													label="@bind(node.data.name)" />
+											</treerow>
+										</treeitem>
+									</template>
+								</tree>
+
+							</window>
+						</div>
+					</center>
+				</borderlayout>
+			</north>
+			<center border="0">
+				<borderlayout>
+					<center>
+						<grid sclass="fgrid">
+							<columns>
+								<column align="left" width="68%"/>
+								<column align="center" />
+								<column align="center"/>
+							</columns>
+							<rows>
+								<row>
+									<label width="100%"
+										value="@bind(fevm._selectedDirectory.path)" />
+									<button label="Cancelar" width="100%"
+										onClick="@command('closeDialog')" />
+									<button label="Aceptar" width="100%"
+										onClick="@command('transferProduct')" />
+								</row>
+							</rows>
+						</grid>
+					</center>
+				</borderlayout>
+			</center>
+		</borderlayout>
+	</window>
+</zk>

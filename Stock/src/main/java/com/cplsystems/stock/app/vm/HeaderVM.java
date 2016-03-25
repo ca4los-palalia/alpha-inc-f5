@@ -1,56 +1,48 @@
 package com.cplsystems.stock.app.vm;
 
-import com.cplsystems.stock.app.utils.SessionUtils;
-import com.cplsystems.stock.app.utils.StockUtils;
-import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Usuarios;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
+import org.zkoss.zul.Messagebox;
 
 @VariableResolver({ DelegatingVariableResolver.class })
 public class HeaderVM extends BasicStructure {
 	private static final long serialVersionUID = -1635442587326363484L;
-	private String compania;
-	private String usuario;
+	
 	private int totalTransacciones;
-	private Organizacion organizacion;
 
 	@Init
 	public void init() {
-		this.organizacion = ((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
-		if (this.organizacion != null) {
-			this.compania = this.organizacion.getNombre();
-		}
+		usuario = (Usuarios) sessionUtils.getFromSession("usuario");
+		organizacion = usuario.getOrganizacion();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Command
 	public void logOut() {
-		this.sessionUtils.logOut();
-		this.stockUtils.redirect("/login.zul");
-	}
 
-	public String getCompania() {
-		return this.compania;
-	}
-
-	public void setCompania(String compania) {
-		this.compania = compania;
-	}
-
-	public String getUsuario() {
-		return this.usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+		Messagebox.show("¿Desea terminar su session de trabajo?", "Salir del sistema", 3,
+				"z-msgbox z-msgbox-question", new EventListener() {
+					public void onEvent(Event event) throws Exception {
+						if (((Integer) event.getData()).intValue() == 1) {
+							sessionUtils.logOut();
+							stockUtils.redirect("/login.zul");
+						} else {
+							
+						}
+					}
+				});
 	}
 
 	public int getTotalTransacciones() {
-		return this.totalTransacciones;
+		return totalTransacciones;
 	}
 
 	public void setTotalTransacciones(int totalTransacciones) {
-		this.totalTransacciones = totalTransacciones;
+		totalTransacciones = totalTransacciones;
 	}
 }

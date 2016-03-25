@@ -146,7 +146,7 @@ public class UsuarioVM extends UsuarioVariables {
 			FileOutputStream fos = new FileOutputStream(perfilPictureFile);
 			fos.write(this.imageInBytes);
 			fos.close();
-			this.organizacion.setLogotipo(perfilPictureFile.getPath());
+			//organizacion.setLogotipo(perfilPictureFile.getPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -184,7 +184,7 @@ public class UsuarioVM extends UsuarioVariables {
 				if (this.organizacion.getLogotipo() == null) {
 					return;
 				}
-				picture = new File(this.organizacion.getLogotipo());
+				//picture = new File(this.organizacion.getLogotipo());
 			} catch (Exception e) {
 				File picture;
 				e.printStackTrace();

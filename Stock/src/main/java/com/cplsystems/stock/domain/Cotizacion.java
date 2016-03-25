@@ -1,6 +1,9 @@
 package com.cplsystems.stock.domain;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "Cotizacion")
@@ -34,7 +38,11 @@ public class Cotizacion {
 	private Organizacion organizacion;
 	private Usuarios usuario;
 	private Almacen almacen;
-
+	private boolean activarBotonExcel;
+	private boolean activarBotonesControl;
+	private Integer restan;
+	private List<AlmacenEntrada> almacenEntradaList = new ArrayList<>();
+	
 	@Id
 	@Column(name = "idcotizacion", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -233,4 +241,46 @@ public class Cotizacion {
 	public void setAlmacen(Almacen almacen) {
 		this.almacen = almacen;
 	}
+
+	@Transient
+	public boolean isActivarBotonExcel() {
+		if(estatusRequisicion != null){
+			if(estatusRequisicion.getClave().equals("COE") || estatusRequisicion.getClave().equals("COA")){
+				activarBotonExcel = true;
+			}
+		}
+		return activarBotonExcel;
+	}
+
+	public void setActivarBotonExcel(boolean activarBotonExcel) {
+		this.activarBotonExcel = activarBotonExcel;
+	}
+
+	@Transient
+	public Integer getRestan() {
+		return restan;
+	}
+
+	public void setRestan(Integer restan) {
+		this.restan = restan;
+	}
+
+	@Transient
+	public List<AlmacenEntrada> getAlmacenEntradaList() {
+		return almacenEntradaList;
+	}
+
+	public void setAlmacenEntradaList(List<AlmacenEntrada> almacenEntradaList) {
+		this.almacenEntradaList = almacenEntradaList;
+	}
+
+	@Transient
+	public boolean isActivarBotonesControl() {
+		return activarBotonesControl;
+	}
+
+	public void setActivarBotonesControl(boolean activarBotonesControl) {
+		this.activarBotonesControl = activarBotonesControl;
+	}
+	
 }

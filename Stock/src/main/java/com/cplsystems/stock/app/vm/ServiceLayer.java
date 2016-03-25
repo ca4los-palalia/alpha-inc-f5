@@ -2,6 +2,8 @@ package com.cplsystems.stock.app.vm;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.services.AlmacenEntradaService;
+import com.cplsystems.stock.services.AlmacenService;
 import com.cplsystems.stock.services.AreaService;
 import com.cplsystems.stock.services.BancoService;
 import com.cplsystems.stock.services.ClaveArmonizadaService;
@@ -16,6 +18,7 @@ import com.cplsystems.stock.services.CostosProductoService;
 import com.cplsystems.stock.services.CotizacionInboxService;
 import com.cplsystems.stock.services.CotizacionService;
 import com.cplsystems.stock.services.CuentasPagoService;
+import com.cplsystems.stock.services.DevelopmentToolService;
 import com.cplsystems.stock.services.DireccionService;
 import com.cplsystems.stock.services.EmailService;
 import com.cplsystems.stock.services.EstadoService;
@@ -135,6 +138,12 @@ public abstract class ServiceLayer extends DataLayer {
 	protected OrdenCompraService ordenCompraService;
 	@WireVariable
 	protected ClaveArmonizadaService claveArmonizadaService;
+	@WireVariable
+	protected DevelopmentToolService developmentToolService;
+	@WireVariable
+	protected AlmacenService almacenService;
+	@WireVariable
+	protected AlmacenEntradaService almacenEntradaService;
 
 	public UsuarioService getUsuarioService() {
 		return this.usuarioService;

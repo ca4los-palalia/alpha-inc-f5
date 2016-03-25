@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "Estado")
 public class Estado implements Serializable {
 	private static final long serialVersionUID = -6891447220002443668L;
-	private long idEstado;
+	private Long idEstado;
 	private String nombre;
 
 	private String capital;
@@ -25,12 +25,12 @@ public class Estado implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_estado", nullable = false)
-	public long getIdEstado() {
+	@Column(nullable = false)
+	public Long getIdEstado() {
 		return this.idEstado;
 	}
 
-	public void setIdEstado(long idEstado) {
+	public void setIdEstado(Long idEstado) {
 		this.idEstado = idEstado;
 	}
 

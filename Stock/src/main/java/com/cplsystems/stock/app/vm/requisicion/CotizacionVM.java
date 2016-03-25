@@ -1,58 +1,16 @@
 package com.cplsystems.stock.app.vm.requisicion;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
-import com.cplsystems.stock.app.utils.SessionUtils;
-import com.cplsystems.stock.app.utils.StockConstants;
-import com.cplsystems.stock.app.utils.StockUtils;
-import com.cplsystems.stock.app.utils.UserPrivileges;
-import com.cplsystems.stock.app.vm.requisicion.utils.CotizacionListaExcelFile;
-import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
-import com.cplsystems.stock.domain.CofiaPartidaGenerica;
-import com.cplsystems.stock.domain.Contacto;
-import com.cplsystems.stock.domain.Cotizacion;
-import com.cplsystems.stock.domain.CotizacionInbox;
-import com.cplsystems.stock.domain.Direccion;
-import com.cplsystems.stock.domain.Email;
-import com.cplsystems.stock.domain.Estado;
-import com.cplsystems.stock.domain.EstatusRequisicion;
-import com.cplsystems.stock.domain.OrdenCompra;
-import com.cplsystems.stock.domain.OrdenCompraInbox;
-import com.cplsystems.stock.domain.Organizacion;
-import com.cplsystems.stock.domain.Pais;
-import com.cplsystems.stock.domain.Persona;
-import com.cplsystems.stock.domain.Privilegios;
-import com.cplsystems.stock.domain.Producto;
-import com.cplsystems.stock.domain.Proveedor;
-import com.cplsystems.stock.domain.Requisicion;
-import com.cplsystems.stock.domain.RequisicionProducto;
-import com.cplsystems.stock.domain.Telefono;
-import com.cplsystems.stock.domain.Unidad;
-import com.cplsystems.stock.domain.Usuarios;
-import com.cplsystems.stock.services.CotizacionInboxService;
-import com.cplsystems.stock.services.CotizacionService;
-import com.cplsystems.stock.services.EstatusRequisicionService;
-import com.cplsystems.stock.services.MailService;
-import com.cplsystems.stock.services.OrdenCompraInboxService;
-import com.cplsystems.stock.services.OrdenCompraService;
-import com.cplsystems.stock.services.PrivilegioService;
-import com.cplsystems.stock.services.ProductoService;
-import com.cplsystems.stock.services.RequisicionProductoService;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.MessageDigest;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -60,17 +18,40 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.bouncycastle.util.encoders.Hex;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Window;
+
+import com.cplsystems.stock.app.utils.AplicacionExterna;
+import com.cplsystems.stock.app.utils.StockConstants;
+import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.app.utils.UserPrivileges;
+import com.cplsystems.stock.app.vm.requisicion.utils.CotizacionListaExcelFile;
+import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
+import com.cplsystems.stock.domain.Cotizacion;
+import com.cplsystems.stock.domain.CotizacionInbox;
+import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.FileBean;
+import com.cplsystems.stock.domain.OrdenCompra;
+import com.cplsystems.stock.domain.OrdenCompraInbox;
+import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Privilegios;
+import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.Usuarios;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @VariableResolver({ DelegatingVariableResolver.class })
 public class CotizacionVM extends RequisicionVariables {
@@ -83,13 +64,15 @@ public class CotizacionVM extends RequisicionVariables {
 	public void init() {
 		super.init();
 		loadCotizacionesInbox();
-		this.readJasper = generarUrlString("jasperTemplates/cotizacionFormato.jasper");
+		readJasper = generarUrlString("jasperTemplates/cotizacionFormato.jasper");
+		usuario = (Usuarios) sessionUtils.getFromSession("usuario");
+		organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
+
 	}
 
 	private void loadCotizacionesInbox() {
-		this.cotizacionesInbox = this.cotizacionInboxService
-				.getAllNews((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
-		for (CotizacionInbox ctInbox : this.cotizacionesInbox) {
+		cotizacionesInbox = cotizacionInboxService.getAllNews((Organizacion) sessionUtils.getFromSession("FIRMA"));
+		for (CotizacionInbox ctInbox : cotizacionesInbox) {
 			if ((ctInbox.getLeido() != null) && (!ctInbox.getLeido().booleanValue())) {
 				ctInbox.setIcono("/images/toolbar/newEmail.png");
 			}
@@ -100,102 +83,126 @@ public class CotizacionVM extends RequisicionVariables {
 	@Command
 	public void transferirCotizacionToFormular(@BindingParam("index") Integer index) {
 		if (index != null) {
-			CotizacionInbox toLoad = (CotizacionInbox) this.cotizacionesInbox.get(index.intValue());
+			CotizacionInbox toLoad = (CotizacionInbox) cotizacionesInbox.get(index.intValue());
 			if ((toLoad.getLeido() != null) && (!toLoad.getLeido().booleanValue())) {
 				toLoad.setLeido(Boolean.valueOf(true));
-				this.cotizacionInboxService.save(toLoad);
+				cotizacionInboxService.save(toLoad);
 				toLoad.setIcono("/images/toolbar/openedEmail.png");
 			}
-			this.cotizacionesList.clear();
-			this.cotizacionesList.add(toLoad.getCotizacion());
+			cotizacionesList.clear();
+			cotizacionesList.add(toLoad.getCotizacion());
 
-			Cotizacion cotizacion = this.cotizacionService.getById(toLoad.getCotizacion().getIdCotizacion());
+			Cotizacion cotizacion = cotizacionService.getById(toLoad.getCotizacion().getIdCotizacion());
 
-			this.requisicionProductos = this.requisicionProductoService.getByCotizacion(cotizacion);
+			requisicionProductos = requisicionProductoService.getByCotizacion(cotizacion);
 		}
 	}
 
 	@Command
 	@NotifyChange({ "*" })
 	public void obtenerListaDeProductosProveedorSeleccionado() {
-		if (this.proveedorSelected != null) {
-			this.requisicionProductos = this.requisicionProductoService.getByProveedor(this.proveedorSelected);
+		if (proveedorSelected != null) {
+			requisicionProductos = requisicionProductoService.getByProveedor(proveedorSelected);
 		}
 	}
 
 	@Command
+	@NotifyChange({ "cotizacionesList" })
 	public void checkNueva() {
-		if (!this.checkBuscarNueva) {
-			this.checkBuscarNueva = true;
-		} else {
-			this.checkBuscarNueva = false;
+		checkBuscarNueva = true;
+
+		cotizacionesList = buscarPCotizacion();
+		if (cotizacionesList == null || cotizacionesList.size() == 0) {
+			StockUtils.showSuccessmessage("No se encontraron cotizaciones nuevas", Clients.NOTIFICATION_TYPE_WARNING, 0,
+					null);
 		}
+		checkBuscarNueva = false;
 	}
 
 	@Command
+	@NotifyChange({ "cotizacionesList" })
 	public void checkCancelada() {
-		if (!this.checkBuscarCancelada) {
-			this.checkBuscarCancelada = true;
-		} else {
-			this.checkBuscarCancelada = false;
+		checkBuscarCancelada = true;
+		cotizacionesList = buscarPCotizacion();
+		if (cotizacionesList == null || cotizacionesList.size() == 0) {
+			StockUtils.showSuccessmessage("No se encontraron cotizaciones canceladas",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
+		checkBuscarCancelada = false;
 	}
 
 	@Command
+	@NotifyChange({ "cotizacionesList" })
 	public void checkEnviada() {
-		if (!this.checkBuscarEnviada) {
-			this.checkBuscarEnviada = true;
-		} else {
-			this.checkBuscarEnviada = false;
+		checkBuscarEnviada = true;
+		cotizacionesList = buscarPCotizacion();
+		if (cotizacionesList == null || cotizacionesList.size() == 0) {
+			StockUtils.showSuccessmessage("No se encontraron cotizaciones enviadas", Clients.NOTIFICATION_TYPE_WARNING,
+					0, null);
 		}
+		checkBuscarEnviada = false;
+
 	}
 
 	@Command
+	@NotifyChange({ "cotizacionesList" })
 	public void checkAceptada() {
-		if (!this.checkBuscarAceptada) {
-			this.checkBuscarAceptada = true;
-		} else {
-			this.checkBuscarAceptada = false;
+		checkBuscarAceptada = true;
+		cotizacionesList = buscarPCotizacion();
+		if (cotizacionesList == null || cotizacionesList.size() == 0) {
+			StockUtils.showSuccessmessage("No se encontraron cotizaciones Aceptadas", Clients.NOTIFICATION_TYPE_WARNING,
+					0, null);
 		}
+		checkBuscarAceptada = false;
+	}
+
+	@Command
+	@NotifyChange({ "cotizacionesList" })
+	public void buscaraCotizacionCadena() {
+		if (requisicion.getBuscarRequisicion() != null && !requisicion.getBuscarRequisicion().equals("")) {
+			cotizacionesList = buscarPCotizacion();
+			if (cotizacionesList == null || cotizacionesList.size() == 0) {
+				StockUtils.showSuccessmessage("No se encontraron cotizaciones con: "
+						+ requisicion.getBuscarRequisicion() + ". Intente nuevamente",
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
+			}
+		} else
+			StockUtils.showSuccessmessage("Ingrese un criterio de busqueda.", Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 	}
 
 	private List<EstatusRequisicion> generarListaEstatusIN() {
 		List<EstatusRequisicion> lista = null;
-		if ((this.checkBuscarNueva) || (this.checkBuscarCancelada) || (this.checkBuscarEnviada)
-				|| (this.checkBuscarAceptada)) {
+		if ((checkBuscarNueva) || (checkBuscarCancelada) || (checkBuscarEnviada) || (checkBuscarAceptada)) {
 			lista = new ArrayList();
-			if (this.checkBuscarNueva) {
-				lista.add(this.estatusRequisicionService.getByClave("CON"));
+			if (checkBuscarNueva) {
+				lista.add(estatusRequisicionService.getByClave("CON"));
 			}
-			if (this.checkBuscarCancelada) {
-				lista.add(this.estatusRequisicionService.getByClave("COC"));
+			if (checkBuscarCancelada) {
+				lista.add(estatusRequisicionService.getByClave("COC"));
 			}
-			if (this.checkBuscarEnviada) {
-				lista.add(this.estatusRequisicionService.getByClave("COE"));
+			if (checkBuscarEnviada) {
+				lista.add(estatusRequisicionService.getByClave("COE"));
 			}
-			if (this.checkBuscarAceptada) {
-				lista.add(this.estatusRequisicionService.getByClave("COA"));
+			if (checkBuscarAceptada) {
+				lista.add(estatusRequisicionService.getByClave("COA"));
 			}
 		}
 		return lista;
 	}
 
-	@Command
-	@NotifyChange({ "*" })
-	public void buscarPCotizacion() {
-		if ((this.checkBuscarNueva) || (this.checkBuscarCancelada) || (this.checkBuscarEnviada)
-				|| (this.checkBuscarAceptada)
-				|| ((this.requisicion != null) && (this.requisicion.getBuscarRequisicion() != null)
-						&& (!this.requisicion.getBuscarRequisicion().isEmpty()))) {
+	private List<Cotizacion> buscarPCotizacion() {
+		List<Cotizacion> cotizacionesArreglo = null;
+		if ((checkBuscarNueva) || (checkBuscarCancelada) || (checkBuscarEnviada) || (checkBuscarAceptada)
+				|| ((requisicion != null) && (requisicion.getBuscarRequisicion() != null)
+						&& (!requisicion.getBuscarRequisicion().isEmpty()))) {
 			List<EstatusRequisicion> listaEstatus = generarListaEstatusIN();
 
-			this.cotizacionesList = this.cotizacionService
-					.getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(
-							this.requisicion.getBuscarRequisicion(), null, listaEstatus);
+			cotizacionesList = cotizacionService.getCotizacionesByEstatusRequisicionAndFolioOrProveedorByFolio(
+					requisicion.getBuscarRequisicion(), null, listaEstatus);
 
-			List<Cotizacion> cotizacionesArreglo = new ArrayList();
-			if (this.cotizacionesList != null) {
-				for (Cotizacion cotizacionArreglo : this.cotizacionesList) {
+			cotizacionesArreglo = new ArrayList();
+			if (cotizacionesList != null) {
+				for (Cotizacion cotizacionArreglo : cotizacionesList) {
 					boolean agregar = true;
 					for (Cotizacion item : cotizacionesArreglo) {
 						if (item.getProveedor().getNombre().equals(cotizacionArreglo.getProveedor().getNombre())) {
@@ -207,157 +214,193 @@ public class CotizacionVM extends RequisicionVariables {
 						cotizacionesArreglo.add(cotizacionArreglo);
 					}
 				}
-				this.cotizacionesList.clear();
-				this.cotizacionesList = cotizacionesArreglo;
+				// cotizacionesList.clear();
 			}
-			if ((this.cotizacionesList != null) && (this.requisicionProductos != null)) {
-				this.requisicionProductos.clear();
+			if ((cotizacionesList != null) && (requisicionProductos != null)) {
+				requisicionProductos.clear();
 			}
 		} else {
 			StockUtils.showSuccessmessage(
 					"Debe elegir algun criterio para realizar la busqueda de cotizaciones (nueva, cancelada, enviada o aceptada) o (ingresar palabra en el buscador)",
-					"warning", Integer.valueOf(0), null);
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
+		return cotizacionesArreglo;
 	}
 
 	@Command
 	@NotifyChange({ "*" })
 	public void mostrarProductosCotizacion() {
-		if (this.cotizacionSelected != null) {
-			if (this.cotizacionesConProductos == null) {
-				this.cotizacionesConProductos = new ArrayList();
-			}
-			this.cotizacionesConProductos = this.cotizacionService.getByProveedorFolioCotizacionNueva(
-					this.cotizacionSelected.getProveedor(), this.cotizacionSelected.getFolioCotizacion(),
-					this.cotizacionSelected.getEstatusRequisicion());
+		if (cotizacionSelected != null) {
+			getProductosCotizacion();
 		}
 	}
 
-	@Command
-	@NotifyChange({ "*" })
-	public void enviarCotizacion() {
-		if (this.cotizacionSelected != null) {
-			if (this.cotizacionSelected.getEstatusRequisicion().getClave().equals("CON")) {
-				crearArchivoExcel();
-				CotizacionInbox inbox = new CotizacionInbox();
-				inbox.setCotizacion(this.cotizacionSelected);
-				inbox.setLeido(Boolean.valueOf(false));
-				inbox.setFechaRegistro(this.stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+	private void getProductosCotizacion() {
+		if (cotizacionesConProductos == null) {
+			cotizacionesConProductos = new ArrayList();
+		}
+		cotizacionesConProductos = cotizacionService.getByProveedorFolioCotizacionNueva(
+				cotizacionSelected.getProveedor(), cotizacionSelected.getFolioCotizacion(),
+				cotizacionSelected.getEstatusRequisicion());
+	}
 
-				this.cotizacionInboxService.save(inbox);
+	@Command
+	@NotifyChange({ "cotizacionSelected" })
+	public void enviarCotizacion() {
+		if (cotizacionSelected != null) {
+			if (cotizacionSelected.getEstatusRequisicion().getClave().equals("CON")) {
+				CotizacionInbox inbox = new CotizacionInbox();
+				inbox.setCotizacion(cotizacionSelected);
+				inbox.setLeido(Boolean.valueOf(false));
+				inbox.setFechaRegistro(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+
+				cotizacionInboxService.save(inbox);
 
 				imprimirCotizacion();
-				List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
-				for (Privilegios privilegio : privilegios) {
-					if (privilegio.getUsuarios().getPersona().getContacto() != null) {
-						this.mailService.sendMail(
-								privilegio.getUsuarios().getPersona().getContacto().getEmail().getEmail(),
-								"1nn3rgy@gmail.com", "Cotizaci�n enviada con proveedor",
-								"La cotizacion " + this.cotizacionSelected.getFolioCotizacion()
-										+ "Ha sido enviada con el proveedor "
-										+ this.cotizacionSelected.getProveedor().getNombre(),
-								this.rutaPdfGenerado);
+
+				// -------------------------------------------------------------------------------
+				File file = crearArchivoExcel();
+				if (file != null) {
+					String mensaje = "";
+					if (organizacion.getDevelopmentTool() != null) {
+						List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
+						if (privilegios != null) {
+							enviarCorreos(usuario, organizacion, privilegios, mensaje, "Solicitud de cotizacion", file);
+							mensaje += " Por favor devolver la cotizacion con la misma estructura del archivo de excel que se envia. Saludos.";
+						}
+
+					} else
+						mensaje += ". No se pudo enviar un email para la notificación";
+					StockUtils.showSuccessmessage(mensaje + " ", Clients.NOTIFICATION_TYPE_INFO, 0, null);
+
+					if (file.exists()) {
+						if (file.delete()) {
+							System.err.println("Archivo temporal eliminado");
+						}
 					}
+
 				}
-				StockUtils.showSuccessmessage("La cotizacion con folio [" + this.cotizacionSelected.getFolioCotizacion()
-						+ "] ha sido enviada", "info", Integer.valueOf(0), null);
+
+				// -------------------------------------------------------------------------------
+				StockUtils.showSuccessmessage(
+						"La cotizacion con folio [" + cotizacionSelected.getFolioCotizacion() + "] ha sido enviada",
+						Clients.NOTIFICATION_TYPE_INFO, 0, null);
 			} else {
-				StockUtils.showSuccessmessage("La cotizacion con folio [" + this.cotizacionSelected.getFolioCotizacion()
-						+ "] no puede ser reenviada nuevamente", "warning", Integer.valueOf(0), null);
+				StockUtils.showSuccessmessage("La cotizacion con folio [" + cotizacionSelected.getFolioCotizacion()
+						+ "] no puede ser reenviada nuevamente", Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 			}
 		} else {
-			StockUtils.showSuccessmessage("Es necesario seleccionar primero una cotizaci�n", "warning",
-					Integer.valueOf(0), null);
+			StockUtils.showSuccessmessage("Es necesario seleccionar primero una cotizaci�n",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
+	}
+
+	public boolean comprobarConexionAInternet() {
+		String dirWeb = "www.legajo-virtual.com";
+		boolean centinela = false;
+		int puerto = 80;
+		try {
+			Socket s = new Socket(dirWeb, puerto);
+			centinela = true;
+		} catch (Exception e) {
+		}
+		return centinela;
 	}
 
 	@Command
 	@NotifyChange({ "*" })
 	public void aceptarCotizacion() {
-		if (this.cotizacionSelected != null) {
-			if (this.cotizacionSelected.getEstatusRequisicion().getClave().equals("COE")) {
-				EstatusRequisicion estado = this.estatusRequisicionService.getByClave("COA");
+		if (cotizacionSelected != null) {
+			if (cotizacionSelected.getEstatusRequisicion().getClave().equals("COE")) {
 
-				this.cotizacionSelected.setEstatusRequisicion(estado);
-				for (int i = 0; i < this.cotizacionesConProductos.size(); i++) {
-					Cotizacion item = (Cotizacion) this.cotizacionesConProductos.get(i);
+				EstatusRequisicion estado = estatusRequisicionService.getByClave("COA");
+
+				cotizacionSelected.setEstatusRequisicion(estado);
+				for (int i = 0; i < cotizacionesConProductos.size(); i++) {
+					Cotizacion item = (Cotizacion) cotizacionesConProductos.get(i);
 					item.setEstatusRequisicion(estado);
-					this.cotizacionService.save(item);
+					cotizacionService.save(item);
 				}
 				OrdenCompra compra = new OrdenCompra();
 
-				estado = this.estatusRequisicionService.getByClave("OCN");
+				estado = estatusRequisicionService.getByClave("OCN");
 
 				compra.setEstatusRequisicion(estado);
-				compra.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
+				compra.setOrganizacion((Organizacion) sessionUtils.getFromSession("FIRMA"));
 
-				compra.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
+				compra.setUsuario((Usuarios) sessionUtils.getFromSession("usuario"));
 
-				compra.setCodigo("FOC" + this.ordenCompraService.getCodigoDeOrden());
+				compra.setCodigo("FOC" + ordenCompraService.getCodigoDeOrden());
 
-				compra.setCotizacion(this.cotizacionSelected);
+				compra.setCotizacion(cotizacionSelected);
 				compra.setFechaOrden(Calendar.getInstance());
-				this.ordenCompraService.save(compra);
+				ordenCompraService.save(compra);
 
 				OrdenCompraInbox inbox = new OrdenCompraInbox();
 				inbox.setOrdenCompra(compra);
 				inbox.setLeido(Boolean.valueOf(false));
 				inbox.setFechaCreacion(new StockUtils().convertirCalendarToDate(Calendar.getInstance()));
 
-				this.ordenCompraInboxService.save(inbox);
+				ordenCompraInboxService.save(inbox);
 
-				List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
-				for (Privilegios privilegio : privilegios) {
-					if (privilegio.getUsuarios().getPersona().getContacto() != null) {
-						this.mailService.sendMail(
-								privilegio.getUsuarios().getPersona().getContacto().getEmail().getEmail(),
-								"1nn3rgy@gmail.com", "Cotizaci�n Aceptada",
-								"La cotizacion " + this.cotizacionSelected.getFolioCotizacion()
-										+ " del proveedor proveedor "
-										+ this.cotizacionSelected.getProveedor().getNombre() + " ha sido aceptada");
-					}
-				}
-				StockUtils.showSuccessmessage("La cotizacion con folio [" + this.cotizacionSelected.getFolioCotizacion()
-						+ "] ha sido Aceptada", "info", Integer.valueOf(0), null);
+				String mensaje = "Cotizacion [" + cotizacionSelected.getFolioCotizacion() + "] ha sído aceptada ";
+				// --------------------------------------------------------
+
+				if (organizacion.getDevelopmentTool() != null) {
+					if (comprobarConexionAInternet()) {
+						List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
+						if (privilegios != null) {
+							enviarCorreos(usuario, organizacion, privilegios, mensaje,
+									"Cotización Aceptada " + cotizacionSelected.getProveedor().getNombre(), null);
+							mensaje += " y se ha enviado un email para su notificación ";
+						}
+					} else
+						mensaje += ". No es posible enviar email. Compruebe su conexion a internet";
+				} else
+					mensaje += ". No se pudo enviar un email para la notificación";
+
+				StockUtils.showSuccessmessage(mensaje, Clients.NOTIFICATION_TYPE_INFO, 0, null);
+				// --------------------------------------------------------
+
 			} else {
 				StockUtils.showSuccessmessage(
-						"La cotizacion con folio [" + this.cotizacionSelected.getFolioCotizacion()
+						"La cotizacion con folio [" + cotizacionSelected.getFolioCotizacion()
 								+ "] nu puede ser aceptada bajo este estatus ("
-								+ this.cotizacionSelected.getEstatusRequisicion().getNombre() + ")",
-						"warning", Integer.valueOf(0), null);
+								+ cotizacionSelected.getEstatusRequisicion().getNombre() + ")",
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 			}
 		} else {
-			StockUtils.showSuccessmessage("Es necesario seleccionar primero una cotizaci�n", "warning",
-					Integer.valueOf(0), null);
+			StockUtils.showSuccessmessage("Es necesario seleccionar primero una cotizaci�n",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 
 	@Command
 	@NotifyChange({ "*" })
 	public void abrirVentanaCancelacion() {
-		if (this.cotizacionSelected != null) {
-			if ((this.cotizacionSelected.getEstatusRequisicion().getClave().equals("COE"))
-					|| (this.cotizacionSelected.getEstatusRequisicion().getClave().equals("CON"))) {
+		if (cotizacionSelected != null) {
+			if ((cotizacionSelected.getEstatusRequisicion().getClave().equals("COE"))
+					|| (cotizacionSelected.getEstatusRequisicion().getClave().equals("CON"))) {
 				HashMap<String, Object> map = new HashMap();
-				map.put("cotizacion", this.cotizacionSelected);
+				map.put("cotizacion", cotizacionSelected);
 				Executions.createComponents("/modulos/requisicion/cancelacionCotizacion.zul", null, map);
 			} else {
 				StockUtils.showSuccessmessage(
-						"La cotizaci�n con folio [" + this.cotizacionSelected.getFolioCotizacion()
+						"La cotizaci�n con folio [" + cotizacionSelected.getFolioCotizacion()
 								+ "] no puede ser cancelada bajo este estatus ("
-								+ this.cotizacionSelected.getEstatusRequisicion().getNombre() + ")",
-						"warning", Integer.valueOf(0), null);
+								+ cotizacionSelected.getEstatusRequisicion().getNombre() + ")",
+						Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 			}
 		} else {
-			StockUtils.showSuccessmessage("Es necesario seleccionar primero una cotizaci�n", "warning",
-					Integer.valueOf(0), null);
+			StockUtils.showSuccessmessage("Es necesario seleccionar primero una cotizaci�n",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 
-	private void crearArchivoExcel() {
+	private File crearArchivoExcel() {
 		boolean excelGenerado = false;
-
-		HSSFSheet hoja = this.libro.createSheet();
+		File file = null;
+		HSSFSheet hoja = libro.createSheet();
 
 		HSSFRow row = hoja.createRow(0);
 		HSSFCell cell = null;
@@ -398,8 +441,8 @@ public class CotizacionVM extends RequisicionVariables {
 			}
 			cell.setCellValue(value);
 		}
-		for (int i = 0; i < this.cotizacionesConProductos.size(); i++) {
-			Cotizacion item = (Cotizacion) this.cotizacionesConProductos.get(i);
+		for (int i = 0; i < cotizacionesConProductos.size(); i++) {
+			Cotizacion item = (Cotizacion) cotizacionesConProductos.get(i);
 
 			HSSFRow fila = hoja.createRow(i + 1);
 			HSSFCell celda = null;
@@ -447,198 +490,230 @@ public class CotizacionVM extends RequisicionVariables {
 			}
 		}
 		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			md.update(String.valueOf(this.cotizacionSelected.getIdCotizacion()).getBytes());
+			String encryptName = stockUtils.Encriptar(String.valueOf(cotizacionSelected.getIdCotizacion()));
 
-			byte[] mb = md.digest();
+			String hash = StockConstants.CARPETA_ARCHIVOS_COTIZACIONES + encryptName + ".xls";
+			fileOutputStream = new FileOutputStream(hash);
+			libro.write(fileOutputStream);
+			file = new File(hash);
 
-			String hash = String.valueOf(Hex.encode(mb));
-			this.fileOutputStream = new FileOutputStream(StockConstants.CARPETA_ARCHIVOS_COTIZACIONES + hash + ".xls");
+			EstatusRequisicion estado = estatusRequisicionService.getByClave("COE");
 
-			this.libro.write(this.fileOutputStream);
-
-			this.fileOutputStream.close();
-			excelGenerado = true;
-			EstatusRequisicion estado = this.estatusRequisicionService.getByClave("COE");
-
-			this.cotizacionSelected.setEstatusRequisicion(estado);
-			this.cotizacionSelected.setExcelFile(hash);
-			for (int i = 0; i < this.cotizacionesConProductos.size(); i++) {
-				Cotizacion item = (Cotizacion) this.cotizacionesConProductos.get(i);
+			cotizacionSelected.setEstatusRequisicion(estado);
+			cotizacionSelected.setExcelFile(hash);
+			for (int i = 0; i < cotizacionesConProductos.size(); i++) {
+				Cotizacion item = (Cotizacion) cotizacionesConProductos.get(i);
 				item.setEstatusRequisicion(estado);
 				item.setExcelFile(hash);
-				this.cotizacionService.save(item);
+				cotizacionService.save(item);
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return file;
 	}
 
+	// ----------------------------------------------
+
+	public static final String COTIZACION_GLOBALCOMMAND_NAsME_FOR_UPDATE = "itemFinder";
+
 	@Command
-	@NotifyChange({ "requisicionProductos" })
-	public void abrirExcel(@BindingParam("index") Integer index) {
-		this.cotizacionSelected = ((Cotizacion) this.cotizacionesList.get(index.intValue()));
-		List<CotizacionListaExcelFile> listaExcel = new ArrayList();
-		boolean lecturaCorrecta = true;
-		if ((this.cotizacionSelected != null) && (this.cotizacionSelected.getExcelFile() != null)
-				&& (!this.cotizacionSelected.getExcelFile().isEmpty())) {
-			File fileNameExcel = new File(
-					StockConstants.CARPETA_ARCHIVOS_COTIZACIONES + this.cotizacionSelected.getExcelFile() + ".xls");
-			if (fileNameExcel.exists()) {
-				try {
-					this.fileInputStream = new FileInputStream(fileNameExcel);
-					this.libro = new HSSFWorkbook(this.fileInputStream);
+	public void openFileChooser(@BindingParam("index") Integer index) {
+		cotizacionSelected = ((Cotizacion) cotizacionesList.get(index.intValue()));
+		if (index != null) {
+			Map<String, Object> inputParams = new HashMap();
+			inputParams.put("itemFinder", "updateRecordFromFileWithSelectedItem");
 
-					HSSFSheet my_worksheet = this.libro.getSheetAt(0);
-					Iterator<Row> rowIterator = my_worksheet.iterator();
-					while (rowIterator.hasNext()) {
-						Row row = (Row) rowIterator.next();
-						if (row.getRowNum() > 0) {
-							Iterator<Cell> cellIterator = row.cellIterator();
-							CotizacionListaExcelFile filaRecuperacion = new CotizacionListaExcelFile();
-							Integer columna = Integer.valueOf(0);
-							Integer localInteger1;
-							Integer localInteger2;
-							for (; cellIterator
-									.hasNext(); localInteger2 = columna = Integer.valueOf(columna.intValue() + 1)) {
-								Cell cell = (Cell) cellIterator.next();
-								switch (columna.intValue()) {
-								case 0:
-									filaRecuperacion.setNo(obtenerVAlorDeCeldaDeExcel(cell));
+			Window productoModalView = stockUtils
+					.createModelDialogWithParams("/modulos/productos/utils/fileExplorer.zul", inputParams);
+			productoModalView.doModal();
+		}
+	}
 
-									break;
-								case 1:
-									filaRecuperacion.setClave(obtenerVAlorDeCeldaDeExcel(cell));
-
-									break;
-								case 2:
-									filaRecuperacion.setNombreProducto(obtenerVAlorDeCeldaDeExcel(cell));
-
-									break;
-								case 3:
-									filaRecuperacion.setPartidaGenericaNombre(obtenerVAlorDeCeldaDeExcel(cell));
-
-									break;
-								case 4:
-									filaRecuperacion.setCantidad(obtenerVAlorDeCeldaDeExcel(cell));
-
-									break;
-								case 5:
-									filaRecuperacion.setUnidadMedida(obtenerVAlorDeCeldaDeExcel(cell));
-
-									break;
-								case 6:
-									filaRecuperacion.setPrecioUnitario(obtenerVAlorDeCeldaDeExcel(cell));
-
-									break;
-								case 7:
-									filaRecuperacion.setTotal(obtenerVAlorDeCeldaDeExcel(cell));
-								}
-								localInteger1 = columna;
-							}
-							listaExcel.add(filaRecuperacion);
-						}
-					}
-					this.fileInputStream.close();
-				} catch (FileNotFoundException e) {
-					lecturaCorrecta = false;
-				} catch (IOException e) {
-					lecturaCorrecta = false;
-				}
-				if (lecturaCorrecta) {
-					actualizarPreciosProductosLeidos(listaExcel);
-					StockUtils.showSuccessmessage("se ha leido correctamente la informaci�n de un archivo de excel",
-							"info", Integer.valueOf(0), null);
-				} else {
-					StockUtils.showSuccessmessage("Ocurrio un error en la lectura sobre el archivo ["
-							+ this.cotizacionSelected.getExcelFile() + "]", "error", Integer.valueOf(0), null);
-				}
+	// "requisicionProductos"
+	@GlobalCommand
+	@NotifyChange({ "cotizacionesList", "cotizacionSelected", "cotizacionesConProductos" })
+	public void updateRecordFromFileWithSelectedItem(@BindingParam("fileSelected") FileBean fileSelected) {
+		if (fileSelected != null) {
+			if (isArchivoExcel(fileSelected.get_file().getName())) {
+				String mensaje = abrirExcel(fileSelected.get_file());
+				if (mensaje.equals(""))
+					StockUtils.showSuccessmessage(
+							"La informacion del archivo " + fileSelected.getName() + " ha sido cargada",
+							Clients.NOTIFICATION_TYPE_INFO, 0, null);
+				else
+					StockUtils.showSuccessmessage(mensaje, Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 			} else {
-				StockUtils.showSuccessmessage("El archivo [" + this.cotizacionSelected.getExcelFile() + "] NO existe",
-						"error", Integer.valueOf(0), null);
+				StockUtils.showSuccessmessage("Formato de archivo incorrecto. Seleccione un archivo de Excel",
+						Clients.NOTIFICATION_TYPE_ERROR, 0, null);
 			}
 		}
 	}
 
-	private void actualizarPreciosProductosLeidos(List<CotizacionListaExcelFile> listaExcel) {
-		Integer i = Integer.valueOf(0);
-		Integer localInteger1;
-		Integer localInteger2;
-		for (Iterator i$ = this.cotizacionesConProductos.iterator(); i$
-				.hasNext(); localInteger2 = i = Integer.valueOf(i.intValue() + 1)) {
-			Cotizacion item = (Cotizacion) i$.next();
-			CotizacionListaExcelFile rowExcel = (CotizacionListaExcelFile) listaExcel.get(i.intValue());
-			item.getRequisicionProducto().setCantidad(Float.valueOf(Float.parseFloat(rowExcel.getCantidad())));
-			if ((rowExcel.getTotal() != null) && (!rowExcel.getTotal().isEmpty())) {
-				item.getRequisicionProducto()
-						.setTotalProductoPorUnidad(Float.valueOf(Float.parseFloat(rowExcel.getTotal())));
-			} else {
-				item.getRequisicionProducto().setTotalProductoPorUnidad(Float.valueOf(0.0F));
-			}
-			Producto producto = item.getProducto();
-			if ((rowExcel.getPrecioUnitario() != null) && (!rowExcel.getPrecioUnitario().isEmpty())) {
-				producto.setPrecio(Float.valueOf(Float.parseFloat(rowExcel.getPrecioUnitario())));
-			} else {
-				producto.setPrecio(Float.valueOf(0.0F));
-			}
-			this.productoService.save(producto);
-			this.cotizacionService.save(item);
+	private boolean isArchivoExcel(String archivo) {
+		boolean centinela = false;
+		List<String> parts = getExtensionArchivo(archivo, ".");
+		if (parts.size() > 0) {
+			String extension = parts.get(parts.size() - 1);
+			if (extension.equalsIgnoreCase("xlsx") || extension.equalsIgnoreCase("xls"))
+				centinela = true;
+		}
+		return centinela;
+	}
 
-			localInteger1 = i;
+	// ------------------------------------------------------------------------------------------------------
+	private String abrirExcel(File fileNameExcel) {
+		String mensaje = "";
+		List<CotizacionListaExcelFile> listaExcel = new ArrayList();
+		boolean lecturaCorrecta = true;
+
+		if (fileNameExcel.exists()) {
+			try {
+				fileInputStream = new FileInputStream(fileNameExcel);
+				libro = new HSSFWorkbook(fileInputStream);
+
+				HSSFSheet my_worksheet = libro.getSheetAt(0);
+				Iterator<Row> rowIterator = my_worksheet.iterator();
+				while (rowIterator.hasNext()) {
+					Row row = (Row) rowIterator.next();
+					if (row.getRowNum() > 0) {
+						Iterator<Cell> cellIterator = row.cellIterator();
+						CotizacionListaExcelFile filaRecuperacion = new CotizacionListaExcelFile();
+						Integer columna = Integer.valueOf(0);
+						Integer localInteger1;
+						Integer localInteger2;
+						for (; cellIterator
+								.hasNext(); localInteger2 = columna = Integer.valueOf(columna.intValue() + 1)) {
+							Cell cell = (Cell) cellIterator.next();
+							switch (columna.intValue()) {
+							case 0:
+								filaRecuperacion.setNo(obtenerVAlorDeCeldaDeExcel(cell));
+
+								break;
+							case 1:
+								filaRecuperacion.setClave(obtenerVAlorDeCeldaDeExcel(cell));
+
+								break;
+							case 2:
+								filaRecuperacion.setNombreProducto(obtenerVAlorDeCeldaDeExcel(cell));
+
+								break;
+							case 3:
+								filaRecuperacion.setPartidaGenericaNombre(obtenerVAlorDeCeldaDeExcel(cell));
+
+								break;
+							case 4:
+								filaRecuperacion.setCantidad(obtenerVAlorDeCeldaDeExcel(cell));
+
+								break;
+							case 5:
+								filaRecuperacion.setUnidadMedida(obtenerVAlorDeCeldaDeExcel(cell));
+
+								break;
+							case 6:
+								filaRecuperacion.setPrecioUnitario(obtenerVAlorDeCeldaDeExcel(cell));
+
+								break;
+							case 7:
+								filaRecuperacion.setTotal(obtenerVAlorDeCeldaDeExcel(cell));
+							}
+							localInteger1 = columna;
+						}
+						listaExcel.add(filaRecuperacion);
+					}
+				}
+				fileInputStream.close();
+			} catch (Exception e) {
+				lecturaCorrecta = false;
+			}
+			if (lecturaCorrecta) {
+				actualizarPreciosProductosLeidos(listaExcel);
+			} else
+				mensaje = "Ocurrio un error en la lectura sobre el archivo [" + cotizacionSelected.getExcelFile() + "]";
+		} else
+			mensaje = "El archivo [" + cotizacionSelected.getExcelFile() + "] NO existe";
+		return mensaje;
+	}
+
+	private void actualizarPreciosProductosLeidos(List<CotizacionListaExcelFile> listaExcel) {
+		Integer i = 0;
+		if (cotizacionesConProductos == null) {
+			getProductosCotizacion();
+		}
+
+		for (Cotizacion item : cotizacionesConProductos) {
+			CotizacionListaExcelFile rowExcel = listaExcel.get(i);
+			item.getRequisicionProducto().setCantidad(Float.parseFloat(rowExcel.getCantidad()));
+			if (rowExcel.getTotal() != null && !rowExcel.getTotal().isEmpty())
+				item.getRequisicionProducto().setTotalProductoPorUnidad(Float.parseFloat(rowExcel.getTotal()));
+			else
+				item.getRequisicionProducto().setTotalProductoPorUnidad(0F);
+			Producto producto = item.getProducto();
+
+			if (rowExcel.getPrecioUnitario() != null && !rowExcel.getPrecioUnitario().isEmpty())
+				producto.setPrecio(Float.parseFloat(rowExcel.getPrecioUnitario()));
+			else
+				producto.setPrecio(0F);
+			productoService.save(producto);
+			cotizacionService.save(item);
+
+			i++;
 		}
 	}
 
 	@Command
 	public void imprimirCotizacion() {
-		if (this.cotizacionSelected != null) {
-			if ((this.cotizacionesConProductos != null) && (this.cotizacionesConProductos.size() > 0)) {
-				Organizacion org = (Organizacion) this.sessionUtils.getFromSession("FIRMA");
+		if (cotizacionSelected != null) {
+			if ((cotizacionesConProductos != null) && (cotizacionesConProductos.size() > 0)) {
+				Organizacion org = (Organizacion) sessionUtils.getFromSession("FIRMA");
 
 				HashMap mapa = new HashMap();
-				mapa.put("logotipo", this.stockUtils.getLogotipoDeOrganizacionParaJasper(org.getLogotipo()));
+				// mapa.put("logotipo",
+				// stockUtils.getLogotipoDeOrganizacionParaJasper(org.getLogotipo()));
 
 				mapa.put("nombreEmpresa", org.getNombre());
-				mapa.put("proveedor", this.cotizacionSelected.getProveedor().getNombre());
+				mapa.put("proveedor", cotizacionSelected.getProveedor().getNombre());
 
-				mapa.put("direccion", this.cotizacionSelected.getProveedor().getDireccionFiscal().getCalle() + "|"
-						+ this.cotizacionSelected.getProveedor().getDireccionFiscal().getNumExt() + "|"
-						+ this.cotizacionSelected.getProveedor().getDireccionFiscal().getColonia() + "|"
-						+ this.cotizacionSelected.getProveedor().getDireccionFiscal().getCuidad() + "|"
-						+ this.cotizacionSelected.getProveedor().getDireccionFiscal().getEstado().getNombre() + "|"
-						+ this.cotizacionSelected.getProveedor().getDireccionFiscal().getPais().getNombre());
+				mapa.put("direccion",
+						cotizacionSelected.getProveedor().getDireccionFiscal().getCalle() + "|"
+								+ cotizacionSelected.getProveedor().getDireccionFiscal().getNumExt() + "|"
+								+ cotizacionSelected.getProveedor().getDireccionFiscal().getColonia() + "|"
+								+ cotizacionSelected.getProveedor().getDireccionFiscal().getCuidad() + "|"
+								+ cotizacionSelected.getProveedor().getDireccionFiscal().getEstado().getNombre() + "|"
+								+ cotizacionSelected.getProveedor().getDireccionFiscal().getPais().getNombre());
 
 				String telefonoMap = "";
 				try {
-					if ((this.cotizacionSelected.getProveedor().getContacto() != null)
-							&& (this.cotizacionSelected.getProveedor().getContacto().getTelefono() != null)) {
-						telefonoMap = this.cotizacionSelected.getProveedor().getContacto().getTelefono().getNumero();
+					if ((cotizacionSelected.getProveedor().getContacto() != null)
+							&& (cotizacionSelected.getProveedor().getContacto().getTelefono() != null)) {
+						telefonoMap = cotizacionSelected.getProveedor().getContacto().getTelefono().getNumero();
 					}
 					mapa.put("telefono", telefonoMap);
 				} catch (Exception e) {
 				}
 				String representanteLegal = "";
-				if (this.cotizacionSelected.getProveedor().getRepresentanteLegal() != null) {
-					representanteLegal = this.cotizacionSelected.getProveedor().getRepresentanteLegal()
-							.getNombreCompleto();
+				if (cotizacionSelected.getProveedor().getRepresentanteLegal() != null) {
+					representanteLegal = cotizacionSelected.getProveedor().getRepresentanteLegal().getNombreCompleto();
 				}
 				mapa.put("atencion", representanteLegal);
-				mapa.put("folio", this.cotizacionSelected.getFolioCotizacion());
+				mapa.put("folio", cotizacionSelected.getFolioCotizacion());
 
 				Calendar fechaMap = Calendar.getInstance();
-				if (this.cotizacionSelected.getFechaEnvioCotizacion() != null) {
-					fechaMap = this.cotizacionSelected.getFechaEnvioCotizacion();
+				if (cotizacionSelected.getFechaEnvioCotizacion() != null) {
+					fechaMap = cotizacionSelected.getFechaEnvioCotizacion();
 				}
-				mapa.put("fecha", this.stockUtils.convertirCalendarToString(fechaMap));
+				mapa.put("fecha", stockUtils.convertirCalendarToString(fechaMap));
 
 				String emailMap = "";
-				if ((this.cotizacionSelected.getProveedor().getContacto() != null)
-						&& (this.cotizacionSelected.getProveedor().getContacto().getEmail() != null)) {
-					emailMap = this.cotizacionSelected.getProveedor().getContacto().getEmail().getEmail();
+				if ((cotizacionSelected.getProveedor().getContacto() != null)
+						&& (cotizacionSelected.getProveedor().getContacto().getEmail() != null)) {
+					emailMap = cotizacionSelected.getProveedor().getContacto().getEmail().getEmail();
 				}
 				mapa.put("email", emailMap);
 
 				Float total = Float.valueOf(0.0F);
-				for (Cotizacion item : this.cotizacionesConProductos) {
+				for (Cotizacion item : cotizacionesConProductos) {
 					if (item.getRequisicionProducto().getTotalProductoPorUnidad() != null) {
 						total = Float.valueOf(total.floatValue()
 								+ item.getRequisicionProducto().getTotalProductoPorUnidad().floatValue());
@@ -654,12 +729,12 @@ public class CotizacionVM extends RequisicionVariables {
 				aplicacion.setNombre("PDFXCview");
 				aplicaciones.add(aplicacion);
 				StockUtils.showSuccessmessage(
-						generarCotizacionJasper(listaHashsParametros, aplicaciones, this.cotizacionesConProductos),
-						"info", Integer.valueOf(0), null);
+						generarCotizacionJasper(listaHashsParametros, aplicaciones, cotizacionesConProductos), "info",
+						0, null);
 			}
 		} else {
-			StockUtils.showSuccessmessage("Es necesario seleccionar primero una cotizaci�n", "warning",
-					Integer.valueOf(0), null);
+			StockUtils.showSuccessmessage("Es necesario seleccionar primero una cotizaci�n",
+					Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
 
@@ -669,13 +744,12 @@ public class CotizacionVM extends RequisicionVariables {
 		String mensaje = "";
 		HashMap hashParametros = construirHashMapParametros(listaHashsParametros);
 
-		this.rutaPdfGenerado = (StockConstants.CARPETA_ARCHIVOS_COTIZACIONES + hashParametros.get("folio")
+		rutaPdfGenerado = (StockConstants.CARPETA_ARCHIVOS_COTIZACIONES + hashParametros.get("folio")
 				+ StockUtils.getFechaActualConHora() + ".pdf");
 		try {
-			this.print = JasperFillManager.fillReport(this.readJasper, hashParametros,
-					new JRBeanCollectionDataSource(lista));
+			print = JasperFillManager.fillReport(readJasper, hashParametros, new JRBeanCollectionDataSource(lista));
 
-			JasperExportManager.exportReportToPdfFile(this.print, this.rutaPdfGenerado);
+			JasperExportManager.exportReportToPdfFile(print, rutaPdfGenerado);
 			mensaje = "Cotizacion rxportado a PDF " + StockConstants.CARPETA_ARCHIVOS_COTIZACIONES;
 		} catch (JRException e) {
 			e.printStackTrace();
@@ -683,7 +757,7 @@ public class CotizacionVM extends RequisicionVariables {
 				closePdf(aplicacion.getNombre());
 			}
 			try {
-				JasperExportManager.exportReportToPdfFile(this.print, StockConstants.CARPETA_ARCHIVOS_COTIZACIONES);
+				JasperExportManager.exportReportToPdfFile(print, StockConstants.CARPETA_ARCHIVOS_COTIZACIONES);
 
 				openPdf(StockConstants.CARPETA_ARCHIVOS_COTIZACIONES);
 				mensaje = "Se ha generado un PDF: " + StockConstants.CARPETA_ARCHIVOS_COTIZACIONES;
@@ -699,7 +773,7 @@ public class CotizacionVM extends RequisicionVariables {
 	}
 
 	private List<Privilegios> getEmailsUsuariosCotizacion() {
-		List<Privilegios> usuarios = this.privilegioService.getUsuariosByPrivilegio(UserPrivileges.COTIZAR_AUTORIZAR);
+		List<Privilegios> usuarios = privilegioService.getUsuariosByPrivilegio(UserPrivileges.COTIZAR_AUTORIZAR);
 
 		return usuarios;
 	}
@@ -707,7 +781,7 @@ public class CotizacionVM extends RequisicionVariables {
 	@Command
 	public void notificacionBandeja(@BindingParam("index") Integer index) {
 		Map<String, Object> inputParams = new HashMap();
-		Window productoModalView = this.stockUtils.createModelDialogWithParams("/modulos//utilidades/bandeja.zul",
+		Window productoModalView = stockUtils.createModelDialogWithParams("/modulos//utilidades/bandeja.zul",
 				inputParams);
 
 		productoModalView.doModal();

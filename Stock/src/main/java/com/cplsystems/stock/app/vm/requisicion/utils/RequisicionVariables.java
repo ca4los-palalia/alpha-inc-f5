@@ -1,14 +1,21 @@
 package com.cplsystems.stock.app.vm.requisicion.utils;
 
-import com.cplsystems.stock.app.vm.BasicStructure;
-import com.cplsystems.stock.domain.CotizacionInbox;
-import com.cplsystems.stock.domain.RequisicionInbox;
-import com.cplsystems.stock.domain.RequisicionProducto;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.internet.MimeMultipart;
+
 import org.zkoss.zul.ListModel;
+
+import com.cplsystems.stock.app.vm.BasicStructure;
+import com.cplsystems.stock.domain.CotizacionInbox;
+import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.RequisicionInbox;
+import com.cplsystems.stock.domain.RequisicionProducto;
+import com.cplsystems.stock.domain.Usuarios;
 
 public class RequisicionVariables extends BasicStructure {
 	private static final long serialVersionUID = -5741444614581908156L;
@@ -32,7 +39,7 @@ public class RequisicionVariables extends BasicStructure {
 	protected String rutaPdfGenerado;
 	protected List<CotizacionInbox> cotizacionesInbox;
 	protected CotizacionInbox cotizacionInboxSeleccionada;
-
+	
 	public RequisicionVariables() {
 		this.requisicionProductos = new ArrayList();
 	}

@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DireccionDAOImpl extends HibernateDAOSuportUtil implements DireccionDAO {
 	@Transactional
 	public void save(Direccion direccion) {
-		getHibernateTemplate().save(direccion);
+		getHibernateTemplate().saveOrUpdate(direccion);
 	}
 
 	@Transactional

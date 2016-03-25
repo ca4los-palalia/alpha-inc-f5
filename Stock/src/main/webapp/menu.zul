@@ -3,256 +3,297 @@
 	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
 
-	<window apply="org.zkoss.bind.BindComposer"
+	<window apply="org.zkoss.bind.BindComposer" height="100%"
+		id="mainWin"
 		viewModel="@id('vm') @init('com.cplsystems.stock.app.vm.menu.MenuVM')">
-		<vlayout>
-			<tabbox id="menu" mold="accordion">
-				<tabs id="tabHeaders">
-					<tab id="requisiciones" label="Requisiciones" selected="false"
-						visible="@load(vm.mostrarRequisiones)"
-						image="/images/toolbar/linedpapercheck32.png"
-						sclass="tab-red menutabs" />
-					<tab id="cotizaciones" label="Cotizaciones"
-						visible="@load(vm.mostrarCotizacionesAutorizaciones)"
-						image="/images/toolbar/article32.png" sclass="tab-red menutabs" />
-					<tab id="ordenCompra" label="Ordenes de compra"
-						visible="@load(vm.mostrarOrdenesCompra)"
-						image="/images/toolbar/shoppingcart32.png"
-						sclass="tab-red menutabs" />
-					<tab label="Reportes" visible="false"
-						image="/images/toolbar/risegraph32.png" sclass="tab-red menutabs" />
-					<tab id="panelControl" label="Panel de control"
-						visible="@load(vm.mostrarPanelControl)"
-						image="/images/toolbar/gear32.png" sclass="tab-red menutabs" />
-				</tabs>
-				<tabpanels id="tabContent">
-					<tabpanel sclass="tab-red">
-						<listbox rows="3"
-							style="border: 0; background: #B8D335;"
-							sclass="tab-red menutabs">
-							<listhead>
-								<listheader width="20%" />
-								<listheader />
-							</listhead>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/text_enriched16.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showRequisitions')">
-									<label value="Requisición"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/filter_list16.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showConcentrado')">
-									<label value="Concentrado"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							
-							
-							<listitem visible="true"
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/control16.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showControl')">
-									<label value="Control"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							
-							
-							
-						</listbox>
-					</tabpanel>
-					<tabpanel sclass="tab-red">
-						<listbox rows="1"
-							style="border: 0; background: #B8D335;"
-							sclass="tab-red menutabs">
-							<listhead>
-								<listheader width="20%" />
-								<listheader />
-							</listhead>
 
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/list16.png" />
-								</listcell>
-								<listcell
-									onClick="@command('showCotizacion')">
-									<label value="Cotización"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem visible="false"
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/vineta12.png" />
-								</listcell>
 
-								<listcell
-									onClick="@command('showCotizacionBuscador')">
-									<label value="Buscar Cotizaciones"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-						</listbox>
-					</tabpanel>
 
-					<tabpanel sclass="tab-red">
-						<grid style="border: 0;"
-							sclass="tab-red menutabs">
-							<columns>
-								<column width="15%" />
-								<column />
-							</columns>
-							<rows>
-								<row
-									style="background-color:#E6D92C; border: 0;">
-									<image
-										src="/images/toolbar/buy16.png" />
-									<toolbarbutton
-										onClick="@command('showOrders')" label="Órdenes de compra"
-										width="100%" />
-								</row>
-							</rows>
-						</grid>
-					</tabpanel>
-					<tabpanel sclass="tab-red">
-						<grid style="border: 0;"
-							sclass="tab-red menutabs">
-							<columns>
-								<column width="15%" />
-								<column />
-							</columns>
-							<rows>
-								<row
-									style="background-color:#E6D92C; border: 0;">
-									<image
-										src="/images/toolbar/report.png" />
-									<toolbarbutton
-										onClick="@command('showReports')" label="Reportes"
-										width="100%" />
-								</row>
-							</rows>
-						</grid>
-					</tabpanel>
-					<tabpanel sclass="tab-red">
-						<listbox rows="10"
-							style="border: 0; background: #B8D335;"
-							sclass="tab-red menutabs">
-							<listhead>
-								<listheader width="20%" />
-								<listheader />
-							</listhead>
+		<window id="busyWin" position="center"
+			border="normal" title="busy...">
 
-							<listitem visible="@load(vm.clientOptions)"
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/catalog16.png" />
-								</listcell>
 
-								<listcell
-									onClick="@command('showControlPanel')">
-									<label value="Catalogos"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							
-							
-							
-							<listitem style="background-color:#E6D92C; border: 0;">
-								<listcell>
-								</listcell>
+			<label id="labelId" value="carlos"></label>
 
-								<listcell
-									onClick="@command('showBuscadorProductos')">
-									<label value="Productos"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem style="background-color:#E6D92C; border: 0;">
-								<listcell>
-								</listcell>
 
-								<listcell
-									onClick="@command('showProvidersSearch')">
-									<label value="Proveedores"
-										width="100%" style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							
-							
-							
-							<listitem visible="@load(vm.ownerOptions)"
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/clients16.png" />
-								</listcell>
-								<listcell
-									onClick="@command('mostrarConfiguracionUsuario')">
-									<label value="Clientes" width="100%"
-										style="font-size: 10px;" />
-								</listcell>
-								<listcell
-									onClick="@command('configurarUsuariosNegocio')">
-									<label value="Usuarios" width="100%"
-										style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-							<listitem
-								style="background-color:#E6D92C; border: 0;">
-								<listcell>
-									<image
-										src="/images/toolbar/user16.png" />
-								</listcell>
-								<listcell
-									onClick="@command('configurarUsuariosNegocio')">
-									<label value="Usuarios" width="100%"
-										style="font-size: 10px;" />
-								</listcell>
-							</listitem>
-						</listbox>
-					</tabpanel>
-				</tabpanels>
-			</tabbox>
-		</vlayout>
+		</window>
+		<groupbox id="server" hflex="1" mold="3d"
+				closable="false">
+				<caption label="Server Status" />
+			</groupbox>
 
-		<vlayout sclass="menubar" visible="false">
-			<button label="Productos" onClick="@command('showProducts')"
-				image="/images/toolbar/box32.png" zclass="menuItem" />
-			<button label="Proveedores"
-				onClick="@command('showProviders')"
-				image="/images/toolbar/users32.png" zclass="menuItem" />
-			<button label="Requisiciones"
-				onClick="@command('showRequisitions')"
-				image="/images/toolbar/linedpapercheck32.png" zclass="menuItem" />
-			<button label="Órdenes de compra"
-				onClick="@command('showOrders')"
-				image="/images/toolbar/shoppingcart32.png" zclass="menuItem" />
-			<button label="Reportes" onClick="@command('showReports')"
-				image="/images/toolbar/risegraph32.png" zclass="menuItem" />
-			<button label="Panel de control"
-				onClick="@command('showControlPanel')"
-				image="/images/toolbar/gear32.png" zclass="menuItem" />
-		</vlayout>
+			<timer id="timer" delay="1500" repeats="true"
+				onCreate="self.stop()">
+			</timer>
 
+
+
+
+
+
+
+
+		<borderlayout>
+			<north maxsize="300" size="100%" splittable="true"
+				collapsible="true">
+				<borderlayout>
+					<center border="none" flex="true">
+						<window height="100%">
+							<borderlayout>
+								<north title="Requisiciones"
+									collapsible="true" visible="@load(vm.mostrarRequisiones)"
+									maxsize="300" size="18%">
+									<borderlayout>
+										<center border="none"
+											flex="true">
+											<window height="100%"
+												width="100%">
+												<listbox vflex="1">
+													<listhead>
+														<listheader
+															width="100%" />
+														<listheader />
+													</listhead>
+													<listitem>
+														<listcell
+															image="/images/toolbar/text_enriched16.png"
+															onClick="@command('showRequisitions')">
+															<label
+																value="Requisición" width="100%"
+																style="font-size: 10px;" />
+														</listcell>
+													</listitem>
+													<listitem>
+														<listcell
+															image="/images/toolbar/filter_list16.png"
+															onClick="@command('showConcentrado')">
+															<label
+																value="Concentrado" width="100%"
+																style="font-size: 10px;" />
+														</listcell>
+													</listitem>
+													<listitem>
+														<listcell
+															image="/images/toolbar/control16.png"
+															onClick="@command('showControl')">
+															<label
+																value="Control" width="100%" style="font-size: 10px;" />
+														</listcell>
+													</listitem>
+												</listbox>
+											</window>
+										</center>
+									</borderlayout>
+								</north>
+								<center border="0">
+									<borderlayout>
+										<center>
+											<borderlayout>
+												<north
+													visible="@load(vm.mostrarCotizacionesAutorizaciones)"
+													title="Cotizaciones" collapsible="true" maxsize="300"
+													size="11%">
+													<borderlayout>
+														<center
+															border="none" flex="true">
+															<window
+																height="100%" width="100%">
+																<listbox
+																	vflex="1">
+																	<listhead>
+																		<listheader
+																			width="100%" />
+																		<listheader />
+																	</listhead>
+																	<listitem>
+																		<listcell
+																			image="/images/toolbar/list16.png"
+																			onClick="@command('showCotizacion')">
+																			<label
+																				value="Cotización" width="100%"
+																				style="font-size: 10px;" />
+																		</listcell>
+																	</listitem>
+																</listbox>
+															</window>
+														</center>
+													</borderlayout>
+												</north>
+												<center border="0">
+													<borderlayout>
+														<center>
+															<borderlayout>
+																<north
+																	visible="@load(vm.mostrarOrdenesCompra)"
+																	title="Ordenes de compra" collapsible="true"
+																	maxsize="300" size="12%">
+																	<borderlayout>
+																		<center
+																			border="none" flex="true">
+																			<window
+																				height="100%" width="100%">
+																				<listbox
+																					vflex="1">
+																					<listhead>
+																						<listheader
+																							width="100%" />
+																						<listheader />
+																					</listhead>
+
+																					<listitem>
+																						<listcell
+																							image="/images/toolbar/buy16.png"
+																							onClick="@command('showOrders')">
+																							<label
+																								value="Órden de compra" width="100%"
+																								style="font-size: 10px;" />
+																						</listcell>
+																					</listitem>
+																				</listbox>
+																			</window>
+																		</center>
+																	</borderlayout>
+																</north>
+																<center
+																	border="0">
+																	<borderlayout>
+																		<center>
+																			<borderlayout>
+																				<north
+																					visible="@load(vm.mostrarPanelControl)"
+																					title="Panel de control" collapsible="true"
+																					maxsize="300" size="41%">
+																					<borderlayout>
+																						<center
+																							border="none" flex="true">
+																							<window
+																								height="100%" width="100%">
+																								<listbox
+																									vflex="1">
+																									<listhead>
+																										<listheader
+																											width="100%" />
+																									</listhead>
+																									<listitem
+																										visible="@load(vm.clientOptions)">
+																										<listcell
+																											image="/images/toolbar/catalog16.png"
+																											onClick="@command('showControlPanel')">
+																											<label
+																												value="Catalogos" width="100%"
+																												style="font-size: 10px;" />
+																										</listcell>
+																									</listitem>
+																									<listitem>
+																										<listcell
+																											image="/images/toolbar/product16.png"
+																											onClick="@command('showBuscadorProductos')">
+																											<label
+																												value="Productos" width="100%"
+																												style="font-size: 10px;" />
+																										</listcell>
+																									</listitem>
+																									<listitem>
+																										<listcell
+																											image="/images/toolbar/process.png"
+																											onClick="@command('showProvidersSearch')">
+																											<label
+																												value="Proveedores" width="100%"
+																												style="font-size: 10px;" />
+																										</listcell>
+																									</listitem>
+																									<listitem
+																										visible="@load(vm.ownerOptions)">
+																										<listcell
+																											image="/images/toolbar/clients16.png"
+																											onClick="@command('mostrarConfiguracionUsuario')">
+																											<label
+																												value="Clientes" width="100%"
+																												style="font-size: 10px;" />
+																										</listcell>
+																									</listitem>
+																									<listitem>
+																										<listcell
+																											image="/images/toolbar/user16.png"
+																											onClick="@command('configurarUsuariosNegocio')">
+																											<label
+																												value="Usuarios" width="100%"
+																												style="font-size: 10px;" />
+																										</listcell>
+																									</listitem>
+																								</listbox>
+																							</window>
+																						</center>
+																					</borderlayout>
+																				</north>
+																				<center
+																					border="0">
+																					<borderlayout>
+																						<center>
+																							<borderlayout>
+																								<north
+																									title="Perfil" collapsible="true" maxsize="300"
+																									size="25%">
+																									<borderlayout>
+																										<center
+																											border="none" flex="true">
+																											<window
+																												height="100%" width="100%">
+																												<listbox
+																													vflex="1">
+																													<listhead>
+																														<listheader
+																															width="100%" />
+																														<listheader />
+																													</listhead>
+
+																													<listitem>
+																														<listcell
+																															image="/images/toolbar/report.png"
+																															onClick="@command('showPerfiles')">
+																															<label
+																																value="Mi perfil" width="100%"
+																																style="font-size: 10px;" />
+																														</listcell>
+																													</listitem>
+																												</listbox>
+																											</window>
+																										</center>
+																									</borderlayout>
+																								</north>
+																								<center
+																									border="0">
+																									<borderlayout
+																										style="display: table;">
+																										<center>
+																											<image
+																												width="100%" height="auto" class="circular"
+																												content="@bind(vm.organizacion.logotipoAImage)" />
+																										</center>
+																									</borderlayout>
+																								</center>
+																							</borderlayout>
+																						</center>
+																					</borderlayout>
+																				</center>
+																			</borderlayout>
+																		</center>
+																	</borderlayout>
+																</center>
+															</borderlayout>
+														</center>
+													</borderlayout>
+												</center>
+											</borderlayout>
+										</center>
+									</borderlayout>
+								</center>
+							</borderlayout>
+						</window>
+					</center>
+
+				</borderlayout>
+			</north>
+		</borderlayout>
 	</window>
 </zk>

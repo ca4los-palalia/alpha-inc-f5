@@ -10,6 +10,8 @@ public abstract interface MunicipioDAO {
 	public abstract void delete(Municipio paramMunicipio);
 
 	public abstract Municipio getById(Long paramLong);
+	
+	public abstract Municipio getByName(String name);
 
 	public abstract List<Municipio> getAll();
 

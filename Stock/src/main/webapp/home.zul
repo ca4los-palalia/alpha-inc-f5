@@ -7,53 +7,97 @@
 	<style src="/styles/home/styleHome.css" />
 
 
-	<window apply="org.zkoss.bind.BindComposer"
+	<window apply="org.zkoss.bind.BindComposer" height="100%"
+		style="margin-left: 100px; margin-right: 100px ;"
 		viewModel="@id('vm') @init('com.cplsystems.stock.app.vm.HomeVM')">
-		<div id="container" zclass="homeContainer">
+
+
+
+		<borderlayout>
+			<north maxsize="300" size="45px"><!-- HEADER -->
+				<borderlayout>
+					<center border="none" flex="true" style="vertical-align:middle;"
+						zclass="homeHeader">
+						<div style="text-align:right; margin:5px">
+							<include src="/header.zul" />
+						</div>
+					</center>
+				</borderlayout>
+			</north>
+			<center border="0">
+				<borderlayout>
+					<north maxsize="300" size="95%"><!-- CONTENEDOR PRINCIPAL -->
+						<borderlayout>
+							<center border="none" flex="true">
+
+
+								<borderlayout
+									style="width: 73%; overflow: auto;">
+									<west size="12%" flex="true"  title="Catálogo"
+										splittable="true"
+										collapsible="true">
+										<div id="menu">
+											<include src="/menu.zul" />
+										</div>
+									</west>
+									<center border="none" flex="true"
+										autoscroll="true">
+										<div id="content">
+											<include src="/inicio.zul" />
+										</div>
+									</center>
+								</borderlayout>
+
+
+							</center>
+						</borderlayout>
+					</north>
+					<center border="0"><!-- FOOTER -->
+						<borderlayout>
+							<center id="footer" zclass="homeFooter">
+
+							</center>
+						</borderlayout>
+					</center>
+				</borderlayout>
+			</center>
+		</borderlayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<div id="container" zclass="homeContainer" visible="false">
 
 			<div id="header" zclass="homeHeader">
-			
-			
+
+
 				<vlayout style="text-align:right; margin:5px ">
-						<include src="/header.zul" />				
+					<include src="/header.zul" />
 				</vlayout>
-			
-			
+
+
 			</div>
-			
+
 
 			<!--  NUEVO -->
-			<borderlayout style="width: 73%; overflow: auto;">
-				<west title="Menú" size="20%" flex="true"  
-					tooltiptext="Barra de menú"
-					splittable="true" collapsible="true">
-					<div id="menu" >
-						<include src="/menu.zul" />
-					</div>
-				</west>
-				<center border="none" flex="true" autoscroll="true">
-					<div id="content">
-						<include src="/inicio.zul" />
-					</div>
-				</center>
-			</borderlayout>
-			
-			
-
-			<!--  ORIGINAL -->
-			<div zclass="homeMenu" visible="false">
-				<include src="/menu.zul" />
-			</div>
-
-			<div  zclass="homeContent" hflex="min" visible="false">
-				<include src="/modulos/requisicion/requisicion.zul" />
-
-			</div>
 
 
-			<div id="footer" zclass="homeFooter">
-				
-			</div>
 
 		</div>
 

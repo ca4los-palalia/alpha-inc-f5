@@ -48,6 +48,7 @@ public class MunicipioDAOImpl extends HibernateDAOSuportUtil implements Municipi
 		return (lista != null) && (!lista.isEmpty()) ? lista : null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Municipio> getByEstado(Estado estado) {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Municipio.class);
@@ -56,4 +57,15 @@ public class MunicipioDAOImpl extends HibernateDAOSuportUtil implements Municipi
 		List<Municipio> lista = criteria.list();
 		return (lista != null) && (!lista.isEmpty()) ? lista : null;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public Municipio getByName(String name) {
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Municipio.class);
+
+		criteria.add(Restrictions.eq("nombre", name));
+		List<Municipio> lista = criteria.list();
+		return (lista != null) && (!lista.isEmpty()) ? (Municipio) lista.get(0) : null;
+	}
+	
 }

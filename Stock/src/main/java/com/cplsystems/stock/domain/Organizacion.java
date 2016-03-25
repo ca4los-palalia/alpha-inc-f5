@@ -1,12 +1,20 @@
 package com.cplsystems.stock.domain;
 
+import java.io.IOException;
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.zkoss.image.AImage;
 
 @Entity
 @Table
@@ -15,10 +23,12 @@ public class Organizacion implements Serializable {
 	private Long idOrganizacion;
 	private String nombre;
 	private String rfc;
-	private String logotipo;
-	private String calle;
-	private String codigoPostal;
-	private String pais;
+	private byte[] logotipo;
+	private AImage logotipoAImage;
+	
+	private Direccion direccion;
+	private Contacto contacto;
+	private DevelopmentTool developmentTool;
 
 	@Id
 	@Column
@@ -48,40 +58,67 @@ public class Organizacion implements Serializable {
 	public void setRfc(String rfc) {
 		this.rfc = rfc;
 	}
-
-	@Column
-	public String getLogotipo() {
-		return this.logotipo;
+	
+	@OneToOne
+	@JoinColumn(name = "direccion")
+	public Direccion getDireccion() {
+		return direccion;
 	}
 
-	public void setLogotipo(String logotipo) {
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "contacto")
+	public Contacto getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(Contacto contacto) {
+		this.contacto = contacto;
+	}
+	
+	@Column
+	@Lob
+	public byte[] getLogotipo() {
+		return logotipo;
+	}
+
+	
+
+	public void setLogotipo(byte[] logotipo) {
 		this.logotipo = logotipo;
 	}
+	
 
-	@Column
-	public String getCalle() {
-		return this.calle;
+	@Transient
+	public AImage getLogotipoAImage() {
+		if (logotipo != null) {
+			try {
+				logotipoAImage = new AImage("logoByte", logotipo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return logotipoAImage;
 	}
 
-	public void setCalle(String calle) {
-		this.calle = calle;
+	public void setLogotipoAImage(AImage logotipoAImage) {
+		this.logotipoAImage = logotipoAImage;
 	}
 
-	@Column
-	public String getCodigoPostal() {
-		return this.codigoPostal;
+	@OneToOne
+	@JoinColumn(name = "developmentTool")
+	public DevelopmentTool getDevelopmentTool() {
+		return developmentTool;
 	}
 
-	public void setCodigoPostal(String codigoPostal) {
-		this.codigoPostal = codigoPostal;
+	public void setDevelopmentTool(DevelopmentTool developmentTool) {
+		this.developmentTool = developmentTool;
 	}
-
-	@Column
-	public String getPais() {
-		return this.pais;
-	}
-
-	public void setPais(String pais) {
-		this.pais = pais;
-	}
+	
+	
+	
+	
 }

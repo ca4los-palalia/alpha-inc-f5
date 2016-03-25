@@ -1,0 +1,446 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style>
+		.fgrid tr.z-row td.z-row-inner,tr.z-row,div.z-grid-body
+		div.z-cell,div.z-grid { border: none; overflow: hidden; zoom: 1;
+		background: white; border-top: none; border-left: none;
+		border-right: none; border-bottom: none; }
+
+		.fgrid .z-grid-odd .fgrid .z-row-inner,.fgrid .z-grid-odd
+		.z-cell { background-color: #F7F7F7; border-bottom: 1px solid
+		transparent; border-left: 1px solid transparent; border-top: 1px
+		solid transparent; }
+
+		.fgrid .z-grid-odd .fgrid.z-row-inner,.fgrid.z-grid-odd
+		.z-cell,.fgrid.z-grid-odd { background: none repeat scroll 0 0
+		transparent; }
+
+		.fgrid tr.z-grid-odd td.z-row-inner,.fgrid tr.z-grid-odd
+		.z-cell,.fgrid tr.z-grid-odd { background: white }
+
+		.fgrid tr.z-row td.z-row-inner,.fgrid tr.z-row .z-cell {
+		background: white; border-top: none; }
+
+
+	</style>
+
+	<style src="/styles/home/styleHome.css" />
+	<style src="/styles/home/styleGlobal.css" />
+	<script src="/scripts/watermarks.js" type="text/javascript" />
+	<window apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('pvm') @init('com.cplsystems.stock.app.vm.perfil.PerfilVM')">
+
+
+
+		<groupbox mold="3d" open="true">
+			<caption label="USUARIO"
+				image="/images/toolbar/info16.png">
+				<button
+					image="/images/toolbar/saveOff16.png" zclass="find_button"
+					onClick="@command('guardarCambios', compSaveData=self)"
+					tooltiptext="Salvar Cambios" />
+			</caption>
+
+
+
+
+			<groupbox closable="false">
+				<caption>Informacion</caption>
+				<grid sclass="fgrid">
+					<columns>
+						<column width="10%" />
+						<column />
+						<column width="10%" />
+						<column />
+						<column width="10%" />
+						<column />
+					</columns>
+					<rows>
+						<row>
+							<label value="Nombre:" />
+							<textbox width="100%"
+								value="@bind(pvm.personaUsuario.nombre)" />
+
+							<label value="Ap Paterno:" />
+							<textbox width="100%"
+								value="@bind(pvm.personaUsuario.apellidoPaterno)" />
+
+							<label value="Ap Materno:" />
+							<textbox width="100%"
+								value="@bind(pvm.personaUsuario.apellidoMaterno)" />
+						</row>
+						<row>
+							<label value="Usuario:" />
+							<textbox width="100%"
+								value="@bind(pvm.usuario.benutzer)" />
+
+							<label value="Contraseña:" />
+
+
+							<grid sclass="fgrid">
+								<columns>
+									<column align="center" />
+									<column align="center" width="15%" />
+								</columns>
+								<rows>
+									<row>
+										<textbox width="100%"
+											type="@bind(pvm.typePassword)"
+											value="@bind(pvm.usuario.kennwort)" />
+										<checkbox
+											tooltiptext="Ver contraseña"
+											onCheck="@command('changeTypePassword')"
+											checked="@bind(pvm.verPassword)" />
+
+
+									</row>
+								</rows>
+							</grid>
+							<label value="Organización:" />
+							<textbox width="100%" readonly="true"
+								value="@bind(pvm.organizacion.nombre)" />
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<separator />
+
+			<groupbox closable="false">
+				<caption>Direccion</caption>
+				<grid sclass="fgrid">
+					<columns>
+						<column width="10%" />
+						<column />
+						<column width="10%" />
+						<column />
+						<column width="10%" />
+						<column />
+					</columns>
+					<rows>
+						<row>
+							<label value="Calle:" />
+							<textbox width="100%"
+								value="@bind(pvm.direccionUsuario.calle)" />
+
+							<label value="C.P.:" />
+							<grid sclass="fgrid">
+								<columns>
+									<column align="center" />
+									<column align="center" width="17%" />
+								</columns>
+								<rows>
+									<row>
+										<textbox width="100%"
+											value="@bind(pvm.direccionUsuario.cp)" />
+										<button
+											image="/images/toolbar/find16x16.png" zclass="find_button"
+											onClick="@command('getInformacionDireccionFromCPUsuario', compUserCp=self)"
+											tooltiptext="Buscar Informacion del codigo postal" />
+									</row>
+								</rows>
+							</grid>
+
+
+
+							<label value="Colonia:" />
+							<textbox width="100%"
+								value="@bind(pvm.direccionUsuario.colonia)" />
+
+						</row>
+						<row>
+							<label value="Ciudad:" />
+							<textbox width="100%"
+								value="@bind(pvm.direccionUsuario.cuidad)" />
+
+							<label value="Num. ext:" />
+							<textbox width="100%"
+								value="@bind(pvm.direccionUsuario.numExt)" />
+
+							<label value="Num int.:" />
+							<textbox width="100%"
+								value="@bind(pvm.direccionUsuario.numInt)" />
+						</row>
+						<row>
+							<label value="Pais:" />
+							<combobox model="@bind(pvm.paises)"
+								selectedItem="@bind(pvm.paisUsuario)" width="100%">
+								<template name="model">
+									<comboitem
+										label="@load(each.nombre)" />
+								</template>
+							</combobox>
+
+							<label value="Estado" />
+							<combobox model="@bind(pvm.estados)"
+								disabled="@bind(pvm.habilitarPaisEstadoMunicipio)"
+								autocomplete="true"
+								onSelect="@command('getMunicipiosSelectedEstadoItem')"
+								selectedItem="@bind(pvm.estadoUsuario)" width="100%">
+								<template name="model">
+									<comboitem
+										label="@load(each.nombre)" />
+								</template>
+							</combobox>
+
+							<label value="Municipio" />
+							<combobox model="@bind(pvm.municipios)"
+								disabled="@bind(pvm.habilitarPaisEstadoMunicipio)"
+								autocomplete="true" selectedItem="@bind(pvm.municipioUsuario)"
+								width="100%">
+								<template name="model">
+									<comboitem
+										label="@load(each.nombre)" />
+								</template>
+							</combobox>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+			<separator />
+			<groupbox closable="false">
+				<caption>Contacto</caption>
+				<grid sclass="fgrid">
+					<columns>
+						<column width="10%" />
+						<column />
+						<column width="10%" />
+						<column />
+						<column width="10%" />
+						<column />
+					</columns>
+					<rows>
+						<row>
+							<label value="e-mail:" />
+							<textbox width="100%"
+								value="@bind(pvm.emailUsuario.email)" />
+
+							<label value="Telefono:" />
+							<textbox width="100%"
+								value="@bind(pvm.telefonoUsuario.numero)" />
+
+							<label value="Movil:" />
+							<textbox width="100%"
+								value="@bind(pvm.telefonoUsuario.celular)" />
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+		</groupbox>
+
+		<separator />
+
+		<groupbox mold="3d" open="true" visible="@bind(pvm.verOrganizacion)">
+			<caption label="ORGANIZACIÓN"
+				image="/images/toolbar/info16.png" />
+
+			<grid sclass="fgrid">
+				<columns>
+					<column align="center" width="15%" />
+					<column />
+
+				</columns>
+				<rows>
+					<row>
+						<grid sclass="fgrid">
+							<columns>
+								<column align="center" />
+							</columns>
+							<rows>
+								<row>
+									<image width="100px" height="100px"
+										class="circular"
+										content="@bind(pvm.logotipoAImage)" />
+								</row>
+								<row>
+									<button Label="Subir logo"
+										width="100%" tooltiptext="Subir logotipo de la organizacion"
+										upload="true,maxsize=10000"
+										onUpload="@command('uploadLogo', upEvent=event)"
+										mold="trendy" />
+								</row>
+								<row>
+									<textbox id="correoDesarrolloUserId" width="100%" 
+									tooltiptext="correo con dominio google con servicio activado, necesario para la notificación de correos"
+									value="@bind(pvm.emailDevelopment.email)"/>
+								</row>
+								<row>
+									<textbox id="correoDesarrolloPassId" width="100%" 
+									value="@bind(pvm.emailDevelopment.tipo)"/>
+								</row>
+
+							</rows>
+						</grid>
+
+						<window>
+
+							<groupbox closable="false">
+								<caption>Informacion</caption>
+								<grid sclass="fgrid">
+									<columns>
+										<column width="10%" />
+										<column />
+										<column width="7%" />
+										<column width="25%" />
+									</columns>
+									<rows>
+										<row>
+											<label value="Nombre:" />
+											<textbox width="100%"
+												value="@bind(pvm.organizacion.nombre)" />
+
+											<label value="RFC:" />
+											<textbox width="100%"
+												maxlength="18" value="@bind(pvm.organizacion.rfc)" />
+
+										</row>
+									</rows>
+								</grid>
+							</groupbox>
+							<separator />
+							<groupbox closable="false">
+								<caption>Direccion</caption>
+								<grid sclass="fgrid">
+									<columns>
+										<column width="10%" />
+										<column />
+										<column width="10%" />
+										<column />
+										<column width="10%" />
+										<column />
+									</columns>
+									<rows>
+										<row>
+											<label value="Calle:" />
+											<textbox width="100%"
+												value="@bind(pvm.direccionOrganizacion.calle)" />
+
+											<label value="C.P.:" />
+											<grid sclass="fgrid">
+												<columns>
+													<column
+														align="center" />
+													<column
+														align="center" width="23%" />
+												</columns>
+												<rows>
+													<row>
+														<textbox
+															width="100%"
+															value="@bind(pvm.direccionOrganizacion.cp)" />
+														<button
+															image="/images/toolbar/find16x16.png"
+															zclass="find_button"
+															onClick="@command('getInformacionDireccionFromCPOrganizacion', compOrgCp=self)"
+															tooltiptext="Buscar Informacion del codigo postal" />
+													</row>
+												</rows>
+											</grid>
+
+
+
+											<label value="Colonia:" />
+											<textbox width="100%"
+												value="@bind(pvm.direccionOrganizacion.colonia)" />
+
+										</row>
+										<row>
+											<label value="Ciudad:" />
+											<textbox width="100%"
+												value="@bind(pvm.direccionOrganizacion.cuidad)" />
+
+											<label value="Num. ext:" />
+											<textbox width="100%"
+												value="@bind(pvm.direccionOrganizacion.numExt)" />
+
+											<label value="Num int.:" />
+											<textbox width="100%"
+												value="@bind(pvm.direccionOrganizacion.numInt)" />
+										</row>
+										<row>
+											<label value="Pais:" />
+											<combobox
+												model="@bind(pvm.paises)"
+												selectedItem="@bind(pvm.paisOrganizacion)"
+												width="100%">
+												<template
+													name="model">
+													<comboitem
+														label="@load(each.nombre)" />
+												</template>
+											</combobox>
+
+											<label value="Estado" />
+											<combobox
+												model="@bind(pvm.estados)" autocomplete="true"
+												onSelect="@command('getMunicipiosSelectedEstadoItem')"
+												selectedItem="@bind(pvm.estadoOrganizacion)"
+												width="100%">
+												<template
+													name="model">
+													<comboitem
+														label="@load(each.nombre)" />
+												</template>
+											</combobox>
+
+											<label value="Municipio" />
+											<combobox
+												model="@bind(pvm.municipios)" autocomplete="true"
+												selectedItem="@bind(pvm.municipioOrganizacion)"
+												width="100%">
+												<template
+													name="model">
+													<comboitem
+														label="@load(each.nombre)" />
+												</template>
+											</combobox>
+										</row>
+									</rows>
+								</grid>
+							</groupbox>
+							<separator />
+							<groupbox closable="false">
+								<caption>Contacto</caption>
+								<grid sclass="fgrid">
+									<columns>
+										<column width="10%" />
+										<column />
+										<column width="10%" />
+										<column />
+										<column width="10%" />
+										<column />
+									</columns>
+									<rows>
+										<row>
+											<label value="e-mail:" />
+											<textbox width="100%"
+												value="@bind(pvm.emailOrganizacion.email)" />
+
+											<label value="Telefono:" />
+											<textbox width="100%"
+												value="@bind(pvm.telefonoOrganizacion.numero)" />
+												
+											<label value="Web:" />
+											<textbox width="100%"
+												value="@bind(pvm.emailOrganizacion.web)" />
+										</row>
+									</rows>
+								</grid>
+							</groupbox>
+
+						</window>
+
+
+					</row>
+
+				</rows>
+			</grid>
+
+
+
+		</groupbox>
+
+
+
+	</window>
+</zk>

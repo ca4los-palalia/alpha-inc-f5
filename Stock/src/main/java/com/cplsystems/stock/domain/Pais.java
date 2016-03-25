@@ -15,7 +15,7 @@ public class Pais {
 	private String abreviatura;
 
 	@Id
-	@Column(name = "idPais", nullable = false)
+	@Column(nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdPais() {
 		return this.idPais;

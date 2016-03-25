@@ -88,13 +88,13 @@
 								<label value="Direccion" />
 							</hlayout>
 							<textbox cols="60" zclass="tBox" width="100%"
-								value="@bind(evm.organizacion.calle)" />
+								value="@bind(evm.organizacion.direccion.calle)" />
 							<hlayout>
 								<label value="*" style="color:red" />
 								<label value="C.P:" />
 							</hlayout>
 							<textbox cols="9" zclass="tBox" width="100%"
-								value="@bind(evm.organizacion.codigoPostal)" />
+								value="@bind(evm.organizacion.direccion.cp)" />
 							<hlayout>
 								<label value="*" style="color:red" />
 								<label value="RFC:" />

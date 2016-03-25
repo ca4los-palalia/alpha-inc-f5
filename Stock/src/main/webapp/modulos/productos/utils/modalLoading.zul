@@ -1,0 +1,65 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	
+	
+	<window apply="org.zkoss.bind.BindComposer"
+		id="productosModalDialog"
+		viewModel="@id('bpvm') @init('com.cplsystems.stock.app.utils.ModalLoadingVM')"
+		width="460px" height="360px" position="center,center"
+		closable="true">
+		<vlayout id="productoDetalles" height="320px">
+			
+			<grid>
+				<columns>
+					<column width="15%"/>
+					<column/>
+					<column width="15%"/>
+					<column/>
+					<column width="10%"/>
+				</columns>
+				<rows>
+					<row>
+						<label value="Clave:" />
+						<textbox width="100%" onOK="@command('searchItemByKeyOrName')"
+							value="@bind(bpvm.claveProducto)" />
+						<label value="Nombre:" />
+						<textbox width="100%" onOK="@command('searchItemByKeyOrName')"
+							value="@bind(bpvm.nombreProducto)" />
+						<button image="/images/toolbar/search32.png"
+							onClick="@command('searchItemByKeyOrName')" />
+					</row>
+				</rows>
+			</grid>
+			
+			<hlayout>
+				<listbox model="@load(bpvm.productos)"
+					selectedItem="@bind(bpvm.productoSeleccionado)"
+					emptyMessage="No hay resultados que mostrar" mold="paging"
+					pageSize="4">
+					<auxhead>
+						<auxheader colspan="4" label="Productos" />
+					</auxhead>
+					<listhead>
+						<listheader label="Clave" align="center" />
+						<listheader label="Nombre" align="center" />
+						<listheader label="Precio" align="center" />
+						<listheader label="Marca" align="center" />
+					</listhead>
+					<template name="model">
+						<listitem>
+							<listcell label="${each.clave}" />
+							<listcell label="${each.nombre}" />
+							<listcell label="${each.precio}" />
+							<listcell label="${each.marca}" />
+						</listitem>
+					</template>
+				</listbox>
+			</hlayout>
+		</vlayout>
+		<hlayout style="text-align:right">
+			<button label="Cancelar"  onClick="@command('closeDialog')"/>
+			<button label="Aceptar"
+				onClick="@command('transferProduct')" />
+		</hlayout>
+	</window>
+</zk>

@@ -30,3 +30,17 @@ zk.afterMount(function() {
 zk.afterMount(function() {
     jq("$buscadorRequisicionId").Watermark("Ingrese folio de requisicion","gray");
 });
+zk.afterMount(function() {
+    jq("$correoDesarrolloUserId").Watermark("Correo de desarrollo","gray");
+});
+zk.afterMount(function() {
+    jq("$correoDesarrolloPassId").Watermark("contraseña ","gray");
+});
+
+zk.afterMount(function() {
+    jq("$buscarCotizacionId").Watermark("Fólio de requisicion, cotizacion o proveedor","gray");
+});
+zk.afterMount(function() {
+    jq("$buscarOrdCompraId").Watermark("Fólio de Orden o proveedor","gray");
+});
+

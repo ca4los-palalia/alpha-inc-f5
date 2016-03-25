@@ -27,4 +27,8 @@ public class EstadoService {
 	public List<Estado> getAll() throws DataAccessException {
 		return this.estadoDAO.getAll();
 	}
+	
+	public Estado getByName(String name) throws DataAccessException {
+		return this.estadoDAO.getByName(name);
+	}
 }

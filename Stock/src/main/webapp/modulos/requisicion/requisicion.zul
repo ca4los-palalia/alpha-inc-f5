@@ -1,688 +1,802 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
+	<style>
+		.fgrid tr.z-row td.z-row-inner,tr.z-row,div.z-grid-body
+		div.z-cell,div.z-grid { border: none; overflow: hidden; zoom: 1;
+		background: white; border-top: none; border-left: none;
+		border-right: none; border-bottom: none; }
+
+		.fgrid .z-grid-odd .fgrid .z-row-inner,.fgrid .z-grid-odd
+		.z-cell { background-color: #F7F7F7; border-bottom: 1px solid
+		transparent; border-left: 1px solid transparent; border-top: 1px
+		solid transparent; }
+
+		.fgrid .z-grid-odd .fgrid.z-row-inner,.fgrid.z-grid-odd
+		.z-cell,.fgrid.z-grid-odd { background: none repeat scroll 0 0
+		transparent; }
+
+		.fgrid tr.z-grid-odd td.z-row-inner,.fgrid tr.z-grid-odd
+		.z-cell,.fgrid tr.z-grid-odd { background: white }
+
+		.fgrid tr.z-row td.z-row-inner,.fgrid tr.z-row .z-cell {
+		background: white; border-top: none; }
+	</style>
 	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
-	<style src="/styles/home/styleGlobal.css" />
 	<script src="/scripts/watermarks.js" type="text/javascript" />
-	<window apply="org.zkoss.bind.BindComposer"
+	<window apply="org.zkoss.bind.BindComposer" height="100%"
 		viewModel="@id('rvm') @init('com.cplsystems.stock.app.vm.requisicion.RequisicionVM')">
+		<borderlayout>
+			<north title="Requisiciones | Requisición:" maxsize="300"
+				size="100%" splittable="true" collapsible="true">
+				<borderlayout>
+					<center border="none" flex="true">
+						<div>
+							<borderlayout>
+								<north maxsize="300" size="60%">
+									<borderlayout>
+										<center border="none"
+											flex="true">
+											<div>
+												<!-- BUSQUEDAS -->
+												<borderlayout>
+													<north maxsize="300"
+														size="105px">
+														<borderlayout>
+															<center
+																border="none" flex="true">
+																<div>
+																	<!-- PANEL DE BUSQUEDA -->
 
-		<vlayout>
-			<radiogroup id="sv1" />
+																	<groupbox
+																		mold="3d" open="true" visible="true">
+																		<caption
+																			label="Buscar" image="/images/toolbar/find16x16.png" />
+																		<grid sclass="fgrid">
+																			<columns>
+																				<column
+																					width="14%" />
+																				<column
+																					width="14%" />
+																				<column
+																					width="14%" />
+																				<column />
+																			</columns>
+																			<rows>
+																				<row>
+
+																					<button
+																						image="/images/toolbar/searchNew16.png"
+																						zclass="find_button"
+																						onClick="@command('checkNueva')"
+																						tooltiptext="Requisiciones nuevas" />
+
+																					<button
+																						image="/images/toolbar/searchCancel16.png"
+																						zclass="find_button"
+																						onClick="@command('checkCancelada')"
+																						tooltiptext="Requisiciones Canceladas" />
+
+																					<button
+																						image="/images/toolbar/searchAccept16.png"
+																						zclass="find_button"
+																						onClick="@command('checkAceptada')"
+																						tooltiptext="Requisiciones Aceptadas" />
 
 
+																					<hlayout>
+																						<label
+																							style="font-size: 90%;" value="Area(UR): " />
+																						<combobox
+																							readonly="true" model="@load(rvm.areas)"
+																							width="95%" selectedItem="@bind(rvm.areaBuscar)"
+																							onSelect="@command('buscarPorArea')">
+																							<template
+																								name="model" var="area">
+																								<comboitem
+																									width="100%" label="@bind(area.nombre)" />
+																							</template>
+																						</combobox>
+																					</hlayout>
+																				</row>
+																			</rows>
+																		</grid>
+																		<grid sclass="fgrid">
+																			<columns>
+																				<column />
+																				<column
+																					width="14%" />
+																			</columns>
+																			<rows>
+																				<row>
+																					<textbox
+																						id="buscadorRequisicionId"
+																						onOK="@command('buscarPorCadenaTexto')"
+																						value="@bind(rvm.requisicion.buscarRequisicion)"
+																						width="100%" />
 
+																					<hlayout
+																						style="text-align:center">
 
-			<borderlayout style="height:100vh;">
-				<north height="7%">
-					<grid>
-						<columns>
-							<column />
-							<column width="35%"
-								zclass="shadowMenuActions" />
-						</columns>
-						<rows>
-							<row zclass="shadowMenuActions">
+																						<button
+																							image="/images/toolbar/find16x16.png"
+																							zclass="find_button"
+																							onClick="@command('buscarPorCadenaTexto')"
+																							tooltiptext="Buscar requisición" />
+																					</hlayout>
+																				</row>
+																			</rows>
+																		</grid>
 
-								<div style="margin:5px">
-									<button
-										label="Requisiciones > Requisición"
-										image="/images/toolbar/home32.png"
-										zclass="panelInfoItemMenuTitle" />
-								</div>
+																	</groupbox>
+																</div>
+															</center>
+														</borderlayout>
+													</north>
+													<center
+														border="0">
+														<borderlayout>
+															<center>
+																<!-- LISTA DE COTIZACIONES -->
+																<window
+																	height="100%" width="100%">
 
-								<hlayout
-									style="text-align:right; margin:5px ">
-									<button
-										image="/images/toolbar/newDoc.png" sclass="web_button"
-										onClick="@command('limpiarFormulario')"
-										tooltiptext="Nueva requisición" />
+																	<listbox
+																		vflex="1" model="@load(rvm.requisiciones)"
+																		onSelect="@command('selectedResultadoRequisiciones')"
+																		selectedItem="@bind(rvm.requisicion)"
+																		emptyMessage="resultados de requisiciones vacia">
+																		<listhead>
+																			<listheader
+																				align="center" style="font-size:smaller;"
+																				label="Clave" width="25%" />
+																			<listheader
+																				align="left" style="font-size:smaller;"
+																				label="Área" />
+																			<listheader
+																				align="center" style="font-size:smaller;"
+																				width="10%" />
+																		</listhead>
+																		<template
+																			name="model" var="requisicionVar">
+																			<listitem>
+																				<listcell>
+																					<label
+																						style="font-size: 80%;"
+																						value="@bind(requisicionVar.folio)" width="100%" />
+																				</listcell>
+																				<listcell>
+																					<label
+																						style="font-size: 80%;"
+																						value="@bind(requisicionVar.area.nombre)"
+																						width="100%" />
+																				</listcell>
+																				<listcell>
+																					<button
+																						tooltiptext="@bind(requisicionVar.estatusRequisicion.nombre)"
+																						style="@bind(requisicionVar.estatusRequisicion.color)" />
+																				</listcell>
+																			</listitem>
+																		</template>
+																	</listbox>
+																</window>
+															</center>
+														</borderlayout>
+													</center>
+												</borderlayout>
+											</div>
+										</center>
+									</borderlayout>
+								</north>
+								<center border="0"
+									title="Bandeja de requisiciones">
+									<borderlayout>
+										<center>
+											<!-- BANDEJA DE ENTRADA -->
+											<window height="100%"
+												width="100%">
+												<listbox vflex="1"
+													model="@load(rvm.requisicionesInbox)"
+													selectedItem="@bind(rvm.requisicionInboxSeleccionada)"
+													emptyMessage="No hay requisiciones" height="100%">
+													<listhead>
 
-									<button
-										image="/images/toolbar/saveOff.png"
-										disabled="@load(rvm.readOnly)" sclass="web_button"
-										tooltiptext="Guardar/Actualizar requisición"
-										onClick="@command('saveChanges')" />
+														<listheader
+															label="Folio" align="center" width="25%"
+															style="font-size:smaller;" />
+														<listheader
+															label="Adscripción" visible="false" align="center"
+															width="25%" style="font-size:smaller;" />
+														<listheader
+															label="Área" align="center" style="font-size:smaller;" />
 
-									<button
-										image="/images/toolbar/pdf32.png" sclass="web_button"
-										tooltiptext="Imprimir requisición requisición"
-										onClick="@command('imprimirRequisicion')" />
-								</hlayout>
-							</row>
-						</rows>
-					</grid>
-				</north>
-				<west maxsize="600" size="30%" vflex="1" border="0"
-					splittable="true">
-					<div>
-						<vbox spacing="0" width="100%">
-							<groupbox mold="3d" open="true"
-								visible="true">
-								<caption label="Buscar"
-									image="/images/toolbar/find16x16.png" />
-								<grid style="border: 0;">
-									<columns>
-										<column width="14%"/>
-										<column width="14%"/>
-										<column width="14%"/>
-										<column />
-									</columns>
-									<rows>
-										<row
-											style="background-color: transparent; border: 0;">
-											
-											<button
-												image="/images/toolbar/newDoc16.png" zclass="find_button"
-												onClick="@command('checkNueva')"
-												tooltiptext="Requisiciones nuevas" />
-											
-											<button
-												image="/images/toolbar/delete16.png" zclass="find_button"
-												onClick="@command('checkCancelada')"
-												tooltiptext="Requisiciones Canceladas" />
-												
-											<button
-												image="/images/toolbar/accept16.png" zclass="find_button"
-												onClick="@command('checkAceptada')"
-												tooltiptext="Requisiciones Aceptadas" />
-												
-											
-											<hlayout>
-												<label style="font-size: 90%;"
-													value="Area(UR): " />
-												<combobox
-													readonly="true" model="@load(rvm.areas)" width="95%"
-													selectedItem="@bind(rvm.areaBuscar)" onSelect="@command('buscarPorArea')">
+														<listheader
+															align="center" width="10%" style="font-size:smaller;" />
+													</listhead>
 													<template
-														name="model" var="area">
-														<comboitem
-															width="100%" label="@bind(area.nombre)" />
+														name="model" var="requisicion">
+														<listitem>
+
+															<listcell
+																style="font-size:smaller;"
+																onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+																label="${requisicion.requisicion.folio}" />
+															<listcell
+																style="font-size:smaller;"
+																onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+																label="${requisicion.requisicion.adscripcion}" />
+															<listcell
+																style="font-size:smaller;"
+																onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
+																label="${requisicion.requisicion.area.nombre}" />
+
+															<listcell
+																onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
+																<hlayout>
+																	<button
+																		disabled="true"
+																		style="${requisicion.requisicion.estatusRequisicion.color}" />
+																	<label
+																		style="font-size:smaller;"
+																		value="${requisicion.requisicion.estatusRequisicion.nombre}" />
+																</hlayout>
+															</listcell>
+														</listitem>
 													</template>
-												</combobox>
-											</hlayout>
-										</row>
-									</rows>
-								</grid>
-								<grid style="border: 0;">
-									<columns>
-										<column />
-										<column width="14%" />
-									</columns>
-									<rows>
-										<row
-											style="background-color:transparent; border: 0;">
-											<textbox id="buscadorRequisicionId"
-												onOK="@command('buscarPorCadenaTexto')"
-												value="@bind(rvm.requisicion.buscarRequisicion)"
-												width="100%" />
+												</listbox>
+											</window>
+										</center>
+									</borderlayout>
+								</center>
+							</borderlayout>
+						</div>
+					</center>
+					<east size="70%" border="none" flex="true">
+						<div>
+							<borderlayout>
+								<north maxsize="300" size="43px">
+									<borderlayout>
+										<center border="none"
+											flex="true">
+											<div>
+												<!-- BARRA DE MENUS -->
 
-											<hlayout
-												style="text-align:center">
+												<hlayout
+													style="text-align: right; margin: 1px 1px 1px 1px ;">
 
-												<button
-													image="/images/toolbar/find16x16.png" zclass="find_button"
-													onClick="@command('buscarPorCadenaTexto')"
-													tooltiptext="Buscar requisición" />
-											</hlayout>
-										</row>
-									</rows>
-								</grid>
-								<listbox 
-									model="@load(rvm.requisiciones)"
-									onSelect="@command('selectedResultadoRequisiciones')"
-									selectedItem="@bind(rvm.requisicion)" rows="7"
-									emptyMessage="resultados de requisiciones vacia">
-									<listhead>
-										<listheader align="center" style="font-size:smaller;" 
-											label="Clave" width="25%" />
-										<listheader align="left" style="font-size:smaller;" 
-											label="Área" />
-										<listheader align="center" style="font-size:smaller;" 
-											width="10%"/>
-									</listhead>
-									<template name="model"
-										var="requisicionVar">
-										<listitem>
-											<listcell>
-												<label style="font-size: 80%;"
-													value="@bind(requisicionVar.folio)" width="100%" />
-											</listcell>
-											<listcell>
-												<label style="font-size: 80%;"
-													value="@bind(requisicionVar.area.nombre)" width="100%" />
-											</listcell>
-											<listcell>
-												<button
-													tooltiptext="@bind(requisicionVar.estatusRequisicion.nombre)"
-													style="@bind(requisicionVar.estatusRequisicion.color)" />
-											</listcell>
-										</listitem>
-									</template>
-								</listbox>
-							</groupbox>
-							<splitter id="s1" collapse="before" />
-							<groupbox mold="3d">
-								<caption
-									label="Bandeja de requisiciones"
-									image="/images/toolbar/mailColor16.png" />
-
-
-								<listbox
-									model="@load(rvm.requisicionesInbox)"
-									selectedItem="@bind(rvm.requisicionInboxSeleccionada)"
-									emptyMessage="No hay requisiciones" rows="7"
-									height="100%">
-									<listhead>
-										
-										<listheader label="Folio"
-											align="center" width="25%" style="font-size:smaller;" />
-										<listheader label="Adscripción" visible="false"
-											align="center" width="25%" style="font-size:smaller;" />
-										<listheader label="Área"
-											align="center" style="font-size:smaller;" />
-										
-										<listheader 
-											align="center" width="10%" style="font-size:smaller;" />
-									</listhead>
-									<template name="model"
-										var="requisicion">
-										<listitem>
-											
-											<listcell
-												style="font-size:smaller;"
-												onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-												label="${requisicion.requisicion.folio}" />
-											<listcell
-												style="font-size:smaller;"
-												onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-												label="${requisicion.requisicion.adscripcion}" />
-											<listcell
-												style="font-size:smaller;"
-												onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)"
-												label="${requisicion.requisicion.area.nombre}" />
-											
-											<listcell
-												onClick="@command('transferirRequsicionToFormular', index=requisicionStatus.index)">
-												<hlayout>
 													<button
-														disabled="true"
-														style="${requisicion.requisicion.estatusRequisicion.color}" />
-													<label
-														style="font-size:smaller;"
-														value="${requisicion.requisicion.estatusRequisicion.nombre}" />
+														image="/images/toolbar/newDoc.png" sclass="web_button"
+														onClick="@command('limpiarFormulario')"
+														tooltiptext="Nueva requisición" />
+
+													<button
+														image="/images/toolbar/saveOff.png"
+														disabled="@load(rvm.readOnly)" sclass="web_button"
+														tooltiptext="Guardar/Actualizar requisición"
+														onClick="@command('saveChanges')" />
+
+													<button
+														image="/images/toolbar/pdf32.png" sclass="web_button"
+														tooltiptext="Imprimir requisición requisición"
+														onClick="@command('imprimirRequisicion')" />
 												</hlayout>
-											</listcell>
-										</listitem>
-									</template>
-								</listbox>
-							</groupbox>
-						</vbox>
-					</div>
-				</west>
-				<center>
-					<groupbox mold="3d" open="true" visible="true">
-						<caption label="Información de la requisición"
-							image="/images/toolbar/info16.png" />
+											</div>
+										</center>
+									</borderlayout>
+								</north>
+								<center border="0">
+									<borderlayout>
+										<center>
+											<!-- DETALLE DE LA INFORMACION -->
+											<borderlayout>
+												<north maxsize="300"
+													size="290px">
+													<borderlayout>
+														<center
+															border="none" flex="true">
+															<div>
+																<!-- INFORMACION DE LA REQUISICION -->
+																<grid sclass="fgrid">
+																	<columns>
+																		<column
+																			width="5%" />
+																		<column
+																			width="20%" />
+																		<column />
+																		<column
+																			width="10%" />
+																		<column
+																			width="15%" style="text-align:right" />
+																	</columns>
+																	<rows>
+																		<row>
 
-						<grid style="border: 0;">
-							<columns>
-								<column width="5%" />
-								<column width="20%" />
-								<column />
-								<column width="10%" />
-								<column width="15%"
-									style="text-align:right" />
-							</columns>
-							<rows>
-								<row
-									style="background-color:transparent; border: 0;">
+																			<button
+																				style="@bind(rvm.requisicion.estatusRequisicion.color)" />
+																			<label
+																				style="font-size:smaller;"
+																				value="@bind(rvm.requisicion.estatusRequisicion.nombre)" />
 
-									<button
-										style="@bind(rvm.requisicion.estatusRequisicion.color)" />
-									<label style="font-size:smaller;"
-										value="@bind(rvm.requisicion.estatusRequisicion.nombre)" />
+																			<label />
 
-									<label />
+																			<label
+																				value="Folio:" />
+																			<label
+																				value="@bind(rvm.requisicion.folio)"
+																				style="color: red; font-weight: bold;" />
+																		</row>
+																	</rows>
+																</grid>
 
-									<label value="Folio:" />
-									<label
-										value="@bind(rvm.requisicion.folio)"
-										style="color: red; font-weight: bold;" />
-								</row>
-							</rows>
-						</grid>
+																<separator
+																	bar="true" />
 
-						<separator bar="true" />
+																<grid sclass="fgrid">
+																	<columns>
+																		<column
+																			width="20%" />
+																		<column />
+																		<column
+																			width="10%" />
+																		<column />
+																		<column
+																			width="10%" />
+																		<column />
+																	</columns>
+																	<rows>
+																		<row>
+																			<hlayout>
+																				<label
+																					value="*" style="color:red" />
+																				<label
+																					value="Área Solicitante (UR):"
+																					sclass="invoiceLabel" />
+																			</hlayout>
+																			<combobox
+																				readonly="true" model="@load(rvm.areas)"
+																				width="100%"
+																				selectedItem="@bind(rvm.requisicion.area)">
+																				<template
+																					name="model" var="area">
+																					<comboitem
+																						label="@bind(area.nombre)" />
+																				</template>
+																			</combobox>
 
-						<grid style="border: 0;">
-							<columns>
-								<column width="20%" />
-								<column />
-								<column width="10%" />
-								<column />
-								<column width="10%" />
-								<column />
-							</columns>
-							<rows>
-								<row
-									style="background-color:transparent; border: 0;">
-									<hlayout>
-										<label value="*"
-											style="color:red" />
-										<label
-											value="Área Solicitante (UR):" sclass="invoiceLabel" />
-									</hlayout>
-									<combobox readonly="true"
-										model="@load(rvm.areas)" width="100%"
-										selectedItem="@bind(rvm.requisicion.area)">
-										<template name="model"
-											var="area">
-											<comboitem
-												label="@bind(area.nombre)" />
-										</template>
-									</combobox>
+																			<hlayout>
+																				<label
+																					value="*" style="color:red" />
+																				<label
+																					value="Prog" />
+																			</hlayout>
+																			<combobox
+																				model="@load(rvm.cofiaProgs)" readonly="true"
+																				width="100%"
+																				selectedItem="@bind(rvm.requisicion.cofiaProg)">
+																				<template
+																					name="model">
+																					<comboitem
+																						label="@load(each.nombre)" />
+																				</template>
+																			</combobox>
 
-									<hlayout>
-										<label value="*"
-											style="color:red" />
-										<label value="Prog" />
-									</hlayout>
-									<combobox
-										model="@load(rvm.cofiaProgs)" readonly="true" width="100%"
-										selectedItem="@bind(rvm.requisicion.cofiaProg)">
-										<template name="model">
-											<comboitem
-												label="@load(each.nombre)" />
-										</template>
-									</combobox>
+																			<hlayout>
+																				<label
+																					value="*" style="color:red" />
+																				<label
+																					value="Py:" />
+																			</hlayout>
+																			<combobox
+																				model="@load(rvm.cofiaPys)" readonly="true"
+																				width="100%"
+																				selectedItem="@bind(rvm.requisicion.cofiaPy)">
+																				<template
+																					name="model">
+																					<comboitem
+																						label="@load(each.nombre)" />
+																				</template>
+																			</combobox>
+																		</row>
+																	</rows>
+																</grid>
 
-									<hlayout>
-										<label value="*"
-											style="color:red" />
-										<label value="Py:" />
-									</hlayout>
-									<combobox
-										model="@load(rvm.cofiaPys)" readonly="true" width="100%"
-										selectedItem="@bind(rvm.requisicion.cofiaPy)">
-										<template name="model">
-											<comboitem
-												label="@load(each.nombre)" />
-										</template>
-									</combobox>
-								</row>
-							</rows>
-						</grid>
+																<grid sclass="fgrid">
+																	<columns>
+																		<column
+																			width="20%" />
+																		<column />
+																	</columns>
+																	<rows>
+																		<row>
+																			<hlayout>
+																				<label
+																					value="*" style="color:red" />
+																				<label
+																					value="Fuente de financiamiento:"
+																					sclass="invoiceLabel" />
+																			</hlayout>
+																			<combobox
+																				model="@load(rvm.cofiaFuenteFinanciamientos)"
+																				readonly="true" width="100%"
+																				selectedItem="@bind(rvm.requisicion.cofiaFuenteFinanciamiento)">
+																				<template
+																					name="model">
+																					<comboitem
+																						label="@load(each.nombre)" />
+																				</template>
+																			</combobox>
+																		</row>
+																	</rows>
+																</grid>
 
-						<grid style="border: 0;">
-							<columns>
-								<column width="20%" />
-								<column />
-							</columns>
-							<rows>
-								<row
-									style="background-color:transparent; border: 0;">
-									<hlayout>
-										<label value="*"
-											style="color:red" />
-										<label
-											value="Fuente de financiamiento:" sclass="invoiceLabel" />
-									</hlayout>
-									<combobox
-										model="@load(rvm.cofiaFuenteFinanciamientos)" readonly="true"
-										width="100%"
-										selectedItem="@bind(rvm.requisicion.cofiaFuenteFinanciamiento)">
-										<template name="model">
-											<comboitem
-												label="@load(each.nombre)" />
-										</template>
-									</combobox>
-								</row>
-							</rows>
-						</grid>
+																<grid sclass="fgrid">
+																	<columns>
+																		<column
+																			width="20%" />
+																		<column />
+																		<column
+																			width="10%" />
+																		<column />
+																		<column
+																			width="10%" />
+																		<column />
+																	</columns>
+																	<rows>
+																		<row>
+																			<hlayout>
+																				<label
+																					value="*" style="color:red" />
+																				<label
+																					value="Nombre:" sclass="invoiceLabel" />
+																			</hlayout>
+																			<textbox
+																				sclass="invoiceTextBox tBox" width="100%"
+																				maxlength="40" disabled="true"
+																				value="@bind(rvm.requisicion.persona.nombre)" />
 
-						<grid style="border: 0;">
-							<columns>
-								<column width="20%" />
-								<column />
-								<column width="10%" />
-								<column />
-								<column width="10%" />
-								<column />
-							</columns>
-							<rows>
-								<row
-									style="background-color:transparent; border: 0;">
-									<hlayout>
-										<label value="*"
-											style="color:red" />
-										<label value="Nombre:"
-											sclass="invoiceLabel" />
-									</hlayout>
-									<textbox
-										sclass="invoiceTextBox tBox" width="100%" maxlength="40"
-										disabled="true" value="@bind(rvm.requisicion.persona.nombre)" />
+																			<hlayout>
+																				<label
+																					value="*" style="color:red" />
+																				<label
+																					value="A. paterno:" sclass="invoiceLabel" />
+																			</hlayout>
+																			<textbox
+																				sclass="invoiceTextBox tBox" width="100%"
+																				maxlength="40" disabled="true"
+																				value="@bind(rvm.requisicion.persona.apellidoPaterno)" />
 
-									<hlayout>
-										<label value="*"
-											style="color:red" />
-										<label value="A. paterno:"
-											sclass="invoiceLabel" />
-									</hlayout>
-									<textbox
-										sclass="invoiceTextBox tBox" width="100%" maxlength="40"
-										disabled="true"
-										value="@bind(rvm.requisicion.persona.apellidoPaterno)" />
-
-									<hlayout>
-										<label value="*"
-											style="color:red" />
-										<label value="A. materno:"
-											sclass="invoiceLabel" />
-									</hlayout>
-									<textbox
-										sclass="invoiceTextBox tBox" width="100%" maxlength="40"
-										disabled="true"
-										value="@bind(rvm.requisicion.persona.apellidoMaterno)" />
-								</row>
-							</rows>
-						</grid>
+																			<hlayout>
+																				<label
+																					value="*" style="color:red" />
+																				<label
+																					value="A. materno:" sclass="invoiceLabel" />
+																			</hlayout>
+																			<textbox
+																				sclass="invoiceTextBox tBox" width="100%"
+																				maxlength="40" disabled="true"
+																				value="@bind(rvm.requisicion.persona.apellidoMaterno)" />
+																		</row>
+																	</rows>
+																</grid>
 
 
-						<grid style="border: 0;">
-							<columns>
-								<column width="20%" />
-								<column />
-							</columns>
-							<rows>
-								<row
-									style="background-color:transparent; border: 0;">
-									<hlayout>
-										<label value="*"
-											style="color:red" />
-										<label value="Puesto:"
-											sclass="invoiceLabel" />
-									</hlayout>
-									<combobox readonly="true"
-										model="@load(rvm.posiciones)" sclass="invoiceCatalogos"
-										width="100%" selectedItem="@bind(rvm.requisicion.posicion)">
-										<template name="model">
-											<comboitem
-												label="@load(each.nombre)" />
-										</template>
-									</combobox>
-								</row>
-							</rows>
-						</grid>
+																<grid sclass="fgrid">
+																	<columns>
+																		<column
+																			width="20%" />
+																		<column />
+																	</columns>
+																	<rows>
+																		<row>
+																			<hlayout>
+																				<label
+																					value="*" style="color:red" />
+																				<label
+																					value="Puesto:" sclass="invoiceLabel" />
+																			</hlayout>
+																			<combobox
+																				readonly="true" model="@load(rvm.posiciones)"
+																				sclass="invoiceCatalogos" width="100%"
+																				selectedItem="@bind(rvm.requisicion.posicion)">
+																				<template
+																					name="model">
+																					<comboitem
+																						label="@load(each.nombre)" />
+																				</template>
+																			</combobox>
+																		</row>
+																	</rows>
+																</grid>
 
-						<grid style="border: 0;">
-							<columns>
-								<column width="20%" />
-								<column />
-							</columns>
-							<rows>
-								<row
-									style="background-color:transparent; border: 0;">
-									<label value="Descripción"
-										sclass="invoiceLabel" />
-									<textbox maxlength="120"
-										width="100%" value="@bind(rvm.requisicion.adscripcion)"
-										sclass="invoiceTextBox tBox" />
-								</row>
-							</rows>
-						</grid>
+																<grid sclass="fgrid"
+																	style="border: 0;">
+																	<columns>
+																		<column
+																			width="20%" />
+																		<column />
+																	</columns>
+																	<rows>
+																		<row>
+																			<label
+																				value="Descripción" sclass="invoiceLabel" />
+																			<textbox
+																				maxlength="120" width="100%"
+																				value="@bind(rvm.requisicion.adscripcion)"
+																				sclass="invoiceTextBox tBox" />
+																		</row>
+																	</rows>
+																</grid>
 
-						<grid style="border: 0;">
-							<columns>
-								<column width="20%" />
-								<column />
-							</columns>
-							<rows>
-								<row
-									style="background-color:transparent; border: 0;">
-									<hlayout>
-										<label value="*"
-											style="color:red" />
-										<label value="Justificación"
-											sclass="invoiceLabel" />
-									</hlayout>
-									<textbox multiline="true"
-										width="100%" value="@bind(rvm.requisicion.justificacion)"
-										style="height:50px" sclass="tBox" />
-								</row>
-							</rows>
-						</grid>
+																<grid sclass="fgrid">
+																	<columns>
+																		<column
+																			width="20%" />
+																		<column />
+																	</columns>
+																	<rows>
+																		<row>
+																			<hlayout>
+																				<label
+																					value="*" style="color:red" />
+																				<label
+																					value="Justificación" sclass="invoiceLabel" />
+																			</hlayout>
+																			<textbox
+																				multiline="true" maxlength="254" width="100%"
+																				value="@bind(rvm.requisicion.justificacion)"
+																				style="height:50px" sclass="tBox" />
+																		</row>
+																	</rows>
+																</grid>
 
-						<grid style="border: 0;">
-							<columns>
-								<column width="20%" />
-								<column />
-							</columns>
-							<rows>
-								<row
-									style="background-color:transparent; border: 0;">
-									<hlayout>
-										<label value="*"
-											style="color:red" />
-										<label
-											value="Número de inventario:" sclass="invoiceLabel" />
-									</hlayout>
-									<longbox
-										sclass="invoiceTextBox tBox" width="100%"
-										value="@bind(rvm.requisicion.numeroInventario)"
-										maxlength="19" />
-								</row>
-							</rows>
-						</grid>
+																<grid sclass="fgrid">
+																	<columns>
+																		<column
+																			width="20%" />
+																		<column />
+																	</columns>
+																	<rows>
+																		<row>
+																			<hlayout>
+																				<label
+																					value="*" style="color:red" />
+																				<label
+																					value="Número de inventario:"
+																					sclass="invoiceLabel" />
+																			</hlayout>
+																			<longbox
+																				sclass="invoiceTextBox tBox" width="100%"
+																				value="@bind(rvm.requisicion.numeroInventario)"
+																				maxlength="19" />
+																		</row>
+																	</rows>
+																</grid>
+															</div>
+														</center>
+													</borderlayout>
+												</north>
+												<center border="0">
+													<borderlayout>
 
-						<separator />
-						<separator />
+														<north
+															maxsize="300" size="72%" title="Lista de productos">
+<!-- LISTA DE PRODUCTOS A ASIGNAR -->
+															<window
+																height="100%" width="100%">
 
-						<groupbox>
-							<caption label="Lista de productos" />
-							<grid style="border: 0;">
-								<columns>
-									<column />
-								</columns>
-								<rows>
-									<row
-										style="background-color:transparent; border: 0;">
-										<listbox sclass="invoiceTable"
-											height="250px" model="@load(rvm.requisicionProductos)"
-											selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
-											emptyMessage="No hay elementos en la requisición">
-											<listhead>
-												<listheader
-													label="Clave" width="120px" sclass="invoiceLabel" />
-												<listheader
-													label="Cantidad" width="95px" sclass="invoiceLabel" />
-												<listheader
-													label="Descripción" sclass="invoiceLabel" width="200px" />
-												<listheader
-													label="Partida genérica" sclass="invoiceLabel" />
-												<listheader
-													label="Importe" width="80px" sclass="invoiceLabel" />
-												<listheader label=""
-													width="5%" sclass="invoiceLabel" />
-											</listhead>
-											<template name="model"
-												var="requisicionProducto">
-												<listitem>
-													<listcell>
-														<hlayout>
-															<button
-																style="width:25px" zclass="find_button"
-																image="/images/toolbar/wand32.png"
-																onClick="@command('search', index=requisicionProductoStatus.index)"
-																tooltiptext="Asistente para busqueda de producto" />
-															<textbox
-																cols="6" zclass="tBox"
-																tooltiptext="@bind(requisicionProducto.producto.nombre)"
-																width="100%"
-																constraint="no empty: La clave del producto es un campo requerido"
-																value="@bind(requisicionProducto.producto.clave)" />
-														</hlayout>
-													</listcell>
-													<listcell>
-														<doublebox
-															zclass="tBox" cols="8"
-															constraint="no empty: Debe especificar la cantidad del producto"
-															value="@bind(requisicionProducto.cantidad)" />
-													</listcell>
-													<listcell>
-														<textbox
-															zclass="tBox" cols="25"
-															constraint="no empty: Especifique la descripción del producto solicitado"
-															maxlength="60"
-															value="@bind(requisicionProducto.descripcion)" />
-													</listcell>
+																<listbox
+																	vflex="1" sclass="invoiceTable" height="100%"
+																	model="@load(rvm.requisicionProductos)"
+																	selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
+																	emptyMessage="No hay elementos en la requisición">
+																	<listhead>
+																		<listheader
+																			label="Clave" width="120px" sclass="invoiceLabel" />
+																		<listheader
+																			label="Cantidad" width="95px" sclass="invoiceLabel" />
+																		<listheader
+																			label="Descripción" sclass="invoiceLabel"
+																			width="200px" />
+																		<listheader
+																			label="Partida genérica" sclass="invoiceLabel" />
+																		<listheader
+																			label="Importe" width="80px" sclass="invoiceLabel" />
+																		<listheader
+																			label="" width="5%" sclass="invoiceLabel" />
+																	</listhead>
+																	<template
+																		name="model" var="requisicionProducto">
+																		<listitem>
+																			<listcell>
+																				<hlayout>
+																					<button
+																						style="width:25px" zclass="find_button"
+																						image="/images/toolbar/wand32.png"
+																						onClick="@command('search', index=requisicionProductoStatus.index)"
+																						tooltiptext="Asistente para busqueda de producto" />
+																					<textbox
+																						cols="6" zclass="tBox"
+																						tooltiptext="@bind(requisicionProducto.producto.nombre)"
+																						width="100%"
+																						constraint="no empty: La clave del producto es un campo requerido"
+																						value="@bind(requisicionProducto.producto.clave)" />
+																				</hlayout>
+																			</listcell>
+																			<listcell>
+																				<doublebox
+																					zclass="tBox" cols="8"
+																					constraint="no empty: Debe especificar la cantidad del producto"
+																					value="@bind(requisicionProducto.cantidad)" />
+																			</listcell>
+																			<listcell>
+																				<textbox
+																					zclass="tBox" cols="25"
+																					constraint="no empty: Especifique la descripción del producto solicitado"
+																					maxlength="60"
+																					value="@bind(requisicionProducto.descripcion)" />
+																			</listcell>
 
-													<listcell>
-														<combobox
-															model="@load(rvm.cofiaPartidaGenericas)" readonly="true"
-															width="100%"
-															selectedItem="@bind(
+																			<listcell>
+																				<combobox
+																					model="@load(rvm.cofiaPartidaGenericas)"
+																					readonly="true" width="100%"
+																					selectedItem="@bind(
 												requisicionProducto.cofiaPartidaGenerica)">
-															<template
-																name="model">
-																<comboitem
-																	label="@load(each.nombre)" />
-															</template>
-														</combobox>
-													</listcell>
+																					<template
+																						name="model">
+																						<comboitem
+																							label="@load(each.nombre)" />
+																					</template>
+																				</combobox>
+																			</listcell>
 
-													<listcell>
-														<doublebox
-															zclass="tBox" cols="6"
-															constraint="no empty: El importe del producto es un valor requerido"
-															onChange="@command('updateTotal')"
-															format="###,###,###.00"
-															value="@bind(requisicionProducto.importe)" />
-													</listcell>
+																			<listcell>
+																				<doublebox
+																					zclass="tBox" cols="6"
+																					constraint="no empty: El importe del producto es un valor requerido"
+																					onChange="@command('updateTotal')"
+																					format="###,###,###.00"
+																					value="@bind(requisicionProducto.importe)" />
+																			</listcell>
 
-													<listcell>
-														<button
-															tooltiptext="Productos entregados"
-															label="@bind(requisicionProducto.entregados)" />
-													</listcell>
+																			<listcell>
+																				<button
+																					tooltiptext="Productos entregados"
+																					label="@bind(requisicionProducto.entregados)" />
+																			</listcell>
 
-												</listitem>
-											</template>
-											<listfoot
-												style="height:40px">
-												<listfooter
-													style="text-align:left">
-													<hlayout>
-														<button
-															disabled="@load(rvm.readOnly)"
-															image="/images/toolbar/add16.png" zclass="find_button"
-															tooltiptext="Agregar producto a la lista"
-															onClick="@command('addNewItemToBill')" />
-														<button
-															disabled="@load(rvm.readOnly)"
-															image="/images/toolbar/remove16.png" zclass="find_button"
-															tooltiptext="Quitar producto de la lista"
-															onClick="@command('removeElementFromBill')" />
-
-
-													</hlayout>
-												</listfooter>
-
-												<listfooter span="3"
-													style="text-align:right">
-													<hlayout>
-														<image
-															src="/images/toolbar/products.png" />
-														<label
-															value="Productos: " />
-														<label
-															value="@load(rvm.itemsOnList)" />
-													</hlayout>
-												</listfooter>
-												<listfooter
-													style="text-align:center">
-													<hlayout>
-														<image
-															src="/images/toolbar/currency.png" />
-														<label
-															value="@load(rvm.importeTotal)" />
-													</hlayout>
-												</listfooter>
-											</listfoot>
-										</listbox>
-									</row>
-								</rows>
-							</grid>
-						</groupbox>
-
-						<separator />
-						<separator />
-
-						<grid style="border: 0;">
-							<columns>
-								<column width="20%" />
-								<column />
-								<column width="15%" />
-								<column />
-							</columns>
-							<rows>
-								<row
-									style="background-color:transparent; border: 0;">
-									<label value="Contrato" />
-									<combobox readonly="true"
-										model="@load(rvm.contratos)" width="100%"
-										selectedItem="@bind(rvm.contrato)">
-										<template name="model"
-											var="contratoVar">
-											<comboitem
-												label="@bind(contratoVar.nombre)" />
-										</template>
-									</combobox>
+																		</listitem>
+																	</template>
+																	<listfoot
+																		style="height:40px">
+																		<listfooter
+																			style="text-align:left">
+																			<hlayout>
+																				<button
+																					disabled="@load(rvm.readOnly)"
+																					image="/images/toolbar/add16.png"
+																					zclass="find_button"
+																					tooltiptext="Agregar producto a la lista"
+																					onClick="@command('addNewItemToBill')" />
+																				<button
+																					disabled="@load(rvm.readOnly)"
+																					image="/images/toolbar/remove16.png"
+																					zclass="find_button"
+																					tooltiptext="Quitar producto de la lista"
+																					onClick="@command('removeElementFromBill')" />
 
 
+																			</hlayout>
+																		</listfooter>
+
+																		<listfooter
+																			span="3" style="text-align:right">
+																			<hlayout>
+																				<image
+																					src="/images/toolbar/products.png" />
+																				<label
+																					value="Productos: " />
+																				<label
+																					value="@load(rvm.itemsOnList)" />
+																			</hlayout>
+																		</listfooter>
+																		<listfooter
+																			style="text-align:center">
+																			<hlayout>
+																				<image
+																					src="/images/toolbar/currency.png" />
+																				<label
+																					value="@load(rvm.importeTotal)" />
+																			</hlayout>
+																		</listfooter>
+																	</listfoot>
+																</listbox>
+															</window>
+														</north>
+														
+														<center>
+															<window width="100%" height="100%">
+																<grid sclass="fgrid">
+																	<columns>
+																		<column
+																			width="20%" />
+																		<column />
+																		<column
+																			width="15%" />
+																		<column />
+																	</columns>
+																	<rows>
+																		<row>
+																			<label
+																				value="Contrato" />
+																			<combobox
+																				readonly="true" model="@load(rvm.contratos)"
+																				width="100%" selectedItem="@bind(rvm.contrato)">
+																				<template
+																					name="model" var="contratoVar">
+																					<comboitem
+																						label="@bind(contratoVar.nombre)" />
+																				</template>
+																			</combobox>
+																			<label
+																				value="Fecha:" />
+																			<datebox
+																				readonly="true" format="yyyy/MM/dd" width="100%"
+																				value="@bind(rvm.fecha)" buttonVisible="false" />
+																		</row>
+
+																		<row>
+																			<label
+																				value="Proveedor Núm:" />
+																			<combobox
+																				readonly="true" model="@load(rvm.proveedoresLista)"
+																				width="100%"
+																				selectedItem="@bind(rvm.proveedorSelected)">
+																				<template
+																					name="model" var="proveedorVar">
+																					<comboitem
+																						width="100%" label="@bind(proveedorVar.nombre)" />
+																				</template>
+																			</combobox>
+																			<label
+																				value="Nombre:" />
+																			<textbox
+																				width="100%" sclass="invoiceTextBox tBox" />
+																		</row>
+																		<row>
+																			<label
+																				value="Almacén:" />
+																			<textbox
+																				width="100%" sclass="invoiceTextBox tBox" />
+																			<label
+																				value="Consumo:" />
+																			<textbox
+																				width="100%" sclass="invoiceTextBox tBox" />
+																		</row>
+																	</rows>
+																</grid>
+															</window>
+														</center>
+													</borderlayout>
+												</center>
+											</borderlayout>
+										</center>
+									</borderlayout>
+								</center>
+							</borderlayout>
+						</div>
+					</east>
+				</borderlayout>
+			</north>
+		</borderlayout>
 
 
 
-									<label value="Fecha:" />
-									<datebox readonly="true"
-										format="yyyy/MM/dd" width="100%" value="@bind(rvm.fecha)"
-										buttonVisible="false" />
-								</row>
-
-								<row
-									style="background-color:transparent; border: 0;">
-									<label value="Proveedor Núm:" />
-									<combobox readonly="true"
-										model="@load(rvm.proveedoresLista)" width="100%"
-										selectedItem="@bind(rvm.proveedorSelected)">
-										<template name="model"
-											var="proveedorVar">
-											<comboitem width="100%"
-												label="@bind(proveedorVar.nombre)" />
-										</template>
-									</combobox>
 
 
-									<label value="Nombre:" />
-									<textbox width="100%"
-										sclass="invoiceTextBox tBox" />
-								</row>
 
-								<row
-									style="background-color:transparent; border: 0;">
-									<label value="Almacén:" />
-									<textbox width="100%"
-										sclass="invoiceTextBox tBox" />
-									<label value="Consumo:" />
-									<textbox width="100%"
-										sclass="invoiceTextBox tBox" />
-								</row>
-							</rows>
-						</grid>
-					</groupbox>
-				</center>
-			</borderlayout>
-		</vlayout>
+
+
 
 
 

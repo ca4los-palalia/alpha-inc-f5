@@ -1,233 +1,314 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
+	<style>
+		.fgrid tr.z-row td.z-row-inner,tr.z-row,div.z-grid-body
+		div.z-cell,div.z-grid { border: none; overflow: hidden; zoom: 1;
+		background: white; border-top: none; border-left: none;
+		border-right: none; border-bottom: none; }
+
+		.fgrid .z-grid-odd .fgrid .z-row-inner,.fgrid .z-grid-odd
+		.z-cell { background-color: #F7F7F7; border-bottom: 1px solid
+		transparent; border-left: 1px solid transparent; border-top: 1px
+		solid transparent; }
+
+		.fgrid .z-grid-odd .fgrid.z-row-inner,.fgrid.z-grid-odd
+		.z-cell,.fgrid.z-grid-odd { background: none repeat scroll 0 0
+		transparent; }
+
+		.fgrid tr.z-grid-odd td.z-row-inner,.fgrid tr.z-grid-odd
+		.z-cell,.fgrid tr.z-grid-odd { background: white }
+
+		.fgrid tr.z-row td.z-row-inner,.fgrid tr.z-row .z-cell {
+		background: white; border-top: none; }
+	</style>
 	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
 	<script src="/scripts/watermarks.js" type="text/javascript" />
-	<window apply="org.zkoss.bind.BindComposer"
+	<window apply="org.zkoss.bind.BindComposer" height="100%"
 		viewModel="@id('rvm') @init('com.cplsystems.stock.app.vm.requisicion.concentradoVM')">
 
 
-		<vlayout>
-
-
-
-			<borderlayout style="height:100vh;">
-				<north height="7%">
-					<grid>
-						<columns>
-							<column />
-							<column width="15%"
-								zclass="shadowMenuActions" />
-						</columns>
-						<rows>
-							<row zclass="shadowMenuActions">
-								<div style="margin:5px">
-									<button
-										label="Requisiciones > concentrado"
-										image="/images/toolbar/home32.png"
-										zclass="panelInfoItemMenuTitle" />
-								</div>
-								<hlayout style="margin:5px ">
-
-									<button
-										image="/images/toolbar/saveOff.png" sclass="web_button"
-										tooltiptext="Guardar cambios"
-										onClick="@command('guardarCambios')" />
-
-									<button
-										image="/images/toolbar/generate32.png" sclass="web_button"
-										tooltiptext="Generar cotización"
-										onClick="@command('autorizar')" />
-
-								</hlayout>
-							</row>
-						</rows>
-					</grid>
-
-				</north>
-				<west maxsize="600" size="30%" vflex="1" border="0"
-					splittable="true">
-					<div>
-						<vbox spacing="0" width="100%">
-							<groupbox mold="3d" open="true"
-								visible="true">
-								<caption label="Buscar"
-									image="/images/toolbar/find16x16.png" />
-								<grid style="border: 0;">
-									<columns>
-										<column width="20%" />
-										<column />
-									</columns>
-									<rows>
-										<row
-											style="background-color: transparent; border: 0;">
-											<label
-												style="font-size: 90%;" value="Area(UR): " />
-											<combobox readonly="true"
-												model="@load(rvm.areas)" width="100%"
-												selectedItem="@bind(rvm.areaBuscar)"
-												onSelect="@command('buscarPorArearequisicion')">
-												<template name="model"
-													var="area">
-													<comboitem
-														width="100%" label="@bind(area.nombre)" />
-												</template>
-											</combobox>
-										</row>
-									</rows>
-								</grid>
-
-								<grid style="border: 0;">
-									<columns>
-										<column />
-										<column width="14%" />
-									</columns>
-									<rows>
-										<row
-											style="background-color:transparent; border: 0;">
-											<textbox
-												id="buscadorConcentradoId"
-												onOK="@command('filtrarProductoPorRequisicion')"
-												value="@bind(rvm.requisicion.buscarRequisicion)"
-												width="100%" />
-											<hlayout
-												style="text-align:center">
-
-												<button
-													image="/images/toolbar/find16x16.png" zclass="find_button"
-													onClick="@command('filtrarProductoPorRequisicion')"
-													tooltiptext="Buscar" />
-											</hlayout>
-										</row>
-									</rows>
-								</grid>
-
-
-								<listbox rows="12"
-									model="@load(rvm.requisicionProductos)"
-									onSelect="@command('cargarProveedoresProducto')"
-									selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
-									emptyMessage="No hay elementos en la requisición">
-									<listhead>
-										<listheader width="14%"
-											style="text-align:center" />
-										<listheader width="27%"
-											label="folio Req"
-											style="font-size:smaller; text-align:center" />
-										<listheader label="UR"
-											style="font-size:smaller; text-align:center" />
-										<listheader label="clv pr"
-											tooltiptext="Clave del producto"
-											style="font-size:smaller; text-align:center" />
-										<listheader label="Cant"
-											style="font-size:smaller; text-align:center" width="14%" />
-
-									</listhead>
-									<template name="model"
-										var="requisicionProducto">
-										<listitem>
-											<listcell>
-												<button
-													image="/images/toolbar/remove16.png"
-													onClick="@command('removerProductoDeListaGeneralDeProductos', index=requisicionProductoStatus.index)"
-													zclass="find_button"
-													tooltiptext="Quitar producto de la lista" />
-											</listcell>
-											<listcell>
-												<label
-													tooltiptext="Folio de requisición"
-													style="font-size:smaller;"
-													value="@bind(requisicionProducto.requisicion.folio)" />
-											</listcell>
-											<listcell>
-												<label
-													tooltiptext="Clave del area" style="font-size:smaller;"
-													value="@bind(requisicionProducto.requisicion.area.nombre)" />
-											</listcell>
-											<listcell>
-												<label
-													tooltiptext="@bind(requisicionProducto.producto.nombre)"
-													style="font-size:smaller;"
-													value="@bind(requisicionProducto.producto.clave)" />
-											</listcell>
-											<listcell>
-												<intbox
-													tooltiptext="cantidad de productos"
-													style="font-size:smaller;" inplace="true"
-													value="@bind(requisicionProducto.cantidad)" />
-											</listcell>
+		<borderlayout>
+			<north title="Requisiciones | Concentrado:" maxsize="300" size="100%"
+				splittable="true" collapsible="true">
+				<borderlayout>
+					<center border="none" flex="true">
+						<div>
+							<borderlayout>
+								<north maxsize="300" size="100%">
+									<borderlayout>
+										<center border="none"
+											flex="true">
+											<div>
+												<!-- BUSQUEDAS -->
+												<borderlayout>
+													<north maxsize="300"
+														size="105px">
+														<borderlayout>
+															<center
+																border="none" flex="true">
+																<div>
+																	<!-- PANEL DE BUSQUEDA -->
+
+
+
+
+																	<groupbox
+																		mold="3d" open="true">
+																		<caption
+																			label="Buscar" image="/images/toolbar/find16x16.png" />
+																		<grid sclass="fgrid">
+																			<columns>
+																				<column
+																					width="20%" />
+																				<column />
+																			</columns>
+																			<rows>
+																				<row>
+																					<label
+																						style="font-size: 90%;" value="Area(UR): " />
+																					<combobox
+																						readonly="true" model="@load(rvm.areas)"
+																						width="100%" selectedItem="@bind(rvm.areaBuscar)"
+																						onSelect="@command('buscarPorArearequisicion')">
+																						<template
+																							name="model" var="area">
+																							<comboitem
+																								width="100%" label="@bind(area.nombre)" />
+																						</template>
+																					</combobox>
+																				</row>
+																			</rows>
+																		</grid>
+
+																		<grid sclass="fgrid">
+																			<columns>
+																				<column />
+																				<column
+																					width="14%" />
+																			</columns>
+																			<rows>
+																				<row>
+																					<textbox
+																						id="buscadorConcentradoId"
+																						onOK="@command('filtrarProductoPorRequisicion')"
+																						value="@bind(rvm.requisicion.buscarRequisicion)"
+																						width="100%" />
+																					<hlayout
+																						style="text-align:center">
+
+																						<button
+																							image="/images/toolbar/find16x16.png"
+																							zclass="find_button"
+																							onClick="@command('filtrarProductoPorRequisicion')"
+																							tooltiptext="Buscar" />
+																					</hlayout>
+																				</row>
+																			</rows>
+																		</grid>
+																	</groupbox>
+
+																</div>
+															</center>
+														</borderlayout>
+													</north>
+													<center
+														border="0">
+														<borderlayout>
+															<center>
+																<!-- LISTA DE COTIZACIONES -->
+																<window
+																	height="100%" width="100%">
+
+																	<listbox
+																		vflex="1" model="@load(rvm.requisicionProductos)"
+																		onSelect="@command('cargarProveedoresProducto')"
+																		selectedItem="@bind(rvm.requisicionProductoSeleccionado)"
+																		emptyMessage="No hay elementos en la requisición">
+																		<listhead>
+																			<listheader
+																				width="14%" style="text-align:center" />
+																			<listheader
+																				width="27%" label="folio Req"
+																				style="font-size:smaller; text-align:center" />
+																			<listheader
+																				label="UR"
+																				style="font-size:smaller; text-align:center" />
+																			<listheader
+																				label="clv pr" tooltiptext="Clave del producto"
+																				style="font-size:smaller; text-align:center" />
+																			<listheader
+																				label="Cant"
+																				style="font-size:smaller; text-align:center"
+																				width="14%" />
+
+																		</listhead>
+																		<template
+																			name="model" var="requisicionProducto">
+																			<listitem>
+																				<listcell>
+																					<button
+																						image="/images/toolbar/remove16.png"
+																						onClick="@command('removerProductoDeListaGeneralDeProductos', index=requisicionProductoStatus.index)"
+																						zclass="find_button"
+																						tooltiptext="Quitar producto de la lista" />
+																				</listcell>
+																				<listcell>
+																					<label
+																						tooltiptext="Folio de requisición"
+																						style="font-size:smaller;"
+																						value="@bind(requisicionProducto.requisicion.folio)" />
+																				</listcell>
+																				<listcell>
+																					<label
+																						tooltiptext="Clave del area"
+																						style="font-size:smaller;"
+																						value="@bind(requisicionProducto.requisicion.area.nombre)" />
+																				</listcell>
+																				<listcell>
+																					<label
+																						tooltiptext="@bind(requisicionProducto.producto.nombre)"
+																						style="font-size:smaller;"
+																						value="@bind(requisicionProducto.producto.clave)" />
+																				</listcell>
+																				<listcell>
+																					<intbox
+																						tooltiptext="cantidad de productos"
+																						style="font-size:smaller;" inplace="true"
+																						value="@bind(requisicionProducto.cantidad)" />
+																				</listcell>
+
+																			</listitem>
+																		</template>
+
+																	</listbox>
+
+																</window>
+															</center>
+														</borderlayout>
+													</center>
+												</borderlayout>
+											</div>
+										</center>
+									</borderlayout>
+								</north>
+							</borderlayout>
+						</div>
+					</center>
+					<east size="70%" border="none" flex="true">
+						<div>
+							<borderlayout>
+								<north maxsize="300" size="43px">
+									<borderlayout>
+										<center border="none"
+											flex="true">
+											<div>
+												<!-- BARRA DE MENUS -->
+
+												<hlayout
+													style="text-align: right; margin: 1px 1px 1px 1px ;">
+													<button
+														image="/images/toolbar/saveOff.png" sclass="web_button"
+														tooltiptext="Guardar cambios"
+														onClick="@command('guardarCambios')" />
+													<button
+														image="/images/toolbar/generate32.png" sclass="web_button"
+														tooltiptext="Generar cotización"
+														onClick="@command('autorizar')" />
+												</hlayout>
+											</div>
+										</center>
+									</borderlayout>
+								</north>
+								<center border="0">
+									<borderlayout>
+										<center>
+											<!-- DETALLE DE LA INFORMACION -->
+											<borderlayout>
+												<north maxsize="300"
+													size="100%">
+													<borderlayout>
+														<center title="Proveedores que surten este artículo"
+															border="none" flex="true">
+															<!-- LISTA DE PROVEEDORES -->
+															<window
+																height="100%" width="100%">
+
+																<listbox
+																	model="@load(rvm.proveedorProductos)" vflex="1"
+																	selectedItem="@bind(rvm.proveedorProducto)"
+																	onSelect="@command('seleccionarProveedor')">
+																	<listhead>
+																		<listheader
+																			width="40px" label="" />
+																		<listheader
+																			label="Proveedor" sclass="invoiceLabel" />
+																		<listheader
+																			label="Arículo" sclass="invoiceLabel" />
+																		<listheader
+																			label="Precio" width="10%" sclass="invoiceLabel" />
+																		<listheader
+																			label="Stock" width="7%" sclass="invoiceLabel" />
+
+
+																	</listhead>
+																	<template
+																		name="model" var="proveedor">
+																		<listitem>
+																			<listcell>
+																				<checkbox
+																					checked="@bind(proveedor.seleccionar)"
+																					onCheck="@command('proveedorCheckBox', index=proveedorStatus.index)" />
+																			</listcell>
+																			<listcell>
+																				<label
+																					width="100%" style="font-size:smaller;"
+																					value="@bind(proveedor.proveedor.nombre)" />
+																			</listcell>
+
+																			<listcell>
+																				<label
+																					width="100%" style="font-size:smaller;"
+																					value="@bind(proveedor.producto.nombre)" />
+																			</listcell>
+																			<listcell>
+																				<doublebox
+																					width="100%" style="font-size:smaller;"
+																					format="###,###,###.00" readonly="true"
+																					value="@bind(proveedor.producto.precio)" />
+																			</listcell>
+																			<listcell>
+																				<label
+																					width="100%" style="font-size:smaller;"
+																					value="@bind(proveedor.producto.enExistencia)" />
+																			</listcell>
+																		</listitem>
+																	</template>
+																</listbox>
+															</window>
+														</center>
+													</borderlayout>
+												</north>
+											</borderlayout>
+										</center>
+									</borderlayout>
+								</center>
+							</borderlayout>
+						</div>
+					</east>
+				</borderlayout>
+			</north>
+		</borderlayout>
 
-										</listitem>
-									</template>
 
-								</listbox>
-							</groupbox>
 
-						</vbox>
-					</div>
-				</west>
-				<center>
-					<groupbox mold="3d" open="true" visible="true">
-						<caption
-							label="Proveedores que surten este artículo"
-							image="/images/toolbar/info16.png" />
 
-						<!--  LISTA DE POROVEEDORES -->
-						<listbox model="@load(rvm.proveedorProductos)"
-							rows="4" selectedItem="@bind(rvm.proveedorProducto)"
-							onSelect="@command('seleccionarProveedor')">
-							<listhead>
-								<listheader width="40px" label="" />
-								<listheader
-									label="Proveedor"
-									sclass="invoiceLabel" />
-								<listheader label="Arículo"
-									sclass="invoiceLabel" />
-								<listheader label="Precio" width="10%"
-									sclass="invoiceLabel" />
-								<listheader label="Stock" width="7%"
-									sclass="invoiceLabel" />
 
 
-							</listhead>
-							<template name="model" var="proveedor">
-								<listitem>
-									<listcell>
-										<checkbox
-											checked="@bind(proveedor.seleccionar)"
-											onCheck="@command('proveedorCheckBox', index=proveedorStatus.index)" />
-									</listcell>
-									<listcell>
-										<label width="100%"
-											style="font-size:smaller;"
-											value="@bind(proveedor.proveedor.nombre)" />
-									</listcell>
 
-									<listcell>
-										<label width="100%"
-											style="font-size:smaller;"
-											value="@bind(proveedor.producto.nombre)" />
-									</listcell>
-									<listcell>
-										<doublebox width="100%"
-											style="font-size:smaller;" format="###,###,###.00"
-											readonly="true" value="@bind(proveedor.producto.precio)" />
-									</listcell>
-									<listcell>
-										<label width="100%"
-											style="font-size:smaller;"
-											value="@bind(proveedor.producto.enExistencia)" />
-									</listcell>
-								</listitem>
-							</template>
-						</listbox>
-						<!--  END LISTA DE POROVEEDORES -->
 
 
 
-					</groupbox>
-				</center>
-			</borderlayout>
 
 
 
@@ -240,95 +321,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		</vlayout>
 
 
 	</window>

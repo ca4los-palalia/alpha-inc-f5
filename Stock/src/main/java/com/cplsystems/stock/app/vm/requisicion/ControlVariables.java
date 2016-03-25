@@ -18,6 +18,7 @@ public class ControlVariables extends BasicStructure {
 	protected boolean checkBuscarAceptada;
 	protected Float precioTotal;
 	protected Integer numeroProductos;
+	protected Integer productosrestantes;
 
 	public List<OrdenCompraInbox> getOrdenesCompraInbox() {
 		return this.ordenesCompraInbox;
@@ -103,4 +104,13 @@ public class ControlVariables extends BasicStructure {
 	public void setNumeroProductos(Integer numeroProductos) {
 		this.numeroProductos = numeroProductos;
 	}
+
+	public Integer getProductosrestantes() {
+		return productosrestantes;
+	}
+
+	public void setProductosrestantes(Integer productosrestantes) {
+		this.productosrestantes = productosrestantes;
+	}
+	
 }

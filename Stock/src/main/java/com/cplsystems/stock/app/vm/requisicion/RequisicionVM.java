@@ -69,18 +69,27 @@ public class RequisicionVM extends RequisicionMetaClass {
 	@Init
 	public void init() {
 		super.init();
-		this.areaBuscar = new Area();
-		this.contratos = this.contratoService.getAll();
-		this.proveedoresLista = this.proveedorService.getAll();
-		if (this.requisicion == null) {
-			this.requisicion = new Requisicion();
+		areaBuscar = new Area();
+		contratos = contratoService.getAll();
+		proveedoresLista = proveedorService.getAll();
+		if (requisicion == null) {
+			requisicion = new Requisicion();
 		}
-		this.requisicion.setFecha(Calendar.getInstance());
-		this.posiciones = this.posicionService.getAll();
+		requisicion.setFecha(Calendar.getInstance());
+		posiciones = posicionService.getAll();
+
+		usuario = (Usuarios) sessionUtils.getFromSession("usuario");
+		organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
 
 		loadItemsKeys();
 		initDefaultValues();
 		loadRequisionesInbox();
+		
+		List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
+		if(privilegios != null)
+			for (Privilegios privilegios2 : privilegios) {
+				System.err.println(privilegios2);
+			}
 	}
 
 	private void loadRequisionesInbox() {
@@ -92,8 +101,6 @@ public class RequisicionVM extends RequisicionMetaClass {
 			}
 		}
 	}
-
-	
 
 	@NotifyChange({ "*" })
 	@Command
@@ -134,44 +141,35 @@ public class RequisicionVM extends RequisicionMetaClass {
 					this.estatusRequisicion = new EstatusRequisicion();
 				}
 				if (this.requisicion.getIdRequisicion() == null) {
-					this.estatusRequisicion = this.estatusRequisicionService.getByClave("RQN");
+					
+					String validaListaProductos = validarListaProductos();
+					if(validaListaProductos.equals("")){
+						this.estatusRequisicion = this.estatusRequisicionService.getByClave("RQN");
 
-					this.requisicion.setEstatusRequisicion(this.estatusRequisicion);
-					this.requisicion.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
+						this.requisicion.setEstatusRequisicion(this.estatusRequisicion);
+						this.requisicion.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
 
-					this.requisicion.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
+						this.requisicion.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
 
-					this.requisicion.setFecha(Calendar.getInstance());
-					this.personaService.save(this.requisicion.getPersona());
-					this.requisicionService.save(this.requisicion);
+						this.requisicion.setFecha(Calendar.getInstance());
+						this.personaService.save(this.requisicion.getPersona());
+						this.requisicionService.save(this.requisicion);
 
-					RequisicionInbox inbox = new RequisicionInbox();
-					inbox.setRequisicion(this.requisicion);
-					inbox.setLeido(Boolean.valueOf(false));
-					inbox.setFechaRegistro(this.stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+						RequisicionInbox inbox = new RequisicionInbox();
+						inbox.setRequisicion(this.requisicion);
+						inbox.setLeido(Boolean.valueOf(false));
+						inbox.setFechaRegistro(this.stockUtils.convertirCalendarToDate(Calendar.getInstance()));
 
-					this.requisicionInboxService.save(inbox);
+						this.requisicionInboxService.save(inbox);
 
-					String productosNoGuardados = "";
-					for (int i = 0; i < this.requisicionProductos.size(); i++) {
-						RequisicionProducto requisicionProducto = (RequisicionProducto) this.requisicionProductos
-								.get(i);
+						String productosNoGuardados = "";
+						for (int i = 0; i < this.requisicionProductos.size(); i++) {
+							RequisicionProducto requisicionProducto = (RequisicionProducto) this.requisicionProductos
+									.get(i);
 
-						requisicionProducto.setRequisicion(this.requisicion);
-						if ((requisicionProducto.getProducto() != null)
-								&& (requisicionProducto.getProducto().getIdProducto() != null)) {
-							requisicionProducto.setEntregados(Long.valueOf(0L));
-							requisicionProducto
-									.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
-
-							requisicionProducto.setUsuario((Usuarios) this.sessionUtils.getFromSession("usuario"));
-
-							this.requisicionProductoService.save(requisicionProducto);
-						} else {
-							List<Producto> p = this.productoService
-									.getByClaveNombre(requisicionProducto.getProducto().getClave());
-							if (p != null) {
-								requisicionProducto.setProducto((Producto) p.get(0));
+							requisicionProducto.setRequisicion(this.requisicion);
+							if ((requisicionProducto.getProducto() != null)
+									&& (requisicionProducto.getProducto().getIdProducto() != null)) {
 								requisicionProducto.setEntregados(Long.valueOf(0L));
 								requisicionProducto
 										.setOrganizacion((Organizacion) this.sessionUtils.getFromSession("FIRMA"));
@@ -180,67 +178,89 @@ public class RequisicionVM extends RequisicionMetaClass {
 
 								this.requisicionProductoService.save(requisicionProducto);
 							} else {
-								productosNoGuardados = productosNoGuardados + "||"
-										+ requisicionProducto.getProducto().getClave() + "|| ";
+								List<Producto> p = this.productoService
+										.getByClaveNombre(requisicionProducto.getProducto().getClave());
+								if (p != null) {
+									requisicionProducto.setProducto((Producto) p.get(0));
+									requisicionProducto.setEntregados(Long.valueOf(0L));
+									requisicionProducto.setOrganizacion(organizacion);
+
+									requisicionProducto.setUsuario(usuario);
+
+									this.requisicionProductoService.save(requisicionProducto);
+								} else {
+									productosNoGuardados = productosNoGuardados + "||"
+											+ requisicionProducto.getProducto().getClave() + "|| ";
+								}
 							}
 						}
-					}
-					String mensajeError = "";
-					if (!productosNoGuardados.isEmpty()) {
-						mensajeError = "Los siguientes art�culos no se guardaron: \n" + productosNoGuardados
-								+ ". Posible causa, la clave del producto que se ingreso no es la correcta";
-					}
-					StockUtils.showSuccessmessage(
-							"La requisici�n con f�lio [" + this.requisicion.getFolio()
-									+ "] ha s�do creada y se ha enviado un email para su notificaci�n " + mensajeError,
-							"info", Integer.valueOf(0), null);
-
-					List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
-					for (Privilegios privilegio : privilegios) {
-						if (privilegio.getUsuarios().getPersona().getContacto() != null) {
-							this.mailService.sendMail(
-									privilegio.getUsuarios().getPersona().getContacto().getEmail().getEmail(),
-									"1nn3rgy@gmail.com", "Nueva requisici�n",
-									"La requisici�n con f�lio [" + this.requisicion.getFolio() + "] ha s�do creada. ");
+						String mensajeError = "";
+						if (!productosNoGuardados.isEmpty()) {
+							mensajeError = "Los siguientes artículos no se guardaron: \n" + productosNoGuardados
+									+ ". Posible causa, la clave del producto que se ingreso no es la correcta";
 						}
-					}
-					limpiarFormulario();
+
+						String mensaje = "La requisición con fólio [" + requisicion.getFolio() + "] ha sído creada ";
+						
+						if(organizacion.getDevelopmentTool() != null){
+							List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
+							if(privilegios != null){
+								enviarCorreos(usuario, organizacion, privilegios, mensaje, "Nueva requisicion", null);
+								mensaje += " y se ha enviado un email para su notificación "; 
+							}
+							
+						}else
+							mensaje += ". No se pudo enviar un email para la notificación";
+						
+
+						StockUtils.showSuccessmessage(
+								mensaje + " " + mensajeError,
+								"info", Integer.valueOf(0), null);
+						limpiarFormulario();
+					}else
+						StockUtils.showSuccessmessage(validaListaProductos, "warning", Integer.valueOf(0), null);
+						
 				} else {
-					this.requisicion.setFecha(Calendar.getInstance());
-					this.requisicionService.save(this.requisicion);
+					String validaListaProductos = validarListaProductos();
+					if(validaListaProductos.equals("")){
+						requisicion.setFecha(Calendar.getInstance());
+						requisicionService.save(requisicion);
 
-					String productosNoGuardados = "";
-					for (int i = 0; i < this.requisicionProductos.size(); i++) {
-						RequisicionProducto requisicionProducto = (RequisicionProducto) this.requisicionProductos
-								.get(i);
+						String productosNoGuardados = "";
+						for (int i = 0; i < requisicionProductos.size(); i++) {
+							RequisicionProducto requisicionProducto = (RequisicionProducto) requisicionProductos
+									.get(i);
 
-						requisicionProducto.setRequisicion(this.requisicion);
-						if ((requisicionProducto.getProducto() != null)
-								&& (requisicionProducto.getProducto().getIdProducto() != null)) {
-							this.requisicionProductoService.save(requisicionProducto);
-						} else {
-							List<Producto> p = this.productoService
-									.getByClaveNombre(requisicionProducto.getProducto().getClave());
-							if (p != null) {
-								requisicionProducto.setProducto((Producto) p.get(0));
-								this.requisicionProductoService.save(requisicionProducto);
+							requisicionProducto.setRequisicion(requisicion);
+							if ((requisicionProducto.getProducto() != null)
+									&& (requisicionProducto.getProducto().getIdProducto() != null)) {
+								requisicionProductoService.save(requisicionProducto);
 							} else {
-								productosNoGuardados = productosNoGuardados + "||"
-										+ requisicionProducto.getProducto().getClave() + "|| ";
+								List<Producto> p = this.productoService
+										.getByClaveNombre(requisicionProducto.getProducto().getClave());
+								if (p != null) {
+									requisicionProducto.setProducto((Producto) p.get(0));
+									this.requisicionProductoService.save(requisicionProducto);
+								} else {
+									productosNoGuardados = productosNoGuardados + "||"
+											+ requisicionProducto.getProducto().getClave() + "|| ";
+								}
 							}
 						}
-					}
-					String mensajeError = "";
-					if (!productosNoGuardados.isEmpty()) {
-						mensajeError = "Los siguientes art�culos no se guardaron: \n" + productosNoGuardados
-								+ ". Posible causa, la clave del producto que se ingreso no es la correcta";
-					}
-					StockUtils.showSuccessmessage("La requisici�n con f�lio [" + this.requisicion.getFolio()
-							+ "] ha s�do actualizada. " + mensajeError, "info", Integer.valueOf(0), null);
+						String mensajeError = "";
+						if (!productosNoGuardados.isEmpty()) {
+							mensajeError = "Los siguientes art�culos no se guardaron: \n" + productosNoGuardados
+									+ ". Posible causa, la clave del producto que se ingreso no es la correcta";
+						}
+						StockUtils.showSuccessmessage("La requisici�n con f�lio [" + this.requisicion.getFolio()
+								+ "] ha s�do actualizada. " + mensajeError, "info", Integer.valueOf(0), null);
 
-					this.requisicion = new Requisicion();
-					this.requisicionProductos = new ArrayList();
-					addNewItemToBill();
+						this.requisicion = new Requisicion();
+						this.requisicionProductos = new ArrayList();
+						addNewItemToBill();
+					}else
+						StockUtils.showSuccessmessage(validaListaProductos, "warning", Integer.valueOf(0), null);
+					
 				}
 			}
 		} else {
@@ -310,14 +330,34 @@ public class RequisicionVM extends RequisicionMetaClass {
 		return mensaje;
 	}
 
+	private String validarListaProductos(){
+		String mensaje = "";
+		for (RequisicionProducto item : requisicionProductos) {
+			if(item.getProducto() == null){
+				mensaje = "faltan productos en la lista de productos";
+				break;
+			}
+			if(item.getCofiaPartidaGenerica() == null){
+				mensaje = "falta partida generica del producto " + item.getProducto().getNombre() + " en la lista de productos";
+				break;
+			}else{
+				if(item.getCofiaPartidaGenerica().getIdCofiaPartidaGenerica() == null){
+					mensaje = "falta partida generica del producto " + item.getProducto().getNombre() + " en la lista de productos";
+					break;
+				}	
+			}
+			if(item.getCantidad() == null){
+				mensaje = "falta cantidad del producto " + item.getProducto().getNombre() + "en la lista de productos";
+				break;
+			}
+		}
+		return mensaje;
+	}
 	
-
 	@AfterCompose
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
 		Selectors.wireComponents(view, this, false);
 	}
-
-	
 
 	@NotifyChange({ "requisicionProductos", "itemsOnList", "importeTotal" })
 	@Command
@@ -405,8 +445,6 @@ public class RequisicionVM extends RequisicionMetaClass {
 		}
 		return false;
 	}
-
-	
 
 	@Command
 	@NotifyChange({ "*" })

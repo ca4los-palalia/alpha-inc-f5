@@ -11,4 +11,6 @@ public abstract interface EstadoDAO {
 	public abstract Estado getById(Long paramLong);
 
 	public abstract List<Estado> getAll();
+
+	public abstract Estado getByName(String name);
 }

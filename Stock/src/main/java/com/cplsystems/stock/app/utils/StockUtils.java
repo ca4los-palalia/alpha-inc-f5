@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -15,6 +16,8 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Repository;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Execution;
@@ -84,6 +87,7 @@ public class StockUtils {
 	}
 
 	public static String encrypt(String message) {
+
 		try {
 			MessageDigest md = MessageDigest.getInstance("md5");
 			byte[] digestOfPassword = md.digest("HG58YZ3CR9".getBytes("utf-8"));
@@ -153,4 +157,79 @@ public class StockUtils {
 		}
 		return streamLogotipo;
 	}
+
+	// Convierte texto de ISO-8859-1 a UTF-8
+	public static String convertFromUTF8(String s) {
+		String out = null;
+		try {
+			out = new String(s.getBytes("ISO-8859-1"), "UTF-8");
+		} catch (java.io.UnsupportedEncodingException e) {
+			return null;
+		}
+		return out;
+	}
+
+	// Convierte texto de UTF-8 a ISO-8859-1
+	public static String convertToUTF8(String s) {
+		String out = null;
+		try {
+			out = new String(s.getBytes("UTF-8"), "ISO-8859-1");
+		} catch (java.io.UnsupportedEncodingException e) {
+			return null;
+		}
+		return out;
+	}
+
+	// ----------------------------------------------------
+
+	public String Encriptar(String texto) {
+
+		String secretKey = "qualityinfosolutions"; // llave para encriptar datos
+		String base64EncryptedString = "";
+
+		try {
+
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
+			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
+
+			SecretKey key = new SecretKeySpec(keyBytes, "DESede");
+			Cipher cipher = Cipher.getInstance("DESede");
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+
+			byte[] plainTextBytes = texto.getBytes("utf-8");
+			byte[] buf = cipher.doFinal(plainTextBytes);
+			byte[] base64Bytes = Base64.encodeBase64(buf);
+			base64EncryptedString = new String(base64Bytes);
+
+		} catch (Exception ex) {
+		}
+		return base64EncryptedString;
+	}
+
+	public String Desencriptar(String textoEncriptado) throws Exception {
+
+		String secretKey = "qualityinfosolutions"; // llave para desenciptar
+													// datos
+		String base64EncryptedString = "";
+
+		try {
+			byte[] message = Base64.decodeBase64(textoEncriptado.getBytes("utf-8"));
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
+			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
+			SecretKey key = new SecretKeySpec(keyBytes, "DESede");
+
+			Cipher decipher = Cipher.getInstance("DESede");
+			decipher.init(Cipher.DECRYPT_MODE, key);
+
+			byte[] plainText = decipher.doFinal(message);
+
+			base64EncryptedString = new String(plainText, "UTF-8");
+
+		} catch (Exception ex) {
+		}
+		return base64EncryptedString;
+	}
+
 }

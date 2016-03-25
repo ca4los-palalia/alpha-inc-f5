@@ -17,6 +17,7 @@
 		<property name="connection.password">5t0ck</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
 
+
 <!--		
 		<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property> 
 		<property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/stock;instance=SISTEMAS</property> 
@@ -29,6 +30,7 @@
 
 		<!-- Mapping of Classes -->
 		<mapping class="com.cplsystems.stock.domain.Almacen" />
+		<mapping class="com.cplsystems.stock.domain.AlmacenEntrada" />
 		<mapping class="com.cplsystems.stock.domain.Area" />
 		<mapping class="com.cplsystems.stock.domain.Banco" />
 		<mapping class="com.cplsystems.stock.domain.ClaveArmonizada" />
@@ -46,6 +48,7 @@
 		<mapping class="com.cplsystems.stock.domain.CotizacionProducto" />
 		<mapping class="com.cplsystems.stock.domain.CuentaPago" />
 		<mapping class="com.cplsystems.stock.domain.Destino" />
+		<mapping class="com.cplsystems.stock.domain.DevelopmentTool" />
 		<mapping class="com.cplsystems.stock.domain.Direccion" />
 		<mapping class="com.cplsystems.stock.domain.DireccionEntrega" />
 		<mapping class="com.cplsystems.stock.domain.Email" />

@@ -17,6 +17,7 @@ public class UsuarioValidator extends AbstractValidator implements Serializable 
 	public void validate(ValidationContext ctx) {
 		this.beanProps = ctx.getProperties(ctx.getProperty().getBase());
 		UsuarioVM usuarioVM = (UsuarioVM) ((Property) this.beanProps.get(".")).getBase();
+		/*
 		if ((usuarioVM.getOrganizacion().getNombre() == null) || (usuarioVM.getOrganizacion().getNombre().isEmpty())
 				|| (usuarioVM.getOrganizacion().getCalle() == null)
 				|| (usuarioVM.getOrganizacion().getCalle().isEmpty()) || (usuarioVM.getOrganizacion().getRfc() == null)
@@ -31,6 +32,24 @@ public class UsuarioValidator extends AbstractValidator implements Serializable 
 			addInvalidMessage(ctx, "");
 			return;
 		}
+		
+		*/
+		
+		if ((usuarioVM.getOrganizacion().getNombre() == null) || (usuarioVM.getOrganizacion().getNombre().isEmpty())
+				|| (usuarioVM.getOrganizacion().getDireccion().getCalle() == null)
+				|| (usuarioVM.getOrganizacion().getDireccion().getCalle().isEmpty()) || (usuarioVM.getOrganizacion().getRfc() == null)
+				|| (usuarioVM.getOrganizacion().getRfc().isEmpty()) || (usuarioVM.getUsuario().getBenutzer() == null)
+				|| (usuarioVM.getUsuario().getBenutzer().isEmpty()) || (usuarioVM.getUsuario().getKennwort() == null)
+				|| (usuarioVM.getUsuario().getKennwort().isEmpty())
+				|| (usuarioVM.getUsuario().getRetypeKennwort() == null)
+				|| (usuarioVM.getUsuario().getRetypeKennwort().isEmpty())) {
+			StockUtils.showSuccessmessage("Los campos marcados con (*) son necesarios", "error", Integer.valueOf(3000),
+					null);
+
+			addInvalidMessage(ctx, "");
+			return;
+		}
+		
 		if (!usuarioVM.getUsuario().getKennwort().equals(usuarioVM.getUsuario().getRetypeKennwort())) {
 			StockUtils.showSuccessmessage(
 					"La contrase�a no pudo ser verificada, ya que los valores ingresados no coinciden", "error",

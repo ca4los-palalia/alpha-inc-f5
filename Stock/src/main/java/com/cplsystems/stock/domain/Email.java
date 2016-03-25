@@ -16,6 +16,7 @@ public class Email implements Serializable {
 	private String contacto;
 	private String email;
 	private String tipo;
+	private String web;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,4 +55,15 @@ public class Email implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	@Column
+	public String getWeb() {
+		return web;
+	}
+
+	public void setWeb(String web) {
+		this.web = web;
+	}
+	
+	
 }

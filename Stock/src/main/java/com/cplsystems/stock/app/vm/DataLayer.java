@@ -1,7 +1,21 @@
 package com.cplsystems.stock.app.vm;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.Serializable;
+import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.image.AImage;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.util.GenericForwardComposer;
+
 import com.cplsystems.stock.app.utils.SistemaOperativo;
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
+import com.cplsystems.stock.domain.Almacen;
+import com.cplsystems.stock.domain.AlmacenEntrada;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
 import com.cplsystems.stock.domain.ClaveArmonizada;
@@ -24,6 +38,7 @@ import com.cplsystems.stock.domain.Giro;
 import com.cplsystems.stock.domain.Moneda;
 import com.cplsystems.stock.domain.Municipio;
 import com.cplsystems.stock.domain.OrdenCompra;
+import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Pais;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Posicion;
@@ -37,22 +52,17 @@ import com.cplsystems.stock.domain.RequisicionProducto;
 import com.cplsystems.stock.domain.Telefono;
 import com.cplsystems.stock.domain.Unidad;
 import com.cplsystems.stock.domain.Usuarios;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.Serializable;
-import java.util.List;
+
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.image.AImage;
 
-public class DataLayer implements Serializable {
+public class DataLayer extends SelectorComposer<Component> implements Serializable  {
 	private static final long serialVersionUID = -828756372536148348L;
 	protected Banco bancoSeleccionado;
 	protected Contacto contactoContacto;
 	protected Contacto contactoProveedor;
 	protected Cotizacion cotizacionSelected;
+	protected Cotizacion cotizacion;
 	protected Contrato contrato;
 	protected CuentaPago cuentaPago;
 	protected Direccion direccionProveedor;
@@ -147,6 +157,13 @@ public class DataLayer implements Serializable {
 	protected List<OrdenCompra> ordenesCompras;
 	protected List<ClaveArmonizada> claveArmonizadaList;
 	protected List<Direccion> direccionesList;
+	protected List<Almacen> almacenesList;
+	protected Almacen almacenSelected;
+	protected AlmacenEntrada almacenEntrada;
+	//protected List<AlmacenEntrada> almacenEntradaList;
+	protected Usuarios usuario;
+	protected Organizacion organizacion;
+	
 	public Producto getProducto() {
 		return this.producto;
 	}
@@ -336,7 +353,7 @@ public class DataLayer implements Serializable {
 	}
 
 	public void setBancosDB(List<Banco> bancosDB) {
-		bancosDB = bancosDB;
+		this.bancosDB = bancosDB;
 	}
 
 	public List<Moneda> getMonedasDB() {
@@ -869,6 +886,126 @@ public class DataLayer implements Serializable {
 
 	public void setDireccionesList(List<Direccion> direccionesList) {
 		this.direccionesList = direccionesList;
+	}
+
+	public EstatusRequisicion getEstatusRequisicion() {
+		return estatusRequisicion;
+	}
+
+	public void setEstatusRequisicion(EstatusRequisicion estatusRequisicion) {
+		this.estatusRequisicion = estatusRequisicion;
+	}
+
+	public SistemaOperativo getSistemaOperativo() {
+		return sistemaOperativo;
+	}
+
+	public void setSistemaOperativo(SistemaOperativo sistemaOperativo) {
+		this.sistemaOperativo = sistemaOperativo;
+	}
+
+	public HSSFWorkbook getLibro() {
+		return libro;
+	}
+
+	public void setLibro(HSSFWorkbook libro) {
+		this.libro = libro;
+	}
+
+	public FileInputStream getFileInputStream() {
+		return fileInputStream;
+	}
+
+	public void setFileInputStream(FileInputStream fileInputStream) {
+		this.fileInputStream = fileInputStream;
+	}
+
+	public FileOutputStream getFileOutputStream() {
+		return fileOutputStream;
+	}
+
+	public void setFileOutputStream(FileOutputStream fileOutputStream) {
+		this.fileOutputStream = fileOutputStream;
+	}
+
+	public String getReadLayoutProductos() {
+		return readLayoutProductos;
+	}
+
+	public void setReadLayoutProductos(String readLayoutProductos) {
+		this.readLayoutProductos = readLayoutProductos;
+	}
+
+	public String getReadLayoutProveedores() {
+		return readLayoutProveedores;
+	}
+
+	public void setReadLayoutProveedores(String readLayoutProveedores) {
+		this.readLayoutProveedores = readLayoutProveedores;
+	}
+
+	public List<EstatusRequisicion> getEstatusRequisiciones() {
+		return estatusRequisiciones;
+	}
+
+	public void setEstatusRequisiciones(List<EstatusRequisicion> estatusRequisiciones) {
+		this.estatusRequisiciones = estatusRequisiciones;
+	}
+
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
+	}
+
+	public Organizacion getOrganizacion() {
+		return organizacion;
+	}
+
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
+	}
+
+	public List<Almacen> getAlmacenesList() {
+		return almacenesList;
+	}
+
+	public void setAlmacenesList(List<Almacen> almacenesList) {
+		this.almacenesList = almacenesList;
+	}
+
+	public Almacen getAlmacenSelected() {
+		return almacenSelected;
+	}
+
+	public void setAlmacenSelected(Almacen almacenSelected) {
+		this.almacenSelected = almacenSelected;
+	}
+
+	public AlmacenEntrada getAlmacenEntrada() {
+		return almacenEntrada;
+	}
+
+	public void setAlmacenEntrada(AlmacenEntrada almacenEntrada) {
+		this.almacenEntrada = almacenEntrada;
+	}
+/*
+	public List<AlmacenEntrada> getAlmacenEntradaList() {
+		return almacenEntradaList;
+	}
+
+	public void setAlmacenEntradaList(List<AlmacenEntrada> almacenEntradaList) {
+		this.almacenEntradaList = almacenEntradaList;
+	}*/
+
+	public Cotizacion getCotizacion() {
+		return cotizacion;
+	}
+
+	public void setCotizacion(Cotizacion cotizacion) {
+		this.cotizacion = cotizacion;
 	}
 	
 }
