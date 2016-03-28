@@ -6,6 +6,7 @@ import com.cplsystems.stock.services.AlmacenEntradaService;
 import com.cplsystems.stock.services.AlmacenService;
 import com.cplsystems.stock.services.AreaService;
 import com.cplsystems.stock.services.BancoService;
+import com.cplsystems.stock.services.CalculosCostoService;
 import com.cplsystems.stock.services.ClaveArmonizadaService;
 import com.cplsystems.stock.services.CodigoBarrasProductoService;
 import com.cplsystems.stock.services.CofiaFuenteFinanciamientoService;
@@ -144,6 +145,8 @@ public abstract class ServiceLayer extends DataLayer {
 	protected AlmacenService almacenService;
 	@WireVariable
 	protected AlmacenEntradaService almacenEntradaService;
+	@WireVariable
+	protected CalculosCostoService calculosCostoService;
 
 	public UsuarioService getUsuarioService() {
 		return this.usuarioService;

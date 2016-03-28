@@ -33,6 +33,7 @@
 		<mapping class="com.cplsystems.stock.domain.AlmacenEntrada" />
 		<mapping class="com.cplsystems.stock.domain.Area" />
 		<mapping class="com.cplsystems.stock.domain.Banco" />
+		<mapping class="com.cplsystems.stock.domain.CalculosCosto" />
 		<mapping class="com.cplsystems.stock.domain.ClaveArmonizada" />
 		<mapping class="com.cplsystems.stock.domain.CodigoBarrasProducto" />
 		<mapping class="com.cplsystems.stock.domain.CofiaFuenteFinanciamiento" />

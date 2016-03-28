@@ -221,11 +221,6 @@ public class DatosIniciales extends BasicStructure {
 	}
 	
 	
-	
-	
-	
-	
-	
 	private Pais crearPais(Pais pais, XSSFCell valorDePropiedad, int indice) {
 		String valor = String.valueOf(valorDePropiedad);
 		switch (indice) {
@@ -460,6 +455,7 @@ public class DatosIniciales extends BasicStructure {
 			clave1.setClave("211");
 			clave1.setDescripcion("Materiales, �tiles y equipos menores de oficina");
 			clave1.setFechaActualizacion(Calendar.getInstance());
+			
 			ClaveArmonizada clave2 = new ClaveArmonizada();
 			clave2.setClasificacionId("1");
 			clave2.setClasificacionNombre("Muebles");
@@ -524,6 +520,9 @@ public class DatosIniciales extends BasicStructure {
 			clave8.setClave("218");
 			clave8.setDescripcion("Materiales para el registro e identificaci�n de bienes y personas");
 			clave8.setFechaActualizacion(Calendar.getInstance());
+			
+			
+			
 			ClaveArmonizada clave9 = new ClaveArmonizada();
 			clave9.setClasificacionId("1");
 			clave9.setClasificacionNombre("Muebles");
@@ -551,6 +550,8 @@ public class DatosIniciales extends BasicStructure {
 			clave11.setClave("223");
 			clave11.setDescripcion("Utensilios para el servicio de alimentaci�n");
 			clave11.setFechaActualizacion(Calendar.getInstance());
+			
+			
 			ClaveArmonizada clave12 = new ClaveArmonizada();
 			clave12.setClasificacionId("1");
 			clave12.setClasificacionNombre("Muebles");
@@ -578,6 +579,9 @@ public class DatosIniciales extends BasicStructure {
 			clave14.setClave("233");
 			clave14.setDescripcion("Productos de papel, cart�n e impresos adquiridos como materia prima");
 			clave14.setFechaActualizacion(Calendar.getInstance());
+			
+			
+			
 			ClaveArmonizada clave15 = new ClaveArmonizada();
 			clave15.setClasificacionId("1");
 			clave15.setClasificacionNombre("Muebles");
@@ -634,6 +638,8 @@ public class DatosIniciales extends BasicStructure {
 			clave21.setClave("239");
 			clave21.setDescripcion("Otros productos adquiridos como materia prima");
 			clave21.setFechaActualizacion(Calendar.getInstance());
+			
+			
 			ClaveArmonizada clave22 = new ClaveArmonizada();
 			clave22.setClasificacionId("1");
 			clave22.setClasificacionNombre("Muebles");
@@ -715,6 +721,8 @@ public class DatosIniciales extends BasicStructure {
 			clave30.setClave("249");
 			clave30.setDescripcion("Otros materiales y art�culos de construcci�n y reparaci�n");
 			clave30.setFechaActualizacion(Calendar.getInstance());
+			
+			
 			ClaveArmonizada clave31 = new ClaveArmonizada();
 			clave31.setClasificacionId("1");
 			clave31.setClasificacionNombre("Muebles");
@@ -778,6 +786,8 @@ public class DatosIniciales extends BasicStructure {
 			clave37.setClave("259");
 			clave37.setDescripcion("Otros productos qu�micos");
 			clave37.setFechaActualizacion(Calendar.getInstance());
+			
+			
 			ClaveArmonizada clave38 = new ClaveArmonizada();
 			clave38.setClasificacionId("1");
 			clave38.setClasificacionNombre("Muebles");
@@ -796,6 +806,8 @@ public class DatosIniciales extends BasicStructure {
 			clave39.setClave("262");
 			clave39.setDescripcion("Carb�n y sus derivados");
 			clave39.setFechaActualizacion(Calendar.getInstance());
+			
+			
 			ClaveArmonizada clave40 = new ClaveArmonizada();
 			clave40.setClasificacionId("1");
 			clave40.setClasificacionNombre("Muebles");
@@ -841,6 +853,8 @@ public class DatosIniciales extends BasicStructure {
 			clave44.setClave("275");
 			clave44.setDescripcion("Blancos y otros productos textiles, excepto prendas de vestir");
 			clave44.setFechaActualizacion(Calendar.getInstance());
+			
+			
 			ClaveArmonizada clave45 = new ClaveArmonizada();
 			clave45.setClasificacionId("1");
 			clave45.setClasificacionNombre("Muebles");
@@ -868,6 +882,8 @@ public class DatosIniciales extends BasicStructure {
 			clave47.setClave("283");
 			clave47.setDescripcion("Prendas de protecci�n para seguridad p�blica y nacional");
 			clave47.setFechaActualizacion(Calendar.getInstance());
+			
+			
 			ClaveArmonizada clave48 = new ClaveArmonizada();
 			clave48.setClasificacionId("1");
 			clave48.setClasificacionNombre("Muebles");

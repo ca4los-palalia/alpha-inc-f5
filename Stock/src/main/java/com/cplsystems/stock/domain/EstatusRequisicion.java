@@ -14,6 +14,7 @@ public class EstatusRequisicion {
 	private String nombre;
 	private String clave;
 	private String color;
+	private String descripcion;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,4 +53,14 @@ public class EstatusRequisicion {
 	public void setColor(String color) {
 		this.color = color;
 	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	@Column
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	
 }

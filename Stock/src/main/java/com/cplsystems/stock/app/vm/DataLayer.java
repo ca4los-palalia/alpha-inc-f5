@@ -18,6 +18,7 @@ import com.cplsystems.stock.domain.Almacen;
 import com.cplsystems.stock.domain.AlmacenEntrada;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
+import com.cplsystems.stock.domain.CalculosCosto;
 import com.cplsystems.stock.domain.ClaveArmonizada;
 import com.cplsystems.stock.domain.CodigoBarrasProducto;
 import com.cplsystems.stock.domain.CofiaFuenteFinanciamiento;
@@ -161,6 +162,8 @@ public class DataLayer extends SelectorComposer<Component> implements Serializab
 	protected Almacen almacenSelected;
 	protected AlmacenEntrada almacenEntrada;
 	//protected List<AlmacenEntrada> almacenEntradaList;
+	protected CalculosCosto calculosCosto;
+	protected List<CalculosCosto> calculosCostoList;
 	protected Usuarios usuario;
 	protected Organizacion organizacion;
 	
@@ -1006,6 +1009,22 @@ public class DataLayer extends SelectorComposer<Component> implements Serializab
 
 	public void setCotizacion(Cotizacion cotizacion) {
 		this.cotizacion = cotizacion;
+	}
+
+	public CalculosCosto getCalculosCosto() {
+		return calculosCosto;
+	}
+
+	public void setCalculosCosto(CalculosCosto calculosCosto) {
+		this.calculosCosto = calculosCosto;
+	}
+
+	public List<CalculosCosto> getCalculosCostoList() {
+		return calculosCostoList;
+	}
+
+	public void setCalculosCostoList(List<CalculosCosto> calculosCostoList) {
+		this.calculosCostoList = calculosCostoList;
 	}
 	
 }

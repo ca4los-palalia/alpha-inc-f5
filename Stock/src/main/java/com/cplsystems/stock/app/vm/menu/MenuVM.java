@@ -117,30 +117,9 @@ public class MenuVM extends MenuMetaclass {
 
 	@Command
 	public void showBuscadorProductos() {
-		try {
-			Clients.showBusy(busyWin, "please wait...");
+		args.put("pageToRender", "/modulos/productos/productosBuscador.zul");
+		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
 
-			busyWin.addEventListener(Events.ON_CLIENT_INFO, new EventListener<Event>() {
-				@Override
-				public void onEvent(Event event) throws Exception {
-					args.put("pageToRender", "/modulos/productos/productosBuscador.zul");
-					BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-
-					Clients.clearBusy(busyWin);
-				}
-			});
-
-			Events.echoEvent("onClientInfo", busyWin, null);
-		} catch (Error ex) {
-			throw ex;
-		} finally {
-			// release full control of desktop
-			Executions.deactivate(busyWin.getDesktop());
-		}
-	/*
-	 * args.put("pageToRender", "/modulos/productos/productosBuscador.zul");
-	 * BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
-	 */
 	}
 
 	@Listen("onAddNameEvent = #timer")

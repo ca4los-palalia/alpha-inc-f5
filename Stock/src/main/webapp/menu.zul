@@ -9,29 +9,6 @@
 
 
 
-		<window id="busyWin" position="center"
-			border="normal" title="busy...">
-
-
-			<label id="labelId" value="carlos"></label>
-
-
-		</window>
-		<groupbox id="server" hflex="1" mold="3d"
-				closable="false">
-				<caption label="Server Status" />
-			</groupbox>
-
-			<timer id="timer" delay="1500" repeats="true"
-				onCreate="self.stop()">
-			</timer>
-
-
-
-
-
-
-
 
 		<borderlayout>
 			<north maxsize="300" size="100%" splittable="true"
