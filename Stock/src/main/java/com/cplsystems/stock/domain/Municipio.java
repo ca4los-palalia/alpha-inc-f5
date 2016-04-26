@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "municipio")
+@Table
 public class Municipio implements Serializable {
 	private static final long serialVersionUID = 2327486550971803091L;
 	private Long idMunicipio;
@@ -21,7 +21,7 @@ public class Municipio implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_estado", nullable = false)
+	@Column
 	public Long getIdMunicipio() {
 		return this.idMunicipio;
 	}

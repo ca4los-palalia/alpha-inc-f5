@@ -11,14 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "lugar")
+@Table
 public class Lugar {
 	private Long idLugar;
 	private String nombre;
 	private Proyecto proyecto;
 
 	@Id
-	@Column(name = "idLugar", nullable = false)
+	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdLugar() {
 		return this.idLugar;

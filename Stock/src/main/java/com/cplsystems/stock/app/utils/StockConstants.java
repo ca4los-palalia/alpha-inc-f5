@@ -1,5 +1,7 @@
 package com.cplsystems.stock.app.utils;
 
+import com.cplsystems.stock.domain.SistemaOperativo;
+
 public class StockConstants {
 	public static final String MODAL_VIEW_PRODUCTOS = "/modulos/productos/utils/buscarProducto.zul";
 	public static final String MODAL_VIEW_ENVIO_PRODUCTOS = "/modulos/productos/utils/configurarEnvioProductos.zul";

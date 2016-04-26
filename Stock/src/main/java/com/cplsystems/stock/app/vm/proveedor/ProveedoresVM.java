@@ -1,26 +1,14 @@
 package com.cplsystems.stock.app.vm.proveedor;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
-import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.domain.AplicacionExterna;
 import com.cplsystems.stock.domain.Banco;
 import com.cplsystems.stock.domain.Direccion;
-import com.cplsystems.stock.domain.Estado;
 import com.cplsystems.stock.domain.Organizacion;
-import com.cplsystems.stock.domain.Pais;
-import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.Proveedor;
+import com.cplsystems.stock.domain.ProveedorProducto;
 import com.cplsystems.stock.domain.Usuarios;
-import com.cplsystems.stock.services.MonedaService;
-import com.cplsystems.stock.services.MunicipioService;
-import com.cplsystems.stock.services.PaisService;
-import com.cplsystems.stock.services.ProductoService;
-import com.cplsystems.stock.services.ProveedorProductoService;
-import com.cplsystems.stock.services.ProveedorService;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -37,11 +25,8 @@ import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.io.Files;
-import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Messagebox;
@@ -55,9 +40,11 @@ public class ProveedoresVM extends ProveedorMetaClass {
 	public void init() {
 		super.init();
 		completeBancos = bancosDB;
-		this.readJasper = generarUrlString("jasperTemplates/reportProductos.jasper");
-		this.paises = new ArrayList();
-		this.paises.add(this.paisService.findById(Long.valueOf(157L)));
+		readJasper = generarUrlString("jasperTemplates/reportProductos.jasper");
+		paises = new ArrayList();
+		paises.add(paisService.findById(Long.valueOf(157L)));
+		
+		productosDB = productoService.getAll();
 	}
 
 	@Command
@@ -287,8 +274,9 @@ public class ProveedoresVM extends ProveedorMetaClass {
 		
 		try {
 			workBook = new XSSFWorkbook(getStreamMediaExcel(ctx));
-			leerDatosDesdeExcel(0);
-			leerDatosDesdeExcel(1);
+			leerDatosDesdeExcel(0);//Extraer direccion de proveedores
+			leerDatosDesdeExcel(1);//Extraer proveedores
+			leerDatosDesdeExcel(2);//Extraer productos de proveedores
 			if(proveedoresLista.size() > 0){
 				Messagebox.show(proveedoresLista.size() + " Proveedores Importados");
 			}else
@@ -311,6 +299,9 @@ public class ProveedoresVM extends ProveedorMetaClass {
 			break;
 		case 1:
 			extraerProveedoresDeExcel(rowIterator);
+			break;
+		case 2:
+			extraerProductosProveedoresDeExcel(rowIterator);
 			break;
 		}
 	}
@@ -380,6 +371,42 @@ public class ProveedoresVM extends ProveedorMetaClass {
 			proveedoresLista = proveedorTemp;
 		}
 		return proveedorTemp;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private List<ProveedorProducto> extraerProductosProveedoresDeExcel(Iterator rowIterator){
+		List<ProveedorProducto> proveedorProductoTemp = new ArrayList<>();
+		Organizacion organizacion = (Organizacion) sessionUtils.getFromSession("FIRMA");
+		Usuarios usuario = (Usuarios) sessionUtils.getFromSession("usuario");
+		Integer i = 0;
+		int j;
+		XSSFCell hssfCell;
+		while (rowIterator.hasNext()) {
+			ProveedorProducto nuevoProveedorProducto= new ProveedorProducto();
+			XSSFRow hssfRow = (XSSFRow) rowIterator.next();
+			Iterator iterator = hssfRow.cellIterator();
+			
+			if (i > 0) {
+				j = 0;
+				while ((iterator.hasNext()) && (j < 3)) {
+					hssfCell = (XSSFCell) iterator.next();
+					nuevoProveedorProducto = crearProveedorProducto(nuevoProveedorProducto, hssfCell, j);
+					j++;
+				}
+				nuevoProveedorProducto.setFechaActualizacion(Calendar.getInstance());
+				nuevoProveedorProducto.setOrganizacion(organizacion);
+				nuevoProveedorProducto.setUsuario(usuario);
+				proveedorProductoTemp.add(nuevoProveedorProducto);
+			}
+			i++;
+		}
+		if(proveedorProductoTemp.size() > 0){
+			for (ProveedorProducto item : proveedorProductoTemp) {
+				proveedorProductoService.save(item);
+			}
+			proveedorProductos = proveedorProductoTemp;
+		}
+		return proveedorProductoTemp;
 	}
 	
 	
@@ -486,6 +513,43 @@ public class ProveedoresVM extends ProveedorMetaClass {
 			break;
 		}
 		return proveedor;
+	}
+	
+	
+	private ProveedorProducto crearProveedorProducto(ProveedorProducto proveedorProducto, XSSFCell valorDePropiedad, int indice) {
+		
+		try {
+			String valor = String.valueOf(valorDePropiedad);
+			switch (indice) {
+			case 0:
+				if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);				
+					proveedorProducto.setProducto(getProductoFromList(Long.parseLong(valor), productosDB));
+				}
+				break;
+			case 1:
+				if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);				
+					proveedorProducto.setProveedor(getProveedorFromList(Long.parseLong(valor), proveedoresLista));
+				}
+				break;
+			case 2:
+				if ((valor != null) && (!valor.isEmpty()) && (!valor.equalsIgnoreCase("NULL"))) {
+					if (valor.contains(".0"))
+						valor = removerPuntoCero(valor);
+					proveedorProducto.setCantidad(valor);
+				}
+				break;
+			
+			}
+		} catch (Exception e) {
+			
+		}
+		
+		
+		return proveedorProducto;
 	}
 	
 	@Command

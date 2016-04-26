@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Proyecto")
+@Table
 public class Proyecto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long idProyecto;

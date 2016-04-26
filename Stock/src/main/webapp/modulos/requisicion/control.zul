@@ -9,24 +9,8 @@
 			<north maxsize="300" size="100%"><!-- HEADER -->
 				<borderlayout>
 					<center border="none" flex="true">
-						
-							<tabbox height="100%">
-								<tabs>
-									<tab label="Entradas"
-										image="/images/toolbar/area.png"/>
-									<tab label="Salidas"
-										image="/images/toolbar/bank.png"/>
-								</tabs>
-								<tabpanels>
-									<tabpanel  height="100%">
-										<include src="/modulos/requisicion/controlEntradas.zul" />
-									</tabpanel>
-									<tabpanel>
-										<include src="/inicio.zul" />
-									</tabpanel>
-								</tabpanels>
-							</tabbox>
-						
+						<include
+							src="/modulos/requisicion/kardexOrdenCompra.zul" />
 					</center>
 				</borderlayout>
 			</north>

@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CotizacionProducto")
+@Table
 public class CotizacionProducto {
 	private Long idCotizacion;
 	private Long idCotizacionProducto;
@@ -22,7 +22,7 @@ public class CotizacionProducto {
 	private Producto producto;
 
 	@Id
-	@Column(name = "idCotizacion", nullable = false)
+	@Column(nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdCotizacion() {
 		return this.idCotizacion;

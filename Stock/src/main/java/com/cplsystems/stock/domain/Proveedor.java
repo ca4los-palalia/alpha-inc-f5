@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "provedor")
+@Table
 public class Proveedor implements Serializable {
 	private static final long serialVersionUID = 5955369590591544443L;
 	private Long idProveedor;
@@ -45,7 +45,7 @@ public class Proveedor implements Serializable {
 	private Usuarios usuario;
 
 	@Id
-	@Column(name = "idProveedor", nullable = false)
+	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdProveedor() {
 		return this.idProveedor;

@@ -1,9 +1,9 @@
 package com.cplsystems.stock.app.vm;
 
 import com.cplsystems.stock.app.utils.SessionUtils;
-import com.cplsystems.stock.app.utils.SistemaOperativo;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.domain.SistemaOperativo;
 import com.cplsystems.stock.domain.Usuarios;
 import com.cplsystems.stock.services.UsuarioService;
 import java.io.File;

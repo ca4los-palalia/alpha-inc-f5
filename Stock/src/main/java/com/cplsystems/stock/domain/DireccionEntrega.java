@@ -10,14 +10,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "direccion_entrega")
+@Table
 public class DireccionEntrega {
 	private Long idDireccionEntrega;
 	private Direccion direccion;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_direccion_entrega", nullable = false)
+	@Column(nullable = false)
 	public Long getIdDireccionEntrega() {
 		return this.idDireccionEntrega;
 	}

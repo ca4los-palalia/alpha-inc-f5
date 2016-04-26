@@ -1,23 +1,28 @@
 package com.cplsystems.stock.dao.impl;
 
-import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
-import com.cplsystems.stock.app.utils.SessionUtils;
-import com.cplsystems.stock.dao.ProductoDAO;
-import com.cplsystems.stock.domain.Organizacion;
-import com.cplsystems.stock.domain.Producto;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.classic.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.cplsystems.stock.app.utils.HibernateDAOSuportUtil;
+import com.cplsystems.stock.app.utils.ReconstruccionNativeSQL;
+import com.cplsystems.stock.app.utils.SessionUtils;
+import com.cplsystems.stock.dao.ProductoDAO;
+import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Producto;
 
 @Repository
 public class ProductoDAOImpl extends HibernateDAOSuportUtil implements ProductoDAO {
@@ -38,6 +43,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements ProductoD
 		getHibernateTemplate().delete(producto);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Producto getById(Long idProducto) {
 		List<Producto> producto = null;
@@ -51,35 +57,49 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements ProductoD
 	}
 
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Producto> getAll() {
 		List<Producto> producto = null;
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Producto.class);
 
 		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		producto = criteria.list();
+		
 		return producto.size() > 0 ? producto : null;
 	}
 
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Producto> getItemByKeyOrName(String claveProducto, String nombreProducto) {
+		boolean restriccion1 = false;
+		boolean restriccion2 = false;
+		List<Producto> productos = new ArrayList<>();
+
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Producto.class);
 		if ((claveProducto != null) && (!claveProducto.isEmpty())) {
 			criteria.add(Restrictions.like("clave", "%" + claveProducto + "%"));
+			restriccion1 = true;
 		}
 		if ((nombreProducto != null) && (!nombreProducto.isEmpty())) {
 			criteria.add(Restrictions.like("nombre", "%" + nombreProducto + "%"));
+			restriccion2 = true;
 		}
-		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
-		List<Producto> productos = criteria.list();
+
+		if (restriccion1 || restriccion2) {
+			criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+			productos = criteria.list();
+		}
 		return productos.size() > 0 ? productos : null;
 	}
 
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<String> getAllKeys() {
 		return getHibernateTemplate().find("SELECT clave FROM Producto as p ");
 	}
 
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Producto> getByClaveNombre(String buscarTexto) {
 		List<Producto> lista = null;
 
@@ -103,6 +123,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements ProductoD
 	}
 
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Producto> getPreciosMaximos() {
 		List<Producto> lista = null;
 
@@ -127,6 +148,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements ProductoD
 	}
 
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Producto> getPreciosMinimos() {
 		List<Producto> lista = null;
 
@@ -151,6 +173,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements ProductoD
 	}
 
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Producto> getPreciosPromedio() {
 		List<Producto> lista = null;
 
@@ -181,6 +204,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements ProductoD
 	}
 
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Producto> getByPrecio(String precio) {
 		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Producto.class);
 
@@ -193,6 +217,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements ProductoD
 	}
 
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public Producto getByClaveNombrePrecioCosto(String buscarTexto) {
 		List<Producto> lista = null;
 
@@ -221,6 +246,7 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements ProductoD
 	}
 
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public Producto getByClave(String clave) {
 		List<Producto> lista = null;
 
@@ -232,5 +258,40 @@ public class ProductoDAOImpl extends HibernateDAOSuportUtil implements ProductoD
 
 		lista = criteria.list();
 		return (lista != null) && (!lista.isEmpty()) ? (Producto) lista.get(0) : null;
+	}
+
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public List<Producto> getAllLimited() {
+		List<Producto> producto = null;
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(Producto.class);
+
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		criteria.addOrder(Order.desc("idProducto"));
+		criteria.setMaxResults(250);
+		producto = criteria.list();
+		return producto.size() > 0 ? producto : null;
+	}
+
+	@Transactional(readOnly = true)
+	@SuppressWarnings({ "unchecked", "unused" })
+	public List<Producto> getAllNativeSQL() {
+		List<Producto> lista = new ArrayList<Producto>();
+		ReconstruccionNativeSQL reconstruccion = new ReconstruccionNativeSQL();
+
+		SessionFactory sessionFactory = getHibernateTemplate().getSessionFactory();
+		Session session = sessionFactory.getCurrentSession();
+
+		Transaction tx = session.beginTransaction();
+
+		SQLQuery query = session.createSQLQuery("SELECT * FROM Producto");
+		List<Object[]> allProductos = query.list();
+
+		for (Object[] producto : allProductos) {
+			Producto p = reconstruccion.getProducto(producto);
+			lista.add(p);
+		}
+		
+		return lista.size() > 0 ? lista : null;
 	}
 }

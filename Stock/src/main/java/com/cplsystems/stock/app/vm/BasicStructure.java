@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +15,6 @@ import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.Multipart;
 import javax.mail.Part;
@@ -30,15 +28,15 @@ import javax.mail.internet.MimeMultipart;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.zkoss.bind.BindContext;
-import org.zkoss.json.JSONArray;
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.util.Clients;
 
-import com.cplsystems.stock.app.utils.SistemaOperativo;
 import com.cplsystems.stock.app.utils.StockUtils;
-import com.cplsystems.stock.app.utils.UserPrivileges;
+import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.ClaveArmonizada;
 import com.cplsystems.stock.domain.DevelopmentTool;
 import com.cplsystems.stock.domain.Direccion;
@@ -49,14 +47,15 @@ import com.cplsystems.stock.domain.Organizacion;
 import com.cplsystems.stock.domain.Pais;
 import com.cplsystems.stock.domain.Persona;
 import com.cplsystems.stock.domain.Privilegios;
+import com.cplsystems.stock.domain.Producto;
 import com.cplsystems.stock.domain.ProductoNaturaleza;
+import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.Requisicion;
+import com.cplsystems.stock.domain.SistemaOperativo;
 import com.cplsystems.stock.domain.Unidad;
 import com.cplsystems.stock.domain.Usuarios;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 
 public abstract class BasicStructure extends ServiceLayer {
 	private static final long serialVersionUID = 3686010678115196973L;
@@ -69,7 +68,9 @@ public abstract class BasicStructure extends ServiceLayer {
 		this.cotizacionesList = new ArrayList();
 		this.sistemaOperativo = new SistemaOperativo();
 	}
-
+	
+	
+	
 	public void newRecord() {
 	}
 
@@ -142,6 +143,7 @@ public abstract class BasicStructure extends ServiceLayer {
 		return eliminado;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public HashMap construirHashMapParametros(List<HashMap> parametros) {
 		HashMap parametrosGenerados = new HashMap();
 		for (HashMap hashMap : parametros) {
@@ -237,7 +239,34 @@ public abstract class BasicStructure extends ServiceLayer {
 
 		return retornar;
 	}
-
+	
+	
+	public Producto getProductoFromList(Long idProducto, List<Producto> lista) {
+		Producto retornar = null;
+		if (lista != null) {
+			for (Producto item : lista) {
+				if (idProducto.equals(item.getIdProducto())) {
+					retornar = item;
+					break;
+				}
+			}
+		}
+		return retornar;
+	}
+	
+	public Proveedor getProveedorFromList(Long idProveedor, List<Proveedor> lista) {
+		Proveedor retornar = null;
+		if (lista != null) {
+			for (Proveedor item : lista) {
+				if (idProveedor.equals(item.getIdProveedor())) {
+					retornar = item;
+					break;
+				}
+			}
+		}
+		return retornar;
+	}
+	
 	public Moneda getMonedaFromList(Long idMoneda) {
 		Moneda retornar = null;
 		if (monedasDB != null) {
@@ -251,6 +280,19 @@ public abstract class BasicStructure extends ServiceLayer {
 		return retornar;
 	}
 
+	public Area getAreasFromList(Long idArea) {
+		Area retornar = null;
+		if (areas != null) {
+			for (Area item : areas) {
+				if (idArea.equals(item.getIdArea())) {
+					retornar = item;
+					break;
+				}
+			}
+		}
+		return retornar;
+	}
+	
 	public Estado getEstadoFromList(Long idEstado) {
 		Estado retornar = null;
 		if (estados != null) {
@@ -471,6 +513,18 @@ public abstract class BasicStructure extends ServiceLayer {
 		if(!nuevaPalabra.equals(""))
 			parts.add(nuevaPalabra);
 		return parts;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public Iterator getDataExcel(InputStream inPutStream, int indiceSheet) {
+		try {
+			XSSFWorkbook workBook = new XSSFWorkbook(inPutStream);
+			XSSFSheet hssfSheet = workBook.getSheetAt(indiceSheet);
+			Iterator rowIterator = hssfSheet.rowIterator();
+			return rowIterator;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

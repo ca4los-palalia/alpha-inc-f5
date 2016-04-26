@@ -6,15 +6,6 @@ import java.util.List;
 
 import com.cplsystems.stock.app.utils.RODTreeNodeData;
 
-/**
- * tested with ZK 6.0.2
- * 
- * The data bean of File, implements RODTreeNodeData to work with
- * RODTreeModel/RODTreeNode
- * 
- * @author benbai123
- *
- */
 public class FileBean extends RODTreeNodeData {
 	private static final long serialVersionUID = 8667276657476276079L;
 

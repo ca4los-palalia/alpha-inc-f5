@@ -3,12 +3,12 @@ package com.cplsystems.stock.app.vm.producto;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.BasicStructure;
 import com.cplsystems.stock.domain.Producto;
-import com.cplsystems.stock.services.ProductoService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
@@ -19,6 +19,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Window;
 
@@ -37,7 +38,8 @@ public class BuscarProductoVM extends BasicStructure {
 	public void init(@ContextParam(ContextType.VIEW) Component view,
 			@ExecutionArgParam("updateCommandFromItemFinder") String updateCommandFromItemFinder) {
 		Selectors.wireComponents(view, this, false);
-		this.globalCommandName = updateCommandFromItemFinder;
+		globalCommandName = updateCommandFromItemFinder;
+		productos = productoService.getAllLimited();
 	}
 
 	@AfterCompose
@@ -47,22 +49,26 @@ public class BuscarProductoVM extends BasicStructure {
 
 	@NotifyChange({ "productos" })
 	@Command
-	public void searchItemByKeyOrName() {
-		this.productos = this.productoService.getItemByKeyOrName(this.claveProducto, this.nombreProducto);
-		if (this.productos == null) {
-			StockUtils.showSuccessmessage("Los parametros especificados no generaron ning�n resultado", "warning",
-					Integer.valueOf(2000), null);
+	public void searchItemByKeyOrName(@BindingParam("compUserCp") Component comp) {
+		productos = productoService.getItemByKeyOrName(claveProducto, nombreProducto);
+		if (productos == null && (!claveProducto.equals("") || (nombreProducto != null && !nombreProducto.equals("")))) {
+			StockUtils.showSuccessmessage("Los parametros especificados no generaron ningún resultado",
+					Clients.NOTIFICATION_TYPE_INFO, 0,
+					comp);
+		}else if (productos == null && (claveProducto.equals("") && (nombreProducto == null || nombreProducto.equals("")))) {
+			productos = productoService.getAllLimited();
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Command
 	public void transferProduct() {
-		if (this.productoSeleccionado != null) {
-			this.productosModalDialog.detach();
+		if (productoSeleccionado != null) {
+			productosModalDialog.detach();
 			Map<String, Object> args = new HashMap();
-			args.put("productoSeleccionado", this.productoSeleccionado);
-			if ((this.globalCommandName != null) && (!this.globalCommandName.isEmpty())) {
-				BindUtils.postGlobalCommand(null, null, this.globalCommandName, args);
+			args.put("productoSeleccionado", productoSeleccionado);
+			if ((globalCommandName != null) && (!globalCommandName.isEmpty())) {
+				BindUtils.postGlobalCommand(null, null, globalCommandName, args);
 			} else {
 				BindUtils.postGlobalCommand(null, null, "updateFromSelectedItem", args);
 			}

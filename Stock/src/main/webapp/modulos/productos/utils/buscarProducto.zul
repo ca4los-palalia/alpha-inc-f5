@@ -1,64 +1,173 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
+	<?script type="text/javascript" src="/scripts/watermarks.js"?>
 
 	<window apply="org.zkoss.bind.BindComposer"
 		id="productosModalDialog"
 		viewModel="@id('bpvm') @init('com.cplsystems.stock.app.vm.producto.BuscarProductoVM')"
-		width="460px" height="360px" position="center,center"
-		closable="true">
-		<vlayout id="productoDetalles" height="320px">
-			
-			<grid>
-				<columns>
-					<column width="15%"/>
-					<column/>
-					<column width="15%"/>
-					<column/>
-					<column width="10%"/>
-				</columns>
-				<rows>
-					<row>
-						<label value="Clave:" />
-						<textbox width="100%" onOK="@command('searchItemByKeyOrName')"
-							value="@bind(bpvm.claveProducto)" />
-						<label value="Nombre:" />
-						<textbox width="100%" onOK="@command('searchItemByKeyOrName')"
-							value="@bind(bpvm.nombreProducto)" />
-						<button image="/images/toolbar/search32.png"
-							onClick="@command('searchItemByKeyOrName')" />
-					</row>
-				</rows>
-			</grid>
-			
-			<hlayout>
-				<listbox model="@load(bpvm.productos)"
-					selectedItem="@bind(bpvm.productoSeleccionado)"
-					emptyMessage="No hay resultados que mostrar" mold="paging"
-					pageSize="4">
-					<auxhead>
-						<auxheader colspan="4" label="Productos" />
-					</auxhead>
-					<listhead>
-						<listheader label="Clave" align="center" />
-						<listheader label="Nombre" align="center" />
-						<listheader label="Precio" align="center" />
-						<listheader label="Marca" align="center" />
-					</listhead>
-					<template name="model">
-						<listitem>
-							<listcell label="${each.clave}" />
-							<listcell label="${each.nombre}" />
-							<listcell label="${each.precio}" />
-							<listcell label="${each.marca}" />
-						</listitem>
-					</template>
-				</listbox>
+		width="50%" height="80%" position="center,center" closable="true">
+
+
+		<borderlayout>
+			<north title="Buscar Productos" maxsize="300" size="94%" style="border-style: hidden;">
+				<borderlayout>
+					<north size="30px" style="border-style: hidden;">
+						<grid>
+							<columns>
+								<column width="10%" />
+								<column />
+								<column width="10%" />
+								<column />
+								<column width="7%" align="center" />
+							</columns>
+							<rows>
+								<row>
+									<label value="Clave:" />
+									<textbox id="keyProductoModal"
+										width="100%" onOK="@command('searchItemByKeyOrName')"
+										value="@bind(bpvm.claveProducto)" />
+									<label value="Nombre:" />
+									<textbox id="nameProductoModal"
+										width="100%" onOK="@command('searchItemByKeyOrName')"
+										value="@bind(bpvm.nombreProducto)" />
+									<button
+										image="/images/toolbar/search32.png"
+										onClick="@command('searchItemByKeyOrName', compUserCp=self)" />
+								</row>
+							</rows>
+						</grid>
+					</north>
+					<center style="border-style: hidden;" flex="true">
+
+						<window height="100%" width="100%">
+							<listbox model="@load(bpvm.productos)"
+								vflex="1" selectedItem="@bind(bpvm.productoSeleccionado)"
+								emptyMessage="No hay resultados que mostrar">
+								
+								<listhead>
+									<listheader label="Clave" width="10%"
+										align="center" />
+									<listheader label="Nombre"/>
+									<listheader label="Precio" width="10%" align="center"/>
+									<listheader label="Marca" width="20%"/>
+								</listhead>
+								<template name="model">
+									<listitem>
+										<listcell label="${each.clave}" />
+										<listcell
+											label="${each.nombre}" />
+										<listcell
+											label="${each.precio}" />
+										<listcell label="${each.marca}" />
+									</listitem>
+								</template>
+							</listbox>
+						</window>
+					</center>
+				</borderlayout>
+			</north>
+			<center style="border-style: hidden;">
+				<borderlayout>
+					<center style="border-style: hidden;">
+						<grid sclass="fgrid">
+							<columns>
+								<column align="left" width="68%" />
+								<column align="center" />
+								<column align="center" />
+							</columns>
+							<rows>
+								<row>
+									<label width="100%" value="" />
+									<button label="Cancelar"
+										onClick="@command('closeDialog')" />
+									<button label="Aceptar"
+										onClick="@command('transferProduct')" />
+								</row>
+							</rows>
+						</grid>
+					</center>
+				</borderlayout>
+			</center>
+		</borderlayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<window visible="false">
+			<vlayout id="productoDetalles" height="320px">
+
+				<grid>
+					<columns>
+						<column width="15%" />
+						<column />
+						<column width="15%" />
+						<column />
+						<column width="10%" />
+					</columns>
+					<rows>
+						<row>
+							<label value="Clave:" />
+							<textbox id="keyProductoModal" width="100%"
+								onOK="@command('searchItemByKeyOrName')"
+								value="@bind(bpvm.claveProducto)" />
+							<label value="Nombre:" />
+							<textbox id="nameProductoModal" width="100%"
+								onOK="@command('searchItemByKeyOrName')"
+								value="@bind(bpvm.nombreProducto)" />
+							<button image="/images/toolbar/search32.png"
+								onClick="@command('searchItemByKeyOrName')" />
+						</row>
+					</rows>
+				</grid>
+
+				<hlayout>
+					<listbox model="@load(bpvm.productos)"
+						selectedItem="@bind(bpvm.productoSeleccionado)"
+						emptyMessage="No hay resultados que mostrar" mold="paging"
+						pageSize="4">
+						<auxhead>
+							<auxheader colspan="4" label="Productos" />
+						</auxhead>
+						<listhead>
+							<listheader label="Clave" align="center" />
+							<listheader label="Nombre" align="center" />
+							<listheader label="Precio" align="center" />
+							<listheader label="Marca" align="center" />
+						</listhead>
+						<template name="model">
+							<listitem>
+								<listcell label="${each.clave}" />
+								<listcell label="${each.nombre}" />
+								<listcell label="${each.precio}" />
+								<listcell label="${each.marca}" />
+							</listitem>
+						</template>
+					</listbox>
+				</hlayout>
+			</vlayout>
+			<hlayout style="text-align:right">
+				<button label="Cancelar"
+					onClick="@command('closeDialog')" />
+				<button label="Aceptar"
+					onClick="@command('transferProduct')" />
 			</hlayout>
-		</vlayout>
-		<hlayout style="text-align:right">
-			<button label="Cancelar"  onClick="@command('closeDialog')"/>
-			<button label="Aceptar"
-				onClick="@command('transferProduct')" />
-		</hlayout>
+
+		</window>
+		
+		
+		
+		
 	</window>
 </zk>

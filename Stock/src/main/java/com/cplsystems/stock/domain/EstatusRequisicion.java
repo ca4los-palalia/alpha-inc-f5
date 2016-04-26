@@ -14,6 +14,7 @@ public class EstatusRequisicion {
 	private String nombre;
 	private String clave;
 	private String color;
+	private String colorFont;
 	private String descripcion;
 
 	@Id
@@ -61,6 +62,15 @@ public class EstatusRequisicion {
 	@Column
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	@Column
+	public String getColorFont() {
+		return colorFont;
+	}
+
+	public void setColorFont(String colorFont) {
+		this.colorFont = colorFont;
 	}
 	
 }

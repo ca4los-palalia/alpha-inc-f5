@@ -13,19 +13,15 @@ import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Path;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.Selectors;
-import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
-import org.zkoss.zul.Groupbox;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Timer;
 import org.zkoss.zul.Window;
 
 import com.cplsystems.stock.domain.Privilegios;
@@ -37,14 +33,11 @@ public class MenuVM extends MenuMetaclass {
 	private static final long serialVersionUID = -2153432633385920494L;
 	private static final String PROCESSING_TEXT = "Processing...";
 
-	@Wire("#busyWin")
-	private Window busyWin;
+	private Window homeWindow = (Window) Path.getComponent("//P/homeWindow");;
+	
+	@Wire("#mainWin")
+	private Window mainWin;
 
-	@Wire("#server")
-	private Groupbox server;
-
-	@Wire("#timer")
-	private Timer timer;
 
 	@Init
 	public void init(@ContextParam(ContextType.VIEW) Component view) {
@@ -58,7 +51,7 @@ public class MenuVM extends MenuMetaclass {
 	@AfterCompose
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
 		Selectors.wireComponents(view, this, false);
-	}
+  	}
 
 	@NotifyChange({ "mostrarPanelControl", "mostrarConcentrados", "mostrarCotizacionesAutorizaciones",
 			"mostrarOrdenesCompra", "mostrarRequisiones" })
@@ -122,10 +115,7 @@ public class MenuVM extends MenuMetaclass {
 
 	}
 
-	@Listen("onAddNameEvent = #timer")
-	public void processingFiles() {
-		timer.start();
-	}
+	
 
 	@GlobalCommand
 	@NotifyChange({ "*" })
@@ -143,8 +133,26 @@ public class MenuVM extends MenuMetaclass {
 
 	@Command
 	public void showRequisitions() {
+		/*
+		Clients.showBusy(homeWindow,"please wait...");
+		homeWindow.addEventListener(Events.ON_CLIENT_INFO, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event arg0) throws Exception {
+				for (int i = 0; i < 1000000; i++) {
+					System.err.println(i);
+				}
+				Clients.clearBusy(homeWindow);
+			}
+			
+		});
+		Events.echoEvent("onClientInfo", homeWindow, null);
+		*/
+		
+		Clients.showBusy(homeWindow,"please wait...");
 		args.put("pageToRender", "/modulos/requisicion/requisicion.zul");
 		BindUtils.postGlobalCommand(null, null, "updateWorkArea", args);
+		
 	}
 
 	@Command

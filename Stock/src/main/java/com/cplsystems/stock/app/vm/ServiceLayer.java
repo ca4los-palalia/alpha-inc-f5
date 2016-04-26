@@ -26,6 +26,8 @@ import com.cplsystems.stock.services.EstadoService;
 import com.cplsystems.stock.services.EstatusRequisicionService;
 import com.cplsystems.stock.services.FamiliasProductoService;
 import com.cplsystems.stock.services.GiroService;
+import com.cplsystems.stock.services.KardexProveedorService;
+import com.cplsystems.stock.services.KardexService;
 import com.cplsystems.stock.services.MailService;
 import com.cplsystems.stock.services.MonedaService;
 import com.cplsystems.stock.services.MunicipioService;
@@ -147,6 +149,10 @@ public abstract class ServiceLayer extends DataLayer {
 	protected AlmacenEntradaService almacenEntradaService;
 	@WireVariable
 	protected CalculosCostoService calculosCostoService;
+	@WireVariable
+	protected KardexService kardexService;
+	@WireVariable
+	protected KardexProveedorService kardexProveedorService;
 
 	public UsuarioService getUsuarioService() {
 		return this.usuarioService;

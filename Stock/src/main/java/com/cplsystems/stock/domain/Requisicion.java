@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "Requsicion")
+@Table
 public class Requisicion {
 	private Long idRequisicion;
 	private String emailAlmacenista;
@@ -40,7 +40,7 @@ public class Requisicion {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idRequisicion", nullable = false)
+	@Column
 	public Long getIdRequisicion() {
 		return this.idRequisicion;
 	}

@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "RequsicionProveedor")
+@Table
 public class RequisicionProveedor implements Serializable {
 	private static final long serialVersionUID = 6555204962404224362L;
 	private Long idRequisicionProveedor;
@@ -41,7 +41,7 @@ public class RequisicionProveedor implements Serializable {
 	}
 
 	@Id
-	@Column(name = "idRequisicionProveedor", nullable = false)
+	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdRequisicionProveedor() {
 		return this.idRequisicionProveedor;

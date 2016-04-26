@@ -1,6 +1,8 @@
 package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
+import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,10 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "proveedorProducto")
+@Table
 public class ProveedorProducto implements Serializable {
 	private static final long serialVersionUID = -4209263282220593763L;
 	private Long idProveedorProdcuto;
@@ -23,10 +27,13 @@ public class ProveedorProducto implements Serializable {
 	private Proveedor proveedor;
 	private Producto producto;
 	private boolean seleccionar;
+	private Calendar fechaActualizacion;
+	private Organizacion organizacion;
+	private Usuarios usuario;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idProveedorProducto", length = 250)
+	@Column
 	public Long getIdProveedorProdcuto() {
 		return this.idProveedorProdcuto;
 	}
@@ -89,6 +96,36 @@ public class ProveedorProducto implements Serializable {
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
+	}
+	
+	@Temporal(TemporalType.DATE)
+	@Column
+	public Calendar getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Calendar fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+	
+	@OneToOne
+	@JoinColumn(name = "organizacion")
+	public Organizacion getOrganizacion() {
+		return this.organizacion;
+	}
+
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "usuario")
+	public Usuarios getUsuario() {
+		return this.usuario;
+	}
+
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
 	}
 
 	@Transient

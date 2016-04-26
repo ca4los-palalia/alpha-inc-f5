@@ -4,804 +4,862 @@
 	<style src="/styles/home/styleHome.css" />
 	<style src="/styles/home/styleGlobal.css" />
 	<script src="/scripts/watermarks.js" type="text/javascript" />
-	<window apply="org.zkoss.bind.BindComposer"
+	<window apply="org.zkoss.bind.BindComposer" height="100%"
 		viewModel="@id('cvm') @init('com.cplsystems.stock.app.vm.controlpanel.ControlPanelVM')">
 
 
+		<borderlayout visible="true">
+			<north maxsize="300" size="100%" title="Panel de control | catalogos:">
+				<borderlayout>
+					<center border="none" flex="true">
+						<tabbox height="100%">
+							<tabs>
+								<tab label="Áreas (UR)" image="/images/toolbar/area.png" />
+								<tab label="Bancos" image="/images/toolbar/bank.png"/>
+								<tab label="Cofya" image="/images/toolbar/update16.png" />
+								<tab label="Contratos" image="/images/toolbar/linedpaperpencil32.png"/>
+								<tab label="Divisas" image="/images/toolbar/coins.png"/>
+								<tab label="Puestos" image="/images/toolbar/area.png"/>
+								<tab label="Tipo de productos" image="/images/toolbar/products.png"/>
+								<tab label="Unidades de medida" image="/images/toolbar/stationery.png"/>
+								<tab label="Giros" image="/images/toolbar/arrow_split.png" />
+								<tab label="Naturaleza del Producto" image="/images/toolbar/arrow_split.png" />
+								<tab label="Layouts" image="/images/toolbar/excel16.png"/>
+									
+							</tabs>
+							<tabpanels>
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoArea.zul" />
+								</tabpanel>
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoBancos.zul" />
+								</tabpanel>
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoConfya.zul" />
+								</tabpanel>
+								
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoContrato.zul" />
+								</tabpanel>
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoMoneda.zul" />
+								</tabpanel>
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoPuesto.zul" />
+								</tabpanel>
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoTipoProducto.zul" />
+								</tabpanel>
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoUnidadMedida.zul" />
+								</tabpanel>
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoGiro.zul" />
+								</tabpanel>
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoProductoNaturaleza.zul" />
+								</tabpanel>
+								<tabpanel height="100%">
+									<include
+										src="/modulos/controlPanel/catalogoLayout.zul" />
+								</tabpanel>
+							</tabpanels>
+						</tabbox>
+					</center>
+				</borderlayout>
+			</north>
+		</borderlayout>
 
+		<window visible="false">
+			<grid visible="@bind(cvm.selectTab.visibleButtonSave)">
+				<columns>
+					<column width="22%" />
+					<column />
+					<column width="35%" zclass="shadowMenuActions" />
+				</columns>
+				<rows>
+					<row zclass="shadowMenuActions">
+						<div style="margin:5px">
+							<label zclass="panelInfoItemMenuTitle"
+								width="100%" value="PANEL DE CONTROL:" />
+						</div>
+						<div style="margin:5px">
+							<label zclass="panelInfoItemMenuContent"
+								width="100%" value="Altas, bajas y actualización" />
+						</div>
+						<hlayout style="text-align:right">
 
-		<a href="#openModal">Open Modal</a>
-		<div id="openModal" class="modalDialog">
-			<div>
-				<a href="#close" class="close">X</a>
-				<label value="Modal Box"/>
+							<button image="/images/toolbar/saveOff.png"
+								disabled="@bind(cvm.selectTab.activarButtonSave)"
+								visible="@bind(cvm.selectTab.visibleButtonSave)"
+								sclass="web_button" onClick="@command('save')"
+								tooltiptext="@bind(cvm.selectTab.toolTipSave)" />
+							<button image="/images/toolbar/delete.png"
+								visible="false"
+								disabled="@bind(cvm.selectTab.activarButtonSave)"
+								sclass="web_button" onClick="@command('delete')"
+								tooltiptext="@bind(cvm.selectTab.toolTipDelete)" />
 
-				This is a sample modal box that can be created using
-					the powers of CSS3.
-				
-					You could do a lot of things here like have a pop-up
-					ad that shows when your website loads, or create a
-					login/register form for users.
-			</div>
-		</div>
-
-
-
-
-
-		<grid visible="@bind(cvm.selectTab.visibleButtonSave)">
-			<columns>
-				<column width="22%" />
-				<column />
-				<column width="35%" zclass="shadowMenuActions" />
-			</columns>
-			<rows>
-				<row zclass="shadowMenuActions">
-					<div style="margin:5px">
-						<label zclass="panelInfoItemMenuTitle"
-							width="100%" value="PANEL DE CONTROL:" />
-					</div>
-					<div style="margin:5px">
-						<label zclass="panelInfoItemMenuContent"
-							width="100%" value="Altas, bajas y actualización" />
-					</div>
-					<hlayout style="text-align:right">
-
-						<button image="/images/toolbar/saveOff.png"
-							disabled="@bind(cvm.selectTab.activarButtonSave)"
-							visible="@bind(cvm.selectTab.visibleButtonSave)"
-							sclass="web_button" onClick="@command('save')"
-							tooltiptext="@bind(cvm.selectTab.toolTipSave)" />
-						<button image="/images/toolbar/delete.png"
-							visible="false" disabled="@bind(cvm.selectTab.activarButtonSave)"
-							sclass="web_button" onClick="@command('delete')"
-							tooltiptext="@bind(cvm.selectTab.toolTipDelete)" />
-
-					</hlayout>
-				</row>
-			</rows>
-		</grid>
-
-		<separator />
-		<separator />
-
-		<tabbox>
-			<tabs>
-
-				<tab label="Áreas (UR)" image="/images/toolbar/area.png"
-					onSelect="@command('selectTabArea')" />
-
-				<tab label="Bancos" image="/images/toolbar/bank.png"
-					onSelect="@command('selectTabBanco')" />
-				<tab label="Conffya"
-					onSelect="@command('selectTabConffya')"
-					image="/images/toolbar/update16.png" />
-				<tab label="Contratos"
-					image="/images/toolbar/linedpaperpencil32.png"
-					onSelect="@command('selectTabContratos')" />
-
-				<tab label="Divisas" image="/images/toolbar/coins.png"
-					onSelect="@command('selectTabMoneda')" />
-
-				<tab label="Puestos" image="/images/toolbar/area.png"
-					onSelect="@command('selectTabPuesto')" />
-				<tab label="Tipo de productos"
-					image="/images/toolbar/products.png"
-					onSelect="@command('selectTabTiposProducto')" />
-				<tab label="Unidades de medida"
-					onSelect="@command('selectTabUnidades')"
-					image="/images/toolbar/stationery.png" />
-
-				<tab label="Giros" onSelect="@command('selectTabGiro')"
-					image="/images/toolbar/arrow_split.png" />
-
-				<tab label="Naturaleza del Producto"
-					onSelect="@command('selectTabNaturaleza')"
-					image="/images/toolbar/arrow_split.png" />
-
-				<tab label="Layouts"
-					onSelect="@command('selectTabProveedores')"
-					image="/images/toolbar/excel16.png" />
-
-
-			</tabs>
-			<tabpanels>
-				<tabpanel>
-
-
-
-
-					<grid sclass="fgrid">
-						<columns>
-							<column align="center" />
-							<column align="center" />
-						</columns>
-						<rows>
-							<row>
-								<listbox
-									onClick="@command('getALmacenesDeArea')"
-									emptyMessage="Por el momento no se encuentran Áreas registradas"
-									rows="10" autopaging="true" model="@load(cvm.areas)"
-									selectedItem="@bind(cvm.area)">
-									<listhead>
-										<listheader label="Nombre" />
-										<listheader
-											label="Actualización" width="12%" />
-										<listheader label="Eliminar"
-											width="8%" style="text-align:center" />
-									</listhead>
-									<template name="model"
-										var="areav">
-										<listitem>
-											<listcell>
-												<textbox
-													value="@bind(areav.nombre)"
-													tooltiptext="@bind(areav.idArea)" inplace="true"
-													width="70%" />
-											</listcell>
-
-											<listcell>
-												<label
-													value="@bind(areav.fechaActualizacion)" />
-											</listcell>
-											<listcell>
-												<button
-													image="/images/toolbar/remove16.png"
-													onClick="@command('eliminarAreaIndex', index=areavStatus.index)"
-													zclass="find_button" tooltiptext="Remover área" />
-											</listcell>
-										</listitem>
-									</template>
-								</listbox>
-
-								<listbox
-									emptyMessage="No hay almacenes registrados" rows="10"
-									autopaging="true" model="@load(cvm.almacenesList)">
-									<listhead>
-										<listheader label="Nombre" />
-									</listhead>
-									<template name="model"
-										var="areav">
-										<listitem>
-											<listcell>
-												<textbox
-													value="@bind(areav.nombre)" width="100%" />
-											</listcell>
-										</listitem>
-									</template>
-								</listbox>
-
-
-							</row>
-						</rows>
-					</grid>
-
-
-
-
-
-
-					<separator />
-					<hlayout>
-						<button image="/images/toolbar/add16.png"
-							onClick="@command('agregarNuevaArea')" zclass="find_button"
-							tooltiptext="Agregar nueva área" />
-						<button upload="true"
-							image="/images/toolbar/uploadColor16.png"
-							onUpload="@command('onUploadExcelArea',upEvent=event)"
-							tooltiptext="Importar catalogo de Áreas desde excel">
-						</button>
-					</hlayout>
-
-				</tabpanel>
-
-				<tabpanel>
-					<listbox
-						emptyMessage="Por el momento no se encuentran bancos registrados"
-						rows="10" autopaging="true" model="@load(cvm.bancosDB)"
-						selectedItem="@bind(cvm.bancoSeleccionado)">
-
-						<listhead>
-							<listheader label="Nombre" />
-							<listheader label="Actualización"
-								width="12%" />
-							<listheader label="Eliminar" width="8%"
-								style="text-align:center" />
-						</listhead>
-						<template name="model" var="bancoVar">
-							<listitem>
-								<listcell>
-									<textbox
-										value="@bind(bancoVar.nombre)" inplace="true" width="70%"
-										tooltiptext="@bind(bancoVar.idBanco)" />
-								</listcell>
-								<listcell>
-									<label
-										value="@bind(bancoVar.fechaActualizacion)" />
-								</listcell>
-								<listcell>
-									<button
-										image="/images/toolbar/remove16.png"
-										onClick="@command('eliminarBanco', index=bancoVarStatus.index)"
-										zclass="find_button" tooltiptext="Remover banco" />
-								</listcell>
-							</listitem>
-						</template>
-					</listbox>
-					<separator />
-					<hlayout>
-						<button image="/images/toolbar/add16.png"
-							onClick="@command('agregarNuevoBanco')" zclass="find_button"
-							tooltiptext="Agregar nuevo banco" />
-
-						<button upload="true"
-							image="/images/toolbar/uploadColor16.png"
-							onUpload="@command('onUploadExcelBanco',upEvent=event)"
-							tooltiptext="Importar catalogo de Bancos desde excel">
-						</button>
-
-					</hlayout>
-				</tabpanel>
-
-				<tabpanel>
-					<grid>
-						<columns>
-							<column label="Actualizar" width="10%" />
-							<column label="Descripción" />
-							<column label="Ùltima actualización"
-								width="18%" />
-						</columns>
-						<rows>
-							<row>
-								<button
-									image="/images/toolbar/update.png" sclass="web_button" />
-								<label
-									value="Actualizar Catálogo de áreas (unidades responsables)">
-								</label>
-								<label value=""></label>
-							</row>
-							<row>
-								<button
-									image="/images/toolbar/update.png" sclass="web_button" />
-								<label
-									value="Actualizar Catálogo de fuentes de financiamiento">
-								</label>
-								<label value=""></label>
-							</row>
-							<row>
-								<button
-									image="/images/toolbar/update.png" sclass="web_button" />
-								<label
-									value="Actualizar Catálogo de partidas genéricas">
-								</label>
-								<label value=""></label>
-							</row>
-							<row>
-								<button
-									image="/images/toolbar/update.png" sclass="web_button" />
-								<label
-									value="Actualizar Catálogo de programas">
-								</label>
-								<label value="" />
-							</row>
-							<row>
-								<button
-									image="/images/toolbar/update.png" sclass="web_button" />
-								<label
-									value="Actualizar Catálogo de proyectos">
-								</label>
-								<label value=""></label>
-							</row>
-						</rows>
-					</grid>
-				</tabpanel>
-
-				<tabpanel>
-					<listbox
-						emptyMessage="Por el momento no existen contratos en el catalogo"
-						rows="10" autopaging="true" model="@load(cvm.contratos)"
-						selectedItem="@bind(cvm.contrato)">
-
-						<listhead>
-							<listheader label="Nombre" />
-							<listheader label="descripción" />
-							<listheader label="Vigencia inicio" />
-							<listheader label="Vigencia fin" />
-							<listheader label="Actualización"
-								width="12%" />
-							<listheader label="Eliminar" width="8%"
-								style="text-align:center" />
-						</listhead>
-						<template name="model" var="contratoVar">
-							<listitem>
-								<listcell>
-									<textbox
-										value="@bind(contratoVar.nombre)" inplace="true" width="100%" />
-								</listcell>
-								<listcell>
-									<textbox
-										value="@bind(contratoVar.descripcion)" inplace="true"
-										width="100%" />
-								</listcell>
-
-
-								<listcell>
-									<datebox readonly="true"
-										format="yyyy/MM/dd" width="100%"
-										value="@bind(contratoVar.fechaVigenciaInicioDate)" />
-								</listcell>
-
-								<listcell>
-									<datebox readonly="true"
-										format="yyyy/MM/dd" width="100%"
-										value="@bind(contratoVar.fechaVigenciaFinDate)" />
-								</listcell>
-
-								<listcell>
-									<label
-										value="@bind(contratoVar.fechaActualizacion)" />
-								</listcell>
-								<listcell>
-									<button
-										image="/images/toolbar/remove16.png"
-										onClick="@command('eliminarContrato', index=contratoVarStatus.index)"
-										zclass="find_button" tooltiptext="Remover contrato" />
-								</listcell>
-							</listitem>
-						</template>
-					</listbox>
-					<separator />
-					<hlayout>
-						<button image="/images/toolbar/add16.png"
-							onClick="@command('agregarNuevoContrato')" zclass="find_button"
-							tooltiptext="Agregar nuevo contrato" />
-
-					</hlayout>
-				</tabpanel>
-
-				<tabpanel>
-					<listbox
-						emptyMessage="Por el momento no existe un tipo de moneda en el catalogo"
-						rows="10" autopaging="true" model="@load(cvm.monedasDB)"
-						selectedItem="@bind(cvm.monedaSeleccionada)">
-
-						<listhead>
-							<listheader label="Nombre" />
-							<listheader label="Simbolo" width="15%" />
-							<listheader label="Actualización"
-								width="12%" />
-							<listheader label="Eliminar" width="8%"
-								style="text-align:center" />
-						</listhead>
-						<template name="model" var="monedaVar">
-							<listitem>
-								<listcell>
-									<textbox
-										value="@bind(monedaVar.nombre)" inplace="true" width="100%"
-										tooltiptext="@bind(monedaVar.idMoneda)" />
-								</listcell>
-								<listcell>
-									<textbox
-										value="@bind(monedaVar.simbolo)" inplace="true" width="100%" />
-								</listcell>
-								<listcell>
-									<label
-										value="@bind(monedaVar.fechaActualizacion)" />
-								</listcell>
-								<listcell>
-									<button
-										image="/images/toolbar/remove16.png"
-										onClick="@command('eliminarMoneda', index=monedaVarStatus.index)"
-										zclass="find_button" tooltiptext="Remover divisa" />
-								</listcell>
-							</listitem>
-						</template>
-					</listbox>
-					<separator />
-					<hlayout>
-						<button image="/images/toolbar/add16.png"
-							onClick="@command('agregarNuevaDivisa')" zclass="find_button"
-							tooltiptext="Agregar nueva divisa" />
-
-						<button upload="true"
-							image="/images/toolbar/uploadColor16.png"
-							onUpload="@command('onUploadExcelMoneda',upEvent=event)"
-							tooltiptext="Importar catalogo de Divisas desde excel">
-						</button>
-
-					</hlayout>
-
-				</tabpanel>
-
-				<tabpanel>
-					<listbox
-						emptyMessage="Por el momento no se encuentran puestos registrados"
-						rows="10" autopaging="true" model="@load(cvm.posiciones)"
-						selectedItem="@bind(cvm.posicion)">
-
-						<listhead>
-							<listheader label="Nombre" />
-							<listheader label="Actualización"
-								width="12%" />
-							<listheader label="Eliminar" width="8%"
-								style="text-align:center" />
-						</listhead>
-						<template name="model" var="puestoV">
-							<listitem>
-								<listcell>
-									<textbox
-										value="@bind(puestoV.nombre)" inplace="true" width="70%"
-										tooltiptext="@bind(puestoV.idPosicion)" />
-								</listcell>
-								<listcell>
-									<label
-										value="@bind(puestoV.fechaActualizacion)" />
-								</listcell>
-								<listcell>
-									<button
-										image="/images/toolbar/remove16.png"
-										onClick="@command('eliminarPuesto', index=puestoVStatus.index)"
-										zclass="find_button" tooltiptext="Remover puesto" />
-								</listcell>
-							</listitem>
-						</template>
-					</listbox>
-
-					<separator />
-
-					<hlayout>
-						<button image="/images/toolbar/add16.png"
-							onClick="@command('agregarNuevoPuesto')" zclass="find_button"
-							tooltiptext="Agregar nuevo puesto" />
-
-						<button upload="true"
-							image="/images/toolbar/uploadColor16.png"
-							onUpload="@command('onUploadExcelPosicion',upEvent=event)"
-							tooltiptext="Importar catalogo de Puestos desde excel">
-						</button>
-
-						<hlayout style="text-align:right; color:red"
-							width="100%">
-							<label
-								value="@bind(unidad.mensajeDeCambios)" />
 						</hlayout>
-					</hlayout>
+					</row>
+				</rows>
+			</grid>
 
-				</tabpanel>
+			<separator />
+			<separator />
+
+			<tabbox height="100%">
+				<tabs>
+
+					<tab label="Áreas (UR)"
+						image="/images/toolbar/area.png"
+						onSelect="@command('selectTabArea')" />
+
+					<tab label="Bancos" image="/images/toolbar/bank.png"
+						onSelect="@command('selectTabBanco')" />
+					<tab label="Cofya"
+						onSelect="@command('selectTabConffya')"
+						image="/images/toolbar/update16.png" />
+					<tab label="Contratos"
+						image="/images/toolbar/linedpaperpencil32.png"
+						onSelect="@command('selectTabContratos')" />
+
+					<tab label="Divisas"
+						image="/images/toolbar/coins.png"
+						onSelect="@command('selectTabMoneda')" />
+
+					<tab label="Puestos"
+						image="/images/toolbar/area.png"
+						onSelect="@command('selectTabPuesto')" />
+					<tab label="Tipo de productos"
+						image="/images/toolbar/products.png"
+						onSelect="@command('selectTabTiposProducto')" />
+					<tab label="Unidades de medida"
+						onSelect="@command('selectTabUnidades')"
+						image="/images/toolbar/stationery.png" />
+
+					<tab label="Giros"
+						onSelect="@command('selectTabGiro')"
+						image="/images/toolbar/arrow_split.png" />
+
+					<tab label="Naturaleza del Producto"
+						onSelect="@command('selectTabNaturaleza')"
+						image="/images/toolbar/arrow_split.png" />
+
+					<tab label="Layouts"
+						onSelect="@command('selectTabProveedores')"
+						image="/images/toolbar/excel16.png" />
 
 
-				<tabpanel>
-					<listbox
-						emptyMessage="Por el momento no se encuentran Tipos de productos registrados"
-						rows="10" autopaging="true" model="@load(cvm.productoTipoDB)"
-						selectedItem="@bind(cvm.productoTipoSelected)">
+				</tabs>
+				<tabpanels>
+					<tabpanel height="100%">
+						<grid sclass="fgrid">
+							<columns>
+								<column align="center" />
+								<column align="center" />
+							</columns>
+							<rows>
+								<row>
+									<listbox
+										onClick="@command('getALmacenesDeArea')"
+										emptyMessage="Por el momento no se encuentran Áreas registradas"
+										rows="10" autopaging="true" model="@load(cvm.areas)"
+										selectedItem="@bind(cvm.area)">
+										<listhead>
+											<listheader label="Nombre" />
+											<listheader
+												label="Actualización" width="12%" />
+											<listheader label="Eliminar"
+												width="8%" style="text-align:center" />
+										</listhead>
+										<template name="model"
+											var="areav">
+											<listitem>
+												<listcell>
+													<textbox
+														value="@bind(areav.nombre)"
+														tooltiptext="@bind(areav.idArea)" inplace="true"
+														width="70%" />
+												</listcell>
 
-						<listhead>
-							<listheader label="Nombre" width="25%" />
-							<listheader label="Descripción" />
-							<listheader label="Actualización"
-								width="12%" />
-							<listheader label="Eliminar" width="8%"
-								style="text-align:center" />
-						</listhead>
-						<template name="model" var="productoTipoVar">
-							<listitem>
-								<listcell>
-									<textbox
-										value="@bind(productoTipoVar.nombre)" inplace="true"
-										tooltiptext="@bind(productoTipoVar.idProductoTipo)"
-										width="100%" />
-								</listcell>
-								<listcell>
-									<textbox
-										value="@bind(productoTipoVar.descripcion)" inplace="true"
-										width="100%" />
-								</listcell>
-								<listcell>
-									<label
-										value="@bind(productoTipoVar.fechaActualizacion)" />
-								</listcell>
-								<listcell>
-									<button
-										image="/images/toolbar/remove16.png"
-										onClick="@command('eliminarTipoProducto', index=productoTipoVarStatus.index)"
-										zclass="find_button" tooltiptext="Remover familia" />
-								</listcell>
-							</listitem>
-						</template>
-					</listbox>
+												<listcell>
+													<label
+														value="@bind(areav.fechaActualizacion)" />
+												</listcell>
+												<listcell>
+													<button
+														image="/images/toolbar/remove16.png"
+														onClick="@command('eliminarAreaIndex', index=areavStatus.index)"
+														zclass="find_button" tooltiptext="Remover área" />
+												</listcell>
+											</listitem>
+										</template>
+									</listbox>
 
-					<separator />
+									<listbox
+										emptyMessage="No hay almacenes registrados" rows="10"
+										autopaging="true" model="@load(cvm.almacenesList)">
+										<listhead>
+											<listheader label="Nombre" />
+										</listhead>
+										<template name="model"
+											var="almacenVar">
+											<listitem>
+												<listcell>
+													<label
+														value="@bind(almacenVar.nombre)" width="100%" />
+												</listcell>
+											</listitem>
+										</template>
+									</listbox>
 
-					<hlayout>
-						<button image="/images/toolbar/add16.png"
-							onClick="@command('agregarNuevoTipoProducto')"
-							zclass="find_button" tooltiptext="Agregar nueva familia" />
 
-						<button upload="true"
-							image="/images/toolbar/uploadColor16.png"
-							onUpload="@command('onUploadExcelTipoProducto',upEvent=event)"
-							tooltiptext="Importar catalogo de Tipos de productos desde excel">
-						</button>
+								</row>
+							</rows>
+						</grid>
 
-						<hlayout style="text-align:right; color:red"
-							width="100%">
-							<label
-								value="@bind(unidad.mensajeDeCambios)" />
+
+
+
+
+
+						<separator />
+						<hlayout>
+							<button image="/images/toolbar/add16.png"
+								onClick="@command('agregarNuevaArea')" zclass="find_button"
+								tooltiptext="Agregar nueva área" />
+							<button upload="true"
+								image="/images/toolbar/uploadColor16.png"
+								onUpload="@command('onUploadExcelArea',upEvent=event)"
+								tooltiptext="Importar catalogo de Áreas desde excel">
+							</button>
 						</hlayout>
-					</hlayout>
+					</tabpanel>
 
-				</tabpanel>
+					<tabpanel>
+						<listbox
+							emptyMessage="Por el momento no se encuentran bancos registrados"
+							rows="10" autopaging="true" model="@load(cvm.bancosDB)"
+							selectedItem="@bind(cvm.bancoSeleccionado)">
 
-				<tabpanel>
-					<listbox
-						emptyMessage="Por el momento no se encuentran unidades de medida registradas"
-						rows="10" autopaging="true" model="@load(cvm.unidadesDB)"
-						selectedItem="@bind(cvm.unidad)">
-						<listhead>
+							<listhead>
+								<listheader label="Nombre" />
+								<listheader label="Actualización"
+									width="12%" />
+								<listheader label="Eliminar" width="8%"
+									style="text-align:center" />
+							</listhead>
+							<template name="model" var="bancoVar">
+								<listitem>
+									<listcell>
+										<textbox
+											value="@bind(bancoVar.nombre)" inplace="true" width="70%"
+											tooltiptext="@bind(bancoVar.idBanco)" />
+									</listcell>
+									<listcell>
+										<label
+											value="@bind(bancoVar.fechaActualizacion)" />
+									</listcell>
+									<listcell>
+										<button
+											image="/images/toolbar/remove16.png"
+											onClick="@command('eliminarBanco', index=bancoVarStatus.index)"
+											zclass="find_button" tooltiptext="Remover banco" />
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+						<separator />
+						<hlayout>
+							<button image="/images/toolbar/add16.png"
+								onClick="@command('agregarNuevoBanco')" zclass="find_button"
+								tooltiptext="Agregar nuevo banco" />
 
-							<listheader label="Nombre" />
-							<listheader label="Abreviatura" width="15%" />
-							<listheader label="Actualización"
-								width="12%" />
-							<listheader label="Eliminar"
-								style="text-align:center" width="8%" />
-						</listhead>
-						<template name="model" var="unidad">
-							<listitem>
+							<button upload="true"
+								image="/images/toolbar/uploadColor16.png"
+								onUpload="@command('onUploadExcelBanco',upEvent=event)"
+								tooltiptext="Importar catalogo de Bancos desde excel">
+							</button>
 
-								<listcell>
-									<textbox
-										value="@bind(unidad.nombre)" inplace="true" width="70%"
-										tooltiptext="@bind(unidad.idUnidad)" />
-								</listcell>
-
-								<listcell>
-									<textbox
-										value="@bind(unidad.abreviatura)" inplace="true" width="70%" />
-								</listcell>
-								<listcell>
-									<datebox readonly="true"
-										value="@bind(unidad.fechaActualizacionDate)"
-										buttonVisible="false" format="yyyy/MM/dd" width="100%" />
-								</listcell>
-								<listcell>
-									<button
-										image="/images/toolbar/remove16.png"
-										onClick="@command('removerUnidad', index=unidadStatus.index)"
-										zclass="find_button" tooltiptext="Remover unidad de medida" />
-								</listcell>
-							</listitem>
-						</template>
-					</listbox>
-
-					<separator />
-
-					<hlayout>
-						<button image="/images/toolbar/add16.png"
-							onClick="@command('agregarNuevaUnidad')" zclass="find_button"
-							tooltiptext="Agregar nueva unidad de medida" />
-
-						<button upload="true"
-							image="/images/toolbar/uploadColor16.png"
-							onUpload="@command('onUploadExcelUnidadMedida',upEvent=event)"
-							tooltiptext="Importar catalogo de unidades de medida desde excel">
-						</button>
-
-						<hlayout style="text-align:right; color:red"
-							width="100%">
-							<label
-								value="@bind(unidad.mensajeDeCambios)">
-							</label>
 						</hlayout>
-					</hlayout>
-				</tabpanel>
+					</tabpanel>
 
-				<tabpanel>
-					<listbox
-						emptyMessage="Por el momento no existe un catalogos de giros"
-						rows="10" autopaging="true" model="@load(cvm.giros)"
-						selectedItem="@bind(cvm.giro)">
-						<listhead>
-
-							<listheader label="Nombre" />
-							<listheader label="Eliminar"
-								style="text-align:center" width="8%" />
-						</listhead>
-						<template name="model" var="giroVar">
-							<listitem>
-
-								<listcell>
-									<textbox
-										value="@bind(giroVar.nombre)" inplace="true" width="70%"
-										tooltiptext="@bind(giroVar.idGiro)" />
-								</listcell>
-								<listcell>
+					<tabpanel>
+						<grid>
+							<columns>
+								<column label="Actualizar" width="10%" />
+								<column label="Descripción" />
+								<column label="Ùltima actualización"
+									width="18%" />
+							</columns>
+							<rows>
+								<row>
 									<button
-										image="/images/toolbar/remove16.png"
-										onClick="@command('removerGiro', index=giroVarStatus.index)"
-										zclass="find_button" tooltiptext="Remover giro" />
-								</listcell>
-							</listitem>
-						</template>
-					</listbox>
+										image="/images/toolbar/update.png" sclass="web_button" />
+									<label
+										value="Actualizar Catálogo de áreas (unidades responsables)">
+									</label>
+									<label value=""></label>
+								</row>
+								<row>
+									<button
+										image="/images/toolbar/update.png" sclass="web_button" />
+									<label
+										value="Actualizar Catálogo de fuentes de financiamiento">
+									</label>
+									<label value=""></label>
+								</row>
+								<row>
+									<button
+										image="/images/toolbar/update.png" sclass="web_button" />
+									<label
+										value="Actualizar Catálogo de partidas genéricas">
+									</label>
+									<label value=""></label>
+								</row>
+								<row>
+									<button
+										image="/images/toolbar/update.png" sclass="web_button" />
+									<label
+										value="Actualizar Catálogo de programas">
+									</label>
+									<label value="" />
+								</row>
+								<row>
+									<button
+										image="/images/toolbar/update.png" sclass="web_button" />
+									<label
+										value="Actualizar Catálogo de proyectos">
+									</label>
+									<label value=""></label>
+								</row>
+							</rows>
+						</grid>
+					</tabpanel>
 
-					<separator />
+					<tabpanel>
+						<listbox
+							emptyMessage="Por el momento no existen contratos en el catalogo"
+							rows="10" autopaging="true" model="@load(cvm.contratos)"
+							selectedItem="@bind(cvm.contrato)">
 
-					<hlayout>
-						<button image="/images/toolbar/add16.png"
-							onClick="@command('agregarNuevoGiro')" zclass="find_button"
-							tooltiptext="Agregar nuevo giro" />
+							<listhead>
+								<listheader label="Nombre" />
+								<listheader label="descripción" />
+								<listheader label="Vigencia inicio" />
+								<listheader label="Vigencia fin" />
+								<listheader label="Actualización"
+									width="12%" />
+								<listheader label="Eliminar" width="8%"
+									style="text-align:center" />
+							</listhead>
+							<template name="model" var="contratoVar">
+								<listitem>
+									<listcell>
+										<textbox
+											value="@bind(contratoVar.nombre)" inplace="true"
+											width="100%" />
+									</listcell>
+									<listcell>
+										<textbox
+											value="@bind(contratoVar.descripcion)" inplace="true"
+											width="100%" />
+									</listcell>
 
-						<button upload="true"
-							image="/images/toolbar/uploadColor16.png"
-							onUpload="@command('onUploadExcelGiro',upEvent=event)"
-							tooltiptext="Importar catalogo de giros desde excel">
-						</button>
 
-						<hlayout style="text-align:right; color:red"
-							width="100%">
-							<label
-								value="@bind(giroVar.mensajeDeCambios)">
-							</label>
+									<listcell>
+										<datebox readonly="true"
+											format="yyyy/MM/dd" width="100%"
+											value="@bind(contratoVar.fechaVigenciaInicioDate)" />
+									</listcell>
+
+									<listcell>
+										<datebox readonly="true"
+											format="yyyy/MM/dd" width="100%"
+											value="@bind(contratoVar.fechaVigenciaFinDate)" />
+									</listcell>
+
+									<listcell>
+										<label
+											value="@bind(contratoVar.fechaActualizacion)" />
+									</listcell>
+									<listcell>
+										<button
+											image="/images/toolbar/remove16.png"
+											onClick="@command('eliminarContrato', index=contratoVarStatus.index)"
+											zclass="find_button" tooltiptext="Remover contrato" />
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+						<separator />
+						<hlayout>
+							<button image="/images/toolbar/add16.png"
+								onClick="@command('agregarNuevoContrato')" zclass="find_button"
+								tooltiptext="Agregar nuevo contrato" />
+
 						</hlayout>
-					</hlayout>
-				</tabpanel>
+					</tabpanel>
 
-				<tabpanel>
-					<listbox
-						emptyMessage="Por el momento no existe un catalogos de naturaleza de productos"
-						rows="10" autopaging="true"
-						model="@load(cvm.productosNaturalezas)"
-						selectedItem="@bind(cvm.productoNaturaleza)">
-						<listhead>
+					<tabpanel>
+						<listbox
+							emptyMessage="Por el momento no existe un tipo de moneda en el catalogo"
+							rows="10" autopaging="true" model="@load(cvm.monedasDB)"
+							selectedItem="@bind(cvm.monedaSeleccionada)">
 
-							<listheader label="Nombre" />
-							<listheader label="Eliminar"
-								style="text-align:center" width="8%" />
-						</listhead>
-						<template name="model" var="naturalezaVar">
-							<listitem>
+							<listhead>
+								<listheader label="Nombre" />
+								<listheader label="Simbolo" width="15%" />
+								<listheader label="Actualización"
+									width="12%" />
+								<listheader label="Eliminar" width="8%"
+									style="text-align:center" />
+							</listhead>
+							<template name="model" var="monedaVar">
+								<listitem>
+									<listcell>
+										<textbox
+											value="@bind(monedaVar.nombre)" inplace="true" width="100%"
+											tooltiptext="@bind(monedaVar.idMoneda)" />
+									</listcell>
+									<listcell>
+										<textbox
+											value="@bind(monedaVar.simbolo)" inplace="true" width="100%" />
+									</listcell>
+									<listcell>
+										<label
+											value="@bind(monedaVar.fechaActualizacion)" />
+									</listcell>
+									<listcell>
+										<button
+											image="/images/toolbar/remove16.png"
+											onClick="@command('eliminarMoneda', index=monedaVarStatus.index)"
+											zclass="find_button" tooltiptext="Remover divisa" />
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+						<separator />
+						<hlayout>
+							<button image="/images/toolbar/add16.png"
+								onClick="@command('agregarNuevaDivisa')" zclass="find_button"
+								tooltiptext="Agregar nueva divisa" />
 
-								<listcell>
-									<textbox
-										value="@bind(naturalezaVar.nombre)" inplace="true" width="70%"
-										tooltiptext="@bind(naturalezaVar.idProductoNaturaleza)" />
-								</listcell>
-								<listcell>
+							<button upload="true"
+								image="/images/toolbar/uploadColor16.png"
+								onUpload="@command('onUploadExcelMoneda',upEvent=event)"
+								tooltiptext="Importar catalogo de Divisas desde excel">
+							</button>
+
+						</hlayout>
+
+					</tabpanel>
+
+					<tabpanel>
+						<listbox
+							emptyMessage="Por el momento no se encuentran puestos registrados"
+							rows="10" autopaging="true" model="@load(cvm.posiciones)"
+							selectedItem="@bind(cvm.posicion)">
+
+							<listhead>
+								<listheader label="Nombre" />
+								<listheader label="Actualización"
+									width="12%" />
+								<listheader label="Eliminar" width="8%"
+									style="text-align:center" />
+							</listhead>
+							<template name="model" var="puestoV">
+								<listitem>
+									<listcell>
+										<textbox
+											value="@bind(puestoV.nombre)" inplace="true" width="70%"
+											tooltiptext="@bind(puestoV.idPosicion)" />
+									</listcell>
+									<listcell>
+										<label
+											value="@bind(puestoV.fechaActualizacion)" />
+									</listcell>
+									<listcell>
+										<button
+											image="/images/toolbar/remove16.png"
+											onClick="@command('eliminarPuesto', index=puestoVStatus.index)"
+											zclass="find_button" tooltiptext="Remover puesto" />
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+
+						<separator />
+
+						<hlayout>
+							<button image="/images/toolbar/add16.png"
+								onClick="@command('agregarNuevoPuesto')" zclass="find_button"
+								tooltiptext="Agregar nuevo puesto" />
+
+							<button upload="true"
+								image="/images/toolbar/uploadColor16.png"
+								onUpload="@command('onUploadExcelPosicion',upEvent=event)"
+								tooltiptext="Importar catalogo de Puestos desde excel">
+							</button>
+
+							<hlayout style="text-align:right; color:red"
+								width="100%">
+								<label
+									value="@bind(unidad.mensajeDeCambios)" />
+							</hlayout>
+						</hlayout>
+
+					</tabpanel>
+
+
+					<tabpanel>
+						<listbox
+							emptyMessage="Por el momento no se encuentran Tipos de productos registrados"
+							rows="10" autopaging="true" model="@load(cvm.productoTipoDB)"
+							selectedItem="@bind(cvm.productoTipoSelected)">
+
+							<listhead>
+								<listheader label="Nombre" width="25%" />
+								<listheader label="Descripción" />
+								<listheader label="Actualización"
+									width="12%" />
+								<listheader label="Eliminar" width="8%"
+									style="text-align:center" />
+							</listhead>
+							<template name="model"
+								var="productoTipoVar">
+								<listitem>
+									<listcell>
+										<textbox
+											value="@bind(productoTipoVar.nombre)" inplace="true"
+											tooltiptext="@bind(productoTipoVar.idProductoTipo)"
+											width="100%" />
+									</listcell>
+									<listcell>
+										<textbox
+											value="@bind(productoTipoVar.descripcion)" inplace="true"
+											width="100%" />
+									</listcell>
+									<listcell>
+										<label
+											value="@bind(productoTipoVar.fechaActualizacion)" />
+									</listcell>
+									<listcell>
+										<button
+											image="/images/toolbar/remove16.png"
+											onClick="@command('eliminarTipoProducto', index=productoTipoVarStatus.index)"
+											zclass="find_button" tooltiptext="Remover familia" />
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+
+						<separator />
+
+						<hlayout>
+							<button image="/images/toolbar/add16.png"
+								onClick="@command('agregarNuevoTipoProducto')"
+								zclass="find_button" tooltiptext="Agregar nueva familia" />
+
+							<button upload="true"
+								image="/images/toolbar/uploadColor16.png"
+								onUpload="@command('onUploadExcelTipoProducto',upEvent=event)"
+								tooltiptext="Importar catalogo de Tipos de productos desde excel">
+							</button>
+
+							<hlayout style="text-align:right; color:red"
+								width="100%">
+								<label
+									value="@bind(unidad.mensajeDeCambios)" />
+							</hlayout>
+						</hlayout>
+
+					</tabpanel>
+
+					<tabpanel>
+						<listbox
+							emptyMessage="Por el momento no se encuentran unidades de medida registradas"
+							rows="10" autopaging="true" model="@load(cvm.unidadesDB)"
+							selectedItem="@bind(cvm.unidad)">
+							<listhead>
+
+								<listheader label="Nombre" />
+								<listheader label="Abreviatura"
+									width="15%" />
+								<listheader label="Actualización"
+									width="12%" />
+								<listheader label="Eliminar"
+									style="text-align:center" width="8%" />
+							</listhead>
+							<template name="model" var="unidad">
+								<listitem>
+
+									<listcell>
+										<textbox
+											value="@bind(unidad.nombre)" inplace="true" width="70%"
+											tooltiptext="@bind(unidad.idUnidad)" />
+									</listcell>
+
+									<listcell>
+										<textbox
+											value="@bind(unidad.abreviatura)" inplace="true" width="70%" />
+									</listcell>
+									<listcell>
+										<datebox readonly="true"
+											value="@bind(unidad.fechaActualizacionDate)"
+											buttonVisible="false" format="yyyy/MM/dd" width="100%" />
+									</listcell>
+									<listcell>
+										<button
+											image="/images/toolbar/remove16.png"
+											onClick="@command('removerUnidad', index=unidadStatus.index)"
+											zclass="find_button" tooltiptext="Remover unidad de medida" />
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+
+						<separator />
+
+						<hlayout>
+							<button image="/images/toolbar/add16.png"
+								onClick="@command('agregarNuevaUnidad')" zclass="find_button"
+								tooltiptext="Agregar nueva unidad de medida" />
+
+							<button upload="true"
+								image="/images/toolbar/uploadColor16.png"
+								onUpload="@command('onUploadExcelUnidadMedida',upEvent=event)"
+								tooltiptext="Importar catalogo de unidades de medida desde excel">
+							</button>
+
+							<hlayout style="text-align:right; color:red"
+								width="100%">
+								<label
+									value="@bind(unidad.mensajeDeCambios)">
+								</label>
+							</hlayout>
+						</hlayout>
+					</tabpanel>
+
+					<tabpanel>
+						<listbox
+							emptyMessage="Por el momento no existe un catalogos de giros"
+							rows="10" autopaging="true" model="@load(cvm.giros)"
+							selectedItem="@bind(cvm.giro)">
+							<listhead>
+
+								<listheader label="Nombre" />
+								<listheader label="Eliminar"
+									style="text-align:center" width="8%" />
+							</listhead>
+							<template name="model" var="giroVar">
+								<listitem>
+
+									<listcell>
+										<textbox
+											value="@bind(giroVar.nombre)" inplace="true" width="70%"
+											tooltiptext="@bind(giroVar.idGiro)" />
+									</listcell>
+									<listcell>
+										<button
+											image="/images/toolbar/remove16.png"
+											onClick="@command('removerGiro', index=giroVarStatus.index)"
+											zclass="find_button" tooltiptext="Remover giro" />
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+
+						<separator />
+
+						<hlayout>
+							<button image="/images/toolbar/add16.png"
+								onClick="@command('agregarNuevoGiro')" zclass="find_button"
+								tooltiptext="Agregar nuevo giro" />
+
+							<button upload="true"
+								image="/images/toolbar/uploadColor16.png"
+								onUpload="@command('onUploadExcelGiro',upEvent=event)"
+								tooltiptext="Importar catalogo de giros desde excel">
+							</button>
+
+							<hlayout style="text-align:right; color:red"
+								width="100%">
+								<label
+									value="@bind(giroVar.mensajeDeCambios)">
+								</label>
+							</hlayout>
+						</hlayout>
+					</tabpanel>
+
+					<tabpanel>
+						<listbox
+							emptyMessage="Por el momento no existe un catalogos de naturaleza de productos"
+							rows="10" autopaging="true"
+							model="@load(cvm.productosNaturalezas)"
+							selectedItem="@bind(cvm.productoNaturaleza)">
+							<listhead>
+
+								<listheader label="Nombre" />
+								<listheader label="Eliminar"
+									style="text-align:center" width="8%" />
+							</listhead>
+							<template name="model"
+								var="naturalezaVar">
+								<listitem>
+
+									<listcell>
+										<textbox
+											value="@bind(naturalezaVar.nombre)" inplace="true"
+											width="70%"
+											tooltiptext="@bind(naturalezaVar.idProductoNaturaleza)" />
+									</listcell>
+									<listcell>
+										<button
+											image="/images/toolbar/remove16.png"
+											onClick="@command('removerNaturaleza', index=naturalezaVarStatus.index)"
+											zclass="find_button"
+											tooltiptext="Remover Naturaleza de producto" />
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+
+						<separator />
+
+						<hlayout>
+							<button image="/images/toolbar/add16.png"
+								onClick="@command('agregarNuevaNaturaleza')"
+								zclass="find_button"
+								tooltiptext="Agregar nueva naturaleza de un producto" />
+
+							<button upload="true"
+								image="/images/toolbar/uploadColor16.png"
+								onUpload="@command('onUploadExcelNaturaleza',upEvent=event)"
+								tooltiptext="Importar catalogo de Naturalezas de productos desde excel">
+							</button>
+						</hlayout>
+					</tabpanel>
+
+					<tabpanel>
+
+						<grid style="border:0">
+							<columns>
+								<column width="7%" />
+								<column width="15%" />
+								<column />
+							</columns>
+							<rows>
+
+								<row style="border:0">
 									<button
-										image="/images/toolbar/remove16.png"
-										onClick="@command('removerNaturaleza', index=naturalezaVarStatus.index)"
-										zclass="find_button"
-										tooltiptext="Remover Naturaleza de producto" />
-								</listcell>
-							</listitem>
-						</template>
-					</listbox>
+										image="/images/toolbar/excel32.png" sclass="web_button"
+										onClick="@command('openLayoutAreas')"
+										tooltiptext="Abrir layout de proveedores" />
+									<label value="AREAS" />
+									<div></div>
+								</row>
 
-					<separator />
+								<row style="border:0">
+									<button
+										image="/images/toolbar/excel32.png" sclass="web_button"
+										onClick="@command('openLayoutBancos')"
+										tooltiptext="Abrir layout de Bancos" />
+									<label value="BANCOS" />
+									<div></div>
+								</row>
 
-					<hlayout>
-						<button image="/images/toolbar/add16.png"
-							onClick="@command('agregarNuevaNaturaleza')" zclass="find_button"
-							tooltiptext="Agregar nueva naturaleza de un producto" />
+								<row style="border:0">
+									<button
+										image="/images/toolbar/excel32.png" sclass="web_button"
+										onClick="@command('openLayoutGiros')"
+										tooltiptext="Abrir layout de Giros" />
+									<label value="GIROS" />
+									<div></div>
+								</row>
 
-						<button upload="true"
-							image="/images/toolbar/uploadColor16.png"
-							onUpload="@command('onUploadExcelNaturaleza',upEvent=event)"
-							tooltiptext="Importar catalogo de Naturalezas de productos desde excel">
-						</button>
-					</hlayout>
-				</tabpanel>
+								<row style="border:0">
+									<button
+										image="/images/toolbar/excel32.png" sclass="web_button"
+										onClick="@command('openLayoutMonedas')"
+										tooltiptext="Abrir layout de Monedas" />
+									<label value="MONEDAS" />
+									<div></div>
+								</row>
 
-				<tabpanel>
-
-					<grid style="border:0">
-						<columns>
-							<column width="7%" />
-							<column width="15%" />
-							<column />
-						</columns>
-						<rows>
-
-							<row style="border:0">
-								<button
-									image="/images/toolbar/excel32.png" sclass="web_button"
-									onClick="@command('openLayoutAreas')"
-									tooltiptext="Abrir layout de proveedores" />
-								<label value="AREAS" />
-								<div></div>
-							</row>
-
-							<row style="border:0">
-								<button
-									image="/images/toolbar/excel32.png" sclass="web_button"
-									onClick="@command('openLayoutBancos')"
-									tooltiptext="Abrir layout de Bancos" />
-								<label value="BANCOS" />
-								<div></div>
-							</row>
-
-							<row style="border:0">
-								<button
-									image="/images/toolbar/excel32.png" sclass="web_button"
-									onClick="@command('openLayoutGiros')"
-									tooltiptext="Abrir layout de Giros" />
-								<label value="GIROS" />
-								<div></div>
-							</row>
-
-							<row style="border:0">
-								<button
-									image="/images/toolbar/excel32.png" sclass="web_button"
-									onClick="@command('openLayoutMonedas')"
-									tooltiptext="Abrir layout de Monedas" />
-								<label value="MONEDAS" />
-								<div></div>
-							</row>
-
-							<row style="border:0">
-								<button
-									image="/images/toolbar/excel32.png" sclass="web_button"
-									onClick="@command('openLayoutPosiciones')"
-									tooltiptext="Abrir layout de Posiciones" />
-								<label value="POSICIONES" />
-								<div></div>
-							</row>
+								<row style="border:0">
+									<button
+										image="/images/toolbar/excel32.png" sclass="web_button"
+										onClick="@command('openLayoutPosiciones')"
+										tooltiptext="Abrir layout de Posiciones" />
+									<label value="POSICIONES" />
+									<div></div>
+								</row>
 
 
-							<row style="border:0">
-								<button
-									image="/images/toolbar/excel32.png" sclass="web_button"
-									onClick="@command('openLayoutProducto')"
-									tooltiptext="Abrir layout de productos" />
-								<label value="PRODUCTOS" />
-								<div>
-									<label
-										value="Considerar que los catalogos: UNIDAD, NATURALEZA, CLASIFICACION Y DIVISA contengan información para llevar a cabo la relación con los productos" />
-								</div>
-							</row>
+								<row style="border:0">
+									<button
+										image="/images/toolbar/excel32.png" sclass="web_button"
+										onClick="@command('openLayoutProducto')"
+										tooltiptext="Abrir layout de productos" />
+									<label value="PRODUCTOS" />
+									<div>
+										<label
+											value="Considerar que los catalogos: UNIDAD, NATURALEZA, CLASIFICACION Y DIVISA contengan información para llevar a cabo la relación con los productos" />
+									</div>
+								</row>
 
-							<row style="border:0">
-								<button
-									image="/images/toolbar/excel32.png" sclass="web_button"
-									onClick="@command('openLayoutProductoTipo')"
-									tooltiptext="Abrir layout de Tipos de producto" />
-								<label value="PRODUCTO TIPO" />
-								<div></div>
-							</row>
+								<row style="border:0">
+									<button
+										image="/images/toolbar/excel32.png" sclass="web_button"
+										onClick="@command('openLayoutProductoTipo')"
+										tooltiptext="Abrir layout de Tipos de producto" />
+									<label value="PRODUCTO TIPO" />
+									<div></div>
+								</row>
 
-							<row style="border:0">
-								<button
-									image="/images/toolbar/excel32.png" sclass="web_button"
-									onClick="@command('openLayoutProveedores')"
-									tooltiptext="Abrir layout de proveedores" />
-								<label value="PROVEEDORES" />
-								<div>
-									<label
-										value="Considerar que los catalogos: CUENTA PAGO (MONEDA), Y CUENTA PAGO (BANCO) contengan información para llevar a cabo la relación con los proveedores" />
-								</div>
-							</row>
+								<row style="border:0">
+									<button
+										image="/images/toolbar/excel32.png" sclass="web_button"
+										onClick="@command('openLayoutProveedores')"
+										tooltiptext="Abrir layout de proveedores" />
+									<label value="PROVEEDORES" />
+									<div>
+										<label
+											value="Considerar que los catalogos: CUENTA PAGO (MONEDA), Y CUENTA PAGO (BANCO) contengan información para llevar a cabo la relación con los proveedores" />
+									</div>
+								</row>
 
-							<row style="border:0">
-								<button
-									image="/images/toolbar/excel32.png" sclass="web_button"
-									onClick="@command('openLayoutUnidades')"
-									tooltiptext="Abrir layout de Unidades" />
-								<label value="UNIDADES" />
-								<div></div>
-							</row>
+								<row style="border:0">
+									<button
+										image="/images/toolbar/excel32.png" sclass="web_button"
+										onClick="@command('openLayoutUnidades')"
+										tooltiptext="Abrir layout de Unidades" />
+									<label value="UNIDADES" />
+									<div></div>
+								</row>
 
-						</rows>
-					</grid>
-
-
-				</tabpanel>
-			</tabpanels>
-
-		</tabbox>
+							</rows>
+						</grid>
 
 
+					</tabpanel>
+				</tabpanels>
+
+			</tabbox>
+
+		</window>
 
 	</window>
 </zk>

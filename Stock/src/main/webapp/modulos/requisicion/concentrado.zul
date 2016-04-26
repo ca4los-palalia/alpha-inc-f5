@@ -1,26 +1,5 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
-	<style>
-		.fgrid tr.z-row td.z-row-inner,tr.z-row,div.z-grid-body
-		div.z-cell,div.z-grid { border: none; overflow: hidden; zoom: 1;
-		background: white; border-top: none; border-left: none;
-		border-right: none; border-bottom: none; }
-
-		.fgrid .z-grid-odd .fgrid .z-row-inner,.fgrid .z-grid-odd
-		.z-cell { background-color: #F7F7F7; border-bottom: 1px solid
-		transparent; border-left: 1px solid transparent; border-top: 1px
-		solid transparent; }
-
-		.fgrid .z-grid-odd .fgrid.z-row-inner,.fgrid.z-grid-odd
-		.z-cell,.fgrid.z-grid-odd { background: none repeat scroll 0 0
-		transparent; }
-
-		.fgrid tr.z-grid-odd td.z-row-inner,.fgrid tr.z-grid-odd
-		.z-cell,.fgrid tr.z-grid-odd { background: white }
-
-		.fgrid tr.z-row td.z-row-inner,.fgrid tr.z-row .z-cell {
-		background: white; border-top: none; }
-	</style>
 	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
 	<script src="/scripts/watermarks.js" type="text/javascript" />
@@ -57,7 +36,7 @@
 																		mold="3d" open="true">
 																		<caption
 																			label="Buscar" image="/images/toolbar/find16x16.png" />
-																		<grid sclass="fgrid">
+																		<grid sclass="my-grid">
 																			<columns>
 																				<column
 																					width="20%" />
@@ -81,7 +60,7 @@
 																			</rows>
 																		</grid>
 
-																		<grid sclass="fgrid">
+																		<grid sclass="my-grid">
 																			<columns>
 																				<column />
 																				<column

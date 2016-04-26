@@ -29,4 +29,8 @@ public abstract interface ProductoDAO {
 	public abstract List<Producto> getByPrecio(String paramString);
 
 	public abstract Producto getByClave(String paramString);
+
+	public abstract List<Producto> getAllLimited();
+
+	public abstract List<Producto> getAllNativeSQL();
 }

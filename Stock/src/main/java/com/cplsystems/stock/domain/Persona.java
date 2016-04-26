@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "persona")
+@Table
 public class Persona {
 	private Long idPersona;
 	private String apellidoPaterno;
@@ -30,7 +30,7 @@ public class Persona {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idPersona")
+	@Column
 	public Long getIdPersona() {
 		return this.idPersona;
 	}

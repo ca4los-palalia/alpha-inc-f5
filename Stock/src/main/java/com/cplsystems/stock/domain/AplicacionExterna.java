@@ -1,4 +1,4 @@
-package com.cplsystems.stock.app.utils;
+package com.cplsystems.stock.domain;
 
 public class AplicacionExterna
 {

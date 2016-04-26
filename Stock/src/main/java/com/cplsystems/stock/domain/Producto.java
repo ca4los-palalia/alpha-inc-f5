@@ -76,6 +76,7 @@ public class Producto implements Serializable {
 	private Usuarios usuario;
 	private String fechaActualizacion;
 	private ClaveArmonizada claveArmonizada;
+	private Integer restan;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -624,4 +625,15 @@ public class Producto implements Serializable {
 	public void setClaveArmonizada(ClaveArmonizada claveArmonizada) {
 		this.claveArmonizada = claveArmonizada;
 	}
+
+	@Transient
+	public Integer getRestan() {
+		return restan;
+	}
+
+	public void setRestan(Integer restan) {
+		this.restan = restan;
+	}
+	
+	
 }

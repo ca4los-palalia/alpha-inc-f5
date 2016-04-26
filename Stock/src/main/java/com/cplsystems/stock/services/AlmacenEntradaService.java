@@ -12,6 +12,8 @@ import com.cplsystems.stock.domain.AlmacenEntrada;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.OrdenCompra;
+import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.Proveedor;
 
 @Service
 public class AlmacenEntradaService {
@@ -45,5 +47,9 @@ public class AlmacenEntradaService {
 	}
 	public List<AlmacenEntrada> getByAlmacen(Almacen almacen) throws DataAccessException {
 		return this.almacenEntradaDAO.getByAlmacen(almacen);
+	}
+	
+	public List<AlmacenEntrada> getByOrdenCompraProductoProveedor(OrdenCompra ordenCompra, Producto producto, Proveedor proveedor) throws DataAccessException {
+		return this.almacenEntradaDAO.getByOrdenCompraProductoProveedor(ordenCompra, producto, proveedor);
 	}
 }

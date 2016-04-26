@@ -17,6 +17,8 @@ import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.OrdenCompra;
 import com.cplsystems.stock.domain.Organizacion;
+import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.Proveedor;
 
 @Repository
 public class AlmacenEntradaDAOImpl extends HibernateDAOSuportUtil implements AlmacenEntradaDAO {
@@ -89,6 +91,7 @@ public class AlmacenEntradaDAOImpl extends HibernateDAOSuportUtil implements Alm
 		return (lista != null) && (!lista.isEmpty()) ? lista : null;
 	}
 
+	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<AlmacenEntrada> getByAlmacen(Almacen almacen) {
@@ -97,5 +100,25 @@ public class AlmacenEntradaDAOImpl extends HibernateDAOSuportUtil implements Alm
 		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
 		List<AlmacenEntrada> lista = criteria.list();
 		return (lista != null) && (!lista.isEmpty()) ? lista : null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	public List<AlmacenEntrada> getByOrdenCompraProductoProveedor(OrdenCompra ordenCompra, Producto producto,
+			Proveedor proveedor) {
+		
+		Criteria criteria = getHibernateTemplate().getSessionFactory().openSession().createCriteria(AlmacenEntrada.class);
+		if(ordenCompra != null)
+			criteria.add(Restrictions.eq("ordenCompra", ordenCompra));
+		if(producto != null)
+			criteria.add(Restrictions.eq("producto", producto));
+		if(proveedor != null)
+			criteria.add(Restrictions.eq("proveedor", proveedor));
+		
+		
+		criteria.add(Restrictions.eq("organizacion", getOrganizacion()));
+		List<AlmacenEntrada> lista = criteria.list();
+		return (lista != null) && (!lista.isEmpty()) ? lista : null;
+		
 	}
 }

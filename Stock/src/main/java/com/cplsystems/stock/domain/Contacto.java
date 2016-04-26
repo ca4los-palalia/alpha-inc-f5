@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "contacto")
+@Table
 public class Contacto implements Serializable {
 	private static final long serialVersionUID = -7065704145995755117L;
 	private Long idContacto;

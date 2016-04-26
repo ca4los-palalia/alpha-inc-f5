@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "destino")
+@Table
 public class Destino implements Serializable {
 	private static final long serialVersionUID = -825268613541991802L;
 	private Long idDestino;
@@ -19,7 +19,7 @@ public class Destino implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idDestino", nullable = false)
+	@Column(nullable = false)
 	public Long getIdDestino() {
 		return this.idDestino;
 	}

@@ -25,7 +25,7 @@
 		<property name="connection.username">USUARIOSTOCK</property>
 		<property name="connection.password">STOCK2014</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
-  -->		
+-->  		
 		<!-- END Configuration Data -->
 
 		<!-- Mapping of Classes -->
@@ -57,6 +57,8 @@
 		<mapping class="com.cplsystems.stock.domain.EstatusRequisicion" />
 		<mapping class="com.cplsystems.stock.domain.FamiliasProducto" />
 		<mapping class="com.cplsystems.stock.domain.Giro" />
+		<mapping class="com.cplsystems.stock.domain.Kardex" />
+		<mapping class="com.cplsystems.stock.domain.KardexProveedor" />
 		<mapping class="com.cplsystems.stock.domain.Lugar" />
 		<mapping class="com.cplsystems.stock.domain.Moneda" />
 		<mapping class="com.cplsystems.stock.domain.Modulos" />

@@ -9,10 +9,10 @@ import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zul.SimpleListModel;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
+import com.cplsystems.stock.domain.AplicacionExterna;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.CofiaFuenteFinanciamiento;
 import com.cplsystems.stock.domain.CofiaPartidaGenerica;

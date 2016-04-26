@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "RequisicionPartida")
+@Table
 public class RequisicionPartida {
 	private Long idPartida;
 	private Partida partida;
@@ -19,7 +19,7 @@ public class RequisicionPartida {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idPartida", nullable = false)
+	@Column
 	public Long getIdPartida() {
 		return this.idPartida;
 	}

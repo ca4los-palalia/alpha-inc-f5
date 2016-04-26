@@ -128,6 +128,9 @@ public abstract class PerfilMetaClass extends PerfilVariables {
 		if (key.equals("estado")) {
 			if (!stringOut.equals("\"\"")) {
 				if(!stringOut.equals("")){
+					if(stringOut.contains("Ciudad de M")){
+						stringOut = "Distrito Federal";
+					}
 					direccionBuiding.setEstado(getEstadoFromListByName(stringOut));
 					contadorCamposJson ++;	
 				}

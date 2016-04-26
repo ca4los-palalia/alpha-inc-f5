@@ -1,10 +1,10 @@
 package com.cplsystems.stock.app.vm.proveedor;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
+import com.cplsystems.stock.domain.AplicacionExterna;
 import com.cplsystems.stock.domain.Banco;
 import com.cplsystems.stock.domain.Contacto;
 import com.cplsystems.stock.domain.Contrato;

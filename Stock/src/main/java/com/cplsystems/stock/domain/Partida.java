@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "partida")
+@Table
 public class Partida implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private long idPartida;
@@ -18,7 +18,7 @@ public class Partida implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idPartida", nullable = false)
+	@Column
 	public long getIdPartida() {
 		return this.idPartida;
 	}

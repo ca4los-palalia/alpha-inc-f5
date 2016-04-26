@@ -1,5 +1,6 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
+
 	<style src="/styles/home/styleGlobal.css" />
 	<style src="/styles/home/styleHome.css" />
 
@@ -12,17 +13,18 @@
 
 		<borderlayout>
 			<north maxsize="300" size="100%" splittable="true"
-				collapsible="true">
+				collapsible="true" style="border-style: hidden;">
 				<borderlayout>
-					<center border="none" flex="true">
+					<center style="border-style: hidden;" flex="true">
 						<window height="100%">
 							<borderlayout>
-								<north title="Requisiciones"
-									collapsible="true" visible="@load(vm.mostrarRequisiones)"
-									maxsize="300" size="18%">
+								<north style="border-style: hidden;"
+									title="Requisiciones" collapsible="true"
+									visible="@load(vm.mostrarRequisiones)" maxsize="300"
+									size="18%">
 									<borderlayout>
-										<center border="none"
-											flex="true">
+										<center
+											style="border-style: hidden;" flex="true">
 											<window height="100%"
 												width="100%">
 												<listbox vflex="1">
@@ -62,17 +64,19 @@
 										</center>
 									</borderlayout>
 								</north>
-								<center border="0">
+								<center style="border-style: hidden;">
 									<borderlayout>
-										<center>
+										<center
+											style="border-style: hidden;">
 											<borderlayout>
 												<north
+													style="border-style: hidden;"
 													visible="@load(vm.mostrarCotizacionesAutorizaciones)"
 													title="Cotizaciones" collapsible="true" maxsize="300"
 													size="11%">
 													<borderlayout>
 														<center
-															border="none" flex="true">
+															style="border-style: hidden;" flex="true">
 															<window
 																height="100%" width="100%">
 																<listbox
@@ -96,17 +100,20 @@
 														</center>
 													</borderlayout>
 												</north>
-												<center border="0">
+												<center
+													style="border-style: hidden;">
 													<borderlayout>
-														<center>
+														<center
+															style="border-style: hidden;">
 															<borderlayout>
 																<north
+																	style="border-style: hidden;"
 																	visible="@load(vm.mostrarOrdenesCompra)"
 																	title="Ordenes de compra" collapsible="true"
 																	maxsize="300" size="12%">
 																	<borderlayout>
 																		<center
-																			border="none" flex="true">
+																			style="border-style: hidden;" flex="true">
 																			<window
 																				height="100%" width="100%">
 																				<listbox
@@ -132,17 +139,19 @@
 																	</borderlayout>
 																</north>
 																<center
-																	border="0">
+																	style="border-style: hidden;">
 																	<borderlayout>
-																		<center>
+																		<center
+																			style="border-style: hidden;">
 																			<borderlayout>
 																				<north
+																					style="border-style: hidden;"
 																					visible="@load(vm.mostrarPanelControl)"
 																					title="Panel de control" collapsible="true"
 																					maxsize="300" size="41%">
 																					<borderlayout>
 																						<center
-																							border="none" flex="true">
+																							style="border-style: hidden;" flex="true">
 																							<window
 																								height="100%" width="100%">
 																								<listbox
@@ -204,16 +213,17 @@
 																					</borderlayout>
 																				</north>
 																				<center
-																					border="0">
+																					style="border-style: hidden;">
 																					<borderlayout>
-																						<center>
+																						<center
+																							style="border-style: hidden;">
 																							<borderlayout>
 																								<north
-																									title="Perfil" collapsible="true" maxsize="300"
-																									size="25%">
+																									style="border-style: hidden;" title="Perfil"
+																									collapsible="true" maxsize="300" size="25%">
 																									<borderlayout>
 																										<center
-																											border="none" flex="true">
+																											style="border-style: hidden;" flex="true">
 																											<window
 																												height="100%" width="100%">
 																												<listbox
@@ -239,10 +249,11 @@
 																									</borderlayout>
 																								</north>
 																								<center
-																									border="0">
+																									style="border-style: hidden;">
 																									<borderlayout
-																										style="display: table;">
-																										<center>
+																										style="display: table; border-style: hidden;">
+																										<center
+																											style="border-style: hidden;">
 																											<image
 																												width="100%" height="auto" class="circular"
 																												content="@bind(vm.organizacion.logotipoAImage)" />

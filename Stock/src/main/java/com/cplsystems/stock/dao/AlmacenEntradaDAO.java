@@ -7,6 +7,8 @@ import com.cplsystems.stock.domain.AlmacenEntrada;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.OrdenCompra;
+import com.cplsystems.stock.domain.Producto;
+import com.cplsystems.stock.domain.Proveedor;
 
 public abstract interface AlmacenEntradaDAO {
 
@@ -25,6 +27,9 @@ public abstract interface AlmacenEntradaDAO {
 	public List<AlmacenEntrada> getByOrdenCompra(OrdenCompra ordenCompra);
 
 	public List<AlmacenEntrada> getByAlmacen(Almacen almacen);
+
+	public List<AlmacenEntrada> getByOrdenCompraProductoProveedor(OrdenCompra ordenCompra, Producto producto,
+			Proveedor proveedor);
 
 	
 }

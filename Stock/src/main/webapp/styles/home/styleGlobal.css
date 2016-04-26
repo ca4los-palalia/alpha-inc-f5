@@ -307,3 +307,56 @@
 }
 
 /*--------------------------------------------*/
+div.my-grid {
+	background: transparent;
+	border: 0px
+}
+
+.my-grid
+		tr.z-row td.z-row-inner {
+	background: transparent;
+	border: 0px
+}
+
+.my-grid tr.z-grid-odd td.z-row-inner, .my-grid tr.z-grid-odd {
+	background: transparent;
+	border: 0px;
+	background-color: transparent
+}
+
+.my-grid div.z-grid-body {
+	background: transparent
+}
+/*--------------------------------------------*/
+.z-loading {
+	background-color: black;
+	cursor: wait;
+	white-space: nowrap;
+	padding: 22%;
+	border: 1px solid #83B5F7;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	opacity: 0.6;
+}
+
+.z-loading-indicator {
+	background-color: #a90329; /* Old browsers */
+	background-color: -moz-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%);
+	/* FF3.6-15 */
+	background-color: -webkit-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%);
+	/* Chrome10-25,Safari5.1-6 */
+	background-color: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329',
+		endColorstr='#6d0019', GradientType=0); /* IE6-9 */
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	color: white;
+	border: 1px solid black;
+	padding: 6px;
+}

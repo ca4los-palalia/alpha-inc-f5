@@ -8,11 +8,11 @@ import java.util.List;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.domain.Almacen;
 import com.cplsystems.stock.domain.AlmacenEntrada;
+import com.cplsystems.stock.domain.AplicacionExterna;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.OrdenCompra;
@@ -34,11 +34,11 @@ public class ControlMetaclass extends ControlVariables {
 	}
 
 	public void initObjects() {
-		loadOrdenesCompraInbox();
+		
 	}
 
 	public void initProperties() {
-		this.readJasper = generarUrlString("jasperTemplates/ordenCompraFormato.jasper");
+		
 	}
 
 	private void loadOrdenesCompraInbox() {
@@ -94,8 +94,9 @@ public class ControlMetaclass extends ControlVariables {
 		objeto.setCotizacion(cotiz);
 		objeto.setActivarCantidad(true);
 		objeto.setOrdenCompra(ordCompra);
-		if(cotiz.getProducto() != null)
+		if(cotiz != null && cotiz.getProducto() != null)
 			objeto.setProducto(cotiz.getProducto());
+		objeto.setAreas(areas);
 		return objeto;
 	}
 	
@@ -119,6 +120,9 @@ public class ControlMetaclass extends ControlVariables {
 		}
 		return extraccion;
 	}
+	
+	
+	
 	public List<Almacen> getAlmacenesByAreaFromList(List<Almacen> almacenList, Area area){
 		List<Almacen> extraccion = new ArrayList<>();
 		for (Almacen item : almacenList) {

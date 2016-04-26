@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "email")
+@Table
 public class Email implements Serializable {
 	private static final long serialVersionUID = -3514567107156038610L;
 	private Long idEmails;
@@ -20,7 +20,7 @@ public class Email implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idEmails", nullable = false)
+	@Column(nullable = false)
 	public Long getIdEmails() {
 		return this.idEmails;
 	}

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "RequsicionProducto")
+@Table
 public class RequisicionProducto implements Serializable {
 	private static final long serialVersionUID = -9121053303871749035L;
 	private Long idRequisionProducto;
@@ -36,7 +36,7 @@ public class RequisicionProducto implements Serializable {
 	}
 
 	@Id
-	@Column(name = "idRequisicionProducto", nullable = false)
+	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdRequisionProducto() {
 		return this.idRequisionProducto;

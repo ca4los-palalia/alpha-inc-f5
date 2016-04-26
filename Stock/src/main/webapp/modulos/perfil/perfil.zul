@@ -1,29 +1,5 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
-	<style>
-		.fgrid tr.z-row td.z-row-inner,tr.z-row,div.z-grid-body
-		div.z-cell,div.z-grid { border: none; overflow: hidden; zoom: 1;
-		background: white; border-top: none; border-left: none;
-		border-right: none; border-bottom: none; }
-
-		.fgrid .z-grid-odd .fgrid .z-row-inner,.fgrid .z-grid-odd
-		.z-cell { background-color: #F7F7F7; border-bottom: 1px solid
-		transparent; border-left: 1px solid transparent; border-top: 1px
-		solid transparent; }
-
-		.fgrid .z-grid-odd .fgrid.z-row-inner,.fgrid.z-grid-odd
-		.z-cell,.fgrid.z-grid-odd { background: none repeat scroll 0 0
-		transparent; }
-
-		.fgrid tr.z-grid-odd td.z-row-inner,.fgrid tr.z-grid-odd
-		.z-cell,.fgrid tr.z-grid-odd { background: white }
-
-		.fgrid tr.z-row td.z-row-inner,.fgrid tr.z-row .z-cell {
-		background: white; border-top: none; }
-
-
-	</style>
-
 	<style src="/styles/home/styleHome.css" />
 	<style src="/styles/home/styleGlobal.css" />
 	<script src="/scripts/watermarks.js" type="text/javascript" />
@@ -46,7 +22,7 @@
 
 			<groupbox closable="false">
 				<caption>Informacion</caption>
-				<grid sclass="fgrid">
+				<grid sclass="my-grid">
 					<columns>
 						<column width="10%" />
 						<column />
@@ -77,7 +53,7 @@
 							<label value="Contraseña:" />
 
 
-							<grid sclass="fgrid">
+							<grid sclass="my-grid">
 								<columns>
 									<column align="center" />
 									<column align="center" width="15%" />
@@ -108,7 +84,7 @@
 
 			<groupbox closable="false">
 				<caption>Direccion</caption>
-				<grid sclass="fgrid">
+				<grid sclass="my-grid">
 					<columns>
 						<column width="10%" />
 						<column />
@@ -124,7 +100,7 @@
 								value="@bind(pvm.direccionUsuario.calle)" />
 
 							<label value="C.P.:" />
-							<grid sclass="fgrid">
+							<grid sclass="my-grid">
 								<columns>
 									<column align="center" />
 									<column align="center" width="17%" />
@@ -200,7 +176,7 @@
 			<separator />
 			<groupbox closable="false">
 				<caption>Contacto</caption>
-				<grid sclass="fgrid">
+				<grid sclass="my-grid">
 					<columns>
 						<column width="10%" />
 						<column />
@@ -234,7 +210,7 @@
 			<caption label="ORGANIZACIÓN"
 				image="/images/toolbar/info16.png" />
 
-			<grid sclass="fgrid">
+			<grid sclass="my-grid">
 				<columns>
 					<column align="center" width="15%" />
 					<column />
@@ -242,7 +218,7 @@
 				</columns>
 				<rows>
 					<row>
-						<grid sclass="fgrid">
+						<grid sclass="my-grid">
 							<columns>
 								<column align="center" />
 							</columns>
@@ -276,7 +252,7 @@
 
 							<groupbox closable="false">
 								<caption>Informacion</caption>
-								<grid sclass="fgrid">
+								<grid sclass="my-grid">
 									<columns>
 										<column width="10%" />
 										<column />
@@ -300,7 +276,7 @@
 							<separator />
 							<groupbox closable="false">
 								<caption>Direccion</caption>
-								<grid sclass="fgrid">
+								<grid sclass="my-grid">
 									<columns>
 										<column width="10%" />
 										<column />
@@ -316,7 +292,7 @@
 												value="@bind(pvm.direccionOrganizacion.calle)" />
 
 											<label value="C.P.:" />
-											<grid sclass="fgrid">
+											<grid sclass="my-grid">
 												<columns>
 													<column
 														align="center" />
@@ -401,7 +377,7 @@
 							<separator />
 							<groupbox closable="false">
 								<caption>Contacto</caption>
-								<grid sclass="fgrid">
+								<grid sclass="my-grid">
 									<columns>
 										<column width="10%" />
 										<column />

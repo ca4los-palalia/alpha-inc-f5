@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CuentaPago")
+@Table
 public class CuentaPago {
 	private Long idCuentaPago;
 	private String cuentaBancaria;
@@ -25,7 +25,7 @@ public class CuentaPago {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idCuentasPago", length = 250)
+	@Column
 	public Long getIdCuentaPago() {
 		return this.idCuentaPago;
 	}

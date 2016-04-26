@@ -1,10 +1,10 @@
 package com.cplsystems.stock.app.vm.producto;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.ClasificacionPrecios;
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.vm.producto.utils.ModoDeBusqueda;
+import com.cplsystems.stock.domain.AplicacionExterna;
 import com.cplsystems.stock.domain.ClaveArmonizada;
 import com.cplsystems.stock.domain.CodigoBarrasProducto;
 import com.cplsystems.stock.domain.CostosProducto;
@@ -67,8 +67,10 @@ public class ProductosVM extends ProductoMetaClass {
 	@Init
 	public void init() {
 		super.init();
-		this.producto.setCambioNaturaleza(true);
-		this.progressValue = Integer.valueOf(0);
+		producto.setCambioNaturaleza(true);
+		
+		productoTipoDB = productoTipoService.getAll();
+		productoDB = productoService.getAllNativeSQL();
 	}
 
 	@Command({ "upload" })
@@ -489,36 +491,40 @@ public class ProductosVM extends ProductoMetaClass {
 	@Command
 	@NotifyChange({ "*" })
 	public void findProductos() {
-		if ((this.buscarProducto.getNombre() != null) && (!this.buscarProducto.getNombre().isEmpty())) {
-			if (!this.buscarProducto.getNombre().equals("*")) {
-				this.productoDB = this.productoService.getByClaveNombre(this.buscarProducto.getNombre());
+		if ((buscarProducto.getNombre() != null) && (!buscarProducto.getNombre().isEmpty())) {
+			if (!buscarProducto.getNombre().equals("*")) {
+				productoDB = productoService.getByClaveNombre(buscarProducto.getNombre());
+			}else if (buscarProducto.getNombre().equals("*")) {
+				productoDB = productoService.getAllNativeSQL();
 			}
-			if (this.productoDB != null) {
+			if (productoDB != null) {
 				String mensaje = "";
-				if (this.productoDB.size() == 1) {
+				if (productoDB.size() == 1) {
 					mensaje = "producto";
-				} else if (this.productoDB.size() > 1) {
+				} else if (productoDB.size() > 1) {
 					mensaje = "productos";
 				}
-				if (this.buscarProducto.getNombre().equals("*")) {
+				
+				if (buscarProducto.getNombre().equals("*")) {
 					StockUtils.showSuccessmessage(
-							"Tu b�squeda -" + this.buscarProducto.getNombre() + "- no obtuvo ning�n resultado",
+							"Tu búsqueda -" + buscarProducto.getNombre() + "- no obtuvo ning�n resultado",
 							"warning", Integer.valueOf(0), null);
 				} else {
-					StockUtils.showSuccessmessage("Tu b�squeda -" + this.buscarProducto.getNombre() + "- obtuvo "
-							+ this.productoDB.size() + " " + mensaje, "info", Integer.valueOf(0), null);
+					StockUtils.showSuccessmessage("Tu b�squeda -" + buscarProducto.getNombre() + "- obtuvo "
+							+ productoDB.size() + " " + mensaje, "info", Integer.valueOf(0), null);
 				}
-				this.buscarProducto.setDescripcion(String.valueOf(this.productoDB.size()));
+				buscarProducto.setDescripcion(String.valueOf(productoDB.size()));
 
-				this.producto = new Producto();
-				this.enableComboBoxUnidades = true;
+				producto = new Producto();
+				enableComboBoxUnidades = true;
 			} else {
+				productoDB = new ArrayList<>();
 				StockUtils.showSuccessmessage(
-						"Tu b�squeda -" + this.buscarProducto.getNombre() + "- no obtuvo ning�n resultado", "warning",
+						"Tu b�squeda -" + buscarProducto.getNombre() + "- no obtuvo ning�n resultado", "warning",
 						Integer.valueOf(0), null);
 			}
 		} else {
-			StockUtils.showSuccessmessage("Tu b�squeda no obtuvo ning�n resultado", "error", Integer.valueOf(0), null);
+			productoDB = new ArrayList<>();
 		}
 	}
 
@@ -553,20 +559,26 @@ public class ProductosVM extends ProductoMetaClass {
 		}
 	}
 
-	@NotifyChange({ "*" })
+	@NotifyChange({ "productoDB" })
 	@Command
 	public void changeComboClasificacion() {
-		String mensaje = "Ningun producto encontrado de tipo: " + this.productoTipoSelected.getNombre();
+		String mensaje = "Ningun producto encontrado de tipo: " + productoTipoSelected.getNombre();
 
-		this.familiasProductos = this.familiasProductoService.getByFamilia(this.productoTipoSelected);
-		if (this.familiasProductos != null) {
-			if (this.familiasProductos.size() == 1) {
-				mensaje = "Se encontro " + this.familiasProductos.size() + " producto de tipo "
-						+ this.productoTipoSelected.getNombre();
-			} else {
-				mensaje = "Se encontraron " + this.familiasProductos.size() + " productos de tipo "
-						+ this.productoTipoSelected.getNombre();
+		familiasProductos = familiasProductoService.getByFamilia(productoTipoSelected);
+		if (familiasProductos != null) {
+			if (familiasProductos.size() == 1) {
+				mensaje = "Se encontro " + familiasProductos.size() + " producto de tipo "
+						+ productoTipoSelected.getNombre();
+			} else
+				mensaje = "Se encontraron " + familiasProductos.size() + " productos de tipo "
+						+ productoTipoSelected.getNombre();
+			
+			
+			productoDB = new ArrayList<>();
+			for (FamiliasProducto item : familiasProductos) {
+				productoDB.add(item.getProducto());
 			}
+			
 			StockUtils.showSuccessmessage(mensaje, "info", Integer.valueOf(0), this.clasificacionButton);
 		} else {
 			StockUtils.showSuccessmessage(mensaje, "warning", Integer.valueOf(0), this.clasificacionButton);
@@ -722,8 +734,9 @@ public class ProductosVM extends ProductoMetaClass {
 	@Command
 	@NotifyChange({ "claveAr1" })
 	public void obtenerListaFamiliasProducto() {
-		if (this.producto != null) {
-			this.familiasProductos = this.familiasProductoService.getByProducto(this.producto);
+		if (producto != null) {
+			producto = productoService.getById(producto.getIdProducto());
+			familiasProductos = familiasProductoService.getByProducto(producto);
 		}
 	}
 
@@ -934,12 +947,15 @@ public class ProductosVM extends ProductoMetaClass {
 	public void selectTabPrecio() {
 	}
 
+	/*
 	@Command
 	@NotifyChange({ "*" })
 	public void cargarListaProductos() {
-		this.productoDB = this.productoService.getAll();
+		productoDB = productoService.getAll();
 		if (this.productoDB != null) {
 			this.modoDeBusqueda.setOcultarFamilia(true);
+			//posiblemente eliminar variable
 		}
 	}
+	*/
 }

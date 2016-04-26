@@ -1,0 +1,112 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<?script type="text/javascript" src="/scripts/watermarks.js"?>
+
+	<window apply="org.zkoss.bind.BindComposer"
+		id="configuracionEnvioProductosModalDialog"
+		viewModel="@id('cvm') @init('com.cplsystems.stock.app.vm.requisicion.KardexConfiguracionEnvioProductoVM')"
+		width="40%" height="80%" position="center,center" closable="true">
+
+
+		<borderlayout>
+			<north title="@bind(cvm.titleWindow)" maxsize="300" size="94%"
+				style="border-style: hidden;">
+
+
+
+				<window height="100%" width="100%">
+					<listbox vflex="1"
+						model="@load(cvm.almacenEntradaList)"
+						selectedItem="@bind(cvm.almacenEntrada)">
+						<listhead>
+							<listheader label="Area" />
+							<listheader label="Almacen" />
+							<listheader label="Cantidad" width="15%"
+								style="text-align:center" />
+							<listheader width="37px"
+								style="text-align:center" />
+						</listhead>
+						<template name="model" var="item">
+							<listitem>
+								<listcell>
+									<combobox model="@load(item.areas)" disabled="@bind(cvm.modificar)"
+										readonly="true" width="100%" selectedItem="@bind(item.area)"
+										onSelect="@command('buscarAlmacenesDeAreaSeleccionada', index=itemStatus.index)">
+										<template name="model"
+											var="areaItem">
+											<comboitem
+												label="@load(areaItem.nombre)" />
+										</template>
+									</combobox>
+								</listcell>
+								<listcell>
+									<combobox disabled="@bind(cvm.modificar)"
+										model="@load(item.area.almacenesList)" readonly="true"
+										selectedItem="@bind(item.almacen)" width="100%"
+										onSelect="@command('agreagarAlmacen', index2=itemStatus.index)">
+										<template name="model"
+											var="almacenItem">
+											<comboitem
+												label="@load(almacenItem.nombre)" />
+										</template>
+									</combobox>
+								</listcell>
+								<listcell>
+									<intbox value="@bind(item.cantidad)" disabled="@bind(cvm.modificar)"
+										onChange="@command('validarMaximoProductos')" width="100%"
+										maxlength="3" />
+								</listcell>
+								<listcell>
+									<button disabled="@bind(cvm.modificar)"
+										image="/images/toolbar/remove16.png"
+										onClick="@command('quitarAlmacenEntradaParaEnvioDeProducto', index3=itemStatus.index)"
+										zclass="find_button" tooltiptext="Remover envío" />
+								</listcell>
+							</listitem>
+						</template>
+					</listbox>
+				</window>
+
+			</north>
+
+			<center style="border-style: hidden;" flex="true">
+				<grid sclass="my-grid">
+					<columns>
+						<column width="37px" align="center" />
+						<column width="15%" align="center" />
+						<column width="15%" align="center" />
+						<column align="right" />
+						<column width="15%" align="center" />
+					</columns>
+					<rows>
+						<row>
+							<button id="idAddEnvio" disabled="@bind(cvm.modificar)"
+								image="/images/toolbar/add16.png"
+								onClick="@command('agregarNuevoAlmacenParaEnvioDeProducto')"
+								zclass="find_button" tooltiptext="Agregar nuevo envío" />
+							
+
+							<button label="Cancelar"
+								onClick="@command('closeDialog')" />
+							<button label="Aceptar" disabled="@bind(cvm.modificar)"
+								onClick="@command('transferProduct')" />
+							
+							
+							
+							
+							
+							<label value="Productos restantes:" />
+							<label value="@bind(cvm.producto.restan)"
+								tooltiptext="restan" />
+						</row>
+					</rows>
+				</grid>
+
+			</center>
+
+		</borderlayout>
+
+
+
+	</window>
+</zk>

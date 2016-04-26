@@ -27,6 +27,14 @@ public class ProductoService {
 	public List<Producto> getAll() throws DataAccessException {
 		return this.productoDAO.getAll();
 	}
+	
+	public List<Producto> getAllNativeSQL() throws DataAccessException {
+		return this.productoDAO.getAllNativeSQL();
+	}
+	
+	public List<Producto> getAllLimited() throws DataAccessException {
+		return this.productoDAO.getAllLimited();
+	}
 
 	public List<Producto> getItemByKeyOrName(String claveProducto, String nombreProducto) {
 		return this.productoDAO.getItemByKeyOrName(claveProducto, nombreProducto);

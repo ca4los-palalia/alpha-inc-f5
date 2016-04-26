@@ -1,9 +1,9 @@
 package com.cplsystems.stock.app.vm.ordencompra.utils;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.SessionUtils;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
+import com.cplsystems.stock.domain.AplicacionExterna;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.OrdenCompraInbox;
 import com.cplsystems.stock.domain.Organizacion;

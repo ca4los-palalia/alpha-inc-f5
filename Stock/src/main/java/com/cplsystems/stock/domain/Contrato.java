@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "contrato")
+@Table
 public class Contrato {
 	private Long idContrato;
 	private String nombre;

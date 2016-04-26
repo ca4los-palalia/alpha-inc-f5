@@ -1,6 +1,9 @@
 package com.cplsystems.stock.app.vm.ordencompra;
 
+
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,12 +16,14 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.utils.UserPrivileges;
 import com.cplsystems.stock.app.vm.ordencompra.utils.OrdenCompraMetaclass;
+import com.cplsystems.stock.domain.AplicacionExterna;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.EstatusRequisicion;
+import com.cplsystems.stock.domain.Kardex;
+import com.cplsystems.stock.domain.KardexProveedor;
 import com.cplsystems.stock.domain.OrdenCompra;
 import com.cplsystems.stock.domain.OrdenCompraInbox;
 import com.cplsystems.stock.domain.Organizacion;
@@ -197,21 +202,25 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 
 				ordenCompra.setEstatusRequisicion(estado);
 				ordenCompraService.save(ordenCompra);
+				
+				
+				buildKardexList(ordenCompra);
+				
 				//-----------------------------------------------------
 				String mensaje = "La orden de compra " + ordenCompra.getCodigo() + " ha sido aceptada.";
 				if (organizacion.getDevelopmentTool() != null) {
 					List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
-					if (privilegios != null) {
+					if (privilegios != null && privilegios.size() > 0) {
 						enviarCorreos(usuario, organizacion, privilegios, mensaje, "Orden de compra aceptada ", null);
 					}
 				} else
 					mensaje += ". No se pudo enviar un email para la notificación";
-				StockUtils.showSuccessmessage(mensaje + " ", Clients.NOTIFICATION_TYPE_INFO, 0, null);
-				//-----------------------------------------------------
 				
-				StockUtils.showSuccessmessage(
-						"La orden de compra [" + ordenCompra.getCodigo() + "] ha sido Aceptada", "info",
-						Integer.valueOf(0), null);
+				
+				StockUtils.showSuccessmessage(mensaje + " ", Clients.NOTIFICATION_TYPE_INFO, 0, null);
+				
+				
+				//-----------------------------------------------------
 			} else {
 				StockUtils.showSuccessmessage(
 						"La orden de compra [" + ordenCompra.getCodigo()
@@ -223,6 +232,54 @@ public class OrdenCompraVM extends OrdenCompraMetaclass {
 			StockUtils.showSuccessmessage("Es necesario seleccionar primero una orden de compra", Clients.NOTIFICATION_TYPE_WARNING, 0, null);
 		}
 	}
+	
+	//---------------------------------------------------
+	private List<Kardex> buildKardexList(OrdenCompra ordenCompra) {
+		Cotizacion cotizacionItem = ordenCompra.getCotizacion();
+		
+		List<Cotizacion> listOrdenCompra = cotizacionService.getByProveedorFolioCotizacionNueva(
+				cotizacionItem.getProveedor(), cotizacionItem.getFolioCotizacion(),
+				cotizacionItem.getEstatusRequisicion());
+		
+		List<Kardex> tempList = null;
+		if (listOrdenCompra != null) {
+			tempList = new ArrayList<>();
+			for (Cotizacion item : listOrdenCompra) {
+				Kardex temObject = new Kardex();
+				temObject.setFechaEntrada(stockUtils.convertirCalendarToDate(Calendar.getInstance()));
+				temObject.setProducto(item.getProducto());
+				temObject.setEntradaCantidad(Math.round(item.getRequisicionProducto().getCantidad()));
+				temObject.setDebe(
+						Integer.parseInt(String.valueOf(Math.round(item.getRequisicionProducto().getCantidad())))
+								* item.getProducto().getPrecio());
+				temObject.setIcon(stockUtils.Encriptar("/images/toolbar/infoxOrange16.png"));
+				
+				tempList.add(temObject);
+			}
+			if(tempList != null && tempList.size() > 0){
+				EstatusRequisicion estadoKardex = estatusRequisicionService.getByClave("KXN");
+				
+				KardexProveedor kardexProveedor = new KardexProveedor();
+				kardexProveedor.setOrganizacion(organizacion);
+				kardexProveedor.setUsuario(usuario);
+				kardexProveedor.setProveedor(cotizacionItem.getProveedor());
+				kardexProveedor.setEstatusRequisicion(estadoKardex);
+				kardexProveedor.setOrdenCompra(ordenCompra);
+				kardexProveedorService.save(kardexProveedor);
+				
+				for (Kardex kardexItem : tempList) {
+					kardexItem.setEstatusRequisicion(estadoKardex);
+					kardexItem.setUsuario(usuario);
+					kardexItem.setOrganizacion(organizacion);
+					kardexItem.setKardexProveedor(kardexProveedor);
+					kardexService.save(kardexItem);
+				}
+				
+			}
+		}
+		return tempList;
+	}
+	//---------------------------------------------------
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Command

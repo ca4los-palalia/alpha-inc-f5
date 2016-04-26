@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Telefono")
+@Table
 public class Telefono {
 	private Long idTelefono;
 	private String extension;
@@ -19,7 +19,7 @@ public class Telefono {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idTelefono", nullable = false)
+	@Column
 	public Long getIdTelefono() {
 		return this.idTelefono;
 	}

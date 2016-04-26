@@ -1,57 +1,24 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-	<style>
-		.fgrid tr.z-row td.z-row-inner,tr.z-row,div.z-grid-body
-		div.z-cell,div.z-grid { border: none; overflow: hidden; zoom: 1;
-		background: transparent; border-top: none; border-left: none;
-		border-right: none; border-bottom: none; }
-
-		.fgrid .z-grid-odd .fgrid .z-row-inner,.fgrid .z-grid-odd
-		.z-cell { background-color: #F7F7F7; border-bottom: 1px solid
-		transparent; border-left: 1px solid transparent; border-top: 1px
-		solid transparent; }
-
-		.fgrid .z-grid-odd .fgrid.z-row-inner,.fgrid.z-grid-odd
-		.z-cell,.fgrid.z-grid-odd { background: none repeat scroll 0 0
-		transparent; }
-
-		.fgrid tr.z-grid-odd td.z-row-inner,.fgrid tr.z-grid-odd
-		.z-cell,.fgrid tr.z-grid-odd { background: transparent }
-
-		.fgrid tr.z-row td.z-row-inner,.fgrid tr.z-row .z-cell {
-		background: transparent; border-top: none; }
-
-		.customize .z-grid-body{ background: #597BA0; }
-
-		.selected { background: pink; } .selected .z-menuitem-btn {
-		font-size: 16px; color: red; }
-	</style>
 	<style src="/styles/home/styleHome.css" />
 	<style src="/styles/home/styleGlobal.css" />
 	<window apply="org.zkoss.bind.BindComposer" height="100%"
 		viewModel="@id('hvm') @init('com.cplsystems.stock.app.vm.HeaderVM')">
-
-
-
-		<grid sclass="fgrid customize" width="100%">
+		<grid sclass="my-grid" width="100%">
 			<columns>
 				<column align="left" width="55%" />
 				<column align="right" />
 			</columns>
 			<rows>
 				<row>
-					<label zclass="tlLabel" value="@load(hvm.organizacion.nombre)"
-						sclass="company" />
-
-
-					<image width="30px" height="30px" class="circular" style="cursor:pointer"
-						src="/images/home/off24.png" tooltiptext="Cerrar session"
-						onClick="@command('logOut')"/>
-
-
+					<label zclass="tlLabel"
+						value="@load(hvm.organizacion.nombre)" sclass="company" />
+					<image width="30px" height="30px" class="circular"
+						style="cursor:pointer" src="/images/home/off24.png"
+						tooltiptext="Cerrar session" onClick="@command('logOut')" />
 					<button onClick="@command('logOut')" visible="false"
-						style="height:30px; width:30px; cursor:pointer" sclass="web_button"
-						image="/images/home/off24.png" />
+						style="height:30px; width:30px; cursor:pointer"
+						sclass="web_button" image="/images/home/off24.png" />
 				</row>
 			</rows>
 		</grid>

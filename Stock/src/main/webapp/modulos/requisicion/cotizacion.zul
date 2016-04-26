@@ -1,42 +1,10 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
-	<style>
-		.fgrid tr.z-row td.z-row-inner,tr.z-row,div.z-grid-body
-		div.z-cell,div.z-grid { border: none; overflow: hidden; zoom: 1;
-		background: white; border-top: none; border-left: none;
-		border-right: none; border-bottom: none; }
-
-		.fgrid .z-grid-odd .fgrid .z-row-inner,.fgrid .z-grid-odd
-		.z-cell { background-color: #F7F7F7; border-bottom: 1px solid
-		transparent; border-left: 1px solid transparent; border-top: 1px
-		solid transparent; }
-
-		.fgrid .z-grid-odd .fgrid.z-row-inner,.fgrid.z-grid-odd
-		.z-cell,.fgrid.z-grid-odd { background: none repeat scroll 0 0
-		transparent; }
-
-		.fgrid tr.z-grid-odd td.z-row-inner,.fgrid tr.z-grid-odd
-		.z-cell,.fgrid tr.z-grid-odd { background: white }
-
-		.fgrid tr.z-row td.z-row-inner,.fgrid tr.z-row .z-cell {
-		background: white; border-top: none; }
-	</style>
-
 	<style src="/styles/home/styleHome.css" />
 	<style src="/styles/home/styleGlobal.css" />
 	<script src="/scripts/watermarks.js" type="text/javascript" />
 	<window apply="org.zkoss.bind.BindComposer" height="100%"
 		viewModel="@id('rvm') @init('com.cplsystems.stock.app.vm.requisicion.CotizacionVM')">
-
-
-
-
-
-												
-												
-												
-												
-												
 												
 		<borderlayout>
 			<north title="Cotizaciones | cotización:" maxsize="300" size="100%"
@@ -65,7 +33,7 @@
 																			label="Buscar" image="/images/toolbar/find16x16.png" />
 
 																		<grid
-																			sclass="fgrid">
+																			sclass="my-grid">
 																			<columns>
 																				<column
 																					align="center" />
@@ -106,7 +74,7 @@
 																			</rows>
 																		</grid>
 																		<grid
-																			sclass="fgrid">
+																			sclass="my-grid">
 																			<columns>
 																				<column />
 																				<column
@@ -155,7 +123,6 @@
 																			<listheader
 																				label="Proveedor" style="font-size:smaller;"
 																				sort="auto(proveedor.nombre)" />
-
 																			<listheader
 																				width="15%" style="font-size:smaller;" />
 
@@ -163,10 +130,9 @@
 																		<template
 																			name="model" var="cotizacionVar">
 																			<listitem style="@bind(cotizacionVar.estatusRequisicion.color)">
-																				<listcell
-																					>
+																				<listcell>
 																					<label
-																						style="font-size: 80%;"
+																						style="@bind(cotizacionVar.estatusRequisicion.colorFont)"
 																						tooltiptext="@bind(cotizacionVar.folioCotizacion)"
 																						value="@bind(cotizacionVar.proveedor.nombre)" />
 																				</listcell>
@@ -287,7 +253,7 @@
 															<div>
 																<!-- INFORMACION DEL PROVEEDOR -->
 																<grid
-																	sclass="fgrid">
+																	sclass="my-grid">
 																	<columns>
 																		<column
 																			width="13%" />
@@ -335,7 +301,7 @@
 																</grid>
 
 																<grid
-																	sclass="fgrid">
+																	sclass="my-grid">
 																	<columns>
 																		<column
 																			width="13%" />
@@ -385,7 +351,7 @@
 																</grid>
 
 																<grid
-																	sclass="fgrid">
+																	sclass="my-grid">
 																	<columns>
 																		<column
 																			width="13%" />

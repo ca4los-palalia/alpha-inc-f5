@@ -1,11 +1,11 @@
 package com.cplsystems.stock.app.vm.producto;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.ClasificacionPrecios;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.vm.producto.utils.FuncionesModificacion;
 import com.cplsystems.stock.app.vm.producto.utils.ModoDeBusqueda;
 import com.cplsystems.stock.app.vm.producto.utils.ProductoVariables;
+import com.cplsystems.stock.domain.AplicacionExterna;
 import com.cplsystems.stock.domain.ClaveArmonizada;
 import com.cplsystems.stock.domain.CodigoBarrasProducto;
 import com.cplsystems.stock.domain.CostosProducto;

@@ -1,8 +1,6 @@
 package com.cplsystems.stock.domain;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "Cotizacion")
+@Table
 public class Cotizacion {
 	private Long idCotizacion;
 	private String detallesExtras;
@@ -41,10 +39,10 @@ public class Cotizacion {
 	private boolean activarBotonExcel;
 	private boolean activarBotonesControl;
 	private Integer restan;
-	private List<AlmacenEntrada> almacenEntradaList = new ArrayList<>();
+	
 	
 	@Id
-	@Column(name = "idcotizacion", nullable = false)
+	@Column(nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getIdCotizacion() {
 		return this.idCotizacion;
@@ -265,14 +263,7 @@ public class Cotizacion {
 		this.restan = restan;
 	}
 
-	@Transient
-	public List<AlmacenEntrada> getAlmacenEntradaList() {
-		return almacenEntradaList;
-	}
-
-	public void setAlmacenEntradaList(List<AlmacenEntrada> almacenEntradaList) {
-		this.almacenEntradaList = almacenEntradaList;
-	}
+	
 
 	@Transient
 	public boolean isActivarBotonesControl() {

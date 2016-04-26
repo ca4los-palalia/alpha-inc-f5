@@ -10,15 +10,15 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.SelectorComposer;
-import org.zkoss.zk.ui.util.GenericForwardComposer;
 
-import com.cplsystems.stock.app.utils.SistemaOperativo;
 import com.cplsystems.stock.app.vm.proveedor.utils.MenuButtonsActivated;
 import com.cplsystems.stock.domain.Almacen;
 import com.cplsystems.stock.domain.AlmacenEntrada;
 import com.cplsystems.stock.domain.Area;
 import com.cplsystems.stock.domain.Banco;
 import com.cplsystems.stock.domain.CalculosCosto;
+import com.cplsystems.stock.domain.Kardex;
+import com.cplsystems.stock.domain.KardexProveedor;
 import com.cplsystems.stock.domain.ClaveArmonizada;
 import com.cplsystems.stock.domain.CodigoBarrasProducto;
 import com.cplsystems.stock.domain.CofiaFuenteFinanciamiento;
@@ -50,6 +50,7 @@ import com.cplsystems.stock.domain.Proveedor;
 import com.cplsystems.stock.domain.ProveedorProducto;
 import com.cplsystems.stock.domain.Requisicion;
 import com.cplsystems.stock.domain.RequisicionProducto;
+import com.cplsystems.stock.domain.SistemaOperativo;
 import com.cplsystems.stock.domain.Telefono;
 import com.cplsystems.stock.domain.Unidad;
 import com.cplsystems.stock.domain.Usuarios;
@@ -138,7 +139,7 @@ public class DataLayer extends SelectorComposer<Component> implements Serializab
 	protected List<ProductoTipo> productoTipoDB;
 	protected List<Proveedor> proveedoresLista;
 	protected List<Proveedor> proveedoresAsociacion;
-	protected static List<Banco> bancosDB;
+	protected List<Banco> bancosDB;
 	private List<ProductoTipo> productoTipo;
 	protected List<Moneda> monedasDB;
 	protected List<ProveedorProducto> proveedorProductos;
@@ -166,6 +167,11 @@ public class DataLayer extends SelectorComposer<Component> implements Serializab
 	protected List<CalculosCosto> calculosCostoList;
 	protected Usuarios usuario;
 	protected Organizacion organizacion;
+	protected Kardex kardex;
+	protected List<Kardex> kardexList;
+	protected KardexProveedor kardexProveedor;
+	protected List<KardexProveedor> kardexProveedorList;
+	protected EstatusRequisicion estadoKardex;
 	
 	public Producto getProducto() {
 		return this.producto;
@@ -1025,6 +1031,38 @@ public class DataLayer extends SelectorComposer<Component> implements Serializab
 
 	public void setCalculosCostoList(List<CalculosCosto> calculosCostoList) {
 		this.calculosCostoList = calculosCostoList;
+	}
+
+	public Kardex getKardex() {
+		return kardex;
+	}
+
+	public void setKardex(Kardex kardex) {
+		this.kardex = kardex;
+	}
+
+	public List<Kardex> getKardexList() {
+		return kardexList;
+	}
+
+	public void setKardexList(List<Kardex> kardexList) {
+		this.kardexList = kardexList;
+	}
+
+	public KardexProveedor getKardexProveedor() {
+		return kardexProveedor;
+	}
+
+	public void setKardexProveedor(KardexProveedor kardexProveedor) {
+		this.kardexProveedor = kardexProveedor;
+	}
+
+	public List<KardexProveedor> getKardexProveedorList() {
+		return kardexProveedorList;
+	}
+
+	public void setKardexProveedorList(List<KardexProveedor> kardexProveedorList) {
+		this.kardexProveedorList = kardexProveedorList;
 	}
 	
 }

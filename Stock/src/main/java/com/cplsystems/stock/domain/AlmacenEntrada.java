@@ -2,6 +2,7 @@ package com.cplsystems.stock.domain;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +33,8 @@ public class AlmacenEntrada implements Serializable  {
 	private Organizacion organizacion;
 	private Usuarios usuario;
 	private Producto producto;
+	private Proveedor proveedor;
+	private List<Area> areas;
 	
 	@Id
 	@Column
@@ -127,9 +130,24 @@ public class AlmacenEntrada implements Serializable  {
 	public Producto getProducto() {
 		return producto;
 	}
+	
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
-	
-	
+
+	@OneToOne
+	@JoinColumn(name = "proveedor")
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+	@Transient
+	public List<Area> getAreas() {
+		return areas;
+	}
+	public void setAreas(List<Area> areas) {
+		this.areas = areas;
+	}
 }

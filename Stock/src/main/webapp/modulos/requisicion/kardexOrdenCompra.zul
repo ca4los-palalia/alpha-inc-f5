@@ -1,0 +1,567 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/styles/home/styleGlobal.css" />
+	<style src="/styles/home/styleHome.css" />
+	<script src="/scripts/watermarks.js" type="text/javascript" />
+	<window apply="org.zkoss.bind.BindComposer" height="100%" id="winMain"
+		viewModel="@id('ovm') @init('com.cplsystems.stock.app.vm.requisicion.KardexOrdenCompraVM')">
+
+		<borderlayout visible="true">
+			<north title="Requisiciones | control:" maxsize="300"
+				size="100%" splittable="true" collapsible="true">
+				<borderlayout>
+					<center border="none" flex="true">
+						<div>
+							<borderlayout>
+								<north maxsize="300" size="100%">
+									<borderlayout>
+										<center border="none"
+											flex="true">
+											<div>
+												<!-- BUSQUEDAS -->
+												<borderlayout>
+													<north maxsize="300"
+														visible="false" size="105px">
+														<borderlayout>
+															<center
+																border="none" flex="true">
+																<div>
+																	<!-- PANEL DE BUSQUEDA -->
+																	<groupbox
+																		mold="3d" open="true">
+																		<caption
+																			label="Buscar" image="/images/toolbar/find16x16.png" />
+
+																		<grid
+																			sclass="my-grid">
+																			<columns>
+																				<column
+																					align="center" />
+																				<column
+																					align="center" />
+																				<column
+																					align="center" />
+																			</columns>
+																			<rows>
+																				<row>
+
+																					<button
+																						image="/images/toolbar/searchNew16.png"
+																						zclass="find_button"
+																						onClick="@command('checkNueva')"
+																						tooltiptext="Ordenes de compra nuevas" />
+
+																					<button
+																						image="/images/toolbar/searchCancel16.png"
+																						zclass="find_button"
+																						onClick="@command('checkCancelada')"
+																						tooltiptext="Ordenes de compra Canceladas" />
+
+																					<button
+																						image="/images/toolbar/searchAccept16.png"
+																						zclass="find_button"
+																						onClick="@command('checkAceptada')"
+																						tooltiptext="Ordenes de compra Aceptadas" />
+
+
+																				</row>
+																			</rows>
+																		</grid>
+
+																		<grid
+																			sclass="my-grid">
+																			<columns>
+																				<column />
+																				<column
+																					width="14%" />
+																			</columns>
+																			<rows>
+																				<row>
+																					<textbox
+																						id="buscarOrdCompraId"
+																						onOK="@command('fidByString')"
+																						value="@bind(ovm.requisicion.buscarRequisicion)"
+																						width="100%" />
+																					<hlayout
+																						style="text-align:center">
+																						<button
+																							image="/images/toolbar/find16x16.png"
+																							zclass="find_button"
+																							onClick="@command('fidByString')"
+																							tooltiptext="Buscar orden de compra" />
+																					</hlayout>
+																				</row>
+																			</rows>
+																		</grid>
+																	</groupbox>
+																</div>
+															</center>
+														</borderlayout>
+													</north>
+													<center
+														border="0">
+														<borderlayout>
+															<center>
+																<!-- LISTA DE ORDENES DE COMPRA -->
+																<window
+																	height="100%" width="100%">
+
+																	<listbox
+																		sclass="mylist" vflex="1"
+																		model="@load(ovm.kardexProveedorList)"
+																		selectedItem="@bind(ovm.kardexProveedor)"
+																		onSelect="@command('mostrarProductosOrdenCompra')"
+																		emptyMessage="No hay ordenes de compra">
+																		<listhead>
+
+																			<listheader
+																				label="O. Comp" width="30%" sort="auto(ordenCompra.codigo)" />
+																			<listheader
+																				label="Proveedor"
+																				sort="auto(proveedor.nombre)" />
+
+																		</listhead>
+																		<template
+																			name="model">
+																			<listitem>
+
+																				<listcell>
+																					<label
+																						tooltiptext="Fólio orden de compra"
+																						style="font-size:smaller;"
+																						value="@bind(each.ordenCompra.codigo)" />
+																				</listcell>
+																				<listcell>
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(each.proveedor.nombre)" />
+																				</listcell>
+																			</listitem>
+																		</template>
+																	</listbox>
+																</window>
+															</center>
+														</borderlayout>
+													</center>
+												</borderlayout>
+											</div>
+										</center>
+									</borderlayout>
+								</north>
+							</borderlayout>
+						</div>
+					</center>
+					<east size="80%" border="none" flex="true">
+						<div>
+							<borderlayout>
+								<!-- BARRA DE MENUS -->
+								<north maxsize="300" size="43px">
+									<borderlayout>
+										<center border="none"
+											flex="true">
+											<div>
+												<hlayout
+													style="text-align: right; margin: 1px 1px 1px 1px ;">
+													<button
+														visible="false" image="/images/toolbar/accept32.png"
+														sclass="web_button" tooltiptext="Aprovar orden de compra"
+														onClick="@command('aceptarOrdenCompra')" />
+													<button
+														visible="false" image="/images/toolbar/delete.png"
+														tooltiptext="Cancelar orden de compra" sclass="web_button"
+														onClick="@command('abrirVentanaCancelacion')" />
+													<button
+														image="/images/toolbar/pdf32.png" sclass="web_button"
+														tooltiptext="Exportar orden de compra a PDF"
+														onClick="@command('imprimirOrdenCompra')" />
+												</hlayout>
+											</div>
+										</center>
+									</borderlayout>
+								</north>
+								<center border="0">
+									<borderlayout>
+										<center>
+											<!-- DETALLE DE LA INFORMACION -->
+											<borderlayout>
+												<north maxsize="300"
+													size="95px">
+													<borderlayout>
+														<center
+															border="none" flex="true">
+															<div>
+																<!-- INFORMACION DE LA ORDEN DE COMPRA -->
+																<grid
+																	sclass="my-grid">
+																	<columns>
+																		<column
+																			width="13%" />
+																		<column />
+																		<column
+																			width="13%" />
+																		<column />
+																	</columns>
+																	<rows>
+																		<row>
+																			<label
+																				value="Proveedor:" style="font-weight:bold;" />
+
+																			<div
+																				style="border-bottom-style: solid; border-bottom-width: 1px;">
+																				<label
+																					style="font-size:smaller;"
+																					value="@bind(ovm.kardexProveedor.proveedor.nombre)" />
+																			</div>
+
+																			<label
+																				value="Atención:" style="font-weight:bold;" />
+
+																			<div
+																				style="border-bottom-style: solid; border-bottom-width: 1px;">
+																				<hlayout>
+
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(ovm.kardexProveedor.proveedor.representanteAteCliente.apellidoPaterno)" />
+																					<label
+																						value=" " />
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(ovm.kardexProveedor.proveedor.representanteAteCliente.apellidoMaterno)" />
+																					<label
+																						value=" " />
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(ovm.kardexProveedor.proveedor.representanteAteCliente.nombre)" />
+																				</hlayout>
+																			</div>
+
+																		</row>
+																	</rows>
+																</grid>
+
+																<grid
+																	sclass="my-grid">
+																	<columns>
+																		<column
+																			width="13%" />
+																		<column />
+
+																	</columns>
+																	<rows>
+																		<row>
+
+																			<label
+																				value="Dirección:" style="font-weight:bold;" />
+																			<div
+																				style="border-bottom-style: solid; border-bottom-width: 1px;">
+																				<hlayout>
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(ovm.kardexProveedor.proveedor.direccionFiscal.calle)" />
+
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(ovm.kardexProveedor.proveedor.direccionFiscal.numExt)" />
+
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(ovm.kardexProveedor.proveedor.direccionFiscal.colonia)" />
+
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(ovm.kardexProveedor.proveedor.direccionFiscal.cp)" />
+
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(ovm.kardexProveedor.proveedor.direccionFiscal.cuidad)" />
+
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(ovm.kardexProveedor.proveedor.direccionFiscal.estado.nombre)" />
+
+																					<label
+																						style="font-size:smaller;"
+																						value="@bind(ovm.kardexProveedor.proveedor.direccionFiscal.pais.nombre)" />
+
+																				</hlayout>
+																			</div>
+																		</row>
+																	</rows>
+																</grid>
+
+																<grid
+																	sclass="my-grid">
+																	<columns>
+																		<column
+																			width="13%" />
+																		<column
+																			width="13%" />
+																		<column
+																			width="7%" />
+																		<column
+																			width="17%" />
+																		<column
+																			width="13%" />
+																		<column />
+																	</columns>
+																	<rows>
+																		<row>
+																			<label
+																				value="Telefono:" style="font-weight:bold;" />
+																			<div
+																				style="border-bottom-style: solid; border-bottom-width: 1px;">
+																				<label
+																					style="font-size:smaller;"
+																					value="@bind(ovm.kardexProveedor.proveedor.representanteAteCliente.contacto.telefono.numero)" />
+																			</div>
+																			<label
+																				value="E-mail:" style="font-weight:bold;" />
+																			<div
+																				style="border-bottom-style: solid; border-bottom-width: 1px;">
+																				<label
+																					style="font-size:smaller;"
+																					value="@bind(ovm.kardexProveedor.proveedor.representanteAteCliente.contacto.email.email)" />
+																			</div>
+																			<label
+																				value="Fecha:" style="font-weight:bold;" />
+																			<div
+																				style="border-bottom-style: solid; border-bottom-width: 1px;">
+																				<datebox
+																					value="@bind(ovm.fecha)" buttonVisible="false"
+																					readonly="true" />
+																			</div>
+																		</row>
+																	</rows>
+																</grid>
+															</div>
+														</center>
+													</borderlayout>
+												</north>
+												<center border="0">
+													<borderlayout>
+														<north
+															maxsize="300" size="90%">
+															<borderlayout>
+																<center
+																	border="none" flex="true">
+																	<div>
+																		<!-- LISTA DE PRODUCTOS DEL PROVEEDOR -->
+																		<window
+																			height="100%" width="100%">
+																			<listbox
+																				vflex="1" id="listItems" emptyMessage="Kardex vacio"
+																				model="@load(ovm.kardexList)"
+																				selectedItem="@bind(ovm.kardex)">
+																				<auxhead>
+																					<auxheader
+																						label="" colspan="2" align="center" />
+																					<auxheader
+																						label="UNIDADES" colspan="6" align="center" />
+																					<auxheader
+																						label="COSTO" colspan="1" align="center" />
+																					<auxheader
+																						label="VALORES" colspan="3" align="center" />
+																				</auxhead>
+
+
+
+																				<listhead>
+																					<listheader
+																						label="Fecha" width="8%" align="center" />
+																					<listheader
+																						label="Producto"
+																						tooltiptext="Nombre del producto" />
+
+																					<listheader
+																						label="Entrada"
+																						tooltiptext="Numero de unidades del producto"
+																						width="5%" />
+																					<listheader
+																						label="Lote" width="4%" />
+																					<listheader
+																						label="Salida"
+																						tooltiptext="Numero de unidades del producto"
+																						width="5%" />
+																					<listheader
+																						label="Lote" width="4%" />
+																					<listheader
+																						label="Existencia"
+																						tooltiptext="Numero de unidades del producto"
+																						width="7%" />
+																					<listheader
+																						label="Lote" width="4%" />
+
+
+																					<listheader
+																						label="Precio" tooltiptext="precio unitario"
+																						width="5%" />
+
+																					<listheader
+																						label="Debe" width="5%" />
+																					<listheader
+																						label="Haber" width="5%" />
+																					<listheader
+																						label="Saldo" width="5%" />
+
+																					<listheader
+																						width="4%" tooltiptext="eliminar item"
+																						align="center" />
+																					<listheader
+																						width="4%"
+																						tooltiptext="Especificar Envio de producto"
+																						align="center" />
+																				</listhead>
+																				<template
+																					name="model" var="kardexVar">
+																					<listitem>
+																						<listcell>
+																							<datebox
+																								readonly="true"
+																								value="@bind(kardexVar.fechaEntrada)"
+																								compact="false" buttonVisible="false" />
+																						</listcell>
+																						<listcell>
+																							<grid
+																								sclass="my-grid">
+																								<columns>
+																									<column
+																										width="12%" align="center" />
+																									<column />
+																								</columns>
+																								<rows>
+																									<row>
+																										<button visible="@bind(kardexVar.botonBuscarProducto)"
+																											style="width:25px" zclass="find_button"
+																											image="/images/toolbar/wand32.png"
+																											onClick="@command('search', index=kardexVarStatus.index)"
+																											tooltiptext="Asistente para busqueda de producto" />
+																										<label
+																											width="100%"
+																											value="@bind(kardexVar.producto.nombre)" />
+																									</row>
+																								</rows>
+																							</grid>
+																						</listcell>
+																						<listcell>
+																							<textbox
+																								width="100%"
+																								onChange="@command('calcularDebe', index=kardexVarStatus.index)"
+																								value="@bind(kardexVar.entradaCantidad)" />
+																						</listcell>
+																						<listcell>
+																							<textbox
+																								width="100%"
+																								value="@bind(kardexVar.entradaLote)" />
+																						</listcell>
+																						<listcell>
+																							<textbox
+																								width="100%"
+																								value="@bind(kardexVar.salidaCantidad)" />
+																						</listcell>
+																						<listcell>
+																							<textbox
+																								width="100%"
+																								value="@bind(kardexVar.salidaLote)" />
+																						</listcell>
+																						<listcell>
+																							<textbox
+																								width="100%" />
+																						</listcell>
+																						<listcell>
+																							<textbox
+																								width="100%" />
+																						</listcell>
+																						<listcell>
+																							<textbox
+																								width="100%"
+																								value="@bind(kardexVar.producto.precio)" />
+																						</listcell>
+
+																						<listcell>
+																							<label
+																								width="100%" value="@bind(kardexVar.debe)" />
+																						</listcell>
+																						<listcell>
+																							<textbox
+																								width="100%" />
+																						</listcell>
+																						<listcell>
+																							<textbox
+																								width="100%" />
+																						</listcell>
+
+																						<listcell>
+																							<button
+																								image="/images/toolbar/remove16.png"
+																								onClick="@command('eliminarItem', index=kardexVarStatus.index)"
+																								zclass="find_button" tooltiptext="Remover item" />
+																						</listcell>
+																						<listcell>
+																							<button
+																								image="@bind(kardexVar.icon)"
+																								onClick="@command('configEnvio', index=kardexVarStatus.index)"
+																								zclass="find_button"
+																								tooltiptext="Asistente para configurar envio de producto" />
+																						</listcell>
+																					</listitem>
+																				</template>
+																			</listbox>
+																		</window>
+																	</div>
+																</center>
+															</borderlayout>
+														</north>
+
+
+														<center><!-- PIE -->
+															<grid>
+																<columns>
+																	<column
+																		align="center" width="37px" />
+																	<column
+																		align="center" width="37px" />
+																	
+																	<column
+																		align="right" />
+																	<column
+																		align="right" width="10%" />
+																</columns>
+																<rows>
+																	<row>
+																		<button
+																			image="/images/toolbar/add16.png"
+																			onClick="@command('agregarItem')" zclass="find_button"
+																			tooltiptext="Agregar nuevo Producto" />
+																		<button zclass="find_button"
+																			image="/images/toolbar/saveOff16.png"
+																			onClick="@command('save')" tooltiptext="Guardar KArdex" />
+																			
+																		<image
+																			src="/images/toolbar/products.png" />
+																		<hlayout>
+																			<label
+																				value="Productos: " />
+																			<label
+																				value="@bind(ovm.numeroProductos)" />
+																		</hlayout>
+																	</row>
+																</rows>
+															</grid>
+														</center>
+													</borderlayout>
+												</center>
+											</borderlayout>
+										</center>
+									</borderlayout>
+								</center>
+							</borderlayout>
+						</div>
+					</east>
+				</borderlayout>
+			</north>
+		</borderlayout>
+
+		
+	</window>
+</zk>

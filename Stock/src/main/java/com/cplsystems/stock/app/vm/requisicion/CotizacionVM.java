@@ -31,12 +31,12 @@ import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Window;
 
-import com.cplsystems.stock.app.utils.AplicacionExterna;
 import com.cplsystems.stock.app.utils.StockConstants;
 import com.cplsystems.stock.app.utils.StockUtils;
 import com.cplsystems.stock.app.utils.UserPrivileges;
 import com.cplsystems.stock.app.vm.requisicion.utils.CotizacionListaExcelFile;
 import com.cplsystems.stock.app.vm.requisicion.utils.RequisicionVariables;
+import com.cplsystems.stock.domain.AplicacionExterna;
 import com.cplsystems.stock.domain.Cotizacion;
 import com.cplsystems.stock.domain.CotizacionInbox;
 import com.cplsystems.stock.domain.EstatusRequisicion;
@@ -257,22 +257,21 @@ public class CotizacionVM extends RequisicionVariables {
 				cotizacionInboxService.save(inbox);
 
 				imprimirCotizacion();
-
+				String mensaje = "";
 				// -------------------------------------------------------------------------------
 				File file = crearArchivoExcel();
 				if (file != null) {
-					String mensaje = "";
+					
 					if (organizacion.getDevelopmentTool() != null) {
 						List<Privilegios> privilegios = getEmailsUsuariosCotizacion();
-						if (privilegios != null) {
+						if (privilegios != null && privilegios.size() > 0) {
 							enviarCorreos(usuario, organizacion, privilegios, mensaje, "Solicitud de cotizacion", file);
 							mensaje += " Por favor devolver la cotizacion con la misma estructura del archivo de excel que se envia. Saludos.";
 						}
 
 					} else
 						mensaje += ". No se pudo enviar un email para la notificación";
-					StockUtils.showSuccessmessage(mensaje + " ", Clients.NOTIFICATION_TYPE_INFO, 0, null);
-
+					
 					if (file.exists()) {
 						if (file.delete()) {
 							System.err.println("Archivo temporal eliminado");
@@ -283,7 +282,7 @@ public class CotizacionVM extends RequisicionVariables {
 
 				// -------------------------------------------------------------------------------
 				StockUtils.showSuccessmessage(
-						"La cotizacion con folio [" + cotizacionSelected.getFolioCotizacion() + "] ha sido enviada",
+						"La cotizacion con folio [" + cotizacionSelected.getFolioCotizacion() + "] ha sido generada " + mensaje,
 						Clients.NOTIFICATION_TYPE_INFO, 0, null);
 			} else {
 				StockUtils.showSuccessmessage("La cotizacion con folio [" + cotizacionSelected.getFolioCotizacion()
